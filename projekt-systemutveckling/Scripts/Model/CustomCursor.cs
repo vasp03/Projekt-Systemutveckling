@@ -1,35 +1,36 @@
 using Godot;
-using System;
+
+namespace Goodot15.Scripts.Model;
 
 public partial class CustomCursor : Node
 {
-    private Texture2D openHand;
-    private Texture2D closedHand;
+    private Texture2D _openHand;
+    private Texture2D _closedHand;
 
     public override void _Ready()
     {
         
-        openHand = LoadTexture("res://Assets/MouseCursor/hand_open.png");
-        closedHand = LoadTexture("res://Assets/MouseCursor/hand_closed.png");
+        _openHand = LoadTexture("res://Assets/MouseCursor/hand_open.png");
+        _closedHand = LoadTexture("res://Assets/MouseCursor/hand_closed.png");
 
-        if (openHand == null || closedHand == null)
+        if (_openHand == null || _closedHand == null)
         {
             GD.PrintErr("Custom cursor not found");
             return;
         }
 
-        SetCursor(openHand);
+        SetCursor(_openHand);
     }
 
     public override void _Process(double delta)
     {
         if (Input.IsActionPressed("LMB"))
         {
-            SetCursor(closedHand);
+            SetCursor(_closedHand);
         }
         else
         {
-            SetCursor(openHand);
+            SetCursor(_openHand);
         }
     }
 
