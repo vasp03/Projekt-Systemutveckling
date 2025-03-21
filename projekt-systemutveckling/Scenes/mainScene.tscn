@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7uon6bncbi6q" path="res://Scripts/Controller/Main.cs" id="1_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 [ext_resource type="Texture2D" uid="uid://boegdcufjtm7o" path="res://Assets/Cards/Ready To Use/Leaves.png" id="3_47rga"]
-[ext_resource type="Script" uid="uid://bihqsm068b6c3" path="res://Scripts/Controller/CardSummon.cs" id="4_m8nr8"]
+[ext_resource type="Script" uid="uid://bihqsm068b6c3" path="res://Scripts/Controller/Cards.cs" id="4_m8nr8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yyxd1"]
 texture = ExtResource("2_m8nr8")

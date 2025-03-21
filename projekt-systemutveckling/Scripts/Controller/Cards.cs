@@ -1,18 +1,16 @@
 using System;
 using Godot;
 
-public partial class CardSummon : Sprite2D
+public partial class Cards : Sprite2D
 {
     Boolean isDragging = false;
     Vector2 oldMousePosition;
 
     public void CreateNew()
     {
-        GD.Print("CardSummon.createNew() called");
-
         // Create a new instance of the card
         Sprite2D copyNode = new Sprite2D();
-        copyNode = this.Duplicate() as Sprite2D;
+        copyNode = (Sprite2D)this.Duplicate();
         copyNode.Name = "CardSummon";
         copyNode.Position = new Vector2(100, 100);
         SetRandomTexture(copyNode);
@@ -21,8 +19,6 @@ public partial class CardSummon : Sprite2D
 
     public void Destroy()
     {
-        GD.Print("CardSummon.destroy() called");
-
         // Remove the card from the scene
         QueueFree();
     }
@@ -33,54 +29,15 @@ public partial class CardSummon : Sprite2D
         Random random = new Random();
         int randomInt = random.Next(0, 10);
 
-        CardTypeEnum type = (CardTypeEnum)randomInt;
-        GD.Print("Random card type: " + type);
+        CardTypeEnum.TypeEnum type = (CardTypeEnum.TypeEnum)randomInt;
         SetTexture(type, sprite);
     }
 
-    public void SetTexture(CardTypeEnum type, Sprite2D sprite = null)
+    public void SetTexture(CardTypeEnum.TypeEnum type, Sprite2D sprite = null)
     {
         Texture texture;
 
-        switch (type)
-        {
-            case CardTypeEnum.wood:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Wood.png");
-                break;
-            case CardTypeEnum.rock:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Rock.png");
-                break;
-            case CardTypeEnum.water:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Water.png");
-                break;
-            case CardTypeEnum.stick:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Stick.png");
-                break;
-            case CardTypeEnum.planks:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Planks.png");
-                break;
-            case CardTypeEnum.leaves:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Leaves.png");
-                break;
-            case CardTypeEnum.sword:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Sword Mk1.png");
-                break;
-            case CardTypeEnum.apple:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Apple.png");
-                break;
-            case CardTypeEnum.berry:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Berry.png");
-                break;
-            case CardTypeEnum.tree:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Tree.png");
-                break;
-            case CardTypeEnum.mine:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Mine.png");
-                break;
-            default:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Wood.png");
-                break;
-        }
+        texture = CardTypeEnum.GetTexture(type);
 
         if (sprite == null)
         {
@@ -115,18 +72,25 @@ public partial class CardSummon : Sprite2D
     {
         if (@event is InputEventMouseButton mouseButton)
         {
-            if (mouseButton.Pressed && isMouseOver())
+            if (mouseButton.Pressed && isMouseOver() && Global.GetCardSelected() == false)
             {
+                Global.SetCardSelected(true);
                 isDragging = true;
                 oldMousePosition = GetGlobalMousePosition();
 
                 // Set y position so the card is rendered above other cards
                 ZIndex = 1;
             }
-            else
+            else if(mouseButton.Pressed && !isMouseOver())
             {
+                Global.SetCardSelected(false);
                 isDragging = false;
                 ZIndex = 0;
+            }
+            else
+            {
+                Global.SetCardSelected(false);
+                isDragging = false;
             }
         }
     }
@@ -144,5 +108,5 @@ public partial class CardSummon : Sprite2D
 
         // Check if the mouse is inside the card area
         return cardArea.HasPoint(mousePosition);
-    } 
+    }
 }

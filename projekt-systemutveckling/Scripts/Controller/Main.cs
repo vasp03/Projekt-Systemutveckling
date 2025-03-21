@@ -13,7 +13,7 @@ public partial class Main : Node
                 GD.Print("Space key pressed");
 
                 // Get the child named "CardTemplate"
-                var cardTemplate = GetNode<CardSummon>("CardTemplate");
+                var cardTemplate = GetNode<Cards>("CardTemplate");
 
                 if(cardTemplate == null)
                 {
