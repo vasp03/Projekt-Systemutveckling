@@ -23,6 +23,11 @@ public partial class Main : Node
 
                 // Call the createNew method
                 cardTemplate.CreateNew();
+            }else if(eventKey.Pressed && eventKey.Keycode == Key.Escape)
+            {
+                // Prints number of cilhden
+                GD.Print(GetChildCount());
+
             }
         }
     }
