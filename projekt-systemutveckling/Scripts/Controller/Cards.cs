@@ -2,7 +2,7 @@ using System;
 using Godot;
 using Godot.Collections;
 
-public partial class Cards : Node2D
+public partial class Cards : Node2D, IMovable
 {
     private Boolean isDragging = false;
     private Vector2 oldMousePosition;
