@@ -22,10 +22,19 @@ public partial class Main : Node2D
         GetParent().AddChild(cardInstance);
     }
 
+
     // Get when a key is pressed
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventKey eventKey)
+        // Detect mouse movement
+        if (@event is InputEventMouseMotion mouseMotion)
+        {
+            foreach (Node2D card in GetAllCards())
+            {
+                (card as Cards).SetHighlighted(CardIsTopCard(card));
+            }
+        }
+        else if (@event is InputEventKey eventKey)
         {
             if (eventKey.Pressed && eventKey.Keycode == Key.Space)
             {

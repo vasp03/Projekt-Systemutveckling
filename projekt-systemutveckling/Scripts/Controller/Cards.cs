@@ -11,6 +11,9 @@ public partial class Cards : Node2D
 
     private int cardId;
 
+    private Boolean IsHovered = false;
+    private float HighLightFactor = 1.3f;
+
     public Sprite2D GetSprite2D()
     {
         return (Sprite2D)GetNode("Sprite2D");
@@ -63,6 +66,22 @@ public partial class Cards : Node2D
 
             // Update the old mouse position
             oldMousePosition = mousePosition;
+        }
+    }
+
+    public void SetHighlighted(Boolean value)
+    {
+        Sprite2D sprite = GetSprite2D();
+
+        if (value && !IsHovered)
+        {
+            sprite.SetModulate(sprite.Modulate * HighLightFactor);
+            IsHovered = true;
+        }
+        else if (!value && IsHovered)
+        {
+            sprite.SetModulate(sprite.Modulate / HighLightFactor);
+            IsHovered = false;
         }
     }
 
