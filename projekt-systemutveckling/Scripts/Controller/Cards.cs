@@ -4,49 +4,50 @@ using Godot.Collections;
 
 public partial class Cards : Node2D
 {
-    Boolean isDragging = false;
-    Vector2 oldMousePosition;
+    private Boolean isDragging = false;
+    private Vector2 oldMousePosition;
+
+    private CardTypeInfomationHolder cardTypeInformationHolder;
+
+    private int cardId;
 
     public Sprite2D GetSprite2D()
     {
         return (Sprite2D)GetNode("Sprite2D");
     }
 
-    public override void _Ready()
+    public void StartCard(int cardId, CardTypeEnum.TypeEnum type = CardTypeEnum.TypeEnum.Random, Vector2 position = new Vector2())
     {
-        // Check if the node is not called CardTemplate
-        if (Name != "CardTemplate")
+        this.cardId = cardId;
+
+        if (position == new Vector2())
         {
-            // Set random texture
-            SetRandomTexture();
-
-            // Make the node visible
-            Visible = true;
+            position = new Vector2(100, 100);
         }
-    }
 
-    // Set random texture
-    public void SetRandomTexture()
-    {
-        SetTexture(CardTypeEnum.TypeEnum.Random);
+        SetTexture(type);
+
+        // Add card to group "Card"
+        AddToGroup("Card");
+
+        // Set the card position
+        Position = new Vector2(100, 100);
     }
 
     private void SetTexture(CardTypeEnum.TypeEnum type)
     {
-        Texture texture;
-        Sprite2D sprite = (Sprite2D)GetNode("Sprite2D");
+        cardTypeInformationHolder = CardTypeEnum.GetCardTypeInfomationHolder(type);
 
-        texture = CardTypeEnum.GetTexture(type);
+        Sprite2D sprite = (Sprite2D)GetNode("Sprite2D");
 
         if (sprite != null)
         {
-            sprite.SetTexture((Texture2D)texture);
+            sprite.SetTexture((Texture2D)GD.Load<Texture>(cardTypeInformationHolder.GetTexture()));
             Visible = true;
         }
         else
         {
-            GD.Print("Sprite is null");
-            Visible = true;
+            GD.Print("Sprite is null for card: " + type);
         }
     }
 
@@ -65,12 +66,22 @@ public partial class Cards : Node2D
         }
     }
 
-    public void setDragging(Boolean value)
+    public void SetDragging(Boolean value)
     {
         isDragging = value;
         if (value)
         {
             oldMousePosition = GetGlobalMousePosition();
         }
+    }
+
+    public CardTypeInfomationHolder GetCardTypeInformationHolder()
+    {
+        return cardTypeInformationHolder;
+    }
+
+    public int GetCardId()
+    {
+        return cardId;
     }
 }

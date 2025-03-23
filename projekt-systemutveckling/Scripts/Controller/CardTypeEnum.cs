@@ -28,29 +28,18 @@ public partial class CardTypeEnum : Node
         return (TypeEnum)values.GetValue(random.Next(values.Length));
     }
 
-    public static Texture GetTexture(CardTypeEnum.TypeEnum type)
+    public static String GetTexture(CardTypeEnum.TypeEnum type)
     {
-        string texture = "";
-
-        if (type == TypeEnum.Random)
-        {
-            TypeEnum randomType = GetRandomCardType();
-            while (randomType == TypeEnum.Random)
-            {
-                randomType = GetRandomCardType();
-            }
-            texture = GetTextureAddress(randomType);
-        }
-        else
-        {
-            texture = GetTextureAddress(type);
-        }
-
-        return GD.Load<Texture>(texture);
+        return GetCardTypeInfomationHolder(type).GetTexture();
     }
 
-    private static string GetTextureAddress(CardTypeEnum.TypeEnum type)
+    public static CardTypeInfomationHolder GetCardTypeInfomationHolder(CardTypeEnum.TypeEnum type)
     {
+        while(type == TypeEnum.Random)
+        {
+            type = GetRandomCardType();
+        }
+
         string texture = "";
 
         switch (type)
@@ -93,9 +82,6 @@ public partial class CardTypeEnum : Node
                 break;
         }
 
-        GD.Print("--------------------");
-        GD.Print("Texture: " + texture + " Type: " + type);
-
-        return texture;
+        return new CardTypeInfomationHolder(texture, type);
     }
 }

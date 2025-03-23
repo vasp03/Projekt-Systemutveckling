@@ -6,24 +6,18 @@ public partial class Main : Node2D
 {
     private bool firstCard = true;
 
+    private int cardId = 0;
+
     public void CreateNewCard(CardTypeEnum.TypeEnum type = CardTypeEnum.TypeEnum.Random)
     {
         // Duplicate the card named "CardTemplate"
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Cards.tscn");
         Cards cardInstance = cardScene.Instantiate<Cards>();
 
-        // Set the card type
-        if (firstCard)
-        {
-            cardInstance.SetRandomTexture();
-            firstCard = false;
-        }
+        cardInstance.StartCard(cardId++, type);
 
-        // Add card to group "Card"
-        cardInstance.AddToGroup("Card");
-
-        // Set the card position
-        cardInstance.Position = new Vector2(100, 100);
+        // Sets the Z index of the card based on the number of cards in the scene
+        cardInstance.ZIndex = GetTree().GetNodesInGroup("Card").Count + 1;
 
         GetParent().AddChild(cardInstance);
     }
@@ -46,7 +40,12 @@ public partial class Main : Node2D
             else if (eventKey.Pressed && eventKey.Keycode == Key.A)
             {
                 // Print the position of the card name "CardTemplate"
-                GD.Print("Card pos: " + GetNode<Node2D>("CardTemplate").Position);
+                Array<Node2D> cards = GetAllCards();
+                foreach (Node2D card in cards)
+                {
+                    GD.Print("ZIndex: " + card.ZIndex + " Position: " + card.Position + " Type: " + (card as Cards).GetCardTypeInformationHolder().GetCardType() + " Card Id: " + (card as Cards).GetCardId());
+                }
+                GD.Print("----------------------------------------");
             }
         }
         else if (@event is InputEventMouseButton mouseButton)
@@ -88,16 +87,54 @@ public partial class Main : Node2D
 
         foreach (Node2D cardNode in cardNodes)
         {
-            if (IsMouseOverCard(cardNode))
+            if (IsMouseOverCard(cardNode) && CardIsTopCard(cardNode))
             {
-                (cardNode as Cards).setDragging(true);
+                (cardNode as Cards).SetDragging(true);
+                SetTopCard(cardNode);
                 break;
             }
         }
     }
 
-    // Sort cards by Y position
-    public Array<Node2D> SortCards(Array<Node2D> cardNodes)
+    // Check if the card is the top card with the cards that the cursor is above
+    private Boolean CardIsTopCard(Node2D cardNode)
+    {
+        // Get all the card nodes
+        Array<Node2D> cardNodes = SortCards(GetAllCards());
+
+        foreach (Node2D node in cardNodes)
+        {
+            if (node.ZIndex > cardNode.ZIndex)
+            {
+                if (IsMouseOverCard(node))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // Set the card to the top of the other cards
+    private void SetTopCard(Node2D cardNode)
+    {
+        // Move every card back one ZIndex except for the cards before the card that is being dragged
+        Array<Node2D> cardNodes = SortCards(GetAllCards());
+
+        foreach (Node2D node in cardNodes)
+        {
+            if (node.ZIndex > cardNode.ZIndex)
+            {
+                node.ZIndex -= 1;
+            }
+        }
+
+        // Set the card that is being dragged to the top
+        cardNode.ZIndex = cardNodes.Count;
+    }
+
+    public static Array<Node2D> SortCards(Array<Node2D> cardNodes)
     {
         // Get all the card nodes
         Array<Node2D> sortedCards = new Array<Node2D>();
@@ -112,7 +149,7 @@ public partial class Main : Node2D
             {
                 for (int i = 0; i < sortedCards.Count; i++)
                 {
-                    if (cardNode.Position.Y < sortedCards[i].Position.Y)
+                    if (cardNode.ZIndex < sortedCards[i].ZIndex)
                     {
                         sortedCards.Insert(i, cardNode);
                         break;
@@ -139,7 +176,7 @@ public partial class Main : Node2D
         {
             if (cardNode is Cards card)
             {
-                card.setDragging(false);
+                card.SetDragging(false);
             }
         }
     }
