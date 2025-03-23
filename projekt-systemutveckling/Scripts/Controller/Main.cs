@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Godot.Collections;
 using Godot;
 
@@ -7,6 +8,8 @@ public partial class Main : Node2D
     private bool firstCard = true;
 
     private int cardId = 0;
+
+    private static Array<Node2D> cardNodes = new Array<Node2D>();
 
     public void CreateNewCard(CardTypeEnum.TypeEnum type = CardTypeEnum.TypeEnum.Random)
     {
@@ -20,6 +23,7 @@ public partial class Main : Node2D
         cardInstance.ZIndex = GetTree().GetNodesInGroup("Card").Count + 1;
 
         GetParent().AddChild(cardInstance);
+        cardNodes.Add(cardInstance);
     }
 
 
@@ -29,9 +33,9 @@ public partial class Main : Node2D
         // Detect mouse movement
         if (@event is InputEventMouseMotion mouseMotion)
         {
-            foreach (Node2D card in GetAllCards())
+            foreach (Node2D card in cardNodes)
             {
-                (card as Cards).SetHighlighted(CardIsTopCard(card));
+                (card as Cards).SetHighlighted(CardIsTopCard(card) && IsMouseOverCard(card));
             }
         }
         else if (@event is InputEventKey eventKey)
@@ -49,8 +53,8 @@ public partial class Main : Node2D
             else if (eventKey.Pressed && eventKey.Keycode == Key.A)
             {
                 // Print the position of the card name "CardTemplate"
-                Array<Node2D> cards = GetAllCards();
-                foreach (Node2D card in cards)
+                GetAllCards();
+                foreach (Node2D card in cardNodes)
                 {
                     GD.Print("ZIndex: " + card.ZIndex + " Position: " + card.Position + " Type: " + (card as Cards).GetCardTypeInformationHolder().GetCardType() + " Card Id: " + (card as Cards).GetCardId());
                 }
@@ -71,12 +75,13 @@ public partial class Main : Node2D
     }
 
     // Get all Card nodes in the scene
-    private Array<Node2D> GetAllCards()
+    private void GetAllCards()
     {
         // Get all the nodes in the scene
         Array<Node> nodes = GetTree().GetNodesInGroup("Card");
 
-        Array<Node2D> cardNodes = new Array<Node2D>();
+        cardNodes.Clear();
+
         foreach (Node2D node in nodes)
         {
             if (node is Node2D)
@@ -84,15 +89,13 @@ public partial class Main : Node2D
                 cardNodes.Add(node);
             }
         }
-
-        return cardNodes;
     }
 
     // Make card draggable when mouse is pressed
     public void MoveCards()
     {
         // Get all the card nodes
-        Array<Node2D> cardNodes = SortCards(GetAllCards());
+        SortCards();
 
         foreach (Node2D cardNode in cardNodes)
         {
@@ -109,7 +112,7 @@ public partial class Main : Node2D
     private Boolean CardIsTopCard(Node2D cardNode)
     {
         // Get all the card nodes
-        Array<Node2D> cardNodes = SortCards(GetAllCards());
+        SortCards();
 
         foreach (Node2D node in cardNodes)
         {
@@ -129,7 +132,7 @@ public partial class Main : Node2D
     private void SetTopCard(Node2D cardNode)
     {
         // Move every card back one ZIndex except for the cards before the card that is being dragged
-        Array<Node2D> cardNodes = SortCards(GetAllCards());
+        SortCards();
 
         foreach (Node2D node in cardNodes)
         {
@@ -143,43 +146,16 @@ public partial class Main : Node2D
         cardNode.ZIndex = cardNodes.Count;
     }
 
-    public static Array<Node2D> SortCards(Array<Node2D> cardNodes)
+    public static void SortCards()
     {
-        // Get all the card nodes
-        Array<Node2D> sortedCards = new Array<Node2D>();
-
-        foreach (Node2D cardNode in cardNodes)
-        {
-            if (sortedCards.Count == 0)
-            {
-                sortedCards.Add(cardNode);
-            }
-            else
-            {
-                for (int i = 0; i < sortedCards.Count; i++)
-                {
-                    if (cardNode.ZIndex < sortedCards[i].ZIndex)
-                    {
-                        sortedCards.Insert(i, cardNode);
-                        break;
-                    }
-                    else if (i == sortedCards.Count - 1)
-                    {
-                        sortedCards.Add(cardNode);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return sortedCards;
+        cardNodes.OrderBy(card => card.ZIndex);
     }
 
     // Stop dragging cards
     public void StopMoveCards()
     {
         // Get all the card nodes
-        Array<Node2D> cardNodes = GetAllCards();
+        GetAllCards();
 
         foreach (Node2D cardNode in cardNodes)
         {
