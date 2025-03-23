@@ -1,55 +1,53 @@
 using System;
 using Godot;
+using Godot.Collections;
 
-public partial class Cards : Sprite2D
+public partial class Cards : Node2D
 {
     Boolean isDragging = false;
     Vector2 oldMousePosition;
 
-    public void CreateNew()
+    public Sprite2D GetSprite2D()
     {
-        // Create a new instance of the card
-        Sprite2D copyNode = new Sprite2D();
-        copyNode = (Sprite2D)this.Duplicate();
-        copyNode.Name = "CardSummon";
-        copyNode.Position = new Vector2(100, 100);
-        SetRandomTexture(copyNode);
-        GetParent().AddChild(copyNode);
+        return (Sprite2D)GetNode("Sprite2D");
     }
 
-    public void Destroy()
+    public override void _Ready()
     {
-        // Remove the card from the scene
-        QueueFree();
+        // Check if the node is not called CardTemplate
+        if (Name != "CardTemplate")
+        {
+            // Set random texture
+            SetRandomTexture();
+
+            // Make the node visible
+            Visible = true;
+        }
     }
 
     // Set random texture
-    public void SetRandomTexture(Sprite2D sprite = null)
+    public void SetRandomTexture()
     {
-        Random random = new Random();
-        int randomInt = random.Next(0, 10);
-
-        CardTypeEnum.TypeEnum type = (CardTypeEnum.TypeEnum)randomInt;
-        SetTexture(type, sprite);
+        SetTexture(CardTypeEnum.TypeEnum.Random);
     }
 
-    public void SetTexture(CardTypeEnum.TypeEnum type, Sprite2D sprite = null)
+    private void SetTexture(CardTypeEnum.TypeEnum type)
     {
         Texture texture;
+        Sprite2D sprite = (Sprite2D)GetNode("Sprite2D");
 
         texture = CardTypeEnum.GetTexture(type);
 
-        if (sprite == null)
+        if (sprite != null)
         {
-            SetTexture((Texture2D)texture);
+            sprite.SetTexture((Texture2D)texture);
+            Visible = true;
         }
         else
         {
-            sprite.SetTexture((Texture2D)texture);
+            GD.Print("Sprite is null");
+            Visible = true;
         }
-
-        // Set the visible property to true
-        Visible = true;
     }
 
     public override void _Process(double delta)
@@ -67,46 +65,12 @@ public partial class Cards : Sprite2D
         }
     }
 
-    // When mouse is pressed on the card; move it with the cursor
-    public override void _Input(InputEvent @event)
+    public void setDragging(Boolean value)
     {
-        if (@event is InputEventMouseButton mouseButton)
+        isDragging = value;
+        if (value)
         {
-            if (mouseButton.Pressed && isMouseOver() && Global.GetCardSelected() == false)
-            {
-                Global.SetCardSelected(true);
-                isDragging = true;
-                oldMousePosition = GetGlobalMousePosition();
-
-                // Set y position so the card is rendered above other cards
-                ZIndex = 1;
-            }
-            else if(mouseButton.Pressed && !isMouseOver())
-            {
-                Global.SetCardSelected(false);
-                isDragging = false;
-                ZIndex = 0;
-            }
-            else
-            {
-                Global.SetCardSelected(false);
-                isDragging = false;
-            }
+            oldMousePosition = GetGlobalMousePosition();
         }
-    }
-
-    private Boolean isMouseOver()
-    {
-        // Get the global mouse position
-        Vector2 mousePosition = GetGlobalMousePosition();
-
-        var x = GetTexture().GetWidth();
-        var y = GetTexture().GetHeight();
-
-        // Get the cards area
-        Rect2 cardArea = new Rect2(Position - (new Vector2(x / 2, y / 2)), new Vector2(x, y));
-
-        // Check if the mouse is inside the card area
-        return cardArea.HasPoint(mousePosition);
     }
 }

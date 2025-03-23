@@ -9,8 +9,8 @@ public partial class CustomCursor : Node
 
     public override void _Ready()
     {
-        _openHand = LoadTexture("res://Assets/MouseCursor/hand_open.png");
-        _closedHand = LoadTexture("res://Assets/MouseCursor/hand_closed.png");
+        // _openHand = LoadTexture("res://Assets/MouseCursor/hand_open.png");
+        // _closedHand = LoadTexture("res://Assets/MouseCursor/hand_closed.png");
 
         if (_openHand == null || _closedHand == null)
         {
@@ -41,7 +41,6 @@ public partial class CustomCursor : Node
     {
         if (texture == null || _openHand == null || _closedHand == null)
         {
-            GD.PrintErr("Custom cursor not found");
             return;
         }
 

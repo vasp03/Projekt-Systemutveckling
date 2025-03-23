@@ -3,78 +3,99 @@ using System;
 
 public partial class CardTypeEnum : Node
 {
+    private static string textureAddress = "res://Assets/Cards/Ready To Use/";
+
     public enum TypeEnum
     {
-        wood,
-        rock,
-        water,
-        stick,
-        planks,
-        leaves,
-        sword,
-        apple,
-        berry,
-        tree,
-        mine
+        Wood,
+        Rock,
+        Water,
+        Stick,
+        Planks,
+        Leaves,
+        Sword,
+        Apple,
+        Berry,
+        Tree,
+        Mine,
+        Random
     }
 
-    public static CardTypeEnum GetRandomCardType()
+    public static CardTypeEnum.TypeEnum GetRandomCardType()
     {
-        var values = Enum.GetValues(typeof(CardTypeEnum));
-        var random = new Random();
-        return (CardTypeEnum)values.GetValue(random.Next(values.Length));
+        Random random = new Random();
+        Array values = Enum.GetValues(typeof(TypeEnum));
+        return (TypeEnum)values.GetValue(random.Next(values.Length));
     }
 
     public static Texture GetTexture(CardTypeEnum.TypeEnum type)
     {
-        Texture texture;
+        string texture = "";
+
+        if (type == TypeEnum.Random)
+        {
+            TypeEnum randomType = GetRandomCardType();
+            while (randomType == TypeEnum.Random)
+            {
+                randomType = GetRandomCardType();
+            }
+            texture = GetTextureAddress(randomType);
+        }
+        else
+        {
+            texture = GetTextureAddress(type);
+        }
+
+        return GD.Load<Texture>(texture);
+    }
+
+    private static string GetTextureAddress(CardTypeEnum.TypeEnum type)
+    {
+        string texture = "";
 
         switch (type)
         {
-            case TypeEnum.wood:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Wood.png");
+            case TypeEnum.Wood:
+                texture = textureAddress + "Wood.png";
                 break;
-            case TypeEnum.rock:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Rock.png");
+            case TypeEnum.Rock:
+                texture = textureAddress + "Rock.png";
                 break;
-            case TypeEnum.water:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Water.png");
+            case TypeEnum.Water:
+                texture = textureAddress + "Water.png";
                 break;
-            case TypeEnum.stick:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Stick.png");
+            case TypeEnum.Stick:
+                texture = textureAddress + "Stick.png";
                 break;
-            case TypeEnum.planks:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Planks.png");
+            case TypeEnum.Planks:
+                texture = textureAddress + "Planks.png";
                 break;
-            case TypeEnum.leaves:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Leaves.png");
+            case TypeEnum.Leaves:
+                texture = textureAddress + "Leaves.png";
                 break;
-            case TypeEnum.sword:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Sword Mk1.png");
+            case TypeEnum.Sword:
+                texture = textureAddress + "Sword Mk1.png";
                 break;
-            case TypeEnum.apple:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Apple.png");
+            case TypeEnum.Apple:
+                texture = textureAddress + "Apple.png";
                 break;
-            case TypeEnum.berry:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Berry.png");
+            case TypeEnum.Berry:
+                texture = textureAddress + "Berry.png";
                 break;
-            case TypeEnum.tree:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Tree.png");
+            case TypeEnum.Tree:
+                texture = textureAddress + "Tree.png";
                 break;
-            case TypeEnum.mine:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Mine.png");
+            case TypeEnum.Mine:
+                texture = textureAddress + "Mine.png";
                 break;
             default:
-                texture = GD.Load<Texture>("res://Assets/Cards/Ready To Use/Wood.png");
+                GD.Print("Texture for card not found");
                 break;
         }
 
+        GD.Print("--------------------");
+        GD.Print("Texture: " + texture + " Type: " + type);
+
         return texture;
     }
-
-    public static explicit operator CardTypeEnum(int v)
-    {
-        throw new NotImplementedException();
-    }
-
 }
