@@ -11,6 +11,8 @@ public partial class CardController : Node2D
 
     private CardNode selectedCard;
 
+    private List<CardNode> hoveredCards = new List<CardNode>();
+
     public void CreateCard()
     {
         print("Creating card");
@@ -18,7 +20,7 @@ public partial class CardController : Node2D
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        bool ret = cardInstance.CreateNode(cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()));
+        bool ret = cardInstance.CreateNode(cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()), this);
         if (ret)
         {
             AddChild(cardInstance);
@@ -100,7 +102,7 @@ public partial class CardController : Node2D
     {
         List<CardNode> cards = GetAllCards();
         CardNode topCard = null;
-        
+
         foreach (CardNode card in cards)
         {
             if (card.MouseIsHovering(GetGlobalMousePosition()))
@@ -117,6 +119,26 @@ public partial class CardController : Node2D
         }
 
         return topCard;
+    }
+
+    public void AddCardToHoveredCards(CardNode cardNode)
+    {
+        hoveredCards.Add(cardNode);
+        CheckForHighLight();
+    }
+
+    public void RemoveCardFromHoveredCards(CardNode cardNode)
+    {
+        hoveredCards.Remove(cardNode);
+        cardNode.SetHighlighted(false);
+    }
+
+    public void CheckForHighLight()
+    {
+        foreach (CardNode card in hoveredCards)
+        {
+            card.SetHighlighted(true);
+        }
     }
 
     public override void _Input(InputEvent @event)
@@ -145,7 +167,7 @@ public partial class CardController : Node2D
                     print(cardNode.GetCard().GetName() + " | Type: " + cardNode.GetCard().GetType());
                 }
             }
-                
+
         }
         else if (@event is InputEventMouseButton mouseButton)
         {
