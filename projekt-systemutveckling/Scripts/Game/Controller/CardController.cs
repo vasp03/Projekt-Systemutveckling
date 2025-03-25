@@ -7,8 +7,6 @@ public partial class CardController : Node2D
 {
     CardCreationHelper cardCreationHelper = new CardCreationHelper();
 
-    private Vector2 oldMousePosition;
-
     private CardNode selectedCard;
 
     private List<CardNode> hoveredCards = new List<CardNode>();
@@ -23,44 +21,57 @@ public partial class CardController : Node2D
         bool ret = cardInstance.CreateNode(cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()), this);
         if (ret)
         {
+            cardInstance.ZIndex = GetCardCount();
             AddChild(cardInstance);
             cardInstance.SetPosition(new Vector2(100, 100));
         }
     }
 
-    public void SetHighlighted(bool isHighlighted)
+    public int GetCardCount()
     {
-
+        return GetAllCards().Count;
     }
 
-    public void SetNeighbourAbove(Card card)
+    private void SetTopCard(Node2D cardNode)
     {
+        List<CardNode> cardNodes = SortCards(GetAllCards());
 
+        foreach (Node2D node in cardNodes)
+        {
+            if (node.ZIndex > cardNode.ZIndex)
+            {
+                node.ZIndex -= 1;
+            }
+        }
+
+        // Set the card that is being dragged to the top
+        cardNode.ZIndex = cardNodes.Count;
     }
 
-    public void SetNeighbourBelow(Card card)
-    {
 
+    public static List<CardNode> SortCards(List<CardNode> cardNodes)
+    {
+        cardNodes.Sort((x, y) => x.ZIndex.CompareTo(y.ZIndex));
+        return cardNodes;
     }
 
-    public void CanCardsStack(Card card1, Card card2)
+    private Boolean CardIsTopCard(Node2D cardNode)
     {
+        // Get all the card nodes
+        List<CardNode> cardNodes = SortCards(GetAllCards());
 
-    }
+        foreach (CardNode node in cardNodes)
+        {
+            if (node.ZIndex > cardNode.ZIndex)
+            {
+                if (hoveredCards.Contains(node))
+                {
+                    return false;
+                }
+            }
+        }
 
-    public void RemoveCard()
-    {
-
-    }
-
-    public void SetCardMoving(bool isMoving)
-    {
-
-    }
-
-    public void SetCardPosition(Card card, Vector2 position)
-    {
-
+        return true;
     }
 
     public void print(String message)
@@ -69,7 +80,7 @@ public partial class CardController : Node2D
     }
 
     // UUID generator
-    public String GenerateUUID()
+    public static String GenerateUUID()
     {
         return Guid.NewGuid().ToString();
     }
@@ -100,21 +111,17 @@ public partial class CardController : Node2D
     // Get the top card at the mouse position
     public CardNode GetTopCardAtMousePosition()
     {
-        List<CardNode> cards = GetAllCards();
         CardNode topCard = null;
 
-        foreach (CardNode card in cards)
+        foreach (CardNode card in hoveredCards)
         {
-            if (card.MouseIsHovering(GetGlobalMousePosition()))
+            if (topCard == null)
             {
-                if (topCard == null)
-                {
-                    topCard = card;
-                }
-                else if (card.GetZIndex() > topCard.GetZIndex())
-                {
-                    topCard = card;
-                }
+                topCard = card;
+            }
+            else if (card.GetZIndex() > topCard.GetZIndex())
+            {
+                topCard = card;
             }
         }
 
@@ -173,11 +180,20 @@ public partial class CardController : Node2D
         {
             if (mouseButton.Pressed)
             {
-                oldMousePosition = GetGlobalMousePosition();
                 selectedCard = GetTopCardAtMousePosition();
+                if (selectedCard != null)
+                {
+                    SetTopCard(selectedCard);
+                    selectedCard.SetIsBeingDragged(true);
+                }
             }
             else
             {
+                if (selectedCard != null)
+                {
+                    selectedCard.SetIsBeingDragged(false);
+                    selectedCard = null;
+                }
             }
         }
     }

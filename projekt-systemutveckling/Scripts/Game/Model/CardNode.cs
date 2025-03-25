@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
 
 public partial class CardNode : Node2D
 {
@@ -13,6 +11,12 @@ public partial class CardNode : Node2D
     private const float HighLightFactor = 1.3f;
 
     private CardController cardController;
+
+    private bool mouseIsHovering = false;
+
+    private bool isBeingDragged = false;
+
+    private Vector2 oldMousePosition;
 
     public bool CreateNode(Card card, Vector2 position, CardController cardController)
     {
@@ -38,6 +42,17 @@ public partial class CardNode : Node2D
         return true;
     }
 
+    public void SetIsBeingDragged(bool isBeingDragged)
+    {
+        oldMousePosition = GetGlobalMousePosition();
+        this.isBeingDragged = isBeingDragged;
+    }
+
+    public bool GetIsBeingDragged()
+    {
+        return isBeingDragged;
+    }
+
     public bool CreateNode(Card card, CardController cardController)
     {
         return CreateNode(card, new Vector2(100, 100), cardController);
@@ -46,11 +61,6 @@ public partial class CardNode : Node2D
     public Card GetCard()
     {
         return card;
-    }
-
-    public new void SetPosition(Vector2 position)
-    {
-        Position = position;
     }
 
     private void ApplyTexture()
@@ -70,17 +80,6 @@ public partial class CardNode : Node2D
         sprite.Texture = texture;
     }
 
-    public bool MouseIsHovering(Vector2 mousePosition)
-    {
-        Vector2 size = sprite.Texture.GetSize() * sprite.Scale;
-        Vector2 halfSize = size / 2;
-
-        // Create a rectangle in global coordinates
-        Rect2 globalRect = new Rect2(GlobalPosition - halfSize, size);
-
-        return globalRect.HasPoint(mousePosition);
-    }
-
     public void SetHighlighted(bool isHighlighted)
     {
         if (isHighlighted)
@@ -95,11 +94,25 @@ public partial class CardNode : Node2D
 
     public void _on_area_2d_mouse_entered()
     {
+        mouseIsHovering = true;
         cardController.AddCardToHoveredCards(this);
     }
 
     public void _on_area_2d_mouse_exited()
     {
+        mouseIsHovering = false;
         cardController.RemoveCardFromHoveredCards(this);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (isBeingDragged)
+        {
+            Vector2 mousePosition = GetGlobalMousePosition();
+
+            Position += mousePosition - oldMousePosition;
+
+            oldMousePosition = mousePosition;
+        }
     }
 }
