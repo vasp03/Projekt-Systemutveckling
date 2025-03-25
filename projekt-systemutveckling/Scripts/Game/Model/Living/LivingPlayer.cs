@@ -53,4 +53,9 @@ public partial class LivingPlayer(string name, string textureAddress, bool movab
     {
         attackDamage = value;
     }
+
+    public bool CanStackWith(Card card)
+    {
+        return stackableItems.Contains(card.GetName());
+    }
 }

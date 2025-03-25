@@ -5,8 +5,10 @@ public partial class LivingAnimal(string name, string textureAddress, bool movab
     private List<string> stackableItems;
     private Card neighbourAbove;
     private Card neighbourBelow;
-
     private int produceTimer;
+
+    
+
 
     public List<string> getStackableItems()
     {
@@ -41,5 +43,35 @@ public partial class LivingAnimal(string name, string textureAddress, bool movab
     public int tickTimer()
     {
         return produceTimer--;
+    }
+
+    public List<string> GetStackableItems()
+    {
+        return stackableItems;
+    }
+
+    public Card GetNeighbourAbove()
+    {
+        return neighbourAbove;
+    }
+
+    public Card GetNeighbourBelow()
+    {
+        return neighbourBelow;
+    }
+
+    public void SetNeighbourAbove(Card card)
+    {
+        this.neighbourAbove = card;
+    }
+
+    public void SetNeighbourBelow(Card card)
+    {
+        this.neighbourBelow = card;
+    }
+
+    public bool CanStackWith(Card card)
+    {
+        return stackableItems.Contains(card.GetName());
     }
 }
