@@ -1,33 +1,39 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public partial class CardController : Node2D
 {
-    private List<Card> cards;
+    public void CreateCard(){
 
-    public override void _Ready()
-    {
-        cards = [];
     }
 
-    public void AddCard(Card card)
-    {
-        cards.Add(card);
+    public void SetHighlighted(bool isHighlighted){
+
     }
 
-    public void RemoveCard(Card card)
-    {
-        cards.Remove(card);
+    public void SetNeighbourAbove(Card card){
+
     }
 
-    public Boolean cardsStackable(Card card1, Card card2)
-    {
-        if(card1 is IStackable && card2 is IStackable)
-        {
-            return card1.CanStackWith(card2) == card2.CanStackWith(card1);
-        }
+    public void SetNeighbourBelow(Card card){
 
-        return false;
     }
+
+    public void CanCardsStack(Card card1, Card card2){
+
+    }
+
+    public void RemoveCard(){
+
+    }
+
+    public void SetCardMoving(bool isMoving){
+
+    }
+
+    public void SetCardPosition(Card card, Vector2 position){
+
+    }
+
+    
 }
