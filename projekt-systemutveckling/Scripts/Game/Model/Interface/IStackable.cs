@@ -7,4 +7,5 @@ public interface IStackable
     public abstract Card GetNeighbourBelow();
     public abstract void SetNeighbourAbove(Card card);
     public abstract void SetNeighbourBelow(Card card);
+    public abstract bool CanStackWith(Card card);
 }
