@@ -1,0 +1,45 @@
+using System.Collections.Generic;
+
+public partial class LivingAnimal(string name, string textureAddress, bool movable, int cost, int health) : CardLiving(name, textureAddress, movable, cost, health), IStackable
+{
+    private List<string> stackableItems;
+    private Card neighbourAbove;
+    private Card neighbourBelow;
+
+    private int produceTimer;
+
+    public List<string> getStackableItems()
+    {
+        return stackableItems;
+    }
+
+    public Card getNeighbourAbove()
+    {
+        return neighbourAbove;
+    }
+
+    public Card getNeighbourBelow()
+    {
+        return neighbourBelow;
+    }
+
+    public void setNeighbourAbove(Card card)
+    {
+        neighbourAbove = card;
+    }
+
+    public void setNeighbourBelow(Card card)
+    {
+        neighbourBelow = card;
+    }
+
+    public int GetProduceTimer()
+    {
+        return produceTimer;
+    }
+
+    public int tickTimer()
+    {
+        return produceTimer--;
+    }
+}

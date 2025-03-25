@@ -15,10 +15,6 @@ run/main_scene="uid://bx27g8lfyci4b"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://Assets/Icons/icon.svg"
 
-[autoload]
-
-CustomCursor="*res://Scripts/Controller/CustomCursor.cs"
-
 [dotnet]
 
 project/assembly_name="Goodot 15"
