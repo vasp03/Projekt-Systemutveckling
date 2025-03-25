@@ -1,9 +1,15 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public partial class CardController : Node2D
 {
     CardCreationHelper cardCreationHelper = new CardCreationHelper();
+
+    private Vector2 oldMousePosition;
+
+    private CardNode selectedCard;
 
     public void CreateCard()
     {
@@ -66,7 +72,52 @@ public partial class CardController : Node2D
         return Guid.NewGuid().ToString();
     }
 
-    // 
+    // Get all cards
+    public List<CardNode> GetAllCards()
+    {
+        Array<Node> cards = GetTree().GetNodesInGroup("Cards");
+        List<CardNode> cardNodes = new List<CardNode>();
+        foreach (Node node in cards)
+        {
+            if (node is CardNode)
+            {
+                cardNodes.Add((CardNode)node);
+            }
+        }
+
+        return cardNodes;
+    }
+
+    // Move card to the mouse position
+    public void MoveCardToMousePosition(CardNode cardNode)
+    {
+        Vector2 mousePosition = GetGlobalMousePosition();
+        cardNode.SetPosition(mousePosition);
+    }
+
+    // Get the top card at the mouse position
+    public CardNode GetTopCardAtMousePosition()
+    {
+        List<CardNode> cards = GetAllCards();
+        CardNode topCard = null;
+        
+        foreach (CardNode card in cards)
+        {
+            if (card.MouseIsHovering(GetGlobalMousePosition()))
+            {
+                if (topCard == null)
+                {
+                    topCard = card;
+                }
+                else if (card.GetZIndex() > topCard.GetZIndex())
+                {
+                    topCard = card;
+                }
+            }
+        }
+
+        return topCard;
+    }
 
     public override void _Input(InputEvent @event)
     {
@@ -94,16 +145,14 @@ public partial class CardController : Node2D
                     print(cardNode.GetCard().GetName() + " | Type: " + cardNode.GetCard().GetType());
                 }
             }
-            else if (eventKey.Pressed && eventKey.Keycode == Key.S)
-            {
-                // Print the number of children in the scene
-            }
                 
         }
         else if (@event is InputEventMouseButton mouseButton)
         {
             if (mouseButton.Pressed)
             {
+                oldMousePosition = GetGlobalMousePosition();
+                selectedCard = GetTopCardAtMousePosition();
             }
             else
             {

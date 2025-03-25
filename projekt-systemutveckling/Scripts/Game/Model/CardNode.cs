@@ -8,6 +8,10 @@ public partial class CardNode : Node2D
 
     private bool hasBeenCreated = false;
 
+    Sprite2D sprite;
+
+    private const float HighLightFactor = 1.3f;
+
     public bool CreateNode(Card card, Vector2 position)
     {
         if (hasBeenCreated)
@@ -17,6 +21,7 @@ public partial class CardNode : Node2D
 
         this.card = card;
         this.hasBeenCreated = true;
+        sprite = GetNode<Sprite2D>("Sprite2D");
 
         ApplyTexture();
 
@@ -57,8 +62,42 @@ public partial class CardNode : Node2D
             texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
             GD.PrintErr("Texture not found for card: " + card.GetTextureAddress());
         }
-
-        Sprite2D sprite = GetNode<Sprite2D>("Sprite2D");
+        
         sprite.Texture = texture;
+    }
+
+    public bool MouseIsHovering(Vector2 mousePosition)
+    {
+        Vector2 size = sprite.Texture.GetSize() * sprite.Scale;
+        Vector2 halfSize = size / 2;
+
+        // Create a rectangle in global coordinates
+        Rect2 globalRect = new Rect2(GlobalPosition - halfSize, size);
+
+        return globalRect.HasPoint(mousePosition);
+    }
+
+    public void SetHighlighted(bool isHighlighted)
+    {
+        if (isHighlighted)
+        {
+            sprite.SetModulate(sprite.Modulate * HighLightFactor);
+        }
+        else
+        {
+            sprite.SetModulate(sprite.Modulate / HighLightFactor);
+        }
+    }
+
+    public void _on_area_2d_mouse_entered()
+    {
+        GD.Print("Mouse entered");
+        SetHighlighted(true);
+    }
+
+    public void _on_area_2d_mouse_exited()
+    {
+        GD.Print("Mouse exited");
+        SetHighlighted(false);
     }
 }
