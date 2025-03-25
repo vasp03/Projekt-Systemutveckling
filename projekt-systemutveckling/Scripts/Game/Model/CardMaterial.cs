@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public partial class CardMaterial(String name, String textureAddress, bool movable, int cost) : Card(name, textureAddress, movable, cost), IStackable
+public partial class CardMaterial(String textureAddress, bool movable, int cost) : Card(textureAddress, movable, cost), IStackable
 {
     private Card neighbourAbove;
     private Card neighbourBelow;

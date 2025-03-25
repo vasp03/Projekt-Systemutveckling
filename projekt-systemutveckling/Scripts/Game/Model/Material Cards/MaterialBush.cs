@@ -1,3 +1,3 @@
-public partial class MaterialBush(string name, string textureAddress, bool movable, int cost) : CardMaterial(name, textureAddress, movable, cost)
+public partial class MaterialBush(string textureAddress, bool movable, int cost) : CardMaterial(textureAddress, movable, cost)
 {
 }

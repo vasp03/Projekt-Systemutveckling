@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public partial class LivingAnimal(string name, string textureAddress, bool movable, int cost, int health) : CardLiving(name, textureAddress, movable, cost, health), IStackable
+public partial class LivingAnimal(string textureAddress, bool movable, int cost, int health) : CardLiving(textureAddress, movable, cost, health), IStackable
 {
     private List<string> stackableItems;
     private Card neighbourAbove;

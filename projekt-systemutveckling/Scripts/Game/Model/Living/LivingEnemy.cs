@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class LivingEnemy(string name, string textureAddress, bool movable, int cost, int health) : CardLiving(name, textureAddress, movable, cost, health)
+public partial class LivingEnemy(string textureAddress, bool movable, int cost, int health) : CardLiving(textureAddress, movable, cost, health)
 {
     private int attackDamage;
 

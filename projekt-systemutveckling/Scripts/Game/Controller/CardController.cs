@@ -3,6 +3,8 @@ using System;
 
 public partial class CardController : Node2D
 {
+    CardCreationHelper cardCreationHelper = new CardCreationHelper();
+
     public void CreateCard()
     {
         print("Creating card");
@@ -10,7 +12,7 @@ public partial class CardController : Node2D
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        bool ret = cardInstance.CreateNode(new MaterialStone(GenerateUUID(), "Stone", true, 1));
+        bool ret = cardInstance.CreateNode(cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()));
         if (ret)
         {
             AddChild(cardInstance);
@@ -64,6 +66,8 @@ public partial class CardController : Node2D
         return Guid.NewGuid().ToString();
     }
 
+    // 
+
     public override void _Input(InputEvent @event)
     {
         // Detect mouse movement
@@ -83,18 +87,16 @@ public partial class CardController : Node2D
             }
             else if (eventKey.Pressed && eventKey.Keycode == Key.A)
             {
-                // Print all the cards in the scene
-                foreach (Node node in GetTree().GetNodesInGroup("Card"))
+                // Print all the cards in the scene that is in the group "Cards"
+                foreach (Node node in GetTree().GetNodesInGroup("Cards"))
                 {
                     CardNode cardNode = (CardNode)node;
-                    Card card = cardNode.GetCard();
-                    print(card.GetName());
+                    print(cardNode.GetCard().GetName() + " | Type: " + cardNode.GetCard().GetType());
                 }
             }
             else if (eventKey.Pressed && eventKey.Keycode == Key.S)
             {
                 // Print the number of children in the scene
-                print(GetChildCount().ToString());
             }
                 
         }

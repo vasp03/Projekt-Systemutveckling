@@ -18,9 +18,10 @@ public partial class Card
     /// <param name="textureAddress"></param> 
     /// <param name="movable"></param>
     /// <param name="cost"></param>
-    public Card(String name, String textureAddress, bool movable, int cost)
+    public Card(String textureAddress, bool movable, int cost)
     {
-        this.name = name;
+        // Generate a unique uuid as name
+        this.name = Guid.NewGuid().ToString();
         this.textureAddress = textureFolder+textureAddress+textureEnding;
         this.movable = movable;
         this.cost = cost;
