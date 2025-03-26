@@ -2,9 +2,11 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class CardController : Node2D
 {
+	public const string CARD_GROUP_NAME = "CARDS";
     CardCreationHelper cardCreationHelper = new CardCreationHelper();
 
     private CardNode selectedCard;
@@ -21,22 +23,22 @@ public partial class CardController : Node2D
         bool ret = cardInstance.CreateNode(cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()), this);
         if (ret)
         {
-            cardInstance.ZIndex = GetCardCount();
+            cardInstance.ZIndex = CardCount;
             AddChild(cardInstance);
             cardInstance.SetPosition(new Vector2(100, 100));
         }
     }
 
-    public int GetCardCount()
-    {
-        return GetAllCards().Count;
+    public int CardCount {
+	    get =>
+
+		    AllCards.Count;
     }
 
-    private void SetTopCard(Node2D cardNode)
-    {
-        List<CardNode> cardNodes = SortCards(GetAllCards());
+    private void SetTopCard(Node2D cardNode) {
+	    IReadOnlyCollection<CardNode> cardNodes = AllCardsSorted;
 
-        foreach (Node2D node in cardNodes)
+        foreach (CardNode node in cardNodes)
         {
             if (node.ZIndex > cardNode.ZIndex)
             {
@@ -48,17 +50,15 @@ public partial class CardController : Node2D
         cardNode.ZIndex = cardNodes.Count;
     }
 
+    public IReadOnlyCollection<CardNode> AllCards => 
+	    GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+    public IReadOnlyCollection<CardNode> AllCardsSorted => 
+	    AllCards.OrderBy(x=>x.ZIndex).ToArray();
 
-    public static List<CardNode> SortCards(List<CardNode> cardNodes)
-    {
-        cardNodes.Sort((x, y) => x.ZIndex.CompareTo(y.ZIndex));
-        return cardNodes;
-    }
-
-    private Boolean CardIsTopCard(Node2D cardNode)
+    private bool CardIsTopCard(Node2D cardNode)
     {
         // Get all the card nodes
-        List<CardNode> cardNodes = SortCards(GetAllCards());
+        IReadOnlyCollection<CardNode> cardNodes = AllCardsSorted;
 
         foreach (CardNode node in cardNodes)
         {
@@ -86,20 +86,7 @@ public partial class CardController : Node2D
     }
 
     // Get all cards
-    public List<CardNode> GetAllCards()
-    {
-        Array<Node> cards = GetTree().GetNodesInGroup("Cards");
-        List<CardNode> cardNodes = new List<CardNode>();
-        foreach (Node node in cards)
-        {
-            if (node is CardNode)
-            {
-                cardNodes.Add((CardNode)node);
-            }
-        }
 
-        return cardNodes;
-    }
 
     // Move card to the mouse position
     public void MoveCardToMousePosition(CardNode cardNode)
@@ -157,7 +144,7 @@ public partial class CardController : Node2D
     }
 
     public void CheckForStacking(){
-        List<CardNode> cardNodes = GetAllCards();
+        IReadOnlyCollection<CardNode> cardNodes = AllCards;
 
         // foreach (CardNode card in cardNodes){
         //     card.GetOverlappingCards();
@@ -187,7 +174,7 @@ public partial class CardController : Node2D
                 foreach (Node node in GetTree().GetNodesInGroup("Cards"))
                 {
                     CardNode cardNode = (CardNode)node;
-                    print(cardNode.GetCard().GetName() + " | Type: " + cardNode.GetCard().GetType());
+                    print(cardNode.CardType.ID + " | Type: " + cardNode.CardType.GetType());
                 }
             }
 

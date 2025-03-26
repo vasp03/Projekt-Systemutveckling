@@ -1,18 +1,28 @@
-public class Card(string name, string textureAddress, bool movable, int cost) {
-	/// <summary>
-	///     Name of the card type.
-	/// </summary>
-	public string Name { get; private set; } = name;
+using System;
 
-	/// <summary>
-	///     Location for Texture Address
-	/// </summary>
-	public string TextureAddress { get; protected set; } = textureAddress;
-
-	/// <summary>
-	///     Determines if the Card can be moved.
-	/// </summary>
-	public bool Movable { get; protected set; } = movable;
-
-	public int Cost { get; protected set; } = cost;
+public class Card
+{
+	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
+	private const string textureEnding = ".png";
+	public string ID { get; private set; }
+	public string TexturePath { get; protected set; }
+	public bool Movable { get; set; }
+	public int Cost { get; set; }
+    public bool Highlighted { get; set; }
+    /// <summary>
+    /// Constructor for the Card class
+    /// Texture address should be the address after "res://Assets/Cards/Ready To Use/".
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="textureAddress"></param> 
+    /// <param name="movable"></param>
+    /// <param name="cost"></param>
+    public Card(String textureAddress, bool movable, int cost)
+    {
+        // Generate a unique uuid as name
+        this.ID = Guid.NewGuid().ToString();
+        this.TexturePath = baseTexturePath+textureAddress+textureEnding;
+        this.Movable = movable;
+        this.Cost = cost;
+    }
 }

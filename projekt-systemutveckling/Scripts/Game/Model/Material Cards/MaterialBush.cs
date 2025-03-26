@@ -1,4 +1,4 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialBush(string name, string textureAddress, int cost) : CardMaterial(name, textureAddress, cost) {
+public class MaterialBush(string textureAddress, int cost) : CardMaterial(textureAddress, cost) {
 }

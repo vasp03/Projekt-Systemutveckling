@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class LivingAnimal(string name, string textureAddress, bool movable, int cost, int health)
-	: CardLiving(name, textureAddress, movable, cost, health), IStackable {
+public class LivingAnimal(string textureAddress, bool movable, int cost, int health)
+	: CardLiving(textureAddress, movable, cost, health), IStackable {
 	private int produceTimer;
 
 	public IReadOnlyCollection<Type> GetStackableTypes() {
