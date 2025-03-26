@@ -2,3 +2,8 @@ root = true
 
 [*]
 charset = utf-8
+
+# Coding style related settings
+indent_style = tab
+csharp_indent_braces = false
+csharp_indent_case_contents = true
