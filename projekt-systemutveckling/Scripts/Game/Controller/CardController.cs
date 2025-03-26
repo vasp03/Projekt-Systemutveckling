@@ -137,6 +137,7 @@ public partial class CardController : Node2D
     public void RemoveCardFromHoveredCards(CardNode cardNode)
     {
         hoveredCards.Remove(cardNode);
+        CheckForHighLight();
         cardNode.SetHighlighted(false);
     }
 
@@ -144,8 +145,23 @@ public partial class CardController : Node2D
     {
         foreach (CardNode card in hoveredCards)
         {
-            card.SetHighlighted(true);
+            if (CardIsTopCard(card))
+            {
+                card.SetHighlighted(true);
+            }
+            else
+            {
+                card.SetHighlighted(false);
+            }
         }
+    }
+
+    public void CheckForStacking(){
+        List<CardNode> cardNodes = GetAllCards();
+
+        // foreach (CardNode card in cardNodes){
+        //     card.GetOverlappingCards();
+        // }
     }
 
     public override void _Input(InputEvent @event)
@@ -194,6 +210,8 @@ public partial class CardController : Node2D
                     selectedCard.SetIsBeingDragged(false);
                     selectedCard = null;
                 }
+
+                CheckForStacking();
             }
         }
     }

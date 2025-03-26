@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public partial class CardNode : Node2D
@@ -17,6 +18,10 @@ public partial class CardNode : Node2D
     private bool isBeingDragged = false;
 
     private Vector2 oldMousePosition;
+
+    private bool oldIsHighlighted;
+
+    private List<CardNode> OverlappingCards = new List<CardNode>();
 
     public bool CreateNode(Card card, Vector2 position, CardController cardController)
     {
@@ -82,14 +87,26 @@ public partial class CardNode : Node2D
 
     public void SetHighlighted(bool isHighlighted)
     {
-        if (isHighlighted)
+        if (isHighlighted && !oldIsHighlighted)
         {
             sprite.SetModulate(sprite.Modulate * HighLightFactor);
+            oldIsHighlighted = true;
         }
-        else
+        else if (!isHighlighted && oldIsHighlighted)
         {
+            oldIsHighlighted = false;
             sprite.SetModulate(sprite.Modulate / HighLightFactor);
         }
+    }
+
+    public static CardNode GetCardNodeFromArea2D(Area2D area2D)
+    {
+        return (CardNode)area2D.GetParent();
+    }
+
+    public List<CardNode> GetOverlappingCards()
+    {
+        return OverlappingCards;
     }
 
     public void _on_area_2d_mouse_entered()
@@ -102,6 +119,18 @@ public partial class CardNode : Node2D
     {
         mouseIsHovering = false;
         cardController.RemoveCardFromHoveredCards(this);
+    }
+
+    public void _on_area_2d_area_entered(Area2D area)
+    {
+        GD.Print("Area entered");
+        OverlappingCards.Add(GetCardNodeFromArea2D(area));
+    }
+
+    public void _on_area_2d_area_exited(Area2D area)
+    {
+        GD.Print("Area exited");
+        OverlappingCards.Remove(GetCardNodeFromArea2D(area));
     }
 
     public override void _Process(double delta)
