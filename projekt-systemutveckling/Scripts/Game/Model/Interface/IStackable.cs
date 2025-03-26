@@ -4,26 +4,22 @@ using System.Linq;
 
 namespace Goodot15.Scripts.Game.Model.Interface;
 
-public interface IStackable
-{
+public interface IStackable {
 	/// <summary>
 	///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
 	///     Gets the current entire stack collection
 	/// </summary>
-	public IReadOnlyCollection<IStackable> Stack
-	{
-		get
-		{
+	public IReadOnlyCollection<IStackable> Stack {
+		get {
 			ICollection<IStackable> stackBackwards = [];
 			ICollection<IStackable> stackForwards = [];
 
 
-			var current = this;
+			IStackable current = this;
 			IStackable next;
 
 			// Traverse backwards
-			while (current != null)
-			{
+			while (current != null) {
 				next = current.NeighbourBelow;
 				stackBackwards.Add(next);
 				current = next;
@@ -31,8 +27,7 @@ public interface IStackable
 
 			// Traverse forwards
 			current = this;
-			while (current != null)
-			{
+			while (current != null) {
 				next = current.NeighbourAbove;
 				stackForwards.Add(next);
 				current = next;
@@ -64,9 +59,8 @@ public interface IStackable
 	/// </summary>
 	/// <param name="card">Other card to check if can stack</param>
 	/// <returns>True if capable of stacking, false otherwise</returns>
-	public bool CanStackWith(Card card)
-	{
-		var stackableTypes = GetStackableTypes();
+	public bool CanStackWith(Card card) {
+		IReadOnlyCollection<Type> stackableTypes = GetStackableTypes();
 		if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
 			throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
 

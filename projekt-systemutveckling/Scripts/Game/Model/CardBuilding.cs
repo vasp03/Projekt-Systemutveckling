@@ -1,12 +1,12 @@
 using Goodot15.Scripts.Game.Model.Interface;
 
-public abstract class CardBuilding : Card, ITickable
-{
+namespace Goodot15.Scripts.Game.Model;
+
+public abstract class CardBuilding : Card, ITickable {
 	private int currentProduceTick;
 
-	public CardBuilding(string name, string textureAddress, bool movable, int cost, int produceTimeInSeconds) : base(
-		name, textureAddress, movable, cost)
-	{
+	protected CardBuilding(string name, string textureAddress, bool movable, int cost, int produceTimeInSeconds) : base(
+		name, textureAddress, movable, cost) {
 		ProduceTimeInSeconds = produceTimeInSeconds;
 	}
 
@@ -19,18 +19,15 @@ public abstract class CardBuilding : Card, ITickable
 	/// <summary>
 	///     Produce time in seconds
 	/// </summary>
-	public int ProduceTimeInSeconds
-	{
+	public int ProduceTimeInSeconds {
 		get => ProduceTimeInTicks / 60;
 		set => ProduceTimeInTicks = value * 60;
 	}
 
-	public virtual void preTick()
-	{
+	public virtual void preTick() {
 	}
 
-	public virtual void postTick()
-	{
+	public virtual void postTick() {
 		currentProduceTick = (currentProduceTick + 1) % ProduceTimeInTicks;
 	}
 

@@ -1,7 +1,6 @@
 ﻿namespace Goodot15.Scripts.Game.Model.Interface;
 
-public interface ITickable
-{
+public interface ITickable {
 	/// <summary>
 	///     Invoked before any logic has been executed on an instance.
 	/// </summary>
