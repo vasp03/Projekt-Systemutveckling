@@ -1,6 +1,6 @@
 using System;
 
-public partial class CardLiving(String name, String textureAddress, bool movable, int cost, int health) : Card(name, textureAddress, movable, cost)
+public abstract class CardLiving(String name, String textureAddress, bool movable, int cost, int health) : Card(name, textureAddress, movable, cost)
 {
-    private int health = health;
+    public int Health { get; protected set; } = health;
 }

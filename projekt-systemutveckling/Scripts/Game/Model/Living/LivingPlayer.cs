@@ -1,56 +1,31 @@
+using System;
 using System.Collections.Generic;
+using Goodot15.Scripts.Game.Model.Interface;
 
-public partial class LivingPlayer(string name, string textureAddress, bool movable, int cost, int health) : CardLiving(name, textureAddress, movable, cost, health), IStackable
+public class LivingPlayer(string name, string textureAddress, bool movable, int cost, int health) : CardLiving(name, textureAddress, movable, cost, health), IStackable
 {
-    private List<string> stackableItems;
-    private Card neighbourAbove;
-    private Card neighbourBelow;
-    private int saturation;
-    private int attackDamage;
+    public int Saturation { get; set; }
+    public int AttackDamage { get; set; }
 
-    public List<string> GetStackableItems()
+    public IReadOnlyCollection<Type> GetStackableTypes()
     {
-        return stackableItems;
+        return [];
     }
 
-    public Card GetNeighbourAbove()
+    public IStackable NeighbourAbove { get; set; }
+    public IStackable NeighbourBelow { get; set; }
+    public void SetNeighbourAbove(IStackable card)
     {
-        return neighbourAbove;
+        throw new NotImplementedException();
     }
 
-    public Card GetNeighbourBelow()
+    public void SetNeighbourBelow(IStackable card)
     {
-        return neighbourBelow;
+        throw new NotImplementedException();
     }
 
-    public void SetNeighbourAbove(Card card)
+    public bool CanStackWith(Card card)
     {
-        neighbourAbove = card;
-    }
-
-    public void SetNeighbourBelow(Card card)
-    {
-        neighbourBelow = card;
-    }
-
-
-    public int GetSaturation()
-    {
-        return saturation;
-    }
-
-    public void SetSaturation(int value)
-    {
-        saturation = value;
-    }
-
-    public int GetAttackDamage()
-    {
-        return attackDamage;
-    }
-
-    public void SetAttackDamage(int value)
-    {
-        attackDamage = value;
+        throw new NotImplementedException();
     }
 }

@@ -1,11 +1,77 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+namespace Goodot15.Scripts.Game.Model.Interface;
 
 public interface IStackable
 {
-    public abstract List<string> GetStackableItems();
-    public abstract Card GetNeighbourAbove();
-    public abstract Card GetNeighbourBelow();
-    public abstract void SetNeighbourAbove(Card card);
-    public abstract void SetNeighbourBelow(Card card);
-    public abstract bool CanStackWith(Card card);
+    /// <summary>
+    /// Traverses the entire stack (Both Forward and Backwards) from the current instance.
+    /// Gets the current entire stack collection
+    /// </summary>
+    public IReadOnlyCollection<IStackable> Stack
+    {
+        get
+        {
+            ICollection<IStackable> stackBackwards = [];
+            ICollection<IStackable> stackForwards = [];
+
+
+            IStackable current = this;
+            IStackable next;
+            
+            // Traverse backwards
+            while (current != null)
+            {
+                next = current.NeighbourBelow;
+                stackBackwards.Add(next);
+                current = next;
+            }
+
+            // Traverse forwards
+            current = this;
+            while (current != null)
+            {
+                next = current.NeighbourAbove;
+                stackForwards.Add(next);
+                current = next;
+            }
+
+            List<IStackable> stack = [];
+            stack.AddRange(stackBackwards.Reverse()); // Stack backwards needs to be reversed so the order of the cards are correct
+            stack.AddRange(stackForwards);
+            
+            return stack.AsReadOnly();
+        }
+    }
+    /// <summary>
+    /// Gets the types this <code>IStackable</code> is capable of stacking to
+    /// </summary>
+    /// <returns></returns>
+    public IReadOnlyCollection<Type> GetStackableTypes();
+
+    public IStackable NeighbourAbove { get; set; }
+    public IStackable NeighbourBelow { get; set; }
+    
+    protected abstract void SetNeighbourAbove(IStackable card);
+    protected abstract void SetNeighbourBelow(IStackable card);
+
+    /// <summary>
+    /// Determines if this <code>IStackable</code> may stack with the other object <code>card</code>
+    /// </summary>
+    /// <param name="card">Other card to check if can stack</param>
+    /// <returns>True if capable of stacking, false otherwise</returns>
+    public bool CanStackWith(Card card)
+    {
+        IReadOnlyCollection<Type> stackableTypes = this.GetStackableTypes();
+        if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
+        {
+            throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
+        }
+        
+        return stackableTypes.Any(t=>t.IsAssignableFrom(card.GetType()));
+    }
 }

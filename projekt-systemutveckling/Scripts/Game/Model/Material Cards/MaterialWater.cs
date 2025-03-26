@@ -1,3 +1,3 @@
-public partial class MaterialWater(string name, string textureAddress, bool movable, int cost) : CardMaterial(name, textureAddress, movable, cost)
+public class MaterialWater(string name, string textureAddress, int cost) : CardMaterial(name, textureAddress, cost)
 {
 }

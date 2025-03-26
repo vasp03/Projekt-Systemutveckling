@@ -1,15 +1,6 @@
-public partial class MaterialJam(string name, string textureAddress, bool movable, int cost) : CardMaterial(name, textureAddress, movable, cost), IEdible
+using Goodot15.Scripts.Game.Model.Interface;
+
+public class MaterialJam(string name, string textureAddress, int cost) : CardMaterial(name, textureAddress, cost), IEdible
 {
-    private int foodAmount;
-
-    public int GetFoodAmount()
-    {
-        return foodAmount;
-    }
-
-    public int RemoveFoodAmount()
-    {
-        foodAmount = 0;
-        return foodAmount;
-    }
+    public int FoodAmount { get; set; }
 }
