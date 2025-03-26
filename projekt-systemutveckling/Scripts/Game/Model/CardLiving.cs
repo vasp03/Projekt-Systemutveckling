@@ -1,6 +1,6 @@
-using System;
+namespace Goodot15.Scripts.Game.Model;
 
-public partial class CardLiving(String textureAddress, bool movable, int cost, int health) : Card(textureAddress, movable, cost)
-{
-    private int health = health;
+public abstract class CardLiving(string textureAddress, bool movable, int cost, int health)
+	: Card(textureAddress, movable, cost) {
+	public int Health { get; protected set; } = health;
 }

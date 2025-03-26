@@ -1,147 +1,121 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
-public partial class CardNode : Node2D
-{
-    private Card card;
+public partial class CardNode : Node2D {
+	private const float HighLightFactor = 1.3f;
 
-    private bool hasBeenCreated = false;
+	private readonly List<CardNode> overlappingCards = new();
 
-    Sprite2D sprite;
+	private CardController cardController;
 
-    private const float HighLightFactor = 1.3f;
+	private bool oldIsHighlighted;
 
-    private CardController cardController;
+	private Vector2 oldMousePosition;
 
-    private bool mouseIsHovering = false;
+	// private bool hasBeenCreated = false;
 
-    private bool isBeingDragged = false;
+	private Sprite2D sprite;
 
-    private Vector2 oldMousePosition;
+	public CardNode() {
+		AddToGroup(CardController.CARD_GROUP_NAME);
+	}
 
-    private bool oldIsHighlighted;
+	public Card CardType { get; private set; }
 
-    private List<CardNode> OverlappingCards = new List<CardNode>();
+	public bool MouseIsHovering { get; private set; }
 
-    public bool CreateNode(Card card, Vector2 position, CardController cardController)
-    {
-        this.cardController = cardController;
+	public bool IsBeingDragged { get; private set; }
 
-        if (hasBeenCreated)
-        {
-            return false;
-        }
+	public IReadOnlyCollection<CardNode> OverlappingCards => overlappingCards.AsReadOnly();
 
-        this.card = card;
-        this.hasBeenCreated = true;
-        sprite = GetNode<Sprite2D>("Sprite2D");
+	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
+		this.cardController = cardController;
 
-        ApplyTexture();
+		CardType = card;
+		sprite = GetNode<Sprite2D>("Sprite2D");
 
-        // Set the name of the card to the name of the card
-        Name = card.GetName();
+		ApplyTexture();
 
-        // Add the card to the group "Cards"
-        AddToGroup("Cards");
+		// Set the name of the card to the name of the card
+		Name = card.ID;
 
-        return true;
-    }
+		return true;
+	}
 
-    public void SetIsBeingDragged(bool isBeingDragged)
-    {
-        oldMousePosition = GetGlobalMousePosition();
-        this.isBeingDragged = isBeingDragged;
-    }
+	public void SetIsBeingDragged(bool isBeingDragged) {
+		oldMousePosition = GetGlobalMousePosition();
+		IsBeingDragged = isBeingDragged;
+	}
 
-    public bool GetIsBeingDragged()
-    {
-        return isBeingDragged;
-    }
+	public bool GetIsBeingDragged() {
+		return IsBeingDragged;
+	}
 
-    public bool CreateNode(Card card, CardController cardController)
-    {
-        return CreateNode(card, new Vector2(100, 100), cardController);
-    }
+	public bool CreateNode(Card card, CardController cardController) {
+		return CreateNode(card, new Vector2(100, 100), cardController);
+	}
 
-    public Card GetCard()
-    {
-        return card;
-    }
+	private void ApplyTexture() {
+		Texture2D texture;
+		// try to load the texture from the address
+		try {
+			texture = GD.Load<Texture2D>(CardType.TexturePath);
+		}
+		catch (Exception) {
+			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
+			GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
+		}
 
-    private void ApplyTexture()
-    {
-        Texture2D texture;
-        // try to load the texture from the address
-        try
-        {
-            texture = GD.Load<Texture2D>(card.GetTextureAddress());
-        }
-        catch (System.Exception)
-        {
-            texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
-            GD.PrintErr("Texture not found for card: " + card.GetTextureAddress());
-        }
+		sprite.Texture = texture;
+	}
 
-        sprite.Texture = texture;
-    }
+	public void SetHighlighted(bool isHighlighted) {
+		if (isHighlighted && !oldIsHighlighted) {
+			sprite.SetModulate(sprite.Modulate * HighLightFactor);
+			oldIsHighlighted = true;
+		}
+		else if (!isHighlighted && oldIsHighlighted) {
+			oldIsHighlighted = false;
+			sprite.SetModulate(sprite.Modulate / HighLightFactor);
+		}
+	}
 
-    public void SetHighlighted(bool isHighlighted)
-    {
-        if (isHighlighted && !oldIsHighlighted)
-        {
-            sprite.SetModulate(sprite.Modulate * HighLightFactor);
-            oldIsHighlighted = true;
-        }
-        else if (!isHighlighted && oldIsHighlighted)
-        {
-            oldIsHighlighted = false;
-            sprite.SetModulate(sprite.Modulate / HighLightFactor);
-        }
-    }
+	public void _on_area_2d_mouse_entered() {
+		MouseIsHovering = true;
+		cardController.AddCardToHoveredCards(this);
+	}
 
-    public static CardNode GetCardNodeFromArea2D(Area2D area2D)
-    {
-        return (CardNode)area2D.GetParent();
-    }
+	public void _on_area_2d_mouse_exited() {
+		MouseIsHovering = false;
+		cardController.RemoveCardFromHoveredCards(this);
+	}
 
-    public List<CardNode> GetOverlappingCards()
-    {
-        return OverlappingCards;
-    }
+	public void _on_area_2d_area_entered(Area2D area) {
+#if DEBUG
+		GD.Print("Area entered");
+#endif
+		overlappingCards.Add(GetCardNodeFromArea2D(area));
+	}
 
-    public void _on_area_2d_mouse_entered()
-    {
-        mouseIsHovering = true;
-        cardController.AddCardToHoveredCards(this);
-    }
+	public void _on_area_2d_area_exited(Area2D area) {
+#if DEBUG
+		GD.Print("Area exited");
+#endif
+		overlappingCards.Remove(GetCardNodeFromArea2D(area));
+	}
 
-    public void _on_area_2d_mouse_exited()
-    {
-        mouseIsHovering = false;
-        cardController.RemoveCardFromHoveredCards(this);
-    }
+	public override void _Process(double delta) {
+		if (IsBeingDragged) {
+			Vector2 mousePosition = GetGlobalMousePosition();
 
-    public void _on_area_2d_area_entered(Area2D area)
-    {
-        GD.Print("Area entered");
-        OverlappingCards.Add(GetCardNodeFromArea2D(area));
-    }
+			Position += mousePosition - oldMousePosition;
 
-    public void _on_area_2d_area_exited(Area2D area)
-    {
-        GD.Print("Area exited");
-        OverlappingCards.Remove(GetCardNodeFromArea2D(area));
-    }
+			oldMousePosition = mousePosition;
+		}
+	}
 
-    public override void _Process(double delta)
-    {
-        if (isBeingDragged)
-        {
-            Vector2 mousePosition = GetGlobalMousePosition();
-
-            Position += mousePosition - oldMousePosition;
-
-            oldMousePosition = mousePosition;
-        }
-    }
+	public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
+		return (CardNode)area2D.GetParent();
+	}
 }

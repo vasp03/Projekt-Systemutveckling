@@ -2,3 +2,18 @@ root = true
 
 [*]
 charset = utf-8
+
+# Coding style related settings
+indent_style = tab
+csharp_indent_braces = false
+# Use K&R style
+csharp_new_line_before_open_brace = none
+
+# Warn about the use of "var"
+csharp_style_var_elsewhere = false:refactoring
+csharp_style_var_when_type_is_apparent = false:refactoring
+csharp_style_var_for_built_in_types = false:refactoring
+
+# Misc-related coding settings for easier readability
+csharp_space_after_comma = true
+dotnet_style_object_initializer = true:suggestion

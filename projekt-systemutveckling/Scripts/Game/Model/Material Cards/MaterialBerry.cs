@@ -1,16 +1,8 @@
-public partial class MaterialBerry(string textureAddress, bool movable, int cost) : CardMaterial(textureAddress, movable, cost), IEdible
-{
-    private int foodAmount;
+using Goodot15.Scripts.Game.Model.Interface;
 
-    public int GetFoodAmount()
-    {
-        return foodAmount;
-    }
+namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-    public int RemoveFoodAmount()
-    {
-        foodAmount = 0;
-        return foodAmount;
-    }
-
+public class MaterialBerry(string textureAddress, int cost)
+	: CardMaterial(textureAddress, cost), IEdible {
+	public int FoodAmount { get; set; }
 }

@@ -1,3 +1,4 @@
-public partial class MaterialPlank(string textureAddress, bool movable, int cost) : CardMaterial(textureAddress, movable, cost)
-{
+namespace Goodot15.Scripts.Game.Model.Material_Cards;
+
+public class MaterialPlank(string textureAddress, int cost) : CardMaterial(textureAddress, cost) {
 }

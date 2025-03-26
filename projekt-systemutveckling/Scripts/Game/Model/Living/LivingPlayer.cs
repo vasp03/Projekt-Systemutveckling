@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class LivingAnimal(string textureAddress, bool movable, int cost, int health)
+public class LivingPlayer(string textureAddress, bool movable, int cost, int health)
 	: CardLiving(textureAddress, movable, cost, health), IStackable {
-	private int produceTimer;
+	public int Saturation { get; set; }
+	public int AttackDamage { get; set; }
 
 	public IReadOnlyCollection<Type> GetStackableTypes() {
-		throw new NotImplementedException();
+		return [];
 	}
 
 	public IStackable NeighbourAbove { get; set; }
@@ -22,7 +23,7 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
 		throw new NotImplementedException();
 	}
 
-	public int tickTimer() {
-		return produceTimer--;
+	public bool CanStackWith(Card card) {
+		throw new NotImplementedException();
 	}
 }

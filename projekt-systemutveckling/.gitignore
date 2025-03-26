@@ -2,3 +2,9 @@
 .godot/
 /android/
 *.bak*
+
+# Godot user settings
+*.DotSettings.*
+
+# IDE-related configurations
+.vs/*
