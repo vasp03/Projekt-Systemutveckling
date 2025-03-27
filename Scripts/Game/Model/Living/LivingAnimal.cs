@@ -24,6 +24,6 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
 	}
 
 	public int tickTimer() {
-		return produceTimer++;
+		return produceTimer--;
 	}
 }
