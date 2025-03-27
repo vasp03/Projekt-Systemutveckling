@@ -5,13 +5,13 @@ namespace Goodot15.Scripts.Game.View;
 public partial class MainMenu : Control {
 	public override void _Ready()
 	{
-		var playButton = GetNode<Button>("ButtonContainer/PlayButton");
+		Button playButton = GetNode<Button>("ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
 
-		var optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
-		var exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+		Button exitButton = GetNode<Button>("ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
 	}
 
@@ -22,7 +22,7 @@ public partial class MainMenu : Control {
 
 	private void OnOptionsButtonPressed()
 	{
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainOptions.tscn");
+		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/OptionsMenu.tscn");
 	}
 
 	private void OnExitButtonPressed()

@@ -3,7 +3,7 @@ using System;
 
 public partial class MainOptions : Control {
 	public override void _Ready() {
-		var goBackButton = GetNode<Button>("ButtonContainer/GoBackButton");
+		Button goBackButton = GetNode<Button>("ButtonContainer/GoBackButton");
 		goBackButton.Pressed += OnBackButtonPressed;
 	}
 

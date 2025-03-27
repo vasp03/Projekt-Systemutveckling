@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_c72e1"]
-[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_i663g"]
+[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
 
@@ -22,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_c72e1")
+script = ExtResource("1_hndry")
 
 [node name="OptionsTitle" type="Label" parent="."]
 layout_mode = 1
@@ -39,7 +39,7 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.760844, 0.736535, 0.955096, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 5
-theme_override_fonts/font = ExtResource("2_i663g")
+theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 90
 text = "OPTIONS"
 
@@ -65,7 +65,7 @@ theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
 theme_override_constants/outline_size = 7
-theme_override_fonts/font = ExtResource("2_i663g")
+theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d5d3m")
 theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_eou8t")
