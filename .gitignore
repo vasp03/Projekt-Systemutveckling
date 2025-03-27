@@ -408,6 +408,9 @@ FodyWeavers.xsd
 # Godot user settings
 *.DotSettings.*
 
+# Remove UID
+*.cs.uid
+
 # IDE-related configurations
 .vs/*
 
