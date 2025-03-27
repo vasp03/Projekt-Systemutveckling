@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -23,6 +24,6 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
 	}
 
 	public int tickTimer() {
-		return produceTimer--;
+		return produceTimer++;
 	}
 }
