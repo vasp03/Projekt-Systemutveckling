@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
 
-	private readonly List<CardNode> overlappingCards = new();
+	private CardNode LastOverlappedCard;
 
 	private CardController cardController;
 
@@ -13,13 +14,7 @@ public partial class CardNode : Node2D {
 
 	private Vector2 oldMousePosition;
 
-	// private bool hasBeenCreated = false;
-
 	private Sprite2D sprite;
-
-	public CardNode() {
-		AddToGroup(CardController.CARD_GROUP_NAME);
-	}
 
 	public Card CardType { get; private set; }
 
@@ -27,7 +22,9 @@ public partial class CardNode : Node2D {
 
 	public bool IsBeingDragged { get; private set; }
 
-	public IReadOnlyCollection<CardNode> OverlappingCards => overlappingCards.AsReadOnly();
+	public CardNode() {
+		AddToGroup(CardController.CARD_GROUP_NAME);
+	}
 
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
 		this.cardController = cardController;
@@ -92,17 +89,32 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_entered(Area2D area) {
-#if DEBUG
-		GD.Print("Area entered");
-#endif
-		overlappingCards.Add(GetCardNodeFromArea2D(area));
+		LastOverlappedCard = GetCardNodeFromArea2D(area);
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
-#if DEBUG
-		GD.Print("Area exited");
-#endif
-		overlappingCards.Remove(GetCardNodeFromArea2D(area));
+		LastOverlappedCard = null;
+	}
+
+	public void SetOverLappedCardToStack() {
+		GD.Print("Running SetOverLappedCardToStack from: " + this.CardType.TextureType);
+
+		if (LastOverlappedCard == null) {
+			GD.Print("Last overlapped card is null");
+			return;
+		}
+
+		if (LastOverlappedCard == this) {
+			GD.Print("This card is the same as the last overlapped card");
+			return;
+		}
+
+		if (this.CardType is IStackable thisStackable && LastOverlappedCard.CardType is IStackable otherStackable) {
+			if (this.ZIndex > LastOverlappedCard.ZIndex) {
+				GD.Print("This: " + this.CardType.TextureType + " Setting neighbour below: " + otherStackable.TextureType);
+				thisStackable.SetNeighbourBelow(otherStackable);
+			}
+		}
 	}
 
 	public override void _Process(double delta) {

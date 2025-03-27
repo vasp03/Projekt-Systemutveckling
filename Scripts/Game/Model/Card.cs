@@ -25,4 +25,13 @@ public class Card {
 	public bool Movable { get; set; }
 	public int Cost { get; set; }
 	public bool Highlighted { get; set; }
+
+	public string TextureType {
+		get {
+			string[] split = TexturePath.Split("/");
+			string textureType = split[split.Length - 1];
+			textureType = textureType.Substring(0, textureType.Length - 4);
+			return textureType;
+		}
+	}
 }

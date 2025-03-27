@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardController : Node2D {
 	public const string CARD_GROUP_NAME = "CARDS";
@@ -20,7 +21,6 @@ public partial class CardController : Node2D {
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
 
 	public void CreateCard() {
-		print("Creating card");
 		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
 		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
@@ -106,14 +106,6 @@ public partial class CardController : Node2D {
 				card.SetHighlighted(false);
 	}
 
-	public void CheckForStacking() {
-		IReadOnlyCollection<CardNode> cardNodes = AllCards;
-
-		// foreach (CardNode card in cardNodes){
-		//     card.GetOverlappingCards();
-		// }
-	}
-
 	public override void _Input(InputEvent @event) {
 		// Detect mouse movement
 		if (@event is InputEventMouseMotion mouseMotion) {
@@ -124,12 +116,16 @@ public partial class CardController : Node2D {
 			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape)
 				// Exit the game
 				GetTree().Quit();
-			else if (eventKey.Pressed && eventKey.Keycode == Key.A)
-				// Print all the cards in the scene that is in the group "Cards"
-				foreach (Node node in GetTree().GetNodesInGroup("Cards")) {
-					CardNode cardNode = (CardNode)node;
-					print(cardNode.CardType.ID + " | Type: " + cardNode.CardType.GetType());
+			else if (eventKey.Pressed && eventKey.Keycode == Key.A) {
+				// Print the all cards and their neighbours
+				foreach (CardNode card in AllCards) {
+					if (card.CardType is IStackable stackable) {
+						GD.Print("This: " + card.CardType.TextureType + " - " +
+							" Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType : "None") +
+							" Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType : "None"));
+					}
 				}
+			}
 		}
 		else if (@event is InputEventMouseButton mouseButton) {
 			if (mouseButton.Pressed) {
@@ -142,10 +138,9 @@ public partial class CardController : Node2D {
 			else {
 				if (selectedCard != null) {
 					selectedCard.SetIsBeingDragged(false);
+					selectedCard.SetOverLappedCardToStack();
 					selectedCard = null;
 				}
-
-				CheckForStacking();
 			}
 		}
 	}
