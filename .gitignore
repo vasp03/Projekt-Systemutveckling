@@ -399,11 +399,15 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+
 ### Godot ###
 # Godot 4+ specific ignores
 .godot/
 /android/
 *.bak*
+
+# Remove executable windows exe editor with Godot
+/Div/
 
 # Godot user settings
 *.DotSettings.*
