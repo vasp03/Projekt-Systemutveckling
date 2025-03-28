@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
@@ -31,6 +32,10 @@ public partial class CardNode : Node2D {
 
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
 		this.cardController = cardController;
+
+		void amethod() {
+			
+		}
 
 		CardType = card;
 		sprite = GetNode<Sprite2D>("Sprite2D");
@@ -106,6 +111,8 @@ public partial class CardNode : Node2D {
 	}
 
 	public override void _Process(double delta) {
+		ITickable? tickable = this.CardType as ITickable;
+		tickable?.preTick();
 		if (IsBeingDragged) {
 			Vector2 mousePosition = GetGlobalMousePosition();
 
@@ -113,6 +120,7 @@ public partial class CardNode : Node2D {
 
 			oldMousePosition = mousePosition;
 		}
+		tickable?.postTick();
 	}
 
 	public static CardNode GetCardNodeFromArea2D(Area2D area2D) {

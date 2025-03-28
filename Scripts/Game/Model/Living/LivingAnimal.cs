@@ -5,7 +5,7 @@ using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public class LivingAnimal(string textureAddress, bool movable, int cost, int health)
-	: CardLiving(textureAddress, movable, cost, health), IStackable {
+	: CardLiving(textureAddress, movable, cost, health), IStackable, ITickable {
 	private int produceTimer;
 
 	public IReadOnlyCollection<Type> GetStackableTypes() {
@@ -25,5 +25,9 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
 
 	public int tickTimer() {
 		return produceTimer--;
+	}
+
+	public void preTick() {
+		this.tickTimer();
 	}
 }
