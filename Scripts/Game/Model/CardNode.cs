@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -22,6 +23,10 @@ public partial class CardNode : Node2D {
 
 	public bool IsBeingDragged { get; private set; }
 
+	public List<CardNode> HoveredCards { get; private set; } = new();
+
+	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
+
 	public CardNode() {
 		AddToGroup(CardController.CARD_GROUP_NAME);
 	}
@@ -43,10 +48,6 @@ public partial class CardNode : Node2D {
 	public void SetIsBeingDragged(bool isBeingDragged) {
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
-	}
-
-	public bool GetIsBeingDragged() {
-		return IsBeingDragged;
 	}
 
 	public bool CreateNode(Card card, CardController cardController) {
@@ -90,12 +91,14 @@ public partial class CardNode : Node2D {
 
 	public void _on_area_2d_area_entered(Area2D area) {
 		LastOverlappedCard = GetCardNodeFromArea2D(area);
+		HoveredCards.Add(GetCardNodeFromArea2D(area));
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
 		GD.Print("Running area exited from: " + this.CardType.TextureType);
 
 		LastOverlappedCard = null;
+		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 
 		// Check which card that was removed and remove it from either neighbour above or below
 		if (area.GetParent() is CardNode cardNode) {

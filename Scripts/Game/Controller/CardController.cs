@@ -4,7 +4,15 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public partial class CardController : Node2D {
+public partial class CardController {
+
+	// Constructor
+	public CardController(NodeController nodeController) {
+		this.nodeController = nodeController;
+	}
+
+	private readonly NodeController nodeController;
+
 	public const string CARD_GROUP_NAME = "CARDS";
 	private readonly CardCreationHelper cardCreationHelper = new();
 
@@ -15,7 +23,7 @@ public partial class CardController : Node2D {
 	public int CardCount => AllCards.Count;
 
 	public IReadOnlyCollection<CardNode> AllCards =>
-		GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+		nodeController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -29,7 +37,7 @@ public partial class CardController : Node2D {
 			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()), this);
 		if (ret) {
 			cardInstance.ZIndex = CardCount;
-			AddChild(cardInstance);
+			nodeController.AddChild(cardInstance);
 			cardInstance.SetPosition(new Vector2(100, 100));
 		}
 	}
@@ -61,30 +69,8 @@ public partial class CardController : Node2D {
 		GD.Print(message);
 	}
 
-	// UUID generator
 	public static string GenerateUUID() {
 		return Guid.NewGuid().ToString();
-	}
-
-	// Get all cards
-
-
-	// Move card to the mouse position
-	public void MoveCardToMousePosition(CardNode cardNode) {
-		Vector2 mousePosition = GetGlobalMousePosition();
-		cardNode.SetPosition(mousePosition);
-	}
-
-	// Get the top card at the mouse position
-	public CardNode GetTopCardAtMousePosition() {
-		CardNode topCard = null;
-
-		foreach (CardNode card in hoveredCards)
-			if (topCard == null)
-				topCard = card;
-			else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
-
-		return topCard;
 	}
 
 	public void AddCardToHoveredCards(CardNode cardNode) {
@@ -106,57 +92,58 @@ public partial class CardController : Node2D {
 				card.SetHighlighted(false);
 	}
 
-	private CardNode GetCardUnderMovedCard(){
+	// Get the top card at the mouse position
+	public CardNode GetTopCardAtMousePosition() {
 		CardNode topCard = null;
 
-		foreach (CardNode card in hoveredCards) {
-			if ((topCard == null || card.GetZIndex() > topCard.GetZIndex()) && !card.IsBeingDragged) {
+		foreach (CardNode card in hoveredCards)
+			if (topCard == null)
 				topCard = card;
-				break;
-			}			
-		}
-
-		GD.Print("Top card: " + topCard.CardType.TextureType);
+			else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
 
 		return topCard;
 	}
 
-	public override void _Input(InputEvent @event) {
-		// Detect mouse movement
-		if (@event is InputEventMouseMotion mouseMotion) {
+	private CardNode GetCardUnderMovedCard() {
+		// Get the card under the moved card
+		CardNode topCard = null;
+
+		foreach (CardNode overlappedCard in selectedCard.HoveredCards) {
+			if (topCard == null)
+				topCard = overlappedCard;
+			else if (overlappedCard.GetZIndex() > topCard.GetZIndex()) topCard = overlappedCard;
 		}
-		else if (@event is InputEventKey eventKey) {
-			if (eventKey.Pressed && eventKey.Keycode == Key.Space)
-				CreateCard();
-			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape)
-				// Exit the game
-				GetTree().Quit();
-			else if (eventKey.Pressed && eventKey.Keycode == Key.A) {
-				// Print the all cards and their neighbours
-				foreach (CardNode card in AllCards) {
-					if (card.CardType is IStackable stackable) {
-						GD.Print("This: " + card.CardType.TextureType + " - " +
-							" Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType : "None") +
-							" Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType : "None"));
-					}
-				}
-			}
+
+		GD.Print("Top card under moved card: " + topCard?.CardType.TextureType);
+		return topCard;
+	}
+
+	public void LeftMouseButtonPressed() {
+		selectedCard = GetTopCardAtMousePosition();
+		if (selectedCard != null) {
+			SetTopCard(selectedCard);
+			selectedCard.SetIsBeingDragged(true);
 		}
-		else if (@event is InputEventMouseButton mouseButton) {
-			if (mouseButton.Pressed) {
-				selectedCard = GetTopCardAtMousePosition();
-				if (selectedCard != null) {
-					SetTopCard(selectedCard);
-					selectedCard.SetIsBeingDragged(true);
-				}
-			}
-			else {
-				if (selectedCard != null) {
-					selectedCard.SetIsBeingDragged(false);
-					CardNode underCard = GetCardUnderMovedCard();
-					selectedCard.SetOverLappedCardToStack(underCard);
-					selectedCard = null;
-				}
+	}
+
+	public void LeftMouseButtonReleased() {
+		if (selectedCard != null) {
+			selectedCard.SetIsBeingDragged(false);
+			CardNode underCard = GetCardUnderMovedCard();
+			selectedCard.SetOverLappedCardToStack(underCard);
+			if (selectedCard is IStackable stackable) stackable.NeighbourAbove = null;
+
+			selectedCard = null;
+		}
+	}
+
+	public void PrintCardsNeighbours() {
+		// Print the all cards and their neighbours
+		foreach (CardNode card in AllCards) {
+			if (card.CardType is IStackable stackable) {
+				GD.Print("This: " + card.CardType.TextureType + " - " +
+					" Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType : "None") +
+					" Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType : "None"));
 			}
 		}
 	}
