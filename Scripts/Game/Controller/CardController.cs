@@ -65,9 +65,7 @@ public partial class CardController : Node2D {
 	public static string GenerateUUID() {
 		return Guid.NewGuid().ToString();
 	}
-
 	// Get all cards
-
 
 	// Move card to the mouse position
 	public void MoveCardToMousePosition(CardNode cardNode) {
