@@ -48,6 +48,27 @@ public partial class CardNode : Node2D {
 	public void SetIsBeingDragged(bool isBeingDragged) {
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
+
+		if (CardType is IStackable stackable) {
+			IStackable stack = stackable.NeighbourAbove;
+
+			if (stack == null) {
+				GD.Print("No stack above");
+				return;
+			}
+
+			GD.Print(stack.GetType());
+
+			if (stack is Card cardNode) {
+				GD.Print("CardNode: " + cardNode.TextureType);
+				cardNode.CardNode.SetIsBeingDragged(isBeingDragged);
+			}else {
+				GD.Print("Stack is not a CardNode");
+			}
+		}
+		else {
+			GD.Print("CardType is not a IStackable");
+		}
 	}
 
 	public bool CreateNode(Card card, CardController cardController) {

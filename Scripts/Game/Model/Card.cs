@@ -5,6 +5,8 @@ public class Card {
 	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
 	private const string textureEnding = ".png";
 
+	public CardNode CardNode { get; private set; }
+
 	/// <summary>
 	///     Constructor for the Card class
 	///     Texture address should be the address after "res://Assets/Cards/Ready To Use/".
@@ -13,12 +15,13 @@ public class Card {
 	/// <param name="textureAddress"></param>
 	/// <param name="movable"></param>
 	/// <param name="cost"></param>
-	public Card(string textureAddress, bool movable, int cost) {
+	public Card(string textureAddress, bool movable, int cost, CardNode cardNode) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
 		TexturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
 		Cost = cost;
+		CardNode = cardNode;
 	}
 
 	public string ID { get; private set; }

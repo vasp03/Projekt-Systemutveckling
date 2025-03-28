@@ -34,7 +34,7 @@ public partial class CardController {
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		bool ret = cardInstance.CreateNode(
-			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType()), this);
+			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType(), cardInstance), this);
 		if (ret) {
 			cardInstance.ZIndex = CardCount;
 			nodeController.AddChild(cardInstance);
@@ -124,7 +124,6 @@ public partial class CardController {
 			selectedCard.SetIsBeingDragged(true);
 
 			if(selectedCard.CardType is IStackable stackable) {
-				print("Selected card: " + stackable.TextureType);
 				if(stackable.NeighbourAbove != null) {
 					stackable.NeighbourAbove.NeighbourBelow = null;
 					stackable.NeighbourAbove = null;
@@ -134,9 +133,6 @@ public partial class CardController {
 					stackable.NeighbourBelow.NeighbourAbove = null;
 					stackable.NeighbourBelow = null;
 				}
-
-				stackable.SetNeighbourAbove(null);
-				stackable.SetNeighbourBelow(null);
 			}
 		}
 	}
