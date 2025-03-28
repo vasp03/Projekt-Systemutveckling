@@ -114,7 +114,6 @@ public partial class CardController {
 			else if (overlappedCard.GetZIndex() > topCard.GetZIndex()) topCard = overlappedCard;
 		}
 
-		GD.Print("Top card under moved card: " + topCard?.CardType.TextureType);
 		return topCard;
 	}
 
@@ -123,6 +122,22 @@ public partial class CardController {
 		if (selectedCard != null) {
 			SetTopCard(selectedCard);
 			selectedCard.SetIsBeingDragged(true);
+
+			if(selectedCard.CardType is IStackable stackable) {
+				print("Selected card: " + stackable.TextureType);
+				if(stackable.NeighbourAbove != null) {
+					stackable.NeighbourAbove.NeighbourBelow = null;
+					stackable.NeighbourAbove = null;
+				}
+
+				if(stackable.NeighbourBelow != null) {
+					stackable.NeighbourBelow.NeighbourAbove = null;
+					stackable.NeighbourBelow = null;
+				}
+
+				stackable.SetNeighbourAbove(null);
+				stackable.SetNeighbourBelow(null);
+			}
 		}
 	}
 
@@ -146,5 +161,7 @@ public partial class CardController {
 					" Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType : "None"));
 			}
 		}
+
+		GD.Print("------------------");
 	}
 }

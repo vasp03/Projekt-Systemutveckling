@@ -95,8 +95,6 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
-		GD.Print("Running area exited from: " + this.CardType.TextureType);
-
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 
@@ -117,8 +115,6 @@ public partial class CardNode : Node2D {
 	}
 
 	public void SetOverLappedCardToStack(CardNode underCard) {
-		GD.Print("Running SetOverLappedCardToStack from: " + this.CardType.TextureType);
-
 		if (underCard == null || LastOverlappedCard == this) {
 			return;
 		}
