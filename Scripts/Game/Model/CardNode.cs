@@ -93,26 +93,39 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
+		GD.Print("Running area exited from: " + this.CardType.TextureType);
+
 		LastOverlappedCard = null;
+
+		// Check which card that was removed and remove it from either neighbour above or below
+		if (area.GetParent() is CardNode cardNode) {
+			if (cardNode.CardType is IStackable stackable) {
+				if (stackable.NeighbourAbove == this) {
+					stackable.SetNeighbourAbove(null);
+				}
+				else if (stackable.NeighbourBelow == this) {
+					stackable.SetNeighbourBelow(null);
+				}
+			}
+		}
+		else {
+			GD.PrintErr("Area2D parent is not a CardNode");
+		}
 	}
 
-	public void SetOverLappedCardToStack() {
+	public void SetOverLappedCardToStack(CardNode underCard) {
 		GD.Print("Running SetOverLappedCardToStack from: " + this.CardType.TextureType);
 
-		if (LastOverlappedCard == null) {
-			GD.Print("Last overlapped card is null");
+		if (underCard == null || LastOverlappedCard == this) {
 			return;
 		}
 
-		if (LastOverlappedCard == this) {
-			GD.Print("This card is the same as the last overlapped card");
-			return;
-		}
-
-		if (this.CardType is IStackable thisStackable && LastOverlappedCard.CardType is IStackable otherStackable) {
-			if (this.ZIndex > LastOverlappedCard.ZIndex) {
-				GD.Print("This: " + this.CardType.TextureType + " Setting neighbour below: " + otherStackable.TextureType);
+		if (this.CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable) {
+			if (this.ZIndex > underCard.ZIndex) {
 				thisStackable.SetNeighbourBelow(otherStackable);
+				otherStackable.SetNeighbourAbove(thisStackable);
+
+				this.SetPosition(underCard.Position - new Vector2(0, -15));
 			}
 		}
 	}

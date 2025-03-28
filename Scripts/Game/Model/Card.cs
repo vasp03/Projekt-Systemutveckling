@@ -1,4 +1,5 @@
 using System;
+using Godot;
 
 public class Card {
 	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";

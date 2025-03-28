@@ -106,6 +106,21 @@ public partial class CardController : Node2D {
 				card.SetHighlighted(false);
 	}
 
+	private CardNode GetCardUnderMovedCard(){
+		CardNode topCard = null;
+
+		foreach (CardNode card in hoveredCards) {
+			if ((topCard == null || card.GetZIndex() > topCard.GetZIndex()) && !card.IsBeingDragged) {
+				topCard = card;
+				break;
+			}			
+		}
+
+		GD.Print("Top card: " + topCard.CardType.TextureType);
+
+		return topCard;
+	}
+
 	public override void _Input(InputEvent @event) {
 		// Detect mouse movement
 		if (@event is InputEventMouseMotion mouseMotion) {
@@ -138,7 +153,8 @@ public partial class CardController : Node2D {
 			else {
 				if (selectedCard != null) {
 					selectedCard.SetIsBeingDragged(false);
-					selectedCard.SetOverLappedCardToStack();
+					CardNode underCard = GetCardUnderMovedCard();
+					selectedCard.SetOverLappedCardToStack(underCard);
 					selectedCard = null;
 				}
 			}
