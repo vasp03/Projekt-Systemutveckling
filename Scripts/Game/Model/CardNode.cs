@@ -59,7 +59,7 @@ public partial class CardNode : Node2D {
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
-		if(this.CardType is IStackable stackable) {
+		if (this.CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
 			if (neighbourAbove != null) {
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
@@ -70,6 +70,13 @@ public partial class CardNode : Node2D {
 	public bool HasNeighbourAbove() {
 		if (CardType is IStackable stackable) {
 			return stackable.NeighbourAbove != null;
+		}
+		return false;
+	}
+
+	public bool HasNeighbourBelow() {
+		if (CardType is IStackable stackable) {
+			return stackable.NeighbourBelow != null;
 		}
 		return false;
 	}
@@ -119,19 +126,14 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
+		GD.Print("From: " + GetCardNodeFromArea2D(area).CardType.TextureType + " - Area exited: " + GetCardNodeFromArea2D(area).CardType.TextureType);
+
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 
 		// Check which card that was removed and remove it from either neighbour above or below
 		if (area.GetParent() is CardNode cardNode) {
-			if (cardNode.CardType is IStackable stackable) {
-				if (stackable.NeighbourAbove == this) {
-					stackable.SetNeighbourAbove(null);
-				}
-				else if (stackable.NeighbourBelow == this) {
-					stackable.SetNeighbourBelow(null);
-				}
-			}
+
 		}
 		else {
 			GD.PrintErr("Area2D parent is not a CardNode");

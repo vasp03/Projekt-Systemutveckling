@@ -121,11 +121,18 @@ public partial class CardController {
 		selectedCard = GetTopCardAtMousePosition();
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
-			if (!selectedCard.HasNeighbourAbove()) {
-				SetTopCard(selectedCard);
+			if (selectedCard.HasNeighbourAbove()) {
+				selectedCard.IsMovingOtherCards = true;
 			}
 			else {
-				selectedCard.IsMovingOtherCards = true;
+				SetTopCard(selectedCard);
+			}
+
+			if (selectedCard.HasNeighbourBelow()) {
+				((IStackable)selectedCard.CardType)?.NeighbourBelow.SetNeighbourAbove(null);
+				((IStackable)selectedCard.CardType)?.SetNeighbourBelow(null);
+			}
+			else {
 			}
 		}
 	}
