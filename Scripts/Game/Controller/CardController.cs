@@ -142,7 +142,37 @@ public partial class CardController {
 
 	public void SetTopCardWithFollowingCards(CardNode cardNode) {
 		GD.Print("SetTopCardWithFollowingCards");
+		int cardCount = AllCards.Count;
+		int counter = 0;
+		int counterBackwards = AllCards.Count;
 
+		IReadOnlyCollection<CardNode> cardNodes = AllCardsSorted;
+
+		List<CardNode> stackedCards = [cardNode];
+		CardNode currentCard = cardNode;
+
+		while (currentCard != null && currentCard.HasNeighbourBelow()) {
+			currentCard = ((currentCard.CardType as IStackable)?.NeighbourBelow as Card)?.CardNode;
+			if (currentCard != null) {
+				GD.Print("Current card: " + currentCard.CardType.TextureType);
+				stackedCards.Add(currentCard);
+				currentCard.ZIndex = counterBackwards--;
+			}
+			else {
+				GD.Print("Current card is null");
+				break;
+			}
+		}
+
+		foreach (CardNode card in cardNodes) {
+			if (counter == cardCount) {
+				break;
+			}
+
+			if (!stackedCards.Contains(card)) {
+				card.ZIndex = counter++;
+			}
+		}
 	}
 
 	public void LeftMouseButtonReleased() {
