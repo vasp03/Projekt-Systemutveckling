@@ -61,7 +61,9 @@ public partial class CardNode : Node2D {
 
 		if (this.CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-			if (neighbourAbove != null) {
+			if (neighbourAbove == null) {
+				cardController.SetTopCardWithFollowingCards(this);
+			}else{
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
 			}
 		}

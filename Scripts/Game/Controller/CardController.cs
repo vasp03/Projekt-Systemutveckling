@@ -121,6 +121,7 @@ public partial class CardController {
 		selectedCard = GetTopCardAtMousePosition();
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
+
 			if (selectedCard.HasNeighbourAbove()) {
 				selectedCard.IsMovingOtherCards = true;
 			}
@@ -132,9 +133,16 @@ public partial class CardController {
 				((IStackable)selectedCard.CardType)?.NeighbourBelow.SetNeighbourAbove(null);
 				((IStackable)selectedCard.CardType)?.SetNeighbourBelow(null);
 			}
-			else {
-			}
 		}
+	}
+
+	public void SetZIndexForSpecifiedCard(CardNode cardNode, int zIndex) {
+		cardNode.ZIndex = zIndex;
+	}
+
+	public void SetTopCardWithFollowingCards(CardNode cardNode) {
+		GD.Print("SetTopCardWithFollowingCards");
+
 	}
 
 	public void LeftMouseButtonReleased() {
@@ -144,7 +152,9 @@ public partial class CardController {
 			selectedCard.SetIsBeingDragged(false);
 			if (!selectedCard.IsMovingOtherCards) {
 				CardNode underCard = GetCardUnderMovedCard();
-				selectedCard.SetOverLappedCardToStack(underCard);
+				if (underCard != null && !underCard.HasNeighbourAbove()) {
+					selectedCard.SetOverLappedCardToStack(underCard);
+				}
 			}
 			selectedCard.IsMovingOtherCards = false;
 			selectedCard = null;
