@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public class Card {
+public abstract class Card {
 	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
 	private const string textureEnding = ".png";
 
@@ -29,7 +29,6 @@ public class Card {
 	public bool Movable { get; set; }
 	public int Cost { get; set; }
 	public bool Highlighted { get; set; }
-
 	public string TextureType {
 		get {
 			string[] split = TexturePath.Split("/");

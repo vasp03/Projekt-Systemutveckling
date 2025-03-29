@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardNode : Node2D {
@@ -27,6 +28,8 @@ public partial class CardNode : Node2D {
 
 	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
 
+	public bool IsMovingOtherCards { get; set; } = false;
+
 	public CardNode() {
 		AddToGroup(CardController.CARD_GROUP_NAME);
 	}
@@ -46,29 +49,29 @@ public partial class CardNode : Node2D {
 	}
 
 	public void SetIsBeingDragged(bool isBeingDragged) {
+		Global.AntiInfinity += 1;
+
+		if (Global.AntiInfinity > 10000) {
+			GD.PrintErr("AntiInfinity has reached above 1000: " + Global.AntiInfinity);
+			return;
+		}
+
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
+		if(this.CardType is IStackable stackable) {
+			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
+			if (neighbourAbove != null) {
+				neighbourAbove.SetIsBeingDragged(isBeingDragged);
+			}
+		}
+	}
+
+	public bool HasNeighbourAbove() {
 		if (CardType is IStackable stackable) {
-			IStackable stack = stackable.NeighbourAbove;
-
-			if (stack == null) {
-				GD.Print("No stack above");
-				return;
-			}
-
-			GD.Print(stack.GetType());
-
-			if (stack is Card cardNode) {
-				GD.Print("CardNode: " + cardNode.TextureType);
-				cardNode.CardNode.SetIsBeingDragged(isBeingDragged);
-			}else {
-				GD.Print("Stack is not a CardNode");
-			}
+			return stackable.NeighbourAbove != null;
 		}
-		else {
-			GD.Print("CardType is not a IStackable");
-		}
+		return false;
 	}
 
 	public bool CreateNode(Card card, CardController cardController) {

@@ -120,41 +120,39 @@ public partial class CardController {
 	public void LeftMouseButtonPressed() {
 		selectedCard = GetTopCardAtMousePosition();
 		if (selectedCard != null) {
-			SetTopCard(selectedCard);
 			selectedCard.SetIsBeingDragged(true);
-
-			if(selectedCard.CardType is IStackable stackable) {
-				if(stackable.NeighbourAbove != null) {
-					stackable.NeighbourAbove.NeighbourBelow = null;
-					stackable.NeighbourAbove = null;
-				}
-
-				if(stackable.NeighbourBelow != null) {
-					stackable.NeighbourBelow.NeighbourAbove = null;
-					stackable.NeighbourBelow = null;
-				}
+			if (!selectedCard.HasNeighbourAbove()) {
+				SetTopCard(selectedCard);
+			}
+			else {
+				selectedCard.IsMovingOtherCards = true;
 			}
 		}
 	}
 
 	public void LeftMouseButtonReleased() {
+		Global.AntiInfinity = 0;
+
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(false);
-			CardNode underCard = GetCardUnderMovedCard();
-			selectedCard.SetOverLappedCardToStack(underCard);
-			if (selectedCard is IStackable stackable) stackable.NeighbourAbove = null;
-
+			if (!selectedCard.IsMovingOtherCards) {
+				CardNode underCard = GetCardUnderMovedCard();
+				selectedCard.SetOverLappedCardToStack(underCard);
+			}
+			selectedCard.IsMovingOtherCards = false;
 			selectedCard = null;
 		}
+
+
 	}
 
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
 		foreach (CardNode card in AllCards) {
 			if (card.CardType is IStackable stackable) {
-				GD.Print("This: " + card.CardType.TextureType + " - " +
-					" Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType : "None") +
-					" Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType : "None"));
+				GD.Print("This: " + card.CardType.TextureType + " - " + card.IsBeingDragged +
+					" | Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType + " - " + ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged : "None") +
+					" | Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType + " - " + ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged : "None"));
 			}
 		}
 
