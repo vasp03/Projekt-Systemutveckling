@@ -130,8 +130,8 @@ public partial class CardNode : Node2D {
 	}
 
 	private void startDragging() {
-		this.CardBelow = null;
-		
+		CardBelow = null;
+
 		ZIndex = cardController.AllCardsSorted.LastOrDefault().ZIndex + 1;
 
 		UpdateZIndexOnDragging();
@@ -173,7 +173,7 @@ public partial class CardNode : Node2D {
 		if (CardType is IStackable stackable) {
 			CardNode other = OverlappingCards.LastOrDefault(e => !e.HasCardAbove && !e.Stack.Contains(this));
 
-			if (other is not null && stackable.CanStackWith(other?.CardType) && !this.Stack.Contains(other))
+			if (other is not null && stackable.CanStackWith(other?.CardType) && !Stack.Contains(other))
 				CardBelow = other;
 			else
 				CardBelow = null;
@@ -194,7 +194,7 @@ public partial class CardNode : Node2D {
 	///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
 	///     Gets the current entire stack collection
 	/// </summary>
-	public IReadOnlyCollection<CardNode> Stack => StackBelow.Append(this).Union(this.StackAbove).ToImmutableArray();
+	public IReadOnlyCollection<CardNode> Stack => StackBelow.Append(this).Union(StackAbove).ToImmutableArray();
 
 	public IReadOnlyCollection<CardNode> StackBelow {
 		get {
