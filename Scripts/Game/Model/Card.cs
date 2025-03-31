@@ -1,8 +1,11 @@
 using System;
+using Godot;
 
-public class Card {
+public abstract class Card {
 	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
 	private const string textureEnding = ".png";
+
+	public CardNode CardNode { get; private set; }
 
 	/// <summary>
 	///     Constructor for the Card class
@@ -12,12 +15,13 @@ public class Card {
 	/// <param name="textureAddress"></param>
 	/// <param name="movable"></param>
 	/// <param name="cost"></param>
-	public Card(string textureAddress, bool movable, int cost) {
+	public Card(string textureAddress, bool movable, int cost, CardNode cardNode) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
 		TexturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
 		Cost = cost;
+		CardNode = cardNode;
 	}
 
 	public string ID { get; private set; }
@@ -25,4 +29,12 @@ public class Card {
 	public bool Movable { get; set; }
 	public int Cost { get; set; }
 	public bool Highlighted { get; set; }
+	public string TextureType {
+		get {
+			string[] split = TexturePath.Split("/");
+			string textureType = split[split.Length - 1];
+			textureType = textureType.Substring(0, textureType.Length - 4);
+			return textureType;
+		}
+	}
 }

@@ -4,8 +4,8 @@ using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class LivingAnimal(string textureAddress, bool movable, int cost, int health)
-	: CardLiving(textureAddress, movable, cost, health), IStackable {
+public class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
+	: CardLiving(textureAddress, movable, cost, health, cardNode), IStackable {
 	private int produceTimer;
 
 	public IReadOnlyCollection<Type> GetStackableTypes() {

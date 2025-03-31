@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Model;
+using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
 
-	private readonly List<CardNode> overlappingCards = new();
+	private CardNode LastOverlappedCard;
 
 	private CardController cardController;
 
@@ -13,13 +16,7 @@ public partial class CardNode : Node2D {
 
 	private Vector2 oldMousePosition;
 
-	// private bool hasBeenCreated = false;
-
 	private Sprite2D sprite;
-
-	public CardNode() {
-		AddToGroup(CardController.CARD_GROUP_NAME);
-	}
 
 	public Card CardType { get; private set; }
 
@@ -27,7 +24,15 @@ public partial class CardNode : Node2D {
 
 	public bool IsBeingDragged { get; private set; }
 
-	public IReadOnlyCollection<CardNode> OverlappingCards => overlappingCards.AsReadOnly();
+	public List<CardNode> HoveredCards { get; private set; } = new();
+
+	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
+
+	public bool IsMovingOtherCards { get; set; } = false;
+
+	public CardNode() {
+		AddToGroup(CardController.CARD_GROUP_NAME);
+	}
 
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
 		this.cardController = cardController;
@@ -44,12 +49,38 @@ public partial class CardNode : Node2D {
 	}
 
 	public void SetIsBeingDragged(bool isBeingDragged) {
+		Global.AntiInfinity += 1;
+
+		if (Global.AntiInfinity > 10000) {
+			GD.PrintErr("AntiInfinity has reached above 1000: " + Global.AntiInfinity);
+			return;
+		}
+
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
+
+		if (this.CardType is IStackable stackable) {
+			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
+			if (neighbourAbove == null) {
+				cardController.SetTopCardWithFollowingCards(this);
+			}else{
+				neighbourAbove.SetIsBeingDragged(isBeingDragged);
+			}
+		}
 	}
 
-	public bool GetIsBeingDragged() {
-		return IsBeingDragged;
+	public bool HasNeighbourAbove() {
+		if (CardType is IStackable stackable) {
+			return stackable.NeighbourAbove != null;
+		}
+		return false;
+	}
+
+	public bool HasNeighbourBelow() {
+		if (CardType is IStackable stackable) {
+			return stackable.NeighbourBelow != null;
+		}
+		return false;
 	}
 
 	public bool CreateNode(Card card, CardController cardController) {
@@ -92,17 +123,38 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_entered(Area2D area) {
-#if DEBUG
-		GD.Print("Area entered");
-#endif
-		overlappingCards.Add(GetCardNodeFromArea2D(area));
+		LastOverlappedCard = GetCardNodeFromArea2D(area);
+		HoveredCards.Add(GetCardNodeFromArea2D(area));
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
-#if DEBUG
-		GD.Print("Area exited");
-#endif
-		overlappingCards.Remove(GetCardNodeFromArea2D(area));
+		GD.Print("From: " + GetCardNodeFromArea2D(area).CardType.TextureType + " - Area exited: " + GetCardNodeFromArea2D(area).CardType.TextureType);
+
+		LastOverlappedCard = null;
+		HoveredCards.Remove(GetCardNodeFromArea2D(area));
+
+		// Check which card that was removed and remove it from either neighbour above or below
+		if (area.GetParent() is CardNode cardNode) {
+
+		}
+		else {
+			GD.PrintErr("Area2D parent is not a CardNode");
+		}
+	}
+
+	public void SetOverLappedCardToStack(CardNode underCard) {
+		if (underCard == null || LastOverlappedCard == this) {
+			return;
+		}
+
+		if (this.CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable) {
+			if (this.ZIndex > underCard.ZIndex) {
+				thisStackable.SetNeighbourBelow(otherStackable);
+				otherStackable.SetNeighbourAbove(thisStackable);
+
+				this.SetPosition(underCard.Position - new Vector2(0, -15));
+			}
+		}
 	}
 
 	public override void _Process(double delta) {
