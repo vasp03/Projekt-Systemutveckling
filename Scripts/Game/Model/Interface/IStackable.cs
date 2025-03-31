@@ -44,25 +44,15 @@ public interface IStackable {
 
 	public IReadOnlyCollection<IStackable> StackAbove {
 		get {
-			ICollection<IStackable> stackBackwards = [];
 			ICollection<IStackable> stackForwards = [];
 
-
 			IStackable current = this;
-			IStackable next;
-
-			// Traverse forwards
-			current = this;
 			while (current != null) {
-				next = current.NeighbourAbove;
-				stackForwards.Add(next);
-				current = next;
+				current = current.NeighbourAbove;
+				stackForwards.Append(current);
 			}
 
-			List<IStackable> stack = [];
-			stack.AddRange(stackForwards);
-
-			return stack.AsReadOnly();
+			return stackForwards.ToArray();
 		}
 	}
 

@@ -140,24 +140,18 @@ public partial class CardController {
 	}
 
 	public void SetZIndexForAllCards(CardNode cardNode) {
-		GD.Print("Setting ZIndex for all cards");
-
 		IReadOnlyCollection<IStackable> stackAbove = ((IStackable)cardNode.CardType)?.StackAbove;
+
+		foreach (IStackable stackable in stackAbove) {
+			GD.Print("Stackable: " + stackable.TextureType);
+		}
 
 		int counterForStackedCards = CardCount - stackAbove.Count;
 		int counterForOtherCards = 0;
 
-		GD.Print("Is null: " + (stackAbove == null));
 
 		foreach (CardNode card in AllCardsSorted) {
-			if (stackAbove != null || (card.CardType is IStackable stackable && stackAbove.Contains(stackable))) {
-				card.ZIndex = counterForStackedCards;
-				counterForStackedCards++;
-			}
-			else {
-				card.ZIndex = counterForOtherCards;
-				counterForOtherCards++;
-			}
+
 		}
 	}
 
