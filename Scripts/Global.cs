@@ -1,5 +1,5 @@
 using Godot;
 
 public partial class Global : Node {
-	public static int AntiInfinity = 0;
+    public static int RecursiveCheckIteration = 0;
 }
