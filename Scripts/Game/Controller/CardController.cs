@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -35,7 +36,7 @@ public class CardController {
 		bool ret = cardInstance.CreateNode(
 			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType(), cardInstance), this);
 		if (ret) {
-			cardInstance.ZIndex = CardCount;
+			cardInstance.ZIndex = CardCount + 1;
 			nodeController.AddChild(cardInstance);
 			cardInstance.SetPosition(new Vector2(100, 100));
 		}
@@ -136,18 +137,22 @@ public class CardController {
 	}
 
 	public void SetZIndexForAllCards(CardNode cardNode) {
-		IReadOnlyCollection<IStackable> stackAbove = ((IStackable)cardNode.CardType)?.StackAbove;
+		List<IStackable> stackAbove = ((IStackable)cardNode.CardType)?.StackAbove;
 
-		foreach (IStackable stackable in stackAbove) {
-			GD.Print("Stackable: " + stackable.TextureType);
-		}
+		if (stackAbove == null) return;
 
 		int counterForStackedCards = CardCount - stackAbove.Count;
-		int counterForOtherCards = 0;
-
+		int counterForOtherCards = 1;
 
 		foreach (CardNode card in AllCardsSorted) {
-
+			if (stackAbove.Contains((IStackable)card.CardType ?? null) || card == cardNode) {
+				card.ZIndex = counterForStackedCards;
+				counterForStackedCards++;
+			}
+			else {
+				card.ZIndex = counterForOtherCards;
+				counterForOtherCards++;
+			}
 		}
 	}
 
@@ -169,19 +174,19 @@ public class CardController {
 
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
-		foreach (CardNode card in AllCards)
+		foreach (CardNode card in AllCardsSorted)
 			if (card.CardType is IStackable stackable)
 				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-				         " | Above: " +
-				         (stackable.NeighbourAbove != null
-					         ? stackable.NeighbourAbove.TextureType + " - " +
-					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-					         : "None") +
-				         " | Below: " +
-				         (stackable.NeighbourBelow != null
-					         ? stackable.NeighbourBelow.TextureType + " - " +
-					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-					         : "None"));
+						 " | Above: " +
+						 (stackable.NeighbourAbove != null
+							 ? stackable.NeighbourAbove.TextureType + " - " +
+							   ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
+							 : "None") +
+						 " | Below: " +
+						 (stackable.NeighbourBelow != null
+							 ? stackable.NeighbourBelow.TextureType + " - " +
+							   ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
+							 : "None"));
 
 		GD.Print("------------------");
 	}
