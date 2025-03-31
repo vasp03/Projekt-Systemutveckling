@@ -242,7 +242,7 @@ public partial class CardNode : Node2D {
 		set {
 			if (HasCardAbove && value is null)
 				// remove the reference to <this> card on the card above
-				CardAbove.CardBelow = null;
+				CardAbove._cardBelow = null;
 			_cardAbove = value;
 			if (_cardAbove is not null) _cardAbove._cardBelow = this;
 		}
@@ -251,7 +251,7 @@ public partial class CardNode : Node2D {
 	public CardNode? CardBelow {
 		get => _cardBelow;
 		set {
-			if (HasCardBelow && value is null) CardBelow.CardAbove = null;
+			if (HasCardBelow && value is null) CardBelow._cardAbove = null;
 
 			_cardBelow = value;
 			if (_cardBelow is not null) _cardBelow.CardBelow = this;
