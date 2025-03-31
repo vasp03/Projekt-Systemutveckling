@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cv0sftc5g7uci"]
 
-[ext_resource type="Script" uid="uid://csx2so4jfpr3e" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
+[ext_resource type="Script" uid="uid://c22cw1jt4hrpo" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_qdb5i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tt5f1"]
@@ -98,9 +98,9 @@ text = "OPTIONS"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_hover_color = Color(0.976471, 0.529412, 0.478431, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_colors/font_pressed_color = Color(0.945098, 0.360784, 0.313726, 1)
 theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("2_qdb5i")
 theme_override_font_sizes/font_size = 50

@@ -1,32 +1,37 @@
 using Godot;
 
-namespace Goodot15.Scripts.Game.View;
 
 public partial class MainMenu : Control {
+
+	private MenuController menuController;
+	private Button playButton;
+	private Button optionsButton;
+	private Button exitButton;
+	
 	public override void _Ready()
 	{
-		Button playButton = GetNode<Button>("ButtonContainer/PlayButton");
+		menuController = GetNode<MenuController>("/root/MenuController");
+		
+		playButton = GetNode<Button>("ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
 
-		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+		optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
-		Button exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
+		
 	}
 
-	private void OnPlayButtonPressed()
-	{
+	private void OnPlayButtonPressed() {
 		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
 	}
 
-	private void OnOptionsButtonPressed()
-	{
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/OptionsMenu.tscn");
+	private void OnOptionsButtonPressed() {
+		menuController.OpenOptionsMenu();
 	}
 
-	private void OnExitButtonPressed()
-	{
+	private void OnExitButtonPressed() {
 		GetTree().Quit();
 	}
 }

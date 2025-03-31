@@ -2,10 +2,14 @@ using Godot;
 
 namespace Goodot15.Scripts.Game.View;
 
-public partial class GamePausedMenu : Control
-{
+public partial class GamePausedMenu : Control {
+	
+	private MenuController menuController;
+	
 	public override void _Ready()
 	{
+		menuController = GetNode<MenuController>("/root/MenuController");
+		
 		VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
 		buttonContainer.Show();
 		
@@ -15,25 +19,18 @@ public partial class GamePausedMenu : Control
 		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
-		Button exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
 		exitButton.Pressed += OnExitButtonPressed;
 	}
-
-	public override void _Input(InputEvent @event) {
-		if (@event.IsActionPressed("Pause")) {
-			GetTree().Paused = true;
-		}
-	}
-
+	
 	private void OnResumeButtonPressed()
 	{
-		GetTree().Paused = false;
-		Visible = false;
+		menuController.CloseMenus();
 	}
 
 	private void OnOptionsButtonPressed()
 	{
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/OptionsMenu.tscn");
+		menuController.OpenOptionsMenu();
 	}
 
 	private void OnExitButtonPressed()
