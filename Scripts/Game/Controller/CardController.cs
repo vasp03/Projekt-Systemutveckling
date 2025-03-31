@@ -4,21 +4,20 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public partial class CardController {
-
-	// Constructor
-	public CardController(NodeController nodeController) {
-		this.nodeController = nodeController;
-	}
-
-	private readonly NodeController nodeController;
-
+public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 	private readonly CardCreationHelper cardCreationHelper = new();
 
 	private readonly List<CardNode> hoveredCards = new();
 
+	private readonly NodeController nodeController;
+
 	private CardNode selectedCard;
+
+	// Constructor
+	public CardController(NodeController nodeController) {
+		this.nodeController = nodeController;
+	}
 
 	public int CardCount => AllCards.Count;
 
@@ -108,11 +107,10 @@ public partial class CardController {
 		// Get the card under the moved card
 		CardNode topCard = null;
 
-		foreach (CardNode overlappedCard in selectedCard.HoveredCards) {
+		foreach (CardNode overlappedCard in selectedCard.HoveredCards)
 			if (topCard == null)
 				topCard = overlappedCard;
 			else if (overlappedCard.GetZIndex() > topCard.GetZIndex()) topCard = overlappedCard;
-		}
 
 		return topCard;
 	}
@@ -125,12 +123,10 @@ public partial class CardController {
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
 
-			if (selectedCard.HasNeighbourAbove()) {
+			if (selectedCard.HasNeighbourAbove())
 				selectedCard.IsMovingOtherCards = true;
-			}
-			else {
+			else
 				SetTopCard(selectedCard);
-			}
 
 			if (selectedCard.HasNeighbourBelow()) {
 				((IStackable)selectedCard.CardType)?.NeighbourBelow.SetNeighbourAbove(null);
@@ -162,26 +158,30 @@ public partial class CardController {
 			selectedCard.SetIsBeingDragged(false);
 			if (!selectedCard.IsMovingOtherCards) {
 				CardNode underCard = GetCardUnderMovedCard();
-				if (underCard != null && !underCard.HasNeighbourAbove()) {
+				if (underCard != null && !underCard.HasNeighbourAbove())
 					selectedCard.SetOverLappedCardToStack(underCard);
-				}
 			}
+
 			selectedCard.IsMovingOtherCards = false;
 			selectedCard = null;
 		}
-
-
 	}
 
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
-		foreach (CardNode card in AllCards) {
-			if (card.CardType is IStackable stackable) {
+		foreach (CardNode card in AllCards)
+			if (card.CardType is IStackable stackable)
 				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-					" | Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType + " - " + ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged : "None") +
-					" | Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType + " - " + ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged : "None"));
-			}
-		}
+				         " | Above: " +
+				         (stackable.NeighbourAbove != null
+					         ? stackable.NeighbourAbove.TextureType + " - " +
+					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
+					         : "None") +
+				         " | Below: " +
+				         (stackable.NeighbourBelow != null
+					         ? stackable.NeighbourBelow.TextureType + " - " +
+					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
+					         : "None"));
 
 		GD.Print("------------------");
 	}
