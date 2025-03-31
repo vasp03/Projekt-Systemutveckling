@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -168,9 +169,9 @@ public partial class CardNode : Node2D {
 
 	private void CheckForStacking() {
 		if (CardType is IStackable stackable) {
-			CardNode other = OverlappingCards.LastOrDefault(e => !e.HasCardAbove);
+			CardNode other = OverlappingCards.LastOrDefault(e => !e.HasCardAbove && !e.Stack.Contains(this));
 
-			if (other is not null && stackable.CanStackWith(other?.CardType) && !Stack.Contains(other))
+			if (other is not null && stackable.CanStackWith(other?.CardType) && !this.Stack.Contains(other))
 				CardBelow = other;
 			else
 				CardBelow = null;
@@ -191,7 +192,7 @@ public partial class CardNode : Node2D {
 	///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
 	///     Gets the current entire stack collection
 	/// </summary>
-	public IReadOnlyCollection<CardNode> Stack => StackBelow.Union(StackAbove).ToArray();
+	public IReadOnlyCollection<CardNode> Stack => StackBelow.Append(this).Union(this.StackAbove).ToImmutableArray();
 
 	public IReadOnlyCollection<CardNode> StackBelow {
 		get {
@@ -208,7 +209,7 @@ public partial class CardNode : Node2D {
 				current = next;
 			}
 
-			return stackBackwards.Reverse().ToArray();
+			return stackBackwards.Reverse().ToImmutableArray();
 		}
 	}
 
@@ -227,7 +228,7 @@ public partial class CardNode : Node2D {
 				current = next;
 			}
 
-			return stackForwards.ToArray();
+			return stackForwards.ToImmutableArray();
 		}
 	}
 
