@@ -119,6 +119,9 @@ public partial class CardController {
 
 	public void LeftMouseButtonPressed() {
 		selectedCard = GetTopCardAtMousePosition();
+
+		if (selectedCard != null) SetZIndexForAllCards(selectedCard);
+
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
 
@@ -136,41 +139,24 @@ public partial class CardController {
 		}
 	}
 
-	public void SetZIndexForSpecifiedCard(CardNode cardNode, int zIndex) {
-		cardNode.ZIndex = zIndex;
-	}
+	public void SetZIndexForAllCards(CardNode cardNode) {
+		GD.Print("Setting ZIndex for all cards");
 
-	public void SetTopCardWithFollowingCards(CardNode cardNode) {
-		GD.Print("SetTopCardWithFollowingCards");
-		int cardCount = AllCards.Count;
-		int counter = 0;
-		int counterBackwards = AllCards.Count;
+		IReadOnlyCollection<IStackable> stackAbove = ((IStackable)cardNode.CardType)?.StackAbove;
 
-		IReadOnlyCollection<CardNode> cardNodes = AllCardsSorted;
+		int counterForStackedCards = CardCount - stackAbove.Count;
+		int counterForOtherCards = 0;
 
-		List<CardNode> stackedCards = [cardNode];
-		CardNode currentCard = cardNode;
+		GD.Print("Is null: " + (stackAbove == null));
 
-		while (currentCard != null && currentCard.HasNeighbourBelow()) {
-			currentCard = ((currentCard.CardType as IStackable)?.NeighbourBelow as Card)?.CardNode;
-			if (currentCard != null) {
-				GD.Print("Current card: " + currentCard.CardType.TextureType);
-				stackedCards.Add(currentCard);
-				currentCard.ZIndex = counterBackwards--;
+		foreach (CardNode card in AllCardsSorted) {
+			if (stackAbove != null || (card.CardType is IStackable stackable && stackAbove.Contains(stackable))) {
+				card.ZIndex = counterForStackedCards;
+				counterForStackedCards++;
 			}
 			else {
-				GD.Print("Current card is null");
-				break;
-			}
-		}
-
-		foreach (CardNode card in cardNodes) {
-			if (counter == cardCount) {
-				break;
-			}
-
-			if (!stackedCards.Contains(card)) {
-				card.ZIndex = counter++;
+				card.ZIndex = counterForOtherCards;
+				counterForOtherCards++;
 			}
 		}
 	}
@@ -197,7 +183,7 @@ public partial class CardController {
 		// Print the all cards and their neighbours
 		foreach (CardNode card in AllCards) {
 			if (card.CardType is IStackable stackable) {
-				GD.Print("This: " + card.CardType.TextureType + " - " + card.IsBeingDragged +
+				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
 					" | Above: " + (stackable.NeighbourAbove != null ? stackable.NeighbourAbove.TextureType + " - " + ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged : "None") +
 					" | Below: " + (stackable.NeighbourBelow != null ? stackable.NeighbourBelow.TextureType + " - " + ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged : "None"));
 			}

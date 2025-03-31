@@ -62,7 +62,7 @@ public partial class CardNode : Node2D {
 		if (this.CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
 			if (neighbourAbove == null) {
-				cardController.SetTopCardWithFollowingCards(this);
+				ZIndex = cardController.CardCount;
 			}else{
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
 			}
@@ -128,17 +128,12 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
-		GD.Print("From: " + GetCardNodeFromArea2D(area).CardType.TextureType + " - Area exited: " + GetCardNodeFromArea2D(area).CardType.TextureType);
-
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 
 		// Check which card that was removed and remove it from either neighbour above or below
 		if (area.GetParent() is CardNode cardNode) {
 
-		}
-		else {
-			GD.PrintErr("Area2D parent is not a CardNode");
 		}
 	}
 
