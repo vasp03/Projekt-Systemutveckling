@@ -105,15 +105,17 @@ public class CardController {
 	}
 
 	private CardNode GetCardUnderMovedCard() {
-		// Get the card under the moved card
-		CardNode topCard = null;
+		IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
 
-		foreach (CardNode overlappedCard in selectedCard.HoveredCards)
-			if (topCard == null)
-				topCard = overlappedCard;
-			else if (overlappedCard.GetZIndex() > topCard.GetZIndex()) topCard = overlappedCard;
+		CardNode topUnderCard = null;
 
-		return topCard;
+		foreach (CardNode card in hoveredCardsSorted){
+			if(card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex)) {
+				topUnderCard = card;
+			}
+		}
+
+		return topUnderCard;
 	}
 
 	public void LeftMouseButtonPressed() {
@@ -161,13 +163,15 @@ public class CardController {
 
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(false);
-			if (!selectedCard.IsMovingOtherCards) {
-				CardNode underCard = GetCardUnderMovedCard();
-				if (underCard != null && !underCard.HasNeighbourAbove())
-					selectedCard.SetOverLappedCardToStack(underCard);
-			}
 
-			selectedCard.IsMovingOtherCards = false;
+			CardNode underCard = GetCardUnderMovedCard();
+
+			GD.Print("UnderCard: " + (((IStackable)underCard?.CardType)?.TextureType ?? "No Card") + " - " + (underCard != null) + " " + !selectedCard.HasNeighbourBelow() + " " + (!underCard?.HasNeighbourAbove()+"" ?? "null"));
+
+			if (underCard != null && !selectedCard.HasNeighbourBelow() && !underCard.HasNeighbourAbove()) {
+				selectedCard.SetOverLappedCardToStack(underCard);
+			}
+			
 			selectedCard = null;
 		}
 	}
