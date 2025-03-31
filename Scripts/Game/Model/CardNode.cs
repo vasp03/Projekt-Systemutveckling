@@ -254,7 +254,7 @@ public partial class CardNode : Node2D {
 			if (HasCardBelow && value is null) CardBelow._cardAbove = null;
 
 			_cardBelow = value;
-			if (_cardBelow is not null) _cardBelow.CardBelow = this;
+			if (_cardBelow is not null) _cardBelow._cardAbove = this;
 		}
 	}
 
