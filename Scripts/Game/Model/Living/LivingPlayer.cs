@@ -3,27 +3,8 @@ using System.Collections.Generic;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class LivingPlayer(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
+public class LivingPlayer(string textureAddress, bool movable, int cost, int health, Goodot15.Scripts.Game.Model.CardNode cardNode)
 	: CardLiving(textureAddress, movable, cost, health, cardNode), IStackable {
 	public int Saturation { get; set; }
 	public int AttackDamage { get; set; }
-
-	public IStackable NeighbourAbove { get; set; }
-	public IStackable NeighbourBelow { get; set; }
-
-	public bool CanStackWith(Card card) {
-		throw new NotImplementedException();
-	}
-
-	public void SetNeighbourAbove(IStackable card) {
-		throw new NotImplementedException();
-	}
-
-	public void SetNeighbourBelow(IStackable card) {
-		throw new NotImplementedException();
-	}
-
-	public IReadOnlyCollection<Type> GetStackableTypes() {
-		return [];
-	}
 }

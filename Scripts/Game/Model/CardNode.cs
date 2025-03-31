@@ -5,6 +5,8 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
+namespace Goodot15.Scripts.Game.Model;
+
 public partial class CardNode : Node2D {
 	private const float HIGHLIGT_FACTOR = 1.3f;
 
