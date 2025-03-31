@@ -11,6 +11,10 @@ public class LivingPlayer(string textureAddress, bool movable, int cost, int hea
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
 
+	public bool CanStackWith(Card card) {
+		throw new NotImplementedException();
+	}
+
 	public void SetNeighbourAbove(IStackable card) {
 		throw new NotImplementedException();
 	}
@@ -21,9 +25,5 @@ public class LivingPlayer(string textureAddress, bool movable, int cost, int hea
 
 	public IReadOnlyCollection<Type> GetStackableTypes() {
 		return [];
-	}
-
-	public bool CanStackWith(Card card) {
-		throw new NotImplementedException();
 	}
 }

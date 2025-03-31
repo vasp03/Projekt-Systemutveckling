@@ -4,8 +4,6 @@ public abstract class Card {
 	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
 	private const string textureEnding = ".png";
 
-	public CardNode CardNode { get; private set; }
-
 	/// <summary>
 	///     Constructor for the Card class
 	///     Texture address should be the address after "res://Assets/Cards/Ready To Use/".
@@ -23,10 +21,13 @@ public abstract class Card {
 		CardNode = cardNode;
 	}
 
+	public CardNode CardNode { get; private set; }
+
 	public string ID { get; private set; }
 	public string TexturePath { get; protected set; }
 	public bool Movable { get; set; }
 	public int Cost { get; set; }
+
 	public string TextureType {
 		get {
 			string[] split = TexturePath.Split("/");

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts.Game.Model.Interface;
 
 public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
@@ -13,12 +11,12 @@ public class CardController {
 	private readonly NodeController nodeController;
 
 	private CardNode selectedCard;
-	
+
 	public CardController(NodeController nodeController) {
 		this.nodeController = nodeController;
-		
-		this.nodeController.GetViewport().PhysicsObjectPickingSort=true;
-		this.nodeController.GetViewport().PhysicsObjectPickingFirstOnly=true;
+
+		this.nodeController.GetViewport().PhysicsObjectPickingSort = true;
+		this.nodeController.GetViewport().PhysicsObjectPickingFirstOnly = true;
 	}
 
 	public int CardCount => AllCards.Count;
@@ -28,8 +26,22 @@ public class CardController {
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
-	
-	public IReadOnlyCollection<CardNode> HoveredCards => this.AllCards.Where(e=>e.MouseIntersecting).ToArray();
+
+	public IReadOnlyCollection<CardNode> HoveredCards => AllCards.Where(e => e.MouseIntersecting).ToArray();
+
+	// public void AddCardToHoveredCards(CardNode cardNode) {
+	// 	hoveredCards.Add(cardNode);
+	// 	CheckForHighLight();
+	// }
+// 
+	// public void RemoveCardFromHoveredCards(CardNode cardNode) {
+	// 	hoveredCards.Remove(cardNode);
+	// 	CheckForHighLight();
+	// 	cardNode.SetHighlighted(false);
+	// }
+
+	// Get the top card at the mouse position
+	public CardNode TopHoveredCard => HoveredCards.OrderByDescending(x => x.ZIndex).FirstOrDefault();
 
 	public void CreateCard() {
 		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
@@ -46,53 +58,34 @@ public class CardController {
 		}
 	}
 
-	// public void AddCardToHoveredCards(CardNode cardNode) {
-	// 	hoveredCards.Add(cardNode);
-	// 	CheckForHighLight();
-	// }
-// 
-	// public void RemoveCardFromHoveredCards(CardNode cardNode) {
-	// 	hoveredCards.Remove(cardNode);
-	// 	CheckForHighLight();
-	// 	cardNode.SetHighlighted(false);
-	// }
-
-	// Get the top card at the mouse position
-	public CardNode TopHoveredCard => HoveredCards.OrderByDescending(x => x.ZIndex).FirstOrDefault();
-
 	public void LeftMouseButtonPressed() {
 		selectedCard = TopHoveredCard;
-			
+
 		// if (selectedCard != null) SetZIndexForAllCards(selectedCard);
-			
-		if (selectedCard != null) {
-			selectedCard.IsBeingDragged = true;
-			
-			// if (selectedCard.HasNeighbourAbove())
-			// 	selectedCard.IsMovingOtherCards = true;
-			// else
-			// 	SetTopCard(selectedCard);
-			// 
-			// if (selectedCard.HasNeighbourBelow()) {
-			// 	((IStackable)selectedCard.CardType)?.NeighbourBelow.SetNeighbourAbove(null);
-			// 	((IStackable)selectedCard.CardType)?.SetNeighbourBelow(null);
-			// }
-		}
+
+		if (selectedCard != null) selectedCard.IsBeingDragged = true;
+		// if (selectedCard.HasNeighbourAbove())
+		// 	selectedCard.IsMovingOtherCards = true;
+		// else
+		// 	SetTopCard(selectedCard);
+		// 
+		// if (selectedCard.HasNeighbourBelow()) {
+		// 	((IStackable)selectedCard.CardType)?.NeighbourBelow.SetNeighbourAbove(null);
+		// 	((IStackable)selectedCard.CardType)?.SetNeighbourBelow(null);
+		// }
 	}
 
 	public void LeftMouseButtonReleased() {
 		Global.RecursiveCheckIteration = 0;
 // 
-		if (selectedCard != null) {
-			selectedCard.IsBeingDragged = false;
-			// if (!selectedCard.IsMovingOtherCards) {
-			// 	CardNode underCard = GetCardUnderMovedCard();
-			// 	if (underCard != null && !underCard.HasNeighbourAbove())
-			// 		selectedCard.SetOverLappedCardToStack(underCard);
-			// }
-// // 
-			// selectedCard.IsMovingOtherCards = false;
-			// selectedCard = null;
-		}
+		if (selectedCard != null) selectedCard.IsBeingDragged = false;
+		// if (!selectedCard.IsMovingOtherCards) {
+		// 	CardNode underCard = GetCardUnderMovedCard();
+		// 	if (underCard != null && !underCard.HasNeighbourAbove())
+		// 		selectedCard.SetOverLappedCardToStack(underCard);
+		// }
+		// // 
+		// selectedCard.IsMovingOtherCards = false;
+		// selectedCard = null;
 	}
 }
