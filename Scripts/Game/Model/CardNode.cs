@@ -130,6 +130,8 @@ public partial class CardNode : Node2D {
 	}
 
 	private void startDragging() {
+		this.CardBelow = null;
+		
 		ZIndex = cardController.AllCardsSorted.LastOrDefault().ZIndex + 1;
 
 		UpdateZIndexOnDragging();
