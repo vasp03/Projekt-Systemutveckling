@@ -191,7 +191,7 @@ public partial class CardNode : Node2D
 				if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
 				{
 					((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-				}
+        }
 			}
 	}
 
@@ -207,7 +207,7 @@ public partial class CardNode : Node2D
 		if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
 		{
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-		}
+    }
 	}
 
 	/// <summary>
