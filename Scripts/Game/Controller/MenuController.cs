@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class MenuController : Node {
@@ -11,10 +12,12 @@ public partial class MenuController : Node {
 
 
 	public override void _Ready() {
-		mainMenu = GetParent().GetNode<Control>("MainMenu");
+		// mainMenu = GetParent().GetNode<Control>("MainMenu");
 		currentMenu = mainMenu;
 		pauseMenu = null;
 		optionsMenu = null;
+
+		// this.previousMenu = mainMenu;
 	}
 
 	public void OpenMainMenu() {
@@ -24,7 +27,8 @@ public partial class MenuController : Node {
 			AddChild(mainMenu);
 		}
 
-		SwitchMenu(mainMenu);
+		this.GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+		// SwitchMenu(mainMenu);
 	}
 
 	public void OpenPauseMenu() {
@@ -79,5 +83,12 @@ public partial class MenuController : Node {
 
 	public void SetNodeController(NodeController nodeController) {
 		this.nodeController = nodeController;
+	}
+
+	public void configureWithNewMainMenuInstance(MainMenu menu) {
+		this.mainMenu = menu;
+		this.currentMenu = menu;
+		
+		GetTree().Paused = false;
 	}
 }

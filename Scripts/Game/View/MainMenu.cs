@@ -9,6 +9,7 @@ public partial class MainMenu : Control {
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
+		menuController.configureWithNewMainMenuInstance(this);
 
 		playButton = GetNode<Button>("ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
