@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.View;
 
 
 public partial class MenuController : Node {
@@ -70,7 +71,7 @@ public partial class MenuController : Node {
 			Control menuToSwitchTo = previousMenu;
 			previousMenu = currentMenu;
 			SwitchMenu(menuToSwitchTo);
-		}
+		} 
 	}
 
 	public void CloseMenus() {

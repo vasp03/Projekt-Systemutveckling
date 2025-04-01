@@ -16,6 +16,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eue7q"]
 
 [node name="MainOptions" type="Control"]
+process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,6 +59,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="GoBackButton" type="Button" parent="ButtonContainer"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
