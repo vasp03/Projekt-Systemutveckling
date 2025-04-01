@@ -4,6 +4,10 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
+/// <summary>
+/// Represents a card node in the game.
+/// It inherits from Node2D and is used to represent a card in the game.
+/// </summary>
 public partial class CardNode : Node2D
 {
 	private const float HighLightFactor = 1.3f;
@@ -62,14 +66,6 @@ public partial class CardNode : Node2D
 	/// </summary>
 	public void SetIsBeingDragged(bool isBeingDragged)
 	{
-		Global.AntiInfinity += 1;
-
-		if (Global.AntiInfinity > 10000)
-		{
-			GD.PrintErr("AntiInfinity has reached above 1000: " + Global.AntiInfinity);
-			return;
-		}
-
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
@@ -175,11 +171,6 @@ public partial class CardNode : Node2D
 	{
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
-
-		// Check which card that was removed and remove it from either neighbour above or below
-		if (area.GetParent() is CardNode cardNode)
-		{
-		}
 	}
 
 	/// <summary>
@@ -242,11 +233,9 @@ public partial class CardNode : Node2D
 	/// <param name="area2D"></param>
 	/// <returns>
 	/// The card node that is the parent of the area2D.
-	/// This is used to get the card node from the area2D when the mouse enters or exits the area2D.
-	/// It is used to get the card node from the area2D when the mouse enters or exits the area2D.	
 	/// </returns>
 	public static CardNode GetCardNodeFromArea2D(Area2D area2D)
 	{
-		return (CardNode)area2D.GetParent();
+		return area2D.GetParent<CardNode>();
 	}
 }

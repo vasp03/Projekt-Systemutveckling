@@ -4,25 +4,33 @@ using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: CardLiving(textureAddress, movable, cost, health, cardNode), IStackable {
+	: CardLiving(textureAddress, movable, cost, health, cardNode), IStackable, ITickable
+{
 	private int produceTimer;
 
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
 
-	public void SetNeighbourAbove(IStackable card) {
+	public void SetNeighbourAbove(IStackable card)
+	{
 		throw new NotImplementedException();
 	}
 
-	public void SetNeighbourBelow(IStackable card) {
+	public void SetNeighbourBelow(IStackable card)
+	{
 		throw new NotImplementedException();
 	}
 
-	public IReadOnlyCollection<Type> GetStackableTypes() {
-		throw new NotImplementedException();
-	}
-
-	public int tickTimer() {
+	public int GetProduceTimer()
+	{
 		return produceTimer--;
+	}
+
+	public void preTick()
+	{
+	}
+
+	public void postTick()
+	{
 	}
 }

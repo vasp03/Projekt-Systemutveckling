@@ -32,10 +32,6 @@ public class CardController
 
 	/// <summary>
 	/// Creates a new card and adds it to the scene.
-	/// It loads the card scene from the resource path and instantiates it.
-	/// It then creates a new card by copying the card from Card scene and adding an instance of CardMaterial to it.
-	/// It sets the ZIndex of the new card to be one higher than the current card count.
-	/// It also sets the position of the new card to (100, 100).
 	/// </summary>
 	/// <returns>
 	/// The created card instance.
@@ -58,8 +54,6 @@ public class CardController
 
 	/// <summary>
 	/// Checks if the card is the top card on the scene.
-	/// It checks all the hovered cards and returns true if there are no cards with a higher ZIndex.
-	/// If there are cards with a higher ZIndex, it returns false.
 	/// </summary>
 	private bool CardIsTopCard(Node2D cardNode)
 	{
@@ -110,8 +104,6 @@ public class CardController
 
 	/// <summary>
 	/// Gets the top card at the mouse position.
-	/// It checks all the hovered cards and returns the one with the highest ZIndex.
-	/// If no card is hovered, it returns null.
 	/// </summary>
 	/// <returns>
 	/// The top card at the mouse position or null if no card is hovered. 
@@ -130,8 +122,6 @@ public class CardController
 
 	/// <summary>
 	/// Gets the card under the moved card.
-	/// It checks all the hovered cards and returns the one with the highest ZIndex that is below the moved card.
-	/// If no card is found, it returns null.
 	/// </summary>
 	/// <returns>
 	/// The card under the moved card or null if no card is found.
@@ -155,10 +145,6 @@ public class CardController
 
 	/// <summary>
 	/// Called when the left mouse button is pressed.
-	/// It gets the top card at the mouse position and sets it to be dragged.
-	/// It also sets the ZIndex of all cards to make sure the dragged card is on top.
-	/// If the card has a neighbour above, it sets the IsMovingOtherCards property to true.
-	/// If the card has a neighbour below, it sets the neighbour below to null.
 	/// </summary>
 	public void LeftMouseButtonPressed()
 	{
@@ -192,8 +178,6 @@ public class CardController
 
 	/// <summary>
 	/// Sets the ZIndex of all cards based on the selected card.
-	/// It checks the stack above the selected card and sets the ZIndex of all cards accordingly.
-	/// The selected card is set to the top of the stack.
 	/// </summary>
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
 	public void SetZIndexForAllCards(CardNode cardNode)
@@ -222,8 +206,6 @@ public class CardController
 
 	/// <summary>
 	/// Called when the left mouse button is released.
-	/// It sets the selected card to not be dragged anymore.
-	/// It checks for a card under the moved card and sets it as a neighbour below if it exists.
 	/// </summary>
 	public void LeftMouseButtonReleased()
 	{
@@ -245,8 +227,6 @@ public class CardController
 
 	/// <summary>
 	/// Used to print the cards and their neighbours for debugging purposes.
-	/// It prints the card type, ZIndex, and whether the card is being dragged.
-	/// It also prints the neighbours above and below the card, if they exist.
 	/// </summary>
 	public void PrintCardsNeighbours()
 	{
