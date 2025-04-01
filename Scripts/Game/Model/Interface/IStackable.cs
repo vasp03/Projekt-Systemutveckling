@@ -1,46 +1,63 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 
 namespace Goodot15.Scripts.Game.Model.Interface;
 
 public interface IStackable {
-	// /// <summary>
-	// ///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
-	// ///     Gets the current entire stack collection
-	// /// </summary>
-	// public IReadOnlyCollection<IStackable> Stack {
-	// 	get {
-	// 		ICollection<IStackable> stackBackwards = [];
-	// 		ICollection<IStackable> stackForwards = [];
+	/// <summary>
+	///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
+	///     Gets the current entire stack collection
+	/// </summary>
+	public IReadOnlyCollection<IStackable> Stack {
+		get {
+			ICollection<IStackable> stackBackwards = [];
+			ICollection<IStackable> stackForwards = [];
 
 
-	// 		IStackable current = this;
-	// 		IStackable next;
+			IStackable current = this;
+			IStackable next;
 
-	// 		// Traverse backwards
-	// 		while (current != null) {
-	// 			next = current.NeighbourBelow;
-	// 			stackBackwards.Add(next);
-	// 			current = next;
-	// 		}
+			// Traverse backwards
+			while (current != null) {
+				next = current.NeighbourBelow;
+				stackBackwards.Add(next);
+				current = next;
+			}
 
-	// 		// Traverse forwards
-	// 		current = this;
-	// 		while (current != null) {
-	// 			next = current.NeighbourAbove;
-	// 			stackForwards.Add(next);
-	// 			current = next;
-	// 		}
+			// Traverse forwards
+			current = this;
+			while (current != null) {
+				next = current.NeighbourAbove;
+				stackForwards.Add(next);
+				current = next;
+			}
 
-	// 		List<IStackable> stack = [];
-	// 		stack.AddRange(stackBackwards
-	// 			.Reverse()); // Stack backwards needs to be reversed so the order of the cards are correct
-	// 		stack.AddRange(stackForwards);
+			List<IStackable> stack = [];
+			stack.AddRange(stackBackwards
+				.Reverse()); // Stack backwards needs to be reversed so the order of the cards are correct
+			stack.AddRange(stackForwards);
 
-	// 		return stack.AsReadOnly();
-	// 	}
-	// }
+			return stack.AsReadOnly();
+		}
+	}
+
+	public List<IStackable> StackAbove {
+		get {
+			List<IStackable> stackForwards = new List<IStackable>();
+
+			IStackable current = this;
+			while (current != null) {
+				current = current.NeighbourAbove;
+
+				if (current == null) break;
+
+				stackForwards.Add(current);
+			}
+
+			return stackForwards;
+		}
+	}
 
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }

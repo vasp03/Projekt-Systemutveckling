@@ -8,10 +8,6 @@ public class LivingPlayer(string textureAddress, bool movable, int cost, int hea
 	public int Saturation { get; set; }
 	public int AttackDamage { get; set; }
 
-	public IReadOnlyCollection<Type> GetStackableTypes() {
-		return [];
-	}
-
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
 
@@ -21,6 +17,10 @@ public class LivingPlayer(string textureAddress, bool movable, int cost, int hea
 
 	public void SetNeighbourBelow(IStackable card) {
 		throw new NotImplementedException();
+	}
+
+	public IReadOnlyCollection<Type> GetStackableTypes() {
+		return [];
 	}
 
 	public bool CanStackWith(Card card) {

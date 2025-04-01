@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
 
-	private CardNode LastOverlappedCard;
-
 	private CardController cardController;
+
+	private CardNode LastOverlappedCard;
 
 	private bool oldIsHighlighted;
 
@@ -18,21 +17,21 @@ public partial class CardNode : Node2D {
 
 	private Sprite2D sprite;
 
+	public CardNode() {
+		AddToGroup(CardController.CARD_GROUP_NAME);
+	}
+
 	public Card CardType { get; private set; }
 
 	public bool MouseIsHovering { get; private set; }
 
 	public bool IsBeingDragged { get; private set; }
 
-	public List<CardNode> HoveredCards { get; private set; } = new();
+	public List<CardNode> HoveredCards { get; } = new();
 
 	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
 
 	public bool IsMovingOtherCards { get; set; } = false;
-
-	public CardNode() {
-		AddToGroup(CardController.CARD_GROUP_NAME);
-	}
 
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
 		this.cardController = cardController;
@@ -59,27 +58,22 @@ public partial class CardNode : Node2D {
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
-		if (this.CardType is IStackable stackable) {
+		if (CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-			if (neighbourAbove == null) {
-				cardController.SetTopCardWithFollowingCards(this);
-			}else{
+			if (neighbourAbove == null)
+				ZIndex = cardController.CardCount;
+			else
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
-			}
 		}
 	}
 
 	public bool HasNeighbourAbove() {
-		if (CardType is IStackable stackable) {
-			return stackable.NeighbourAbove != null;
-		}
+		if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
 		return false;
 	}
 
 	public bool HasNeighbourBelow() {
-		if (CardType is IStackable stackable) {
-			return stackable.NeighbourBelow != null;
-		}
+		if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
 		return false;
 	}
 
@@ -128,32 +122,35 @@ public partial class CardNode : Node2D {
 	}
 
 	public void _on_area_2d_area_exited(Area2D area) {
-		GD.Print("From: " + GetCardNodeFromArea2D(area).CardType.TextureType + " - Area exited: " + GetCardNodeFromArea2D(area).CardType.TextureType);
-
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 
 		// Check which card that was removed and remove it from either neighbour above or below
 		if (area.GetParent() is CardNode cardNode) {
-
-		}
-		else {
-			GD.PrintErr("Area2D parent is not a CardNode");
 		}
 	}
 
 	public void SetOverLappedCardToStack(CardNode underCard) {
-		if (underCard == null || LastOverlappedCard == this) {
-			return;
-		}
+		if (underCard == null || LastOverlappedCard == this) return;
 
-		if (this.CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable) {
-			if (this.ZIndex > underCard.ZIndex) {
+		if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
+			if (ZIndex > underCard.ZIndex) {
 				thisStackable.SetNeighbourBelow(otherStackable);
 				otherStackable.SetNeighbourAbove(thisStackable);
 
-				this.SetPosition(underCard.Position - new Vector2(0, -15));
+				SetPosition(underCard.Position - new Vector2(0, -15));
+
+				if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+					((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
+				}
 			}
+	}
+
+	public void SetPositionAsPartOfStack(CardNode underCard) {
+		SetPosition(underCard.Position - new Vector2(0, -15));
+
+		if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
 		}
 	}
 
