@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cgb2e24ii2f47"]
 
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_i04w5"]
-[ext_resource type="Script" uid="uid://cg737dpl20xej" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Script" uid="uid://bypkolhdq5pht" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i04w5"]
 
@@ -46,15 +46,16 @@ text = "PAUSED"
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 process_mode = 3
-layout_mode = 2
-anchor_left = 0.521
-anchor_top = 0.554
-anchor_right = 0.521
-anchor_bottom = 0.554
-offset_left = -207.88
-offset_top = -91.88
-offset_right = 207.12
-offset_bottom = 92.12
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.524
+anchor_right = 0.5
+anchor_bottom = 0.524
+offset_left = -182.0
+offset_top = -92.28
+offset_right = 182.0
+offset_bottom = 91.72
 grow_horizontal = 2
 theme_override_constants/separation = 32
 
