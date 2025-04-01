@@ -1,17 +1,15 @@
 using Godot;
 
-
 public partial class MainMenu : Control {
+	private Button exitButton;
 
 	private MenuController menuController;
-	private Button playButton;
 	private Button optionsButton;
-	private Button exitButton;
-	
-	public override void _Ready()
-	{
+	private Button playButton;
+
+	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
-		
+
 		playButton = GetNode<Button>("ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
 
@@ -20,7 +18,6 @@ public partial class MainMenu : Control {
 
 		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
-		
 	}
 
 	private void OnPlayButtonPressed() {

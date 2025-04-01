@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 
 namespace Goodot15.Scripts.Game.Model.Interface;
 
@@ -44,7 +43,7 @@ public interface IStackable {
 
 	public List<IStackable> StackAbove {
 		get {
-			List<IStackable> stackForwards = new List<IStackable>();
+			List<IStackable> stackForwards = new();
 
 			IStackable current = this;
 			while (current != null) {

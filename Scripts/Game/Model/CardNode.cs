@@ -140,18 +140,16 @@ public partial class CardNode : Node2D {
 
 				SetPosition(underCard.Position - new Vector2(0, -15));
 
-				if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+				if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
 					((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-				}
 			}
 	}
 
 	public void SetPositionAsPartOfStack(CardNode underCard) {
 		SetPosition(underCard.Position - new Vector2(0, -15));
 
-		if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+		if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-		}
 	}
 
 	public override void _Process(double delta) {
