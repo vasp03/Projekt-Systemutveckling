@@ -136,7 +136,8 @@ public class CardController
 			if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
 			{
 				topUnderCard = card;
-      }
+			}
+		}
 
 		return topUnderCard;
 	}
@@ -199,6 +200,7 @@ public class CardController
 				card.ZIndex = counterForOtherCards;
 				counterForOtherCards++;
 			}
+		}
 	}
 
 	/// <summary>
@@ -231,16 +233,16 @@ public class CardController
 		foreach (CardNode card in AllCardsSorted)
 			if (card.CardType is IStackable stackable)
 				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-				         " | Above: " +
-				         (stackable.NeighbourAbove != null
-					         ? stackable.NeighbourAbove.TextureType + " - " +
-					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-					         : "None") +
-				         " | Below: " +
-				         (stackable.NeighbourBelow != null
-					         ? stackable.NeighbourBelow.TextureType + " - " +
-					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-					         : "None"));
+						 " | Above: " +
+						 (stackable.NeighbourAbove != null
+							 ? stackable.NeighbourAbove.TextureType + " - " +
+							   ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
+							 : "None") +
+						 " | Below: " +
+						 (stackable.NeighbourBelow != null
+							 ? stackable.NeighbourBelow.TextureType + " - " +
+							   ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
+							 : "None"));
 
 		GD.Print("------------------");
 	}
