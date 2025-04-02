@@ -21,7 +21,7 @@ public abstract class Card {
 		CardNode = cardNode;
 	}
 
-	public CardNode CardNode { get; private set; }
+	public CardNode CardNode { get; set; }
 
 	public string ID { get; private set; }
 	public string TexturePath { get; protected set; }

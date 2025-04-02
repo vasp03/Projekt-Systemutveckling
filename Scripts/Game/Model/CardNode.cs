@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -12,6 +13,7 @@ public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
 
 	private CardController cardController;
+	public CardController CardController => cardController;
 
 	private CardNode LastOverlappedCard;
 
@@ -21,11 +23,24 @@ public partial class CardNode : Node2D {
 
 	private Sprite2D sprite;
 
+	
+	private Area2D area2D => GetNode<Area2D>("Area2D");
 	public CardNode() {
 		AddToGroup(CardController.CARD_GROUP_NAME);
 	}
 
-	public Card CardType { get; private set; }
+	private Card _cardType;
+
+	public Card CardType {
+		get => _cardType;
+		set {
+			if (this._cardType is not null) {
+				this._cardType.CardNode = null;
+			}
+
+			value.CardNode = this;
+		}
+}
 
 	public bool MouseIsHovering { get; private set; }
 
@@ -71,6 +86,21 @@ public partial class CardNode : Node2D {
 				ZIndex = cardController.CardCount;
 			else
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
+		}
+
+		if (!isBeingDragged) {
+			this.CheckForConsumingCards();
+		}
+	}
+
+	private void CheckForConsumingCards() {
+		CardNode? cardUnder = this.area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
+			.LastOrDefault(e => e.ZIndex <= this.ZIndex);
+
+		if (cardUnder is not null) {
+			if (cardUnder.CardType is ICardConsumer cardConsumer) {
+				cardConsumer.ConsumeCard(this.CardType);
+			}
 		}
 	}
 
@@ -134,27 +164,6 @@ public partial class CardNode : Node2D {
 			sprite.SetModulate(sprite.Modulate / HighLightFactor);
 		}
 	}
-#region Events(?)
-	public void _on_area_2d_mouse_entered() {
-		MouseIsHovering = true;
-		cardController.AddCardToHoveredCards(this);
-	}
-
-	public void _on_area_2d_mouse_exited() {
-		MouseIsHovering = false;
-		cardController.RemoveCardFromHoveredCards(this);
-	}
-
-	public void _on_area_2d_area_entered(Area2D area) {
-		LastOverlappedCard = GetCardNodeFromArea2D(area);
-		HoveredCards.Add(GetCardNodeFromArea2D(area));
-	}
-
-	public void _on_area_2d_area_exited(Area2D area) {
-		LastOverlappedCard = null;
-		HoveredCards.Remove(GetCardNodeFromArea2D(area));
-	}
-	#endregion Events(?)
 
 	/// <summary>
 	///     Sets the position of the card node to the position of the underCard.
@@ -211,4 +220,28 @@ public partial class CardNode : Node2D {
 	public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
 		return area2D.GetParent<CardNode>();
 	}
+
+	#region Events(?)
+
+	public void _on_area_2d_mouse_entered() {
+		MouseIsHovering = true;
+		cardController.AddCardToHoveredCards(this);
+	}
+
+	public void _on_area_2d_mouse_exited() {
+		MouseIsHovering = false;
+		cardController.RemoveCardFromHoveredCards(this);
+	}
+
+	public void _on_area_2d_area_entered(Area2D area) {
+		LastOverlappedCard = GetCardNodeFromArea2D(area);
+		HoveredCards.Add(GetCardNodeFromArea2D(area));
+	}
+
+	public void _on_area_2d_area_exited(Area2D area) {
+		LastOverlappedCard = null;
+		HoveredCards.Remove(GetCardNodeFromArea2D(area));
+	}
+
+	#endregion Events(?)
 }

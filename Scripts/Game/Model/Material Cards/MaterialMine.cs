@@ -1,5 +1,5 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialMine(string textureAddress, int cost, CardNode cardNode)
-	: CardMaterial(textureAddress, cost, cardNode) {
+public class MaterialMine(int cost, CardNode cardNode)
+	: CardMaterial("Mine", cost, cardNode) {
 }

@@ -27,13 +27,26 @@ public class CardController {
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
 
+	public CardNode CreateCard(Card card, Vector2 position = default) {
+		ArgumentNullException.ThrowIfNull(card);
+		
+		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+		CardNode cardInstance = cardScene.Instantiate<CardNode>();
+
+		cardInstance.CardType = card;
+		
+		cardInstance.Position = position;
+		nodeController.AddChild(cardInstance);
+		
+		return cardInstance;
+	}
 	/// <summary>
-	///     Creates a new card and adds it to the scene.
+	///     Creates a new card and adds it to the scene, with a random underlying CardType
 	/// </summary>
 	/// <returns>
 	///     The created card instance.
 	/// </returns>
-	public void CreateCard() {
+	public CardNode CreateCard() {
 		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
 		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
@@ -45,6 +58,8 @@ public class CardController {
 			nodeController.AddChild(cardInstance);
 			cardInstance.SetPosition(new Vector2(100, 100));
 		}
+
+		return cardInstance;
 	}
 
 	/// <summary>

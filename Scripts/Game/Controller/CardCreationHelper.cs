@@ -31,29 +31,29 @@ public class CardCreationHelper {
 	public Card GetCreatedInstanceOfCard(TypeEnum type, CardNode cardNode) {
 		switch (type) {
 			case TypeEnum.Apple:
-				return new MaterialApple("Apple", 1, cardNode);
+				return new MaterialApple(1, cardNode);
 			// case CardCreationHelper.TypeEnum.Axe:
 			//     return new MaterialAxe("Axe", true, 1);
 			case TypeEnum.Berry:
-				return new MaterialBerry("Berry", 1, cardNode);
+				return new MaterialBerry( 1, cardNode);
 			case TypeEnum.Leaves:
-				return new MaterialLeaves("Leaves", 1, cardNode);
+				return new MaterialLeaves(1, cardNode);
 			case TypeEnum.Mine:
-				return new MaterialMine("Mine", 1, cardNode);
+				return new MaterialMine(1, cardNode);
 			case TypeEnum.Plank:
-				return new MaterialPlank("Planks", 1, cardNode);
+				return new MaterialPlank(1, cardNode);
 			case TypeEnum.Stick:
-				return new MaterialStick("Stick", 1, cardNode);
+				return new MaterialStick(1, cardNode);
 			case TypeEnum.Stone:
-				return new MaterialStone("Stone", 1, cardNode);
+				return new MaterialStone(1, cardNode);
 			case TypeEnum.SwordMk1:
-				return new MaterialSwordMk1("Sword Mk1", 1, cardNode);
+				return new MaterialSwordMk1(1, cardNode);
 			case TypeEnum.Tree:
-				return new MaterialTree("Tree", 1, cardNode);
+				return new MaterialTree(1, cardNode);
 			case TypeEnum.Water:
-				return new MaterialWater("Water", 1, cardNode);
+				return new MaterialWater( 1, cardNode);
 			case TypeEnum.Wood:
-				return new MaterialWood("Wood", 1, cardNode);
+				return new MaterialWood(1, cardNode);
 			case TypeEnum.Random:
 				return GetCreatedInstanceOfCard(GetRandomCardType(), cardNode);
 			default:

@@ -1,5 +1,5 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialStick(string textureAddress, int cost, CardNode cardNode)
-	: CardMaterial(textureAddress, cost, cardNode) {
+public class MaterialStick(int cost, CardNode cardNode)
+	: CardMaterial("Stick", cost, cardNode) {
 }

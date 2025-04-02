@@ -1,54 +1,24 @@
 using System;
-using System.Collections.Generic;
+using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public class LivingPlayer(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: CardLiving(textureAddress, movable, cost, health, cardNode), ITickable, ICardConsumer {
+	: CardLiving(textureAddress, movable, cost, health, cardNode) {
 	public static readonly int STARVATION_TICK_DELAY = Utilities.timeToTicks(days: 3);
 	public static readonly int HUNGER_TICK_DELAY = Utilities.timeToTicks(days: 1);
-	
-	private int _saturation;
-	private int _hungerTickCount;
-	private int _starvationTickCount;
-
-	public int Saturation {
-		get => _saturation;
-		set => _saturation = Math.Max(0, value);
-	}
-
-	public int StarvationTickProgress {
-		get => _starvationTickCount;
-		set => this._starvationTickCount = Math.Clamp(value, 0, STARVATION_TICK_DELAY);
-	}
-
-	public int HungerTickProgress {
-		get => _hungerTickCount;
-		set => _hungerTickCount = Math.Max(0, value);
-	}
 
 	public int AttackDamage { get; set; }
 
-	public void postTick() {
-		if (Saturation <= 0)
-			this.StarvationTickProgress++;
-		else
-			this.HungerTickProgress++;
-	}
+	public override int? TicksUntilFullyStarved => STARVATION_TICK_DELAY;
+	public override int? TicksUntilSaturationDecrease => HUNGER_TICK_DELAY;
 
-	private void checkTickProgress() {
-		if (this.StarvationTickProgress >= STARVATION_TICK_DELAY) {
-			// Death(?)
+	public override bool ConsumeCard(Card otherCard) {
+		if (otherCard is IEdible edibleCard) {
+			this.Saturation += edibleCard.ConsumeFood(1);
 		}
-
-		if (this.HungerTickProgress >= HUNGER_TICK_DELAY) {
-			this.Saturation--;
-		}
-	}
-
-	public bool ConsumeCard(Card otherCard) {
-		throw new NotImplementedException();
+		return false;
 	}
 }
