@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -93,7 +93,7 @@ public partial class SoundController : Node {
 		player.Stream = sfx[soundName];
 		player.VolumeDb = Mathf.LinearToDb(_volume);
 		AddChild(player);
-        //Queues the node to be deleted when player.Finished emits.
+		//Queues the node to be deleted when player.Finished emits.
 		player.Finished += () => player.QueueFree();
 		player.Play();
 	}
