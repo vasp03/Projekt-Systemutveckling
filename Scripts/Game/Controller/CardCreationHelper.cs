@@ -28,7 +28,7 @@ public class CardCreationHelper {
 		return type;
 	}
 
-	public Card GetCreatedInstanceOfCard(TypeEnum type, Goodot15.Scripts.Game.Model.CardNode cardNode) {
+	public Card GetCreatedInstanceOfCard(TypeEnum type, CardNode cardNode) {
 		switch (type) {
 			case TypeEnum.Apple:
 				return new MaterialApple("Apple", 1, cardNode);

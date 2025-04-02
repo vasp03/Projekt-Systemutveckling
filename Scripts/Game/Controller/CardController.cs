@@ -10,7 +10,7 @@ public class CardController {
 
 	private readonly NodeController nodeController;
 
-	private Goodot15.Scripts.Game.Model.CardNode selectedCard;
+	private CardNode selectedCard;
 
 	public CardController(NodeController nodeController) {
 		this.nodeController = nodeController;
@@ -21,13 +21,13 @@ public class CardController {
 
 	public int CardCount => AllCards.Count;
 
-	public IReadOnlyCollection<Goodot15.Scripts.Game.Model.CardNode> AllCards =>
-		nodeController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<Goodot15.Scripts.Game.Model.CardNode>().ToArray();
+	public IReadOnlyCollection<CardNode> AllCards =>
+		nodeController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
-	public IReadOnlyCollection<Goodot15.Scripts.Game.Model.CardNode> AllCardsSorted =>
+	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
 
-	public IReadOnlyCollection<Goodot15.Scripts.Game.Model.CardNode> HoveredCards => AllCards.Where(e => e.MouseIntersecting).ToArray();
+	public IReadOnlyCollection<CardNode> HoveredCards => AllCards.Where(e => e.MouseIntersecting).ToArray();
 
 	// public void AddCardToHoveredCards(CardNode cardNode) {
 	// 	hoveredCards.Add(cardNode);
@@ -41,12 +41,12 @@ public class CardController {
 	// }
 
 	// Get the top card at the mouse position
-	public Goodot15.Scripts.Game.Model.CardNode TopHoveredCard => HoveredCards.OrderByDescending(x => x.ZIndex).FirstOrDefault();
+	public CardNode TopHoveredCard => HoveredCards.OrderByDescending(x => x.ZIndex).FirstOrDefault();
 
 	public void CreateCard() {
 		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
 		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-		Goodot15.Scripts.Game.Model.CardNode cardInstance = cardScene.Instantiate<Goodot15.Scripts.Game.Model.CardNode>();
+		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		bool ret = cardInstance.CreateNode(
 			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType(), cardInstance), this
@@ -81,7 +81,7 @@ public class CardController {
 	public void LeftMouseButtonReleased() {
 		// Global.RecursiveCheckIteration = 0;
 // 
-		// if (selectedCard != null) selectedCard.IsBeingDragged = false;
+		if (selectedCard != null) selectedCard.IsBeingDragged = false;
 		// if (!selectedCard.IsMovingOtherCards) {
 		// 	CardNode underCard = GetCardUnderMovedCard();
 		// 	if (underCard != null && !underCard.HasNeighbourAbove())

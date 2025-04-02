@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -84,6 +85,8 @@ public partial class CardNode : Node2D {
 
 	#region Visual logic
 
+	private bool oldIsHighlighted;
+	
 	/// <summary>
 	///     Applies the texture to the sprite of the card node.
 	///     It tries to load the texture from the address of the card type.
