@@ -247,6 +247,13 @@ public class CardController {
 			if (craftedCard != null) {
 				foreach (string cardName in craftedCard) {
 					GD.Print("Crafted: " + cardName);
+
+					foreach (CardNode card in stack) {
+						GD.Print("Removeing card: " + card.CardType.TextureType);
+						card.QueueFree();
+					}
+
+					CardCreationHelper.CreateCard(cardName);
 				}
 			}else{
 				GD.Print("No crafting possible");
