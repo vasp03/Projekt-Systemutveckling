@@ -12,7 +12,7 @@ public abstract class Card {
 	/// <param name="textureAddress"></param>
 	/// <param name="movable"></param>
 	/// <param name="cost"></param>
-	public Card(string textureAddress, bool movable, int cost, CardNode cardNode) {
+	protected Card(string textureAddress, bool movable, int cost, Goodot15.Scripts.Game.Model.CardNode cardNode) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
 		TexturePath = baseTexturePath + textureAddress + textureEnding;
@@ -21,13 +21,12 @@ public abstract class Card {
 		CardNode = cardNode;
 	}
 
-	public CardNode CardNode { get; private set; }
+	public Goodot15.Scripts.Game.Model.CardNode CardNode { get; private set; }
 
 	public string ID { get; private set; }
 	public string TexturePath { get; protected set; }
 	public bool Movable { get; set; }
 	public int Cost { get; set; }
-	public bool Highlighted { get; set; }
 
 	public string TextureType {
 		get {
