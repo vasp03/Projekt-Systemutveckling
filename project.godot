@@ -20,13 +20,13 @@ config/icon="res://Assets/Icons/icon.svg"
 
 Global="*res://Scripts/Global.cs"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
+ResolutionManager="*res://Scripts/Game/Controller/ResolutionManager.cs"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
 
 [dotnet]
