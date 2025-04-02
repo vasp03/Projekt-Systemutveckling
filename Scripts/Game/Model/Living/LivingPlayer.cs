@@ -13,9 +13,7 @@ public class LivingPlayer(string textureAddress, bool movable, int cost, int hea
 	public override int? TicksUntilSaturationDecrease => HUNGER_TICK_DELAY;
 
 	public override bool ConsumeCard(Card otherCard) {
-		if (otherCard is IEdible edibleCard) {
-			this.Saturation += edibleCard.ConsumeFood(1);
-		}
+		if (otherCard is IEdible edibleCard) Saturation += edibleCard.ConsumeFood(1);
 		return false;
 	}
 }

@@ -12,8 +12,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
 
-	private CardController cardController;
-	public CardController CardController => cardController;
+	private Card _cardType;
 
 	private CardNode LastOverlappedCard;
 
@@ -21,28 +20,27 @@ public partial class CardNode : Node2D {
 
 	private Vector2 oldMousePosition;
 
-	private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
-
-	
-	private Area2D area2D => GetNode<Area2D>("Area2D");
 	public CardNode() {
 		AddToGroup(CardController.CARD_GROUP_NAME);
 	}
 
-	private Card _cardType;
+	public CardController CardController { get; private set; }
+
+	private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
+
+
+	private Area2D area2D => GetNode<Area2D>("Area2D");
 
 	public Card CardType {
 		get => _cardType;
 		set {
-			if (this._cardType is not null) {
-				this._cardType.CardNode = null;
-			}
+			if (_cardType is not null) _cardType.CardNode = null;
 
 			value.CardNode = this;
-			this._cardType = value;
-			this.ApplyTexture();
+			_cardType = value;
+			ApplyTexture();
 		}
-}
+	}
 
 	public bool MouseIsHovering { get; private set; }
 
@@ -62,7 +60,7 @@ public partial class CardNode : Node2D {
 	///     It also sets the position of the new card to (100, 100).
 	/// </summary>
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
-		this.cardController = cardController;
+		this.CardController = cardController;
 
 		CardType = card;
 
@@ -84,25 +82,21 @@ public partial class CardNode : Node2D {
 		if (CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
 			if (neighbourAbove == null)
-				ZIndex = cardController.CardCount;
+				ZIndex = CardController.CardCount;
 			else
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
 		}
 
-		if (!isBeingDragged) {
-			this.CheckForConsumingCards();
-		}
+		if (!isBeingDragged) CheckForConsumingCards();
 	}
 
 	private void CheckForConsumingCards() {
-		CardNode? cardUnder = this.area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
-			.LastOrDefault(e => e.ZIndex <= this.ZIndex);
+		CardNode? cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
+			.LastOrDefault(e => e.ZIndex <= ZIndex);
 
-		if (cardUnder is not null) {
-			if (cardUnder.CardType is ICardConsumer cardConsumer) {
-				cardConsumer.ConsumeCard(this.CardType);
-			}
-		}
+		if (cardUnder is not null)
+			if (cardUnder.CardType is ICardConsumer cardConsumer)
+				cardConsumer.ConsumeCard(CardType);
 	}
 
 	/// <summary>
@@ -201,7 +195,7 @@ public partial class CardNode : Node2D {
 	/// </summary>
 	/// <param name="delta"></param>
 	public override void _Process(double delta) {
-		ITickable? tickable = this.CardType as ITickable;
+		ITickable? tickable = CardType as ITickable;
 		tickable?.PreTick();
 		if (IsBeingDragged) {
 			Vector2 mousePosition = GetGlobalMousePosition();
@@ -210,6 +204,7 @@ public partial class CardNode : Node2D {
 
 			oldMousePosition = mousePosition;
 		}
+
 		tickable?.PostTick();
 	}
 
@@ -229,12 +224,12 @@ public partial class CardNode : Node2D {
 
 	public void _on_area_2d_mouse_entered() {
 		MouseIsHovering = true;
-		cardController.AddCardToHoveredCards(this);
+		CardController.AddCardToHoveredCards(this);
 	}
 
 	public void _on_area_2d_mouse_exited() {
 		MouseIsHovering = false;
-		cardController.RemoveCardFromHoveredCards(this);
+		CardController.RemoveCardFromHoveredCards(this);
 	}
 
 	public void _on_area_2d_area_entered(Area2D area) {

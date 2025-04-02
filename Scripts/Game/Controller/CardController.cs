@@ -29,17 +29,18 @@ public class CardController {
 
 	public CardNode CreateCard(Card card, Vector2 position = default) {
 		ArgumentNullException.ThrowIfNull(card);
-		
+
 		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		cardInstance.CardType = card;
-		
+
 		cardInstance.Position = position;
 		nodeController.AddChild(cardInstance);
-		
+
 		return cardInstance;
 	}
+
 	/// <summary>
 	///     Creates a new card and adds it to the scene, with a random underlying CardType
 	/// </summary>

@@ -35,7 +35,7 @@ public class CardCreationHelper {
 			// case CardCreationHelper.TypeEnum.Axe:
 			//     return new MaterialAxe("Axe", true, 1);
 			case TypeEnum.Berry:
-				return new MaterialBerry( 1, cardNode);
+				return new MaterialBerry(1, cardNode);
 			case TypeEnum.Leaves:
 				return new MaterialLeaves(1, cardNode);
 			case TypeEnum.Mine:
@@ -51,7 +51,7 @@ public class CardCreationHelper {
 			case TypeEnum.Tree:
 				return new MaterialTree(1, cardNode);
 			case TypeEnum.Water:
-				return new MaterialWater( 1, cardNode);
+				return new MaterialWater(1, cardNode);
 			case TypeEnum.Wood:
 				return new MaterialWood(1, cardNode);
 			case TypeEnum.Random:

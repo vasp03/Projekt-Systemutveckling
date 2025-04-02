@@ -6,30 +6,29 @@ namespace Goodot15.Scripts.Game.Model.Living;
 
 public abstract class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
 	: CardLiving(textureAddress, movable, cost, health, cardNode), ITickable, ICardProducer {
+	private int _produceTimer;
 	public virtual int? TicksUntilProducedCard => Utilities.timeToTicks(days: 0.5d);
 
-	private int _produceTimer;
 	public int ProduceTickProgress {
 		get => _produceTimer;
-		set => this._produceTimer = Math.Max(0, value);
+		set => _produceTimer = Math.Max(0, value);
 	}
 
 	public override int? TicksUntilFullyStarved => Utilities.timeToTicks(days: 3d);
 	public override int? TicksUntilSaturationDecrease => Utilities.timeToTicks(days: 1d);
+
+	public abstract Card ProduceCard();
+
 	public override void PostTick() {
 		base.PostTick();
-		if (TicksUntilProducedCard is not null && Saturation > 0) {
-			this.ProduceTickProgress++;
-		}
+		if (TicksUntilProducedCard is not null && Saturation > 0) ProduceTickProgress++;
 	}
 
 	protected override void CheckTickProgress() {
 		base.CheckTickProgress();
-		if (this.ProduceTickProgress >= this.TicksUntilProducedCard) {
-			this.ProduceTickProgress = 0;
-			this.CardNode.CardController.CreateCard(this.ProduceCard(), this.CardNode.Position + Vector2.Down * 15f);
+		if (ProduceTickProgress >= TicksUntilProducedCard) {
+			ProduceTickProgress = 0;
+			CardNode.CardController.CreateCard(ProduceCard(), CardNode.Position + Vector2.Down * 15f);
 		}
 	}
-
-	public abstract Card ProduceCard();
 }
