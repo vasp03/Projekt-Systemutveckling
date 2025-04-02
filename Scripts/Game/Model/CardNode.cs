@@ -134,7 +134,7 @@ public partial class CardNode : Node2D {
 			sprite.SetModulate(sprite.Modulate / HighLightFactor);
 		}
 	}
-
+#region Events(?)
 	public void _on_area_2d_mouse_entered() {
 		MouseIsHovering = true;
 		cardController.AddCardToHoveredCards(this);
@@ -154,6 +154,7 @@ public partial class CardNode : Node2D {
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 	}
+	#endregion Events(?)
 
 	/// <summary>
 	///     Sets the position of the card node to the position of the underCard.
