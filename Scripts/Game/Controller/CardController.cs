@@ -8,13 +8,13 @@ public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 	private readonly CardCreationHelper CardCreationHelper;
 
-	private readonly List<CardNode> hoveredCards = new();
+	private readonly List<CardNode> hoveredCards = [];
 
 	private readonly NodeController nodeController;
 
 	private CardNode selectedCard;
 
-	private CraftingController CraftingController;
+	private readonly CraftingController CraftingController;
 
 
 	// Constructor
@@ -249,7 +249,8 @@ public class CardController {
 					GD.Print("Crafted: " + cardName);
 
 					foreach (CardNode card in stack) {
-						GD.Print("Removeing card: " + card.CardType.TextureType);
+						GD.Print("Removing card: " + card.CardType.TextureType);
+						hoveredCards.Remove(card);
 						card.QueueFree();
 					}
 
