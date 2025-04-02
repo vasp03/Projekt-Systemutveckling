@@ -21,7 +21,7 @@ public partial class CardNode : Node2D {
 
 	private Vector2 oldMousePosition;
 
-	private Sprite2D sprite;
+	private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
 
 	
 	private Area2D area2D => GetNode<Area2D>("Area2D");
@@ -39,6 +39,8 @@ public partial class CardNode : Node2D {
 			}
 
 			value.CardNode = this;
+			this._cardType = value;
+			this.ApplyTexture();
 		}
 }
 
@@ -63,9 +65,8 @@ public partial class CardNode : Node2D {
 		this.cardController = cardController;
 
 		CardType = card;
-		sprite = GetNode<Sprite2D>("Sprite2D");
 
-		ApplyTexture();
+		// ApplyTexture();
 
 		// Set the name of the card to the name of the card
 		Name = card.ID;
@@ -209,7 +210,7 @@ public partial class CardNode : Node2D {
 
 			oldMousePosition = mousePosition;
 		}
-		tickable.PostTick();
+		tickable?.PostTick();
 	}
 
 	/// <summary>
