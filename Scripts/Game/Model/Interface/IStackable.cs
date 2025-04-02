@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,28 +41,54 @@ public interface IStackable {
 		}
 	}
 
+	public List<IStackable> StackAbove {
+		get {
+			List<IStackable> stackForwards = new();
+
+			IStackable current = this;
+			while (current != null) {
+				current = current.NeighbourAbove;
+
+				if (current == null) break;
+
+				stackForwards.Add(current);
+			}
+
+			return stackForwards;
+		}
+	}
+
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
+	string TextureType { get; }
 
-	/// <summary>
-	///     Gets the types this <code>IStackable</code> is capable of stacking to
-	/// </summary>
-	/// <returns></returns>
-	public IReadOnlyCollection<Type> GetStackableTypes();
 
-	protected void SetNeighbourAbove(IStackable card);
-	protected void SetNeighbourBelow(IStackable card);
+	// /// <summary>
+	// ///     Gets the types this <code>IStackable</code> is capable of stacking to
+	// /// </summary>
+	// /// <returns></returns>
+	// public IReadOnlyCollection<Type> GetStackableTypes();
+
+	public void SetNeighbourAbove(IStackable card);
+	public void SetNeighbourBelow(IStackable card);
+
+	// public void ResetNeighbours() {
+	// 	NeighbourAbove = null;
+	// 	NeighbourBelow = null;
+	// }
 
 	/// <summary>
 	///     Determines if this <code>IStackable</code> may stack with the other object <code>card</code>
 	/// </summary>
 	/// <param name="card">Other card to check if can stack</param>
 	/// <returns>True if capable of stacking, false otherwise</returns>
-	public bool CanStackWith(Card card) {
-		IReadOnlyCollection<Type> stackableTypes = GetStackableTypes();
-		if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
-			throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
+	public bool CanStackWith(IStackable card) {
+		// IReadOnlyCollection<Type> stackableTypes = GetStackableTypes();
+		// if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
+		// 	throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
 
-		return stackableTypes.Any(t => t.IsAssignableFrom(card.GetType()));
+		// return stackableTypes.Any(t => t.IsAssignableFrom(card.GetType()));
+
+		return true;
 	}
 }
