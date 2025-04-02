@@ -34,7 +34,7 @@ public abstract class CardLiving(string textureAddress, bool movable, int cost, 
 
 	public abstract bool ConsumeCard(Card otherCard);
 
-	public void postTick() {
+	public virtual void PostTick() {
 		if (Saturation <= 0)
 			StarvationTickProgress++;
 		else

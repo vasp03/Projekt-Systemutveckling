@@ -25,10 +25,10 @@ public abstract class CardBuilding : Card, ITickable {
 		set => ProduceTimeInTicks = value * 60;
 	}
 
-	public virtual void preTick() {
+	public virtual void PreTick() {
 	}
 
-	public virtual void postTick() {
+	public virtual void PostTick() {
 		currentProduceTick = (currentProduceTick + 1) % ProduceTimeInTicks;
 	}
 

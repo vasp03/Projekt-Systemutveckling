@@ -16,8 +16,8 @@ public abstract class LivingAnimal(string textureAddress, bool movable, int cost
 
 	public override int? TicksUntilFullyStarved => Utilities.timeToTicks(days: 3d);
 	public override int? TicksUntilSaturationDecrease => Utilities.timeToTicks(days: 1d);
-	public void postTick() {
-		base.postTick();
+	public override void PostTick() {
+		base.PostTick();
 		if (TicksUntilProducedCard is not null && Saturation > 0) {
 			this.ProduceTickProgress++;
 		}

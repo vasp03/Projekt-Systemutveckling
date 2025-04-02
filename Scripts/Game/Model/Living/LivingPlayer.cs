@@ -1,9 +1,6 @@
-using System;
-using Godot;
-using Goodot15.Scripts;
-using Goodot15.Scripts.Game;
-using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+
+namespace Goodot15.Scripts.Game.Model.Living;
 
 public class LivingPlayer(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
 	: CardLiving(textureAddress, movable, cost, health, cardNode) {
