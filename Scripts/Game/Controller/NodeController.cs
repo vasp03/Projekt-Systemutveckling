@@ -17,14 +17,14 @@ public partial class NodeController : Node2D {
 		}
 		else if (@event is InputEventKey eventKey) {
 			if (eventKey.Pressed && eventKey.Keycode == Key.Space) {
-				cardController.CreateCard();
+				cardController.CreateCard("Random");
 			}
 			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape) {
 				menuController.OpenPauseMenu();
 				Visible = false;
 			}
 			else if (eventKey.Pressed && eventKey.Keycode == Key.A) {
-				cardController.PrintCardsNeighbours();
+				cardController.CreateCard("Wood");
 			}
 		}
 		else if (@event is InputEventMouseButton mouseButton) {
