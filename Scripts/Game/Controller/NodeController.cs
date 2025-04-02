@@ -16,9 +16,8 @@ public partial class NodeController : Node2D {
 		if (@event is InputEventMouseMotion mouseMotion) {
 		}
 		else if (@event is InputEventKey eventKey) {
-			if (eventKey.Pressed && eventKey.Keycode == Key.Space) {
+			if (eventKey.Pressed && eventKey.Keycode == Key.Space)
 				cardController.CreateCard();
-			}
 			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape)
 				// Exit the game
 				GetTree().Quit();
