@@ -27,6 +27,12 @@ public partial class SoundController : Node {
 		musicPlayer = new AudioStreamPlayer();
 		musicPlayer.Bus = "Music";
 		AddChild(musicPlayer);
+
+		musicPlayer.Finished += () => {
+			if (!string.IsNullOrEmpty(currentMusicPath)) {
+				PlayMusic(currentMusicPath); // restart the track
+			}
+		};
 	}
 
 	public void PlayMenuMusic() {
@@ -43,10 +49,6 @@ public partial class SoundController : Node {
 		}
 		
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
-		if (musicStream is AudioStreamWav wavStream) {
-			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
-		}
-		
 		musicPlayer.Stream = musicStream;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 		musicPlayer.Play();
