@@ -138,10 +138,10 @@ public partial class CardNode : Node2D {
 		set {
 			switch (value) {
 				case true:
-					startDragging();
+					OnStartDragging();
 					break;
 				case false:
-					stopDragging();
+					OnStopDragging();
 					break;
 			}
 
@@ -149,7 +149,7 @@ public partial class CardNode : Node2D {
 		}
 	}
 
-	private void startDragging() {
+	private void OnStartDragging() {
 		CardBelow = null;
 
 		ZIndex = cardController.AllCardsSorted.LastOrDefault().ZIndex + 1;
@@ -160,7 +160,7 @@ public partial class CardNode : Node2D {
 		oldMousePosition = GetGlobalMousePosition();
 	}
 
-	private void stopDragging() {
+	private void OnStopDragging() {
 		// this.SetAsTopLevel(false);
 		oldMousePosition = Vector2.Zero;
 
@@ -191,7 +191,12 @@ public partial class CardNode : Node2D {
 
 	private void CheckForStacking() {
 		if (CardType is IStackable stackable) {
-			CardNode other = OverlappingCards.LastOrDefault(e => !e.HasCardAbove && !e.Stack.Contains(this));
+			CardNode other = OverlappingCards.LastOrDefault(e => 
+				!e.HasCardAbove && 
+				!e.Stack.Contains(this) && 
+				(e.CardType is IStackable otherStackable && otherStackable.CanStackWith(CardType)) || 
+				(this.CardType is IStackable thisStackable && thisStackable.CanStackWith(e.CardType))
+				);
 
 			if (other is not null && stackable.CanStackWith(other?.CardType) && !Stack.Contains(other))
 				CardBelow = other;
