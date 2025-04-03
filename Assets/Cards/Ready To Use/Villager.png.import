@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtpibj7w54b2p"
-path="res://.godot/imported/Planks.png-2d6779b2802234e19a7f28b91a5df450.ctex"
+uid="uid://dkw12wbt7lw8i"
+path="res://.godot/imported/Villager.png-d9aaa94ed359de457eae343b5d9b4a99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Planks.png"
-dest_files=["res://.godot/imported/Planks.png-2d6779b2802234e19a7f28b91a5df450.ctex"]
+source_file="res://Assets/Cards/Ready To Use/Villager.png"
+dest_files=["res://.godot/imported/Villager.png-d9aaa94ed359de457eae343b5d9b4a99.ctex"]
 
 [params]
 

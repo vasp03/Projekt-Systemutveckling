@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbpyd1byahr2v"
-path="res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"
+uid="uid://hvvinjlcx5ly"
+path="res://.godot/imported/Campfire.png-6ebbe77b22422247b2e3276902ec0aca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Berry.png"
-dest_files=["res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"]
+source_file="res://Assets/Cards/Ready To Use/Campfire.png"
+dest_files=["res://.godot/imported/Campfire.png-6ebbe77b22422247b2e3276902ec0aca.ctex"]
 
 [params]
 

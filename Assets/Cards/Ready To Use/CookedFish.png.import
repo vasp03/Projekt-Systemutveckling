@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mbbvbc46hmdb"
-path="res://.godot/imported/Sword Mk1.png-5dc3b6b16bb6818f43fdc942bc23e1e4.ctex"
+uid="uid://cxkkspmlcdedo"
+path="res://.godot/imported/CookedFish.png-551224f72e649a28217bf124ee933b3b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Sword Mk1.png"
-dest_files=["res://.godot/imported/Sword Mk1.png-5dc3b6b16bb6818f43fdc942bc23e1e4.ctex"]
+source_file="res://Assets/Cards/Ready To Use/CookedFish.png"
+dest_files=["res://.godot/imported/CookedFish.png-551224f72e649a28217bf124ee933b3b.ctex"]
 
 [params]
 

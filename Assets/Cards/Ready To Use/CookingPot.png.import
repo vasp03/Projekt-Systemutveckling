@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbpyd1byahr2v"
-path="res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"
+uid="uid://bwytk0l8w873k"
+path="res://.godot/imported/CookingPot.png-bb83bf0d37b6048399c8b4d6dcc25a5e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Berry.png"
-dest_files=["res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"]
+source_file="res://Assets/Cards/Ready To Use/CookingPot.png"
+dest_files=["res://.godot/imported/CookingPot.png-bb83bf0d37b6048399c8b4d6dcc25a5e.ctex"]
 
 [params]
 

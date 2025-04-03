@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4do5h0lq1cw"
-path="res://.godot/imported/Water.png-71c663d4d571df6e013595517ccb727e.ctex"
+uid="uid://b6j4fb7ard2cs"
+path="res://.godot/imported/CookedMeat.png-c81b51fb56e56df50dedd76fa55ff0a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Water.png"
-dest_files=["res://.godot/imported/Water.png-71c663d4d571df6e013595517ccb727e.ctex"]
+source_file="res://Assets/Cards/Ready To Use/CookedMeat.png"
+dest_files=["res://.godot/imported/CookedMeat.png-c81b51fb56e56df50dedd76fa55ff0a1.ctex"]
 
 [params]
 

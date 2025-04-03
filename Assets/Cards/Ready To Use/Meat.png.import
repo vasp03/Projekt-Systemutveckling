@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbpyd1byahr2v"
-path="res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"
+uid="uid://bro8v53lqacgj"
+path="res://.godot/imported/Meat.png-0fd5e9c4e562e7a60a09418b2e7bb7c7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Berry.png"
-dest_files=["res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"]
+source_file="res://Assets/Cards/Ready To Use/Meat.png"
+dest_files=["res://.godot/imported/Meat.png-0fd5e9c4e562e7a60a09418b2e7bb7c7.ctex"]
 
 [params]
 

@@ -97,9 +97,6 @@ public class CardController {
 		cardNode.SetHighlighted(false);
 	}
 
-	/// <summary>
-	///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
-	/// </summary>
 	public void CheckForHighLight() {
 		foreach (CardNode card in hoveredCards)
 			if (CardIsTopCard(card))

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbpyd1byahr2v"
-path="res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"
+uid="uid://dtw47cln76ap"
+path="res://.godot/imported/FishingPole.png-b5931f4e2b188c0efc67f6fe75526f0e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Berry.png"
-dest_files=["res://.godot/imported/Berry.png-04056d97a9b1ea2c0a097dd33b9a1ef0.ctex"]
+source_file="res://Assets/Cards/Ready To Use/FishingPole.png"
+dest_files=["res://.godot/imported/FishingPole.png-b5931f4e2b188c0efc67f6fe75526f0e.ctex"]
 
 [params]
 
