@@ -214,16 +214,16 @@ public class CardController {
 		foreach (CardNode card in AllCardsSorted)
 			if (card.CardType is IStackable stackable)
 				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-				         " | Above: " +
-				         (stackable.NeighbourAbove != null
-					         ? stackable.NeighbourAbove.TextureType + " - " +
-					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-					         : "None") +
-				         " | Below: " +
-				         (stackable.NeighbourBelow != null
-					         ? stackable.NeighbourBelow.TextureType + " - " +
-					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-					         : "None"));
+						 " | Above: " +
+						 (stackable.NeighbourAbove != null
+							 ? stackable.NeighbourAbove.TextureType + " - " +
+							   ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
+							 : "None") +
+						 " | Below: " +
+						 (stackable.NeighbourBelow != null
+							 ? stackable.NeighbourBelow.TextureType + " - " +
+							   ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
+							 : "None"));
 
 		GD.Print("------------------");
 	}

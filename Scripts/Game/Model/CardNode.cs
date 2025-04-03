@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -132,12 +133,11 @@ public partial class CardNode : Node2D {
 	///     If the texture is not found, it loads the error texture.
 	/// </summary>
 	private void ApplyTexture() {
-		Texture2D texture;
+		Texture2D texture = null;
 		// try to load the texture from the address
-		try {
-			texture = GD.Load<Texture2D>(CardType.TexturePath);
-		}
-		catch (Exception) {
+		texture = GD.Load<Texture2D>(CardType.TexturePath);
+
+		if (texture is null) {
 			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
 			GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
 		}
