@@ -3,9 +3,11 @@ using Godot;
 public partial class NodeController : Node2D {
 	private CardController cardController;
 	private MenuController menuController;
+	private MouseController mouseController;
 
 	public override void _Ready() {
-		cardController = new CardController(this);
+		mouseController = new MouseController();
+		cardController = new CardController(this, mouseController);
 
 		menuController = GetNode<MenuController>("/root/MenuController");
 		menuController.SetNodeController(this);
