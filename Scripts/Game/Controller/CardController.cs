@@ -16,10 +16,12 @@ public class CardController {
 
 	private readonly CraftingController CraftingController;
 
+	private readonly MouseController mouseController;
 
 	// Constructor
-	public CardController(NodeController nodeController) {
+	public CardController(NodeController nodeController, MouseController mouseController) {
 		this.nodeController = nodeController;
+		this.mouseController = mouseController;
 		CardCreationHelper = new CardCreationHelper(nodeController, this);
 		CraftingController = new CraftingController(CardCreationHelper);
 
@@ -134,6 +136,8 @@ public class CardController {
 	public void LeftMouseButtonPressed() {
 		selectedCard = GetTopCardAtMousePosition();
 
+		mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+
 		if (selectedCard != null) SetZIndexForAllCards(selectedCard);
 
 		if (selectedCard != null) {
@@ -190,6 +194,8 @@ public class CardController {
 	/// Called when the left mouse button is released.
 	/// </summary>
 	public void LeftMouseButtonReleased() {
+		mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
+
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(false);
 
@@ -232,7 +238,7 @@ public class CardController {
 		List<List<CardNode>> allStacks = GetAllCardStacks();
 
 		foreach (List<CardNode> stack in allStacks) {
-			if(stack.Count <= 1) continue;
+			if (stack.Count <= 1) continue;
 
 			List<Card> cards = [];
 
@@ -256,7 +262,8 @@ public class CardController {
 
 					CardCreationHelper.CreateCard(cardName);
 				}
-			}else{
+			}
+			else {
 				GD.Print("No crafting possible");
 			}
 		}
