@@ -114,20 +114,6 @@ text = "SFX VOLUME"
 [node name="SFXVolumeSlider" type="HSlider" parent="ButtonContainer"]
 layout_mode = 2
 
-[node name="ResolutionLabel" type="Label" parent="ButtonContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_7cv4p")
-theme_override_font_sizes/font_size = 34
-text = "RESOLUTION"
-
-[node name="ResolutionButton" type="OptionButton" parent="ButtonContainer"]
-layout_mode = 2
-theme = SubResource("Theme_hndry")
-theme_override_fonts/font = ExtResource("2_7cv4p")
-theme_override_font_sizes/font_size = 20
-
 [node name="DisplayModeLabel" type="Label" parent="ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

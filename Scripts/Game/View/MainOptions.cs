@@ -5,17 +5,11 @@ namespace Goodot15.Scripts.Game.View;
 
 public partial class MainOptions : Control {
 	private MenuController menuController;
-	private ResolutionManager resolutionManager;
+	private SettingsManager settingsManager;
 	
-	private OptionButton resolutionButton => GetNode<OptionButton>("ButtonContainer/ResolutionButton");
 	private OptionButton displayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
 	private Button goBackButton => GetNode<Button>("GoBackButton");
 	
-	private readonly Vector2I[] resolutions = {
-		new Vector2I(1920, 1080),
-		new Vector2I(1600, 900),
-		new Vector2I(1280, 720)
-	};
 
 	private readonly string[] displayModes = {
 		"WINDOWED",
@@ -25,22 +19,18 @@ public partial class MainOptions : Control {
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
-		resolutionManager = GetNode<ResolutionManager>("/root/ResolutionManager");
+		settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
 		
-		resolutionButton.Connect("item_selected", new Callable(this, nameof(OnResolutionSelected)));
 		displayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
 		goBackButton.Pressed += OnBackButtonPressed;
-		
-		PopulateResolutionOptions();
 		PopulateDisplayModeOptions();
+		SetDisplayModeButton();
+		
 	}
 	
-	private void PopulateResolutionOptions() {
-		resolutionButton.Clear();
-		
-		foreach (Vector2I res in resolutions) {
-			resolutionButton.AddItem($"         {res.X}x{res.Y}");
-		}
+	private void SetDisplayModeButton() {
+		int currentMode = settingsManager.DisplayMode;
+		displayModeButton.Select(currentMode);
 	}
 
 	private void PopulateDisplayModeOptions() {
@@ -50,13 +40,9 @@ public partial class MainOptions : Control {
 			displayModeButton.AddItem(displayMode);
 		}
 	}
-
-	private void OnResolutionSelected(int index) {
-		resolutionManager.ChangeResolution(resolutions[index]);
-	}
 	
 	private void OnDisplayModeSelected(int index) {
-		resolutionManager.ChangeDisplayMode(index);
+		settingsManager.ChangeDisplayMode(index);
 	}
 
 	private void OnBackButtonPressed() {
