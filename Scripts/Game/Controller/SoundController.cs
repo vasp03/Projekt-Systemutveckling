@@ -27,20 +27,14 @@ public partial class SoundController : Node {
 		musicPlayer = new AudioStreamPlayer();
 		musicPlayer.Bus = "Music";
 		AddChild(musicPlayer);
-
-		musicPlayer.Finished += () => {
-			if (!string.IsNullOrEmpty(currentMusicPath)) {
-				PlayMusic(currentMusicPath); // restart the track
-			}
-		};
 	}
 
 	public void PlayMenuMusic() {
-		PlayMusic("Music/main_menu.wav");
+		PlayMusic("Music/main_menu.ogg");
 	}
 
 	public void PlayGameMusic() {
-		PlayMusic("Music/gameplay.wav");
+		PlayMusic("Music/gameplay.ogg");
 	}
 
 	private void PlayMusic(string musicPath) {
@@ -49,6 +43,12 @@ public partial class SoundController : Node {
 		}
 		
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
+		
+		// Ensures looping of .ogg files
+		if (musicStream is AudioStreamOggVorbis oggStream) {
+			oggStream.Loop = true;
+		}
+		
 		musicPlayer.Stream = musicStream;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 		musicPlayer.Play();
