@@ -53,7 +53,7 @@ public class CardCreationHelper {
 			case "Stone":
 				return new MaterialStone("Stone", 1, cardNode);
 			case "SwordMk1":
-				return new MaterialSwordMk1("Sword Mk1", 1, cardNode);
+				return new MaterialSwordMk1("SwordMK1", 1, cardNode);
 			case "Tree":
 				return new MaterialTree("Tree", 1, cardNode);
 			case "Water":
