@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dki6adlxtfa2o"
+path="res://.godot/imported/sfx_sounds_button4.wav-d115fad710fd4e8999b0d4b3e4d7d74b.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/General Sounds/Buttons/sfx_sounds_button4.wav"
+dest_files=["res://.godot/imported/sfx_sounds_button4.wav-d115fad710fd4e8999b0d4b3e4d7d74b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

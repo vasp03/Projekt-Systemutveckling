@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dqq45iao1sylh"
+path="res://.godot/imported/sfx_sound_shutdown2.wav-a3b7a50743341f36acdc72832e8dd986.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/General Sounds/Weird Sounds/sfx_sound_shutdown2.wav"
+dest_files=["res://.godot/imported/sfx_sound_shutdown2.wav-a3b7a50743341f36acdc72832e8dd986.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

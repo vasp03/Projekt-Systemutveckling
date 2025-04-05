@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://4q8y45k0a6ka"
+path="res://.godot/imported/14 - Tales of Firelight Town.wav-32c04fbb126571f11b59079c96fca536.sample"
+
+[deps]
+
+source_file="res://Assets/Music/xDeviruchi/14 - Tales of Firelight Town.wav"
+dest_files=["res://.godot/imported/14 - Tales of Firelight Town.wav-32c04fbb126571f11b59079c96fca536.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

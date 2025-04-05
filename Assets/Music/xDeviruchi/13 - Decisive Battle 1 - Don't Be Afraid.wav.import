@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cmfcuyijgrgqf"
+path="res://.godot/imported/13 - Decisive Battle 1 - Don't Be Afraid.wav-109e2409ec3c3b7509803c0909e47a57.sample"
+
+[deps]
+
+source_file="res://Assets/Music/xDeviruchi/13 - Decisive Battle 1 - Don't Be Afraid.wav"
+dest_files=["res://.godot/imported/13 - Decisive Battle 1 - Don't Be Afraid.wav-109e2409ec3c3b7509803c0909e47a57.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
