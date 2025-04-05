@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ekf6h3hkhbfd"
+path="res://.godot/imported/sfx_sounds_impact4.wav-2a382afcde15db73fc19c882da849e7e.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/General Sounds/Impacts/sfx_sounds_impact4.wav"
+dest_files=["res://.godot/imported/sfx_sounds_impact4.wav-2a382afcde15db73fc19c882da849e7e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
