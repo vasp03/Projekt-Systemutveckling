@@ -22,7 +22,6 @@ public partial class MainMenu : Control {
 	}
 
 	private void OnPlayButtonPressed() {
-		GD.Print("Play");
 		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
 	}
 
