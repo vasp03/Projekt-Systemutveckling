@@ -51,6 +51,13 @@ public class CardController {
 
 		return cardInstance;
 	}
+	
+	public CardNode CreateCard(string cardType) {
+		CardNode cardNode = CreateCard();
+		cardNode.CardType = CardCreationHelper.GetCreatedInstanceOfCard(cardType, cardNode);;
+
+		return cardNode;
+	}
 
 	/// <summary>
 	///     Creates a new card and adds it to the scene, with a random underlying CardType
