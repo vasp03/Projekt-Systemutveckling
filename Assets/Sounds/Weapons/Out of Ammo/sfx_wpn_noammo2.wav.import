@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://di8wgg5wwvvoq"
+path="res://.godot/imported/sfx_wpn_noammo2.wav-a8ea6e98ec1274cb8aaac914ed58f7ef.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Weapons/Out of Ammo/sfx_wpn_noammo2.wav"
+dest_files=["res://.godot/imported/sfx_wpn_noammo2.wav-a8ea6e98ec1274cb8aaac914ed58f7ef.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

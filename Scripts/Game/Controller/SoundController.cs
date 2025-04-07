@@ -13,7 +13,7 @@ public partial class SoundController : Node {
 	private bool isMusicMuted = false;
 	
 	private readonly Dictionary<string, AudioStream> sfx = new();
-	private float _volume = 1.0f;
+	private float sfxVolume = 1.0f;
 	private bool isSfxMuted = false;
 
 	public override void _Ready() {
@@ -27,20 +27,18 @@ public partial class SoundController : Node {
 		musicPlayer = new AudioStreamPlayer();
 		musicPlayer.Bus = "Music";
 		AddChild(musicPlayer);
-
-		musicPlayer.Finished += () => {
-			if (!string.IsNullOrEmpty(currentMusicPath)) {
-				PlayMusic(currentMusicPath); // restart the track
-			}
-		};
 	}
 
 	public void PlayMenuMusic() {
-		PlayMusic("Music/main_menu.wav");
+		PlayMusic("Music/xDeviruchi/Title Theme.wav");
 	}
 
 	public void PlayGameMusic() {
-		PlayMusic("Music/gameplay.wav");
+		PlayMusic("Music/xDeviruchi/Definitely Our Town.wav");
+	}
+
+	public void PlayShopMusic() {
+		PlayMusic("Music/xDeviruchi/Shop.wav");
 	}
 
 	private void PlayMusic(string musicPath) {
@@ -49,6 +47,14 @@ public partial class SoundController : Node {
 		}
 		
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
+		
+		// Enable looping based on file type. Either .wav or .ogg
+		if (musicStream is AudioStreamOggVorbis oggStream) {
+			oggStream.Loop = true;
+		} else if (musicStream is AudioStreamWav wavStream) {
+			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+		}
+		
 		musicPlayer.Stream = musicStream;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 		musicPlayer.Play();
@@ -91,7 +97,7 @@ public partial class SoundController : Node {
 
 		AudioStreamPlayer player = new AudioStreamPlayer();
 		player.Stream = sfx[soundName];
-		player.VolumeDb = Mathf.LinearToDb(_volume);
+		player.VolumeDb = Mathf.LinearToDb(sfxVolume);
 		AddChild(player);
 		//Queues the node to be deleted when player.Finished emits.
 		player.Finished += () => player.QueueFree();
@@ -99,7 +105,7 @@ public partial class SoundController : Node {
 	}
 	
 	public void SetVolume(float volume) {
-		_volume = Mathf.Clamp(volume, 0.0f, 1.0f);
+		sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
 	}
 
 	public void ToggleSfxMuted() {

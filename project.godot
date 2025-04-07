@@ -19,6 +19,7 @@ config/icon="res://Assets/Icons/icon.svg"
 
 Global="*res://Scripts/Global.cs"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
+MouseController="*res://Scripts/Game/Controller/MouseController.cs"
 
 [display]
 
@@ -31,6 +32,14 @@ window/vsync/vsync_mode=0
 [dotnet]
 
 project/assembly_name="Goodot 15"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+
+settings/test/test_suite_naming_convention=2
 
 [input]
 
