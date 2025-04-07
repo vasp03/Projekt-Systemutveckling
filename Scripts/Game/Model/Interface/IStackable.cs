@@ -62,16 +62,6 @@ public interface IStackable {
 	public IStackable NeighbourBelow { get; set; }
 	string TextureType { get; }
 
-
-	// /// <summary>
-	// ///     Gets the types this <code>IStackable</code> is capable of stacking to
-	// /// </summary>
-	// /// <returns></returns>
-	// public IReadOnlyCollection<Type> GetStackableTypes();
-
-	public void SetNeighbourAbove(IStackable card);
-	public void SetNeighbourBelow(IStackable card);
-
 	// public void ResetNeighbours() {
 	// 	NeighbourAbove = null;
 	// 	NeighbourBelow = null;

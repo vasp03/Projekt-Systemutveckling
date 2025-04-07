@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bbbtbrgaeugu0"
+path="res://.godot/imported/sfx_movement_jump9_landing.wav-d29214eb3881818b42ed97ea1f0cf286.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Movement/Jumping and Landing/sfx_movement_jump9_landing.wav"
+dest_files=["res://.godot/imported/sfx_movement_jump9_landing.wav-d29214eb3881818b42ed97ea1f0cf286.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
