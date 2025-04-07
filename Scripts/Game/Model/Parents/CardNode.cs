@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -61,7 +59,7 @@ public partial class CardNode : Node2D {
 	///     It also sets the position of the new card to (100, 100).
 	/// </summary>
 	public bool CreateNode(Card card, Vector2 position, CardController cardController) {
-		this.CardController = cardController;
+		CardController = cardController;
 
 		CardType = card;
 
@@ -80,8 +78,7 @@ public partial class CardNode : Node2D {
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
-		if (CardType is IStackable stackable)
-		{
+		if (CardType is IStackable stackable) {
 			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
 			if (neighbourAbove == null)
 				ZIndex = CardController.CardCount;

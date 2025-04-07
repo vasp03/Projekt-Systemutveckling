@@ -1,26 +1,22 @@
-using System;
-using System.IO;
+using System.Collections.Generic;
+using Godot;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-using Godot;
-using System.Collections.Generic;
-
 public partial class SoundController : Node {
-	private AudioStreamPlayer musicPlayer;
-	private string currentMusicPath;
-	private float musicVolume = 1.0f;
-	private bool isMusicMuted = false;
-	
 	private readonly Dictionary<string, AudioStream> sfx = new();
+	private string currentMusicPath;
+	private bool isMusicMuted;
+	private bool isSfxMuted;
+	private AudioStreamPlayer musicPlayer;
+	private float musicVolume = 1.0f;
 	private float sfxVolume = 1.0f;
-	private bool isSfxMuted = false;
 
 	public override void _Ready() {
 		LoadMusicPlayer();
 		LoadSounds();
 	}
-	
+
 	// Music Setup
 
 	private void LoadMusicPlayer() {
@@ -42,19 +38,15 @@ public partial class SoundController : Node {
 	}
 
 	private void PlayMusic(string musicPath) {
-		if (currentMusicPath == musicPath && musicPlayer.Playing) {
-			musicPlayer.Stop();
-		}
-		
+		if (currentMusicPath == musicPath && musicPlayer.Playing) musicPlayer.Stop();
+
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
-		
+
 		// Enable looping based on file type. Either .wav or .ogg
-		if (musicStream is AudioStreamOggVorbis oggStream) {
+		if (musicStream is AudioStreamOggVorbis oggStream)
 			oggStream.Loop = true;
-		} else if (musicStream is AudioStreamWav wavStream) {
-			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
-		}
-		
+		else if (musicStream is AudioStreamWav wavStream) wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+
 		musicPlayer.Stream = musicStream;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 		musicPlayer.Play();
@@ -68,23 +60,21 @@ public partial class SoundController : Node {
 
 	public void SetMusicVolume(float volume) {
 		musicVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
-		if (!isMusicMuted) {
-			musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
-		}
+		if (!isMusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
 	}
 
 	public void ToggleMusicMuted() {
 		isMusicMuted = !isMusicMuted;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 	}
-	
+
 	// SFX Setup
 
 	private void LoadSounds() {
 		sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
 		sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
 		sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
-		sfx["Drop"] =  GD.Load<AudioStream>("res://Sounds/Drop.wav");
+		sfx["Drop"] = GD.Load<AudioStream>("res://Sounds/Drop.wav");
 		sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
 		sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
 	}
@@ -95,7 +85,7 @@ public partial class SoundController : Node {
 			return;
 		}
 
-		AudioStreamPlayer player = new AudioStreamPlayer();
+		AudioStreamPlayer player = new();
 		player.Stream = sfx[soundName];
 		player.VolumeDb = Mathf.LinearToDb(sfxVolume);
 		AddChild(player);
@@ -103,7 +93,7 @@ public partial class SoundController : Node {
 		player.Finished += () => player.QueueFree();
 		player.Play();
 	}
-	
+
 	public void SetVolume(float volume) {
 		sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
 	}

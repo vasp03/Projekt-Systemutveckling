@@ -3,14 +3,6 @@ using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class CardCreationHelper {
-	private readonly NodeController NodeController;
-	private readonly CardController CardController;
-
-	public CardCreationHelper(NodeController NodeController, CardController CardController) {
-		this.NodeController = NodeController;
-		this.CardController = CardController;
-	}
-
 	public enum TypeEnum {
 		Apple,
 		Berry,
@@ -24,6 +16,14 @@ public class CardCreationHelper {
 		Water,
 		Wood,
 		Random
+	}
+
+	private readonly CardController CardController;
+	private readonly NodeController NodeController;
+
+	public CardCreationHelper(NodeController NodeController, CardController CardController) {
+		this.NodeController = NodeController;
+		this.CardController = CardController;
 	}
 
 	public string GetRandomCardType() {
@@ -47,7 +47,7 @@ public class CardCreationHelper {
 			case "Mine":
 				return new MaterialMine(1, cardNode);
 			case "Plank":
-				return new MaterialPlank( 1, cardNode);
+				return new MaterialPlank(1, cardNode);
 			case "Stick":
 				return new MaterialStick(1, cardNode);
 			case "Stone":
@@ -64,7 +64,7 @@ public class CardCreationHelper {
 				return GetCreatedInstanceOfCard(GetRandomCardType(), cardNode);
 			default:
 				GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type");
-				return  new ErrorCard("Error", true, 0, cardNode);
+				return new ErrorCard("Error", true, 0, cardNode);
 		}
 	}
 

@@ -6,14 +6,13 @@ namespace Goodot15.Tests;
 
 [TestSuite]
 public class PlayButtonTest {
-		
 	[TestCase]
 	public async Task Test_StartGameWithPlayButton() {
 		// Load Menu Scene
-		ISceneRunner scene = ISceneRunner.Load("res://Scenes/MenuScenes/MainMenu.tscn",true);
+		ISceneRunner scene = ISceneRunner.Load("res://Scenes/MenuScenes/MainMenu.tscn", true);
 		// Find button
 		Button playButton = scene.FindChild("PlayButton") as Button;
-		
+
 		// Simulate button press 
 		// scene.SetMousePos(playButton.GlobalPosition);
 		// await ISceneRunner.SyncProcessFrame;
