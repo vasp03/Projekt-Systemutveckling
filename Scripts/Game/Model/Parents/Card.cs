@@ -10,14 +10,12 @@ public abstract class Card {
 	/// </summary>
 	/// <param name="textureAddress"></param>
 	/// <param name="movable"></param>
-	/// <param name="cardNode"></param>
 	/// <param name="name"></param>
-	public Card(string textureAddress, bool movable, CardNode cardNode) {
+	public Card(string textureAddress, bool movable) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
 		_texturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
-		CardNode = cardNode;
 	}
 
 	public CardNode CardNode { get; set; }

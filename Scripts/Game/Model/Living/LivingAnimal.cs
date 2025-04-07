@@ -5,7 +5,7 @@ using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public abstract class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: CardLiving(textureAddress, movable, cardNode), ITickable, ICardProducer {
+	: CardLiving(textureAddress, movable), ITickable, ICardProducer {
 	private int _produceTimer;
 	public virtual int? TicksUntilProducedCard => Utilities.timeToTicks(days: 0.5d);
 

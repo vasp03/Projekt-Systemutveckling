@@ -54,7 +54,7 @@ public class CardController {
 
 	public CardNode CreateCard(string cardType) {
 		CardNode cardNode = CreateCard();
-		cardNode.CardType = CardCreationHelper.GetCreatedInstanceOfCard(cardType, cardNode);
+		cardNode.CardType = CardCreationHelper.GetCreatedInstanceOfCard(cardType);
 		;
 
 		return cardNode;
@@ -72,7 +72,7 @@ public class CardController {
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		bool ret = cardInstance.CreateNode(
-			CardCreationHelper.GetCreatedInstanceOfCard(CardCreationHelper.GetRandomCardType(), cardInstance), this);
+			CardCreationHelper.GetCreatedInstanceOfCard(CardCreationHelper.GetRandomCardType()), this);
 		if (ret) {
 			cardInstance.ZIndex = CardCount + 1;
 			nodeController.AddChild(cardInstance);

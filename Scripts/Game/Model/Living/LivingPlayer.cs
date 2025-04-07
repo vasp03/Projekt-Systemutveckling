@@ -2,8 +2,8 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model.Living;
 
-public class LivingPlayer(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: CardLiving(textureAddress, movable, cardNode) {
+public class LivingPlayer(CardNode cardNode)
+	: CardLiving("Villager", true) {
 	public static readonly int STARVATION_TICK_DELAY = Utilities.timeToTicks(days: 3);
 	public static readonly int HUNGER_TICK_DELAY = Utilities.timeToTicks(days: 1);
 

@@ -5,9 +5,8 @@ namespace Goodot15.Scripts.Game.Model;
 public abstract class CardBuilding : Card, ITickable {
 	private int currentProduceTick;
 
-	protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds,
-		CardNode cardNode) : base(
-		textureAddress, movable, cardNode) {
+	protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(
+		textureAddress, movable) {
 		ProduceTimeInSeconds = produceTimeInSeconds;
 	}
 
