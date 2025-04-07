@@ -8,16 +8,15 @@ public abstract class Card {
 	///     Constructor for the Card class
 	///     Texture address should be the address after "res://Assets/Cards/Ready To Use/".
 	/// </summary>
-	/// <param name="name"></param>
 	/// <param name="textureAddress"></param>
 	/// <param name="movable"></param>
-	/// <param name="cost"></param>
-	public Card(string textureAddress, bool movable, int cost, CardNode cardNode) {
+	/// <param name="cardNode"></param>
+	/// <param name="name"></param>
+	public Card(string textureAddress, bool movable, CardNode cardNode) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
 		TexturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
-		Cost = cost;
 		CardNode = cardNode;
 	}
 

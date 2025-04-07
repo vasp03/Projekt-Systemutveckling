@@ -3,8 +3,8 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model;
 
-public abstract class CardLiving(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: Card(textureAddress, movable, cost, cardNode), ITickable, ICardConsumer {
+public abstract class CardLiving(string textureAddress, bool movable, CardNode cardNode)
+	: Card(textureAddress, movable, cardNode), ITickable, ICardConsumer {
 	private int _health;
 
 	private int _hungerTickCount;

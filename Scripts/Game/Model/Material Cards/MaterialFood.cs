@@ -3,7 +3,7 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class MaterialFood(string textureAddress, int cost, CardNode cardNode)
-	: CardMaterial(textureAddress, cost, cardNode), IEdible {
+	: CardMaterial(textureAddress, cardNode), IEdible {
 	private int _remainingFood;
 
 	public int RemainingFood {
