@@ -15,7 +15,7 @@ public abstract class Card {
 	public Card(string textureAddress, bool movable, CardNode cardNode) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
-		TexturePath = baseTexturePath + textureAddress + textureEnding;
+		_texturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
 		CardNode = cardNode;
 	}
@@ -23,10 +23,9 @@ public abstract class Card {
 	public CardNode CardNode { get; set; }
 
 	public string ID { get; private set; }
-	public string TexturePath { get; protected set; }
+	private readonly string _texturePath;
+	public string TexturePath { get => _texturePath; }
 	public bool Movable { get; set; }
-	public int Cost { get; set; }
-	public bool Highlighted { get; set; }
 
 	public string TextureType {
 		get {
