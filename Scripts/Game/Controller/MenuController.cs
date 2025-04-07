@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public partial class MenuController : Node {
@@ -27,7 +26,7 @@ public partial class MenuController : Node {
 			AddChild(mainMenu);
 		}
 
-		this.GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
 		// SwitchMenu(mainMenu);
 	}
 
@@ -53,7 +52,6 @@ public partial class MenuController : Node {
 		}
 
 		SwitchMenu(optionsMenu);
-		
 	}
 
 	public void SwitchMenu(Control newMenu) {
@@ -86,9 +84,9 @@ public partial class MenuController : Node {
 	}
 
 	public void configureWithNewMainMenuInstance(MainMenu menu) {
-		this.mainMenu = menu;
-		this.currentMenu = menu;
-		
+		mainMenu = menu;
+		currentMenu = menu;
+
 		GetTree().Paused = false;
 	}
 }

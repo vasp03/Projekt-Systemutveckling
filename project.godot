@@ -34,6 +34,14 @@ window/vsync/vsync_mode=0
 
 project/assembly_name="Goodot 15"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+
+settings/test/test_suite_naming_convention=2
+
 [input]
 
 LMB={
