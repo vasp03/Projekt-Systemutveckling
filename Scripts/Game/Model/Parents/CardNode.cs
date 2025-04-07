@@ -169,8 +169,8 @@ public partial class CardNode : Node2D {
 
 		if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
 			if (ZIndex > underCard.ZIndex) {
-				thisStackable.SetNeighbourBelow(otherStackable);
-				otherStackable.SetNeighbourAbove(thisStackable);
+				thisStackable.NeighbourBelow = otherStackable;
+				otherStackable.NeighbourAbove = thisStackable;
 
 				SetPosition(underCard.Position - new Vector2(0, -15));
 

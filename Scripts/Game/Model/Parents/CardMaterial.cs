@@ -8,6 +8,4 @@ public abstract class CardMaterial(string textureAddress, int cost, CardNode car
 	: Card(textureAddress, true, cost, cardNode), IStackable {
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
-
-	public abstract IReadOnlyCollection<Type> GetStackableTypes();
 }

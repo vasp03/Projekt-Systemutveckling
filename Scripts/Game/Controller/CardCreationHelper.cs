@@ -39,27 +39,27 @@ public class CardCreationHelper {
 	public Card GetCreatedInstanceOfCard(string type, CardNode cardNode) {
 		switch (type) {
 			case "Apple":
-				return new MaterialApple("Apple", 1, cardNode);
+				return new MaterialApple(1, cardNode);
 			case "Berry":
-				return new MaterialBerry("Berry", 1, cardNode);
+				return new MaterialBerry(1, cardNode);
 			case "Leaves":
-				return new MaterialLeaves("Leaves", 1, cardNode);
+				return new MaterialLeaves(1, cardNode);
 			case "Mine":
-				return new MaterialMine("Mine", 1, cardNode);
+				return new MaterialMine(1, cardNode);
 			case "Plank":
-				return new MaterialPlank("Planks", 1, cardNode);
+				return new MaterialPlank( 1, cardNode);
 			case "Stick":
-				return new MaterialStick("Stick", 1, cardNode);
+				return new MaterialStick(1, cardNode);
 			case "Stone":
-				return new MaterialStone("Stone", 1, cardNode);
+				return new MaterialStone(1, cardNode);
 			case "SwordMk1":
-				return new MaterialSwordMk1("SwordMK1", 1, cardNode);
+				return new MaterialSwordMk1(1, cardNode);
 			case "Tree":
-				return new MaterialTree("Tree", 1, cardNode);
+				return new MaterialTree(1, cardNode);
 			case "Water":
-				return new MaterialWater("Water", 1, cardNode);
+				return new MaterialWater(1, cardNode);
 			case "Wood":
-				return new MaterialWood("Wood", 1, cardNode);
+				return new MaterialWood(1, cardNode);
 			case "Random":
 				return GetCreatedInstanceOfCard(GetRandomCardType(), cardNode);
 			default:

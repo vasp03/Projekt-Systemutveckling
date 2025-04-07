@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Godot;
+using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 

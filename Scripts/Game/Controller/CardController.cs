@@ -12,8 +12,6 @@ public class CardController {
 
 	private readonly NodeController nodeController;
 
-	private readonly NodeController nodeController;
-
 	private CardNode selectedCard;
 
 	private readonly CraftingController CraftingController;
@@ -66,7 +64,7 @@ public class CardController {
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		bool ret = cardInstance.CreateNode(
-			cardCreationHelper.GetCreatedInstanceOfCard(cardCreationHelper.GetRandomCardType(), cardInstance), this);
+			CardCreationHelper.GetCreatedInstanceOfCard(CardCreationHelper.GetRandomCardType(), cardInstance), this);
 		if (ret) {
 			cardInstance.ZIndex = CardCount + 1;
 			nodeController.AddChild(cardInstance);
@@ -207,7 +205,8 @@ public class CardController {
 		int counterForOtherCards = 1;
 
 		foreach (CardNode card in AllCardsSorted) {
-			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) || card == cardNode) {
+			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) ||
+			    card == cardNode) {
 				card.ZIndex = counterForStackedCards;
 				counterForStackedCards++;
 			}
@@ -215,6 +214,7 @@ public class CardController {
 				card.ZIndex = counterForOtherCards;
 				counterForOtherCards++;
 			}
+		}
 	}
 
 	/// <summary>
@@ -254,9 +254,5 @@ public class CardController {
 							 : "None"));
 
 		GD.Print("------------------");
-	}
-}
-
-		return cardStacks;
 	}
 }
