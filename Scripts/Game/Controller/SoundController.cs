@@ -47,12 +47,15 @@ public partial class SoundController : Node {
 		}
 		
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
+			
 		
 		// Enable looping based on file type. Either .wav or .ogg
 		if (musicStream is AudioStreamOggVorbis oggStream) {
 			oggStream.Loop = true;
 		} else if (musicStream is AudioStreamWav wavStream) {
 			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+
+			wavStream.LoopEnd = wavStream.Data.Length;
 		}
 		
 		musicPlayer.Stream = musicStream;
@@ -103,7 +106,7 @@ public partial class SoundController : Node {
 		player.Stream = sfx[soundName];
 		player.VolumeDb = Mathf.LinearToDb(sfxVolume);
 		AddChild(player);
-		//Queues the node to be deleted when player.Finished emits.
+		// Queues the node to be deleted when player.Finished emits.
 		player.Finished += () => player.QueueFree();
 		player.Play();
 	}
