@@ -30,7 +30,7 @@ public partial class SoundController : Node {
 	}
 
 	public void PlayMenuMusic() {
-		PlayMusic("Music/xDeviruchi/Title Theme.wav");
+		PlayMusic("Assets/Music/xDeviruchi/02 - Title Theme.wav");
 	}
 
 	public void PlayGameMusic() {
