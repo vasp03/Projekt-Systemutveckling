@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class NodeController : Node2D {
+public partial class GameController : Node2D {
 	private CardController cardController;
 	private MenuController menuController;
 	private MouseController mouseController;

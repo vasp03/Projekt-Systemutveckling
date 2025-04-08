@@ -4,7 +4,7 @@ public partial class MenuController : Node {
 	private Control currentMenu;
 
 	private Control mainMenu;
-	private NodeController nodeController;
+	private GameController GameController;
 	private Control optionsMenu;
 	private Control pauseMenu;
 	private Control previousMenu;
@@ -76,11 +76,11 @@ public partial class MenuController : Node {
 				controlMenu.Visible = false;
 
 		GetTree().Paused = false;
-		nodeController.Visible = true;
+		GameController.Visible = true;
 	}
 
-	public void SetNodeController(NodeController nodeController) {
-		this.nodeController = nodeController;
+	public void SetNodeController(GameController GameController) {
+		this.GameController = GameController;
 	}
 
 	public void configureWithNewMainMenuInstance(MainMenu menu) {

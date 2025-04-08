@@ -10,7 +10,7 @@ public class CardController {
 
 	private readonly List<CardNode> hoveredCards = [];
 
-	private readonly NodeController nodeController;
+	private readonly GameController GameController;
 
 	private CardNode selectedCard;
 
@@ -19,8 +19,8 @@ public class CardController {
 	private readonly MouseController mouseController;
 
 	// Constructor
-	public CardController(NodeController nodeController, MouseController mouseController) {
-		this.nodeController = nodeController;
+	public CardController(GameController nodeController, MouseController mouseController) {
+		this.GameController = nodeController;
 		this.mouseController = mouseController;
 		CardCreationHelper = new CardCreationHelper(nodeController, this);
 		CraftingController = new CraftingController(CardCreationHelper);
@@ -33,7 +33,7 @@ public class CardController {
 	public int CardCount => AllCards.Count;
 
 	public IReadOnlyCollection<CardNode> AllCards =>
-		nodeController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+		GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();

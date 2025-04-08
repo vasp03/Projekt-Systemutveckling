@@ -3,11 +3,11 @@ using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class CardCreationHelper {
-	private readonly NodeController NodeController;
+	private readonly GameController GameController;
 	private readonly CardController CardController;
 
-	public CardCreationHelper(NodeController NodeController, CardController CardController) {
-		this.NodeController = NodeController;
+	public CardCreationHelper(GameController NodeController, CardController CardController) {
+		this.GameController = NodeController;
 		this.CardController = CardController;
 	}
 
@@ -81,6 +81,6 @@ public class CardCreationHelper {
 
 		cardInstance.ZIndex = CardController.CardCount + 1;
 		cardInstance.SetPosition(new Vector2(100, 100));
-		NodeController.AddChild(cardInstance);
+		GameController.AddChild(cardInstance);
 	}
 }
