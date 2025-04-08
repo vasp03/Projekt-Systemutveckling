@@ -8,15 +8,19 @@ using System.Collections.Generic;
 
 public partial class SoundController : Node {
 	private AudioStreamPlayer musicPlayer;
+	private SettingsManager settingsManager;
 	private string currentMusicPath;
-	private float musicVolume = 1.0f;
+	private float musicVolume;
 	private bool isMusicMuted = false;
 	
 	private readonly Dictionary<string, AudioStream> sfx = new();
-	private float sfxVolume = 1.0f;
+	private float sfxVolume;
 	private bool isSfxMuted = false;
 
 	public override void _Ready() {
+		settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
+		musicVolume = settingsManager.MusicVolume;
+		sfxVolume = settingsManager.SfxVolume;
 		LoadMusicPlayer();
 		LoadSounds();
 	}

@@ -33,8 +33,8 @@ public partial class MainOptions : Control {
 		musicVolumePercentageLabel = GetNode<Label>("MusicPercentageLabel");
 		sfxVolumePercentageLabel = GetNode<Label>("SFXPercentageLabel");
 		
-		musicVolumePercentageLabel.Text = $"{musicVolumeSlider.Value}%";
-		sfxVolumePercentageLabel.Text = $"{sfxVolumeSlider.Value}%";
+		musicVolumePercentageLabel.Text = $"{(musicVolumeSlider.Value * 100):F0}%";
+		sfxVolumePercentageLabel.Text = $"{(sfxVolumeSlider.Value * 100):F0}%";
 		
 		musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
 		sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
@@ -46,20 +46,22 @@ public partial class MainOptions : Control {
 		
 		PopulateDisplayModeOptions();
 		SetDisplayModeButton();
+		soundController.SetMusicVolume(settingsManager.MusicVolume);
+		soundController.SetSfxVolume(settingsManager.SfxVolume);
 	}
 	
 	private void OnMusicVolumeChanged(double value) {
-		soundController.SetMusicVolume((float)(value/100.0f));
+		settingsManager.SetMusicVolume((float)value);
 		GD.Print("Music volume changed to: " + soundController.GetMusicVolume());
 		
-		musicVolumePercentageLabel.Text = $"{value}%";
+		musicVolumePercentageLabel.Text = $"{(value*100):F0}%";
 	}
 	
 	private void OnSfxVolumeChanged(double value) {
-		soundController.SetSfxVolume((float)(value/100.0f));
+		settingsManager.SetSfxVolume((float)value);
 		GD.Print("SFX volume changed to: " + soundController.GetSfxVolume());
 		
-		sfxVolumePercentageLabel.Text = $"{value}%";
+		sfxVolumePercentageLabel.Text = $"{(value * 100):F0}%";
 	}
 	
 	private void SetDisplayModeButton() {

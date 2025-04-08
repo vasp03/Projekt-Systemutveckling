@@ -29,6 +29,7 @@ public partial class MainMenu : Control {
 
 	private void OnPlayButtonPressed() {
 		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
+		soundController.StopMusic();
 	}
 
 	private void OnOptionsButtonPressed() {
@@ -36,6 +37,7 @@ public partial class MainMenu : Control {
 	}
 
 	private void OnExitButtonPressed() {
+		soundController.StopMusic();
 		GetTree().Quit();
 	}
 }
