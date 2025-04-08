@@ -99,6 +99,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "MUSIC VOLUME"
+horizontal_alignment = 1
 
 [node name="MusicVolumeSlider" type="HSlider" parent="ButtonContainer"]
 layout_mode = 2
@@ -110,6 +111,7 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "SFX VOLUME"
+horizontal_alignment = 1
 
 [node name="SFXVolumeSlider" type="HSlider" parent="ButtonContainer"]
 layout_mode = 2
@@ -121,14 +123,17 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "DISPLAY MODE"
+horizontal_alignment = 1
 
 [node name="DisplayModeButton" type="OptionButton" parent="ButtonContainer"]
 layout_mode = 2
 theme = SubResource("Theme_hndry")
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 20
+alignment = 1
 
 [node name="MusicPercentageLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 771.0
 offset_top = 306.0
 offset_right = 821.0
@@ -139,6 +144,7 @@ theme_override_font_sizes/font_size = 25
 text = "1%"
 
 [node name="SFXPercentageLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 771.0
 offset_top = 365.0
 offset_right = 821.0

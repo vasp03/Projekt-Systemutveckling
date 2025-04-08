@@ -1,8 +1,9 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 public partial class MainMenu : Control {
 	private Button exitButton;
-
+	private SoundController soundController;
 	private MenuController menuController;
 	private Button optionsButton;
 	private Button playButton;
@@ -10,6 +11,9 @@ public partial class MainMenu : Control {
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
 		menuController.configureWithNewMainMenuInstance(this);
+		soundController = GetNode<SoundController>("/root/SoundController");
+		soundController.PlayMenuMusic();
+		
 
 		playButton = GetNode<Button>("ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
@@ -19,6 +23,8 @@ public partial class MainMenu : Control {
 
 		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
+		
+		
 	}
 
 	private void OnPlayButtonPressed() {
