@@ -37,6 +37,8 @@ public partial class CardNode : Node2D {
 
 	public bool IsMovingOtherCards { get; set; } = false;
 
+	private Vector2 stackOffset = new(0, -20);
+
 	/// <summary>
 	/// Creates a new card and adds it to the scene.
 	/// It loads the card scene from the resource path and instantiates it.
@@ -166,7 +168,7 @@ public partial class CardNode : Node2D {
 				thisStackable.NeighbourBelow = otherStackable;
 				otherStackable.NeighbourAbove = thisStackable;
 
-				SetPosition(underCard.Position - new Vector2(0, -15));
+				SetPosition(underCard.Position - stackOffset);
 
 				if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
 					((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
@@ -180,7 +182,7 @@ public partial class CardNode : Node2D {
 	/// </summary>
 	/// <param name="underCard"></param>
 	public void SetPositionAsPartOfStack(CardNode underCard) {
-		SetPosition(underCard.Position - new Vector2(0, -15));
+		SetPosition(underCard.Position - stackOffset);
 
 		if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);

@@ -20,7 +20,7 @@ public partial class MouseController : Node {
         ResourceLoader.Load(path + "loading_7.png"),
         ResourceLoader.Load(path + "loading_8.png")
     ];
-
+    private Vector2 offset = new Vector2(12, 12);
     private bool isLoading = false;
     private int loadingIndex = 0;
 
@@ -45,16 +45,16 @@ public partial class MouseController : Node {
 
         switch (cursor) {
             case MouseCursor.point:
-                Input.SetCustomMouseCursor(point);
+                Input.SetCustomMouseCursor(point, Input.CursorShape.Arrow, offset);
                 return true;
             case MouseCursor.point_small:
-                Input.SetCustomMouseCursor(point_small);
+                Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
                 return true;
             case MouseCursor.hand_open:
-                Input.SetCustomMouseCursor(hand_open);
+                Input.SetCustomMouseCursor(hand_open, Input.CursorShape.Arrow, offset);
                 return true;
             case MouseCursor.hand_close:
-                Input.SetCustomMouseCursor(hand_close);
+                Input.SetCustomMouseCursor(hand_close, Input.CursorShape.Arrow, offset);
                 return true;
             case MouseCursor.loading:
                 if (!isLoading) {
@@ -62,7 +62,7 @@ public partial class MouseController : Node {
                 }
                 return true;
             default:
-                SetMouseCursor(MouseCursor.point_small);
+                Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
                 return false;
         }
     }
@@ -85,6 +85,6 @@ public partial class MouseController : Node {
 
     private void LoadingThread() {
         loadingIndex = (loadingIndex + 1) % 8;
-        Input.SetCustomMouseCursor(loadingResources[loadingIndex]);
+        Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, offset);
     }
 }
