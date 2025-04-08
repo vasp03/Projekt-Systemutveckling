@@ -14,26 +14,52 @@ public partial class GameController : Node2D {
 	}
 
 	public override void _Input(InputEvent @event) {
-		// Detect mouse movement
-		if (@event is InputEventMouseMotion mouseMotion) {
-		}
-		else if (@event is InputEventKey eventKey) {
-			if (eventKey.Pressed && eventKey.Keycode == Key.Space) {
-				cardController.CreateCard("Random");
+		if (@event is InputEventKey eventKey && eventKey.Pressed) {
+			switch (eventKey.Keycode) {
+				case Key.Escape:
+					menuController.OpenPauseMenu();
+					Visible = false; // Hide the game scene
+					break;
+				case Key.Space:
+					cardController.CreateCard("Random");
+					break;
+				case Key.D:
+					cardController.PrintCardsNeighbours();
+					break;
+				case Key.Key1:
+					cardController.CreateCard("Apple");
+					break;
+				case Key.Key2:
+					cardController.CreateCard("Berry");
+					break;
+				case Key.Key3:
+					cardController.CreateCard("Leaves");
+					break;
+				case Key.Key4:
+					cardController.CreateCard("Mine");
+					break;
+				case Key.Key5:
+					cardController.CreateCard("Plank");
+					break;
+				case Key.Key6:
+					cardController.CreateCard("Stick");
+					break;
+				case Key.Key7:
+					cardController.CreateCard("Stone");
+					break;
+				case Key.Key8:
+					cardController.CreateCard("Water");
+					break;
+				case Key.Key9:
+					cardController.CreateCard("Wood");
+					break;
 			}
-			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape) {
-				menuController.OpenPauseMenu();
-				Visible = false;
-			}
-			else if (eventKey.Pressed && eventKey.Keycode == Key.A) {
-				cardController.CreateCard("Wood");
-			}
-		}
-		else if (@event is InputEventMouseButton mouseButton) {
-			if (mouseButton.Pressed)
+		} else if (@event is InputEventMouseButton mouseButton) {
+			if (mouseButton.Pressed) {
 				cardController.LeftMouseButtonPressed();
-			else
+			} else {
 				cardController.LeftMouseButtonReleased();
+			}
 		}
 	}
 
