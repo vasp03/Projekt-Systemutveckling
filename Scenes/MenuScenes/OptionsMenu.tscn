@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dljf5d13mrh38"]
+[gd_scene load_steps=10 format=3 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://dmrxvq2c0cnmj" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
@@ -15,8 +15,12 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eue7q"]
 
+[sub_resource type="Theme" id="Theme_hndry"]
+default_font = ExtResource("2_7cv4p")
+default_font_size = 24
+
 [node name="MainOptions" type="Control"]
-process_mode = 2
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,23 +48,20 @@ theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 90
 text = "OPTIONS"
 
-[node name="ButtonContainer" type="VBoxContainer" parent="."]
+[node name="GoBackButton" type="Button" parent="."]
+process_mode = 3
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.898
+anchor_top = 0.901
 anchor_right = 0.5
-anchor_bottom = 0.898
-offset_left = -101.0
-offset_top = -25.5601
-offset_right = 102.0
-offset_bottom = 25.4399
+anchor_bottom = 0.901
+offset_left = -81.0
+offset_top = -19.72
+offset_right = 82.0
+offset_bottom = 20.28
 grow_horizontal = 2
 grow_vertical = 0
-
-[node name="GoBackButton" type="Button" parent="ButtonContainer"]
-process_mode = 3
-layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
@@ -76,3 +77,53 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_d3k30")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8vi76")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eue7q")
 text = "GO BACK"
+
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -88.5
+offset_right = 104.0
+offset_bottom = 88.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="MusicVolumeLabel" type="Label" parent="ButtonContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 34
+text = "MUSIC VOLUME"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="ButtonContainer"]
+layout_mode = 2
+
+[node name="SFXVolumeLabel" type="Label" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 34
+text = "SFX VOLUME"
+
+[node name="SFXVolumeSlider" type="HSlider" parent="ButtonContainer"]
+layout_mode = 2
+
+[node name="DisplayModeLabel" type="Label" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 34
+text = "DISPLAY MODE"
+
+[node name="DisplayModeButton" type="OptionButton" parent="ButtonContainer"]
+layout_mode = 2
+theme = SubResource("Theme_hndry")
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 20
