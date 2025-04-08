@@ -83,7 +83,7 @@ public partial class MenuController : Node {
 		this.nodeController = nodeController;
 	}
 
-	public void configureWithNewMainMenuInstance(MainMenu menu) {
+	public void configureWithNewMainMenuInstance(Goodot15.Scripts.Game.View.MainMenu menu) {
 		mainMenu = menu;
 		currentMenu = menu;
 

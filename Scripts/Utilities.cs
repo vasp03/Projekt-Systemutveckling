@@ -2,8 +2,8 @@
 
 namespace Goodot15.Scripts;
 
-public class Utilities {
-	public static int timeToTicks(double seconds = 0, double minutes = 0, double hours = 0, double days = 0) {
+public static class Utilities {
+	public static int TimeToTicks(double seconds = 0, double minutes = 0, double hours = 0, double days = 0) {
 		return (int)Math.Floor(
 			seconds * 60 + // Seconds to ticks
 			minutes * 60 * 60 + // Minutes to seconds to ticks

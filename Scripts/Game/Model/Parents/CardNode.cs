@@ -45,7 +45,7 @@ public partial class CardNode : Node2D {
 
 	public bool IsBeingDragged { get; private set; }
 
-	public List<CardNode> HoveredCards { get; } = new();
+	public List<CardNode> HoveredCards { get; } = [];
 
 	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
 
@@ -131,9 +131,8 @@ public partial class CardNode : Node2D {
 	///     If the texture is not found, it loads the error texture.
 	/// </summary>
 	private void ApplyTexture() {
-		Texture2D texture = null;
-		// try to load the texture from the address
-		texture = GD.Load<Texture2D>(CardType.TexturePath);
+		// Try to load the texture from the address; Result may produce null if texture does not exist
+		Texture2D texture = GD.Load<Texture2D>(CardType.TexturePath);
 
 		if (texture is null) {
 			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
@@ -148,13 +147,16 @@ public partial class CardNode : Node2D {
 	///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
 	/// </summary>
 	public void SetHighlighted(bool isHighlighted) {
-		if (isHighlighted && !oldIsHighlighted) {
-			sprite.SetModulate(sprite.Modulate * HighLightFactor);
-			oldIsHighlighted = true;
-		}
-		else if (!isHighlighted && oldIsHighlighted) {
-			oldIsHighlighted = false;
-			sprite.SetModulate(sprite.Modulate / HighLightFactor);
+		switch (isHighlighted)
+		{
+			case true when !oldIsHighlighted:
+				sprite.SetModulate(sprite.Modulate * HighLightFactor);
+				oldIsHighlighted = true;
+				break;
+			case false when oldIsHighlighted:
+				oldIsHighlighted = false;
+				sprite.SetModulate(sprite.Modulate / HighLightFactor);
+				break;
 		}
 	}
 
@@ -184,7 +186,7 @@ public partial class CardNode : Node2D {
 	public void SetPositionAsPartOfStack(CardNode underCard) {
 		SetPosition(underCard.Position - new Vector2(0, -15));
 
-		if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
+		if (CardType is IStackable { NeighbourAbove: not null } stackable)
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
 	}
 

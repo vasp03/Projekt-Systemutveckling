@@ -7,15 +7,15 @@ using Goodot15.Scripts.Game.Model.Interface;
 public abstract class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
 	: CardLiving(textureAddress, movable), ITickable, ICardProducer {
 	private int _produceTimer;
-	public virtual int? TicksUntilProducedCard => Utilities.timeToTicks(days: 0.5d);
+	public virtual int? TicksUntilProducedCard => Utilities.TimeToTicks(days: 0.5d);
 
 	public int ProduceTickProgress {
 		get => _produceTimer;
 		set => _produceTimer = Math.Max(0, value);
 	}
 
-	public override int? TicksUntilFullyStarved => Utilities.timeToTicks(days: 3d);
-	public override int? TicksUntilSaturationDecrease => Utilities.timeToTicks(days: 1d);
+	public override int? TicksUntilFullyStarved => Utilities.TimeToTicks(days: 3d);
+	public override int? TicksUntilSaturationDecrease => Utilities.TimeToTicks(days: 1d);
 
 	public abstract Card ProduceCard();
 

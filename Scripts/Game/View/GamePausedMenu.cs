@@ -3,11 +3,9 @@ using Godot;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class GamePausedMenu : Control {
-	private MenuController menuController;
+	private MenuController MenuController => GetNode<MenuController>("/root/MenuController");
 
 	public override void _Ready() {
-		menuController = GetNode<MenuController>("/root/MenuController");
-
 		VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
 		buttonContainer.Show();
 
@@ -22,11 +20,11 @@ public partial class GamePausedMenu : Control {
 	}
 
 	private void OnResumeButtonPressed() {
-		menuController.CloseMenus();
+		MenuController.CloseMenus();
 	}
 
 	private void OnOptionsButtonPressed() {
-		menuController.OpenOptionsMenu();
+		MenuController.OpenOptionsMenu();
 	}
 
 	private void OnExitButtonPressed() {

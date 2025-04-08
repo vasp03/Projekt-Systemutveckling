@@ -4,8 +4,8 @@ namespace Goodot15.Scripts.Game.Model.Living;
 
 public class LivingPlayer(CardNode cardNode)
 	: CardLiving("Villager", true) {
-	public static readonly int STARVATION_TICK_DELAY = Utilities.timeToTicks(days: 3);
-	public static readonly int HUNGER_TICK_DELAY = Utilities.timeToTicks(days: 1);
+	public static readonly int STARVATION_TICK_DELAY = Utilities.TimeToTicks(days: 3);
+	public static readonly int HUNGER_TICK_DELAY = Utilities.TimeToTicks(days: 1);
 
 	public int AttackDamage { get; set; }
 

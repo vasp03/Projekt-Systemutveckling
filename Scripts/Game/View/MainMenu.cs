@@ -1,24 +1,22 @@
 using Godot;
 
-public partial class MainMenu : Control {
-	private Button exitButton;
+namespace Goodot15.Scripts.Game.View;
 
-	private MenuController menuController;
-	private Button optionsButton;
-	private Button playButton;
+public partial class MainMenu : Control {
+	private Button ExitButton => GetNode<Button>("ButtonContainer/ExitButton");
+
+	private MenuController MenuController => GetNode<MenuController>("/root/MenuController");
+	private Button OptionsButton => GetNode<Button>("ButtonContainer/OptionsButton");
+	private Button PlayButton => GetNode<Button>("ButtonContainer/PlayButton");
 
 	public override void _Ready() {
-		menuController = GetNode<MenuController>("/root/MenuController");
-		menuController.configureWithNewMainMenuInstance(this);
+		MenuController.configureWithNewMainMenuInstance(this);
+		
+		PlayButton.Pressed += OnPlayButtonPressed;
 
-		playButton = GetNode<Button>("ButtonContainer/PlayButton");
-		playButton.Pressed += OnPlayButtonPressed;
-
-		optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
-		optionsButton.Pressed += OnOptionsButtonPressed;
-
-		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
-		exitButton.Pressed += OnExitButtonPressed;
+		OptionsButton.Pressed += OnOptionsButtonPressed;
+		
+		ExitButton.Pressed += OnExitButtonPressed;
 	}
 
 	private void OnPlayButtonPressed() {
@@ -26,7 +24,7 @@ public partial class MainMenu : Control {
 	}
 
 	private void OnOptionsButtonPressed() {
-		menuController.OpenOptionsMenu();
+		MenuController.OpenOptionsMenu();
 	}
 
 	private void OnExitButtonPressed() {
