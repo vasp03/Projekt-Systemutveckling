@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cv0sftc5g7uci"]
 
-[ext_resource type="Script" uid="uid://begxhcf3ftwu3" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
+[ext_resource type="Script" uid="uid://c22cw1jt4hrpo" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_qdb5i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tt5f1"]
@@ -76,6 +76,25 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "PLAY"
+
+[node name="GuideButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_qdb5i")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tt5f1")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_853f1")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8saeu")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
+text = "GUIDE"
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2

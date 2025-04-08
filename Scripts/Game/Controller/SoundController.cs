@@ -72,6 +72,8 @@ public partial class SoundController : Node {
 			musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
 		}
 	}
+	
+	public float GetMusicVolume() => musicVolume;
 
 	public void ToggleMusicMuted() {
 		isMusicMuted = !isMusicMuted;
@@ -81,12 +83,14 @@ public partial class SoundController : Node {
 	// SFX Setup
 
 	private void LoadSounds() {
+		/*
 		sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
 		sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
 		sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
 		sfx["Drop"] =  GD.Load<AudioStream>("res://Sounds/Drop.wav");
 		sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
 		sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
+		*/
 	}
 
 	public void PlaySound(string soundName) {
@@ -104,9 +108,11 @@ public partial class SoundController : Node {
 		player.Play();
 	}
 	
-	public void SetVolume(float volume) {
+	public void SetSfxVolume(float volume) {
 		sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
 	}
+	
+	public float GetSfxVolume() => sfxVolume;
 
 	public void ToggleSfxMuted() {
 		isSfxMuted = !isSfxMuted;

@@ -85,10 +85,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -88.5
-offset_right = 104.0
-offset_bottom = 88.5
+offset_left = -120.0
+offset_top = -88.0
+offset_right = 120.0
+offset_bottom = 89.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -127,3 +127,24 @@ layout_mode = 2
 theme = SubResource("Theme_hndry")
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 20
+
+[node name="MusicPercentageLabel" type="Label" parent="."]
+offset_left = 771.0
+offset_top = 306.0
+offset_right = 821.0
+offset_bottom = 332.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 25
+text = "1%"
+
+[node name="SFXPercentageLabel" type="Label" parent="."]
+offset_left = 771.0
+offset_top = 365.0
+offset_right = 821.0
+offset_bottom = 391.0
+size_flags_horizontal = 8
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 25
+text = "1%"

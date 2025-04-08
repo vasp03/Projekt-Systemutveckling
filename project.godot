@@ -22,6 +22,7 @@ Global="*res://Scripts/Global.cs"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
 SettingsManager="*res://Scripts/Game/Controller/SettingsManager.cs"
 MouseController="*res://Scripts/Game/Controller/MouseController.cs"
+SoundController="*res://Scripts/Game/Controller/SoundController.cs"
 
 [display]
 
@@ -36,7 +37,7 @@ project/assembly_name="Goodot 15"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray()
 
 [gdunit4]
 
