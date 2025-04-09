@@ -8,6 +8,7 @@ public partial class MenuController : Node {
 	private Control optionsMenu;
 	private Control pauseMenu;
 	private Control previousMenu;
+	private Control guideMenu;
 
 
 	public override void _Ready() {
@@ -15,7 +16,7 @@ public partial class MenuController : Node {
 		currentMenu = mainMenu;
 		pauseMenu = null;
 		optionsMenu = null;
-
+		guideMenu = null;
 		// this.previousMenu = mainMenu;
 	}
 
@@ -50,8 +51,17 @@ public partial class MenuController : Node {
 			optionsMenu = packedOptionsMenu.Instantiate() as Control;
 			AddChild(optionsMenu);
 		}
-
 		SwitchMenu(optionsMenu);
+	}
+
+	public void OpenGuideMenu() {
+		previousMenu = currentMenu;
+		if (guideMenu == null) {
+			PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
+			guideMenu = packedGuideMenu.Instantiate() as Control;
+			AddChild(guideMenu);
+		}
+		SwitchMenu(guideMenu);
 	}
 
 	public void SwitchMenu(Control newMenu) {
