@@ -102,10 +102,13 @@ public class CardController {
 	public CardNode GetTopCardAtMousePosition() {
 		CardNode topCard = null;
 
-		foreach (CardNode card in hoveredCards)
-			if (topCard == null)
+		foreach (CardNode card in hoveredCards) {
+			if (topCard == null) {
 				topCard = card;
-			else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
+			} else if (card.GetZIndex() > topCard.GetZIndex()) {
+				topCard = card;
+			}
+		}
 
 		return topCard;
 	}
@@ -134,21 +137,22 @@ public class CardController {
 	/// Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		selectedCard = GetTopCardAtMousePosition();
-
 		mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+		selectedCard = GetTopCardAtMousePosition();
+		// SetTopZIndexForCard(selectedCard);
 
-		if (selectedCard != null) SetZIndexForAllCards(selectedCard);
+		if (selectedCard != null) {
+			SetZIndexForAllCards(selectedCard);
+		}
 
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
 
 			if (selectedCard.HasNeighbourAbove()) {
 				selectedCard.IsMovingOtherCards = true;
-			}
-			else {
+			} else {
 				// Set the card that is being dragged to the top
-				selectedCard.ZIndex = CardCount + 1;
+				selectedCard.ZIndex = CardCount;
 			}
 
 			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
@@ -169,23 +173,28 @@ public class CardController {
 	/// </summary>
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
 	public void SetZIndexForAllCards(CardNode cardNode) {
-		List<IStackable> stackAbove = null;
-
-		if (cardNode.CardType is IStackable stackable) {
-			stackAbove = stackable.StackAbove;
-		}
-
-		int counterForStackedCards = CardCount - (stackAbove != null ? stackAbove.Count : 0);
-		int counterForOtherCards = 1;
+		int NumberOfCards = AllCards.Count;
+		List<IStackable> stackAboveSelectedCard = cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+		int CounterForCardsBelow = 1;
 
 		foreach (CardNode card in AllCardsSorted) {
-			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) || card == cardNode) {
-				card.ZIndex = counterForStackedCards;
-				counterForStackedCards++;
-			}
-			else {
-				card.ZIndex = counterForOtherCards;
-				counterForOtherCards++;
+			if (card == cardNode) {
+				if (card.CardType is IStackable stackable) {
+					if (stackable.NeighbourAbove == null) {
+						GD.Print($"Card does not have a neighbour above: {card.CardType.TextureType}");
+						card.ZIndex = NumberOfCards;
+					} else {
+						card.ZIndex = CounterForCardsAbove++;
+					}
+				} else {
+					card.ZIndex = NumberOfCards;
+				}
+			} else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
+				card.ZIndex = CounterForCardsAbove++;
+			} else {
+				card.ZIndex = CounterForCardsBelow++;
 			}
 		}
 	}
@@ -217,20 +226,31 @@ public class CardController {
 	/// </summary>
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
-		foreach (CardNode card in AllCardsSorted)
-			if (card.CardType is IStackable stackable)
-				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-						 " | Above: " +
-						 (stackable.NeighbourAbove != null
-							 ? stackable.NeighbourAbove.TextureType + " - " +
-							   ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-							 : "None") +
-						 " | Below: " +
-						 (stackable.NeighbourBelow != null
-							 ? stackable.NeighbourBelow.TextureType + " - " +
-							   ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-							 : "None"));
+		GD.Print("------------------");
+		GD.Print("Cards and their neighbours:");
+		GD.Print("------------------");
+		int i = 0;
 
+		foreach (CardNode card in AllCardsSorted) {
+			if (card.CardType is IStackable stackable) {
+				string cardInfo = $"This: {card.CardType.TextureType}:{card.ZIndex} - IsBeingDragged: {card.IsBeingDragged}";
+				string aboveInfo = stackable.NeighbourAbove != null
+					? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
+					: "Above: None ";
+				string belowInfo = stackable.NeighbourBelow != null
+					? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
+					: "Below: None ";
+
+				GD.Print($"{cardInfo.PadRight(50, '-')} {aboveInfo.PadRight(50, '-')} {belowInfo.PadRight(50)}");
+				i++;
+			}
+		}
+
+		if (i == 0) {
+			GD.Print("No cards found");
+		} else {
+			GD.Print($"Total cards: {i}");
+		}
 		GD.Print("------------------");
 	}
 
@@ -252,19 +272,13 @@ public class CardController {
 
 			if (craftedCard != null) {
 				foreach (string cardName in craftedCard) {
-					GD.Print("Crafted: " + cardName);
-
 					foreach (CardNode card in stack) {
-						GD.Print("Removing card: " + card.CardType.TextureType);
 						hoveredCards.Remove(card);
 						card.QueueFree();
 					}
 
 					CardCreationHelper.CreateCard(cardName);
 				}
-			}
-			else {
-				GD.Print("No crafting possible");
 			}
 		}
 	}
