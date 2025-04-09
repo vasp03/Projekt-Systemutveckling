@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://s0y3nn2xp4w7"]
+[gd_scene load_steps=14 format=4 uid="uid://s0y3nn2xp4w7"]
 
 [ext_resource type="Script" uid="uid://biujg80qqd46h" path="res://Scripts/Game/View/GuideMenu.cs" id="1_3f5sc"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_jwvxl"]
@@ -266,15 +266,10 @@ texture = ExtResource("1_k5dup")
 [sub_resource type="TileSet" id="TileSet_hm34y"]
 sources/0 = SubResource("TileSetAtlasSource_3f5sc")
 
-[sub_resource type="Theme" id="Theme_hm34y"]
-default_font = ExtResource("1_jwvxl")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k5dup"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pf5t"]
-bg_color = Color(0.122252, 0.122252, 0.122252, 0.886275)
-
-[sub_resource type="Theme" id="Theme_jwvxl"]
+bg_color = Color(0, 0, 0, 0.596078)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k5dup"]
 
@@ -317,30 +312,122 @@ anchor_right = 0.947779
 anchor_bottom = 0.885315
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_hm34y")
+theme_override_colors/font_selected_color = Color(0.760784, 0.737255, 0.956863, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_jwvxl")
 theme_override_font_sizes/font_size = 22
 theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_k5dup")
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pf5t")
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="How To Play" type="VBoxContainer" parent="TabContainer"]
-layout_mode = 2
-theme = SubResource("Theme_jwvxl")
-metadata/_tab_index = 0
-
-[node name="Card Types" type="VBoxContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HTPScrollContainer" type="ScrollContainer" parent="TabContainer/How To Play"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="HTPBoxContainer" type="VBoxContainer" parent="TabContainer/How To Play/HTPScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 45
+metadata/_tab_index = 0
+
+[node name="label" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+custom_minimum_size = Vector2(0.1, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Here, we can help new players and explain mechanics such as:"
+autowrap_mode = 2
+
+[node name="label1" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Where to start"
+
+[node name="label2" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Enemies"
+
+[node name="label3" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Random Events"
+
+[node name="label4" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Card crafting"
+
+[node name="label5" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "Store / How to get resources"
+
+[node name="label6" type="Label" parent="TabContainer/How To Play/HTPScrollContainer/HTPBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 55
+text = "And all other things in the game"
+
+[node name="Card Types" type="VBoxContainer" parent="TabContainer"]
+layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="CTScrollContainer" type="ScrollContainer" parent="TabContainer/Card Types"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="CTBoxContainer" type="VBoxContainer" parent="TabContainer/Card Types/CTScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="TabContainer/Card Types/CTScrollContainer/CTBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 22
+text = "Here will be a list of all cards in game. When pressing on a card in the list, card will show up with a description"
 
 [node name="Card Recipes" type="VBoxContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="CRScrollContainer" type="ScrollContainer" parent="TabContainer/Card Recipes"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="CRBoxContainer" type="VBoxContainer" parent="TabContainer/Card Recipes/CRScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/CRBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 22
+text = "Here will be a list of all recipes in game. When pressing on a recipe, a description will show up."
 
 [node name="GoBackButton" type="Button" parent="."]
 process_mode = 3
