@@ -22,8 +22,7 @@ public class CraftingController {
             StringIntHolder cardForCrafting = CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
             if (cardForCrafting != null) {
                 cardForCrafting.IntValue++;
-            }
-            else {
+            } else {
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
             }
         }
@@ -38,8 +37,7 @@ public class CraftingController {
                 StringIntHolder cardInRecipie = CardsInRecipeAndAmount.FirstOrDefault(x => x.StringValue == cardName);
                 if (cardInRecipie != null) {
                     cardInRecipie.IntValue++;
-                }
-                else {
+                } else {
                     CardsInRecipeAndAmount.Add(new StringIntHolder(cardName, 1));
                 }
             }
@@ -57,8 +55,7 @@ public class CraftingController {
                 }
             }
 
-            if(recipeMatches) {
-                GD.Print("Recipe matches: " + recipe.Name);
+            if (recipeMatches) {
                 List<string> craftedCards = recipe.CardsForCraftingResult;
                 return craftedCards;
             }

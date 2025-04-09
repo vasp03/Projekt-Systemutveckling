@@ -109,7 +109,7 @@ public class CardCreationHelper {
 				return new MaterialStick("Stick", 1, cardNode);
 			case "Stone":
 				return new MaterialStone("Stone", 1, cardNode);
-			case "SwordMk1":
+			case "SwordMK1":
 				return new MaterialSwordMk1("SwordMK1", 1, cardNode);
 			case "Tent":
 				return new ErrorCard("Error", true, 0, cardNode);

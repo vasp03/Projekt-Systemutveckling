@@ -43,7 +43,7 @@ public interface IStackable {
 
 	public List<IStackable> StackAbove {
 		get {
-			List<IStackable> stackForwards = new();
+			List<IStackable> stackForwards = [];
 
 			IStackable current = this;
 			while (current != null) {
