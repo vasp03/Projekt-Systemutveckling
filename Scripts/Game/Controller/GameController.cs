@@ -53,6 +53,9 @@ public partial class GameController : Node2D {
 				case Key.Key9:
 					cardController.CreateCard("Wood");
 					break;
+				case Key.Key0:
+					cardController.CreateAllCards();
+					break;
 			}
 		} else if (@event is InputEventMouseButton mouseButton) {
 			if (mouseButton.Pressed) {

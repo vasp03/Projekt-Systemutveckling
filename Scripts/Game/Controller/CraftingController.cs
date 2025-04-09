@@ -61,7 +61,7 @@ public class CraftingController {
             }
         }
 
-        // GD.Print("No recipe found for crafting.");
+        GD.Print("No recipe found for crafting.");
         return null;
     }
 }
