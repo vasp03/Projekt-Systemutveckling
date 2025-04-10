@@ -27,8 +27,8 @@ public partial class SettingsManager : Node{
 	public void ApplyDisplayMode() {
 		switch (DisplayMode) {
 			case 0:
-				DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
 				DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
+				DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
 				break;
 			case 1:
 				DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);

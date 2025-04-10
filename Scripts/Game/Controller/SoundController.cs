@@ -124,4 +124,9 @@ public partial class SoundController : Node {
 	public void ToggleSfxMuted() {
 		isSfxMuted = !isSfxMuted;
 	}
+	
+	public override void _ExitTree() {
+		StopMusic();
+		QueueFree();
+	}
 }

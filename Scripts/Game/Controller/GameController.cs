@@ -40,4 +40,8 @@ public partial class GameController : Node2D {
 	public Vector2 GetMousePosition() {
 		return GetGlobalMousePosition();
 	}
+	
+	public override void _ExitTree() {
+		QueueFree();
+	}
 }

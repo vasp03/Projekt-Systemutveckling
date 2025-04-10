@@ -99,4 +99,8 @@ public partial class MenuController : Node {
 
 		GetTree().Paused = false;
 	}
+	
+	public override void _ExitTree() {
+		QueueFree();
+	}
 }

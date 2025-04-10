@@ -44,7 +44,6 @@ public partial class MainMenu : Control {
 	}
 
 	private void OnExitButtonPressed() {
-		soundController.StopMusic();
 		GetTree().Quit();
 	}
 }
