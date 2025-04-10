@@ -4,81 +4,81 @@ using System.Linq;
 namespace Goodot15.Scripts.Game.Model.Interface;
 
 public interface IStackable {
-	/// <summary>
-	///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
-	///     Gets the current entire stack collection
-	/// </summary>
-	public IReadOnlyCollection<IStackable> Stack {
-		get {
-			ICollection<IStackable> stackBackwards = [];
-			ICollection<IStackable> stackForwards = [];
+    /// <summary>
+    ///     Traverses the entire stack (Both Forward and Backwards) from the current instance.
+    ///     Gets the current entire stack collection
+    /// </summary>
+    public IReadOnlyCollection<IStackable> Stack {
+        get {
+            ICollection<IStackable> stackBackwards = [];
+            ICollection<IStackable> stackForwards = [];
 
 
-			IStackable current = this;
-			IStackable next;
+            IStackable current = this;
+            IStackable next;
 
-			// Traverse backwards
-			while (current != null) {
-				next = current.NeighbourBelow;
-				stackBackwards.Add(next);
-				current = next;
-			}
+            // Traverse backwards
+            while (current != null) {
+                next = current.NeighbourBelow;
+                stackBackwards.Add(next);
+                current = next;
+            }
 
-			// Traverse forwards
-			current = this;
-			while (current != null) {
-				next = current.NeighbourAbove;
-				stackForwards.Add(next);
-				current = next;
-			}
+            // Traverse forwards
+            current = this;
+            while (current != null) {
+                next = current.NeighbourAbove;
+                stackForwards.Add(next);
+                current = next;
+            }
 
-			List<IStackable> stack = [];
-			stack.AddRange(stackBackwards
-				.Reverse()); // Stack backwards needs to be reversed so the order of the cards are correct
-			stack.AddRange(stackForwards);
+            List<IStackable> stack = [];
+            stack.AddRange(stackBackwards
+                .Reverse()); // Stack backwards needs to be reversed so the order of the cards are correct
+            stack.AddRange(stackForwards);
 
-			return stack.AsReadOnly();
-		}
-	}
+            return stack.AsReadOnly();
+        }
+    }
 
-	public List<IStackable> StackAbove {
-		get {
-			List<IStackable> stackForwards = [];
+    public List<IStackable> StackAbove {
+        get {
+            List<IStackable> stackForwards = [];
 
-			IStackable current = this;
-			while (current != null) {
-				current = current.NeighbourAbove;
+            IStackable current = this;
+            while (current != null) {
+                current = current.NeighbourAbove;
 
-				if (current == null) break;
+                if (current == null) break;
 
-				stackForwards.Add(current);
-			}
+                stackForwards.Add(current);
+            }
 
-			return stackForwards;
-		}
-	}
+            return stackForwards;
+        }
+    }
 
-	public IStackable NeighbourAbove { get; set; }
-	public IStackable NeighbourBelow { get; set; }
-	string TextureType { get; }
+    public IStackable NeighbourAbove { get; set; }
+    public IStackable NeighbourBelow { get; set; }
+    string TextureType { get; }
 
-	// public void ResetNeighbours() {
-	// 	NeighbourAbove = null;
-	// 	NeighbourBelow = null;
-	// }
+    // public void ResetNeighbours() {
+    // 	NeighbourAbove = null;
+    // 	NeighbourBelow = null;
+    // }
 
-	/// <summary>
-	///     Determines if this <code>IStackable</code> may stack with the other object <code>card</code>
-	/// </summary>
-	/// <param name="card">Other card to check if can stack</param>
-	/// <returns>True if capable of stacking, false otherwise</returns>
-	public bool CanStackWith(IStackable card) {
-		// IReadOnlyCollection<Type> stackableTypes = GetStackableTypes();
-		// if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
-		// 	throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
+    /// <summary>
+    ///     Determines if this <code>IStackable</code> may stack with the other object <code>card</code>
+    /// </summary>
+    /// <param name="card">Other card to check if can stack</param>
+    /// <returns>True if capable of stacking, false otherwise</returns>
+    public bool CanStackWith(IStackable card) {
+        // IReadOnlyCollection<Type> stackableTypes = GetStackableTypes();
+        // if (stackableTypes.Any(t => !t.IsAssignableFrom(typeof(IStackable))))
+        // 	throw new InvalidOperationException("The Stackable Types collection must all implement IStackable");
 
-		// return stackableTypes.Any(t => t.IsAssignableFrom(card.GetType()));
+        // return stackableTypes.Any(t => t.IsAssignableFrom(card.GetType()));
 
-		return true;
-	}
+        return true;
+    }
 }

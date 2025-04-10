@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialSwordMk1(string textureAddress, int cost, CardNode cardNode) : CardMaterial(textureAddress, cost, cardNode) {
-	public override IReadOnlyCollection<Type> GetStackableTypes() {
-		throw new NotImplementedException();
-	}
-
+public class MaterialSwordMk1(string textureAddress, int cost, CardNode cardNode)
+    : CardMaterial(textureAddress, cost, cardNode) {
+    public override IReadOnlyCollection<Type> GetStackableTypes() {
+        throw new NotImplementedException();
+    }
 }

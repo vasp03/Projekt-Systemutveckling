@@ -6,29 +6,28 @@ namespace Goodot15.Tests;
 
 [TestSuite]
 public class PlayButtonTest {
-		
-	[TestCase]
-	public async Task Test_StartGameWithPlayButton() {
-		// Load Menu Scene
-		ISceneRunner scene = ISceneRunner.Load("res://Scenes/MenuScenes/MainMenu.tscn",true);
-		// Find button
-		Button playButton = scene.FindChild("PlayButton") as Button;
-		
-		// Simulate button press 
-		// scene.SetMousePos(playButton.GlobalPosition);
-		// await ISceneRunner.SyncProcessFrame;
-		// scene.SimulateMouseButtonPressed(MouseButton.Left);
-		// await ISceneRunner.SyncProcessFrame;
-		playButton.EmitSignal(Button.SignalName.Pressed);
+    [TestCase]
+    public async Task Test_StartGameWithPlayButton() {
+        // Load Menu Scene
+        ISceneRunner scene = ISceneRunner.Load("res://Scenes/MenuScenes/MainMenu.tscn", true);
+        // Find button
+        Button playButton = scene.FindChild("PlayButton") as Button;
 
-		await scene.SimulateFrames(2);
+        // Simulate button press 
+        // scene.SetMousePos(playButton.GlobalPosition);
+        // await ISceneRunner.SyncProcessFrame;
+        // scene.SimulateMouseButtonPressed(MouseButton.Left);
+        // await ISceneRunner.SyncProcessFrame;
+        playButton.EmitSignal(Button.SignalName.Pressed);
 
-		Assertions.AssertString(scene.Scene().GetTree().CurrentScene.SceneFilePath)
-			.IsEqual("res://Scenes/mainScene.tscn");
-	}
+        await scene.SimulateFrames(2);
 
-	// [AfterTest]
-	// public async Task Test_ExitGame() {
-	// 	(Engine.GetMainLoop() as SceneTree).Quit();
-	// }
+        Assertions.AssertString(scene.Scene().GetTree().CurrentScene.SceneFilePath)
+            .IsEqualIgnoringCase("res://Scenes/mainScene.tscn");
+    }
+
+    // [AfterTest]
+    // public async Task Test_ExitGame() {
+    // 	(Engine.GetMainLoop() as SceneTree).Quit();
+    // }
 }

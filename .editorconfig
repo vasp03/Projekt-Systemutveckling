@@ -4,7 +4,8 @@ root = true
 charset = utf-8
 
 # Coding style related settings
-indent_style = tab
+indent_style = space
+indent_size = 4
 csharp_indent_braces = false
 # Use K&R style
 csharp_new_line_before_open_brace = none

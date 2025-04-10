@@ -1,15 +1,21 @@
 using Godot;
-using System;
-using System.Threading;
 using Timer = Godot.Timer;
 
 public partial class MouseController : Node {
-    private static string path = "res://Assets/MouseCursor/";
+    public enum MouseCursor {
+        point,
+        point_small,
+        hand_open,
+        hand_close,
+        loading
+    }
 
-    private Resource point = ResourceLoader.Load(path + "point.png");
-    private Resource point_small = ResourceLoader.Load(path + "point_small.png");
-    private Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
+    private static readonly string path = "res://Assets/MouseCursor/";
     private Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
+    private Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
+    private bool isLoading;
+    private int loadingIndex;
+
     private Resource[] loadingResources = [
         ResourceLoader.Load(path + "loading_1.png"),
         ResourceLoader.Load(path + "loading_2.png"),
@@ -20,28 +26,19 @@ public partial class MouseController : Node {
         ResourceLoader.Load(path + "loading_7.png"),
         ResourceLoader.Load(path + "loading_8.png")
     ];
-    private Vector2 offset = new Vector2(12, 12);
-    private bool isLoading = false;
-    private int loadingIndex = 0;
 
-    private Timer loadingTimer = new Timer();
+    private Timer loadingTimer = new();
+    private Vector2 offset = new(12, 12);
+
+    private Resource point = ResourceLoader.Load(path + "point.png");
+    private Resource point_small = ResourceLoader.Load(path + "point_small.png");
 
     public MouseController() {
         SetMouseCursor(MouseCursor.point_small);
     }
 
-    public enum MouseCursor {
-        point,
-        point_small,
-        hand_open,
-        hand_close,
-        loading
-    }
-
     public bool SetMouseCursor(MouseCursor cursor) {
-        if (cursor != MouseCursor.loading && isLoading) {
-            stopLoading();
-        }
+        if (cursor != MouseCursor.loading && isLoading) stopLoading();
 
         switch (cursor) {
             case MouseCursor.point:
@@ -57,9 +54,7 @@ public partial class MouseController : Node {
                 Input.SetCustomMouseCursor(hand_close, Input.CursorShape.Arrow, offset);
                 return true;
             case MouseCursor.loading:
-                if (!isLoading) {
-                    startLoading();
-                }
+                if (!isLoading) startLoading();
                 return true;
             default:
                 Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
