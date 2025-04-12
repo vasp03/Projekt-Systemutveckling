@@ -41,46 +41,37 @@ public class CardCreationHelper {
             case "Apple":
                 return new MaterialApple("Apple", 1, cardNode);
             case "Axe":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialAxe("Axe", 1, cardNode);
+                return new MaterialAxe("Axe", 1, cardNode);
             case "Berry":
                 return new MaterialBerry("Berry", 1, cardNode);
             case "Blacksmith":
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialBlacksmith("Blacksmith", 1, cardNode);
             case "Brick":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialBrick("Brick", 1, cardNode);
+                return new MaterialBrick("Brick", 1, cardNode);
             case "Bush":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialBush("Bush", 1, cardNode);
+                return new MaterialBush("Bush", 1, cardNode);
             case "Campfire":
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialCampfire("Campfire", 1, cardNode);
             case "CookedFish":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialCookedFish("CookedFish", 1, cardNode);
+                return new MaterialCookedFish("CookedFish", 1, cardNode);
             case "CookedMeat":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialCookedMeat("CookedMeat", 1, cardNode);
+                return new MaterialCookedMeat("CookedMeat", 1, cardNode);
             case "CookingPot":
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialCookingPot("CookingPot", 1, cardNode);
             case "Farmer":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialFarmer("Farmer", 1, cardNode);
+                return new PlayerFarmer("Farmer", true, 0, 0, cardNode);
             case "Field":
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialField("Field", 1, cardNode);
             case "Fish":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialFish("Fish", 1, cardNode);
+                return new MaterialFish("Fish", 1, cardNode);
             case "FishingPole":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialFishingPole("FishingPole", 1, cardNode);
+                return new MaterialFishingPole("FishingPole", 1, cardNode);
             case "Glass":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialGlass("Glass", 1, cardNode);
+                return new MaterialGlass("Glass", 1, cardNode);
             case "Greenhouse":
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialGreenhouse("Greenhouse", 1, cardNode);
@@ -88,23 +79,19 @@ public class CardCreationHelper {
                 return new ErrorCard("Error", true, 0, cardNode);
             // return new MaterialHouse("House", 1, cardNode);
             case "Hunter":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialHunter("Hunter", 1, cardNode);
+                return new PlayerHunter("Hunter", true, 0, 0, cardNode);
             case "Jam":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialJam("Jam", 1, cardNode);
+                return new MaterialJam("Jam", 1, cardNode);
             case "Leaves":
                 return new MaterialLeaves("Leaves", 1, cardNode);
             case "Meat":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialMeat("Meat", 1, cardNode);
+                return new MaterialMeat("Meat", 1, cardNode);
             case "Mine":
                 return new MaterialMine("Mine", 1, cardNode);
             case "Planks":
                 return new MaterialPlank("Planks", 1, cardNode);
             case "Sand":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialSand("Sand", 1, cardNode);
+                return new MaterialSand("Sand", 1, cardNode);
             case "Stick":
                 return new MaterialStick("Stick", 1, cardNode);
             case "Stone":
@@ -117,8 +104,7 @@ public class CardCreationHelper {
             case "Tree":
                 return new MaterialTree("Tree", 1, cardNode);
             case "Villager":
-                return new ErrorCard("Error", true, 0, cardNode);
-            // return new MaterialVillager("Villager", 1, cardNode);
+                return new PlayerVillager("Villager", true, 0, 0, cardNode);
             case "Water":
                 return new MaterialWater("Water", 1, cardNode);
             case "Wood":
