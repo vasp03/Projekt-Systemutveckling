@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 
 namespace Goodot15.Scripts.Game.Controller;
-public partial class EventManager : Node, ITickable {
+public partial class GameEventManager : Node, ITickable {
     private List<GameEvent> events = new();
     private PackedScene meteoriteCardScene;
     private Node cardParent;
@@ -26,5 +26,20 @@ public partial class EventManager : Node, ITickable {
 
     public void postTick() {
         throw new NotImplementedException();
+    }
+
+    public void SpawnMeteoriteStrike() {
+        if (meteoriteCardScene == null || cardParent == null) {
+            GD.PrintErr("Cannot spawn meteorite card, scene or parent is null");
+            return;
+        }
+
+        Node2D meteorite = (Node2D)meteoriteCardScene.Instantiate();
+
+        RandomNumberGenerator randomize = new();
+        randomize.Randomize();
+        meteorite.Position = new Vector2(randomize.RandfRange(100, 800), randomize.RandfRange(100, 500));
+        
+        cardParent.AddChild(meteorite);
     }
 }
