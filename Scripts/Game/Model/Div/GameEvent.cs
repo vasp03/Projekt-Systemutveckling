@@ -6,7 +6,7 @@ public class GameEvent {
     public string  eventName;
     public Action  eventAction;
 
-    public GameEvent(string eventName, string eventDescription, Action eventAction) {
+    public GameEvent(string eventName, Action eventAction) {
         this.eventName = eventName;
         this.eventAction = eventAction;
     }
