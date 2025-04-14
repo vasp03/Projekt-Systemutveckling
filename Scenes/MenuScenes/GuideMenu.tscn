@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://s0y3nn2xp4w7"]
+[gd_scene load_steps=20 format=4 uid="uid://s0y3nn2xp4w7"]
 
 [ext_resource type="Script" uid="uid://biujg80qqd46h" path="res://Scripts/Game/View/GuideMenu.cs" id="1_3f5sc"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_jwvxl"]
@@ -271,6 +271,18 @@ sources/0 = SubResource("TileSetAtlasSource_3f5sc")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pf5t"]
 bg_color = Color(0, 0, 0, 0.596078)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvfyd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l0v1c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jgbjf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rfk7m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w0vm6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eynnh"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k5dup"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3f5sc"]
@@ -384,27 +396,796 @@ theme_override_fonts/font = ExtResource("1_jwvxl")
 theme_override_font_sizes/font_size = 55
 text = "And all other things in the game"
 
-[node name="Card Types" type="VBoxContainer" parent="TabContainer"]
+[node name="Card Types" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 130
 metadata/_tab_index = 1
 
-[node name="CTScrollContainer" type="ScrollContainer" parent="TabContainer/Card Types"]
+[node name="CTBoxContainer" type="VBoxContainer" parent="TabContainer/Card Types"]
 layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 2
+theme_override_constants/separation = 9
 
-[node name="CTBoxContainer" type="VBoxContainer" parent="TabContainer/Card Types/CTScrollContainer"]
+[node name="ResourcesButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-metadata/_tab_index = 0
-
-[node name="Label" type="Label" parent="TabContainer/Card Types/CTScrollContainer/CTBoxContainer"]
-layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("1_jwvxl")
-theme_override_font_sizes/font_size = 22
-text = "Here will be a list of all cards in game. When pressing on a card in the list, card will show up with a description"
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Resources"
+
+[node name="ToolsButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Tools"
+
+[node name="BuildingsButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Buildings"
+
+[node name="FoodButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Food"
+
+[node name="NatureButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Nature"
+
+[node name="VillagersButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Villagers
+"
+
+[node name="ListPanel" type="Panel" parent="TabContainer/Card Types/CTBoxContainer"]
+layout_mode = 2
+
+[node name="ResourceList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 278.0
+offset_top = -347.0
+offset_right = 352.0
+offset_bottom = 176.0
+theme_override_constants/separation = 27
+
+[node name="WoodButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Wood"
+
+[node name="PlanksButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Plank"
+
+[node name="StickButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Stick"
+
+[node name="StoneButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Stone"
+
+[node name="WaterButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Water"
+
+[node name="BrickButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Brick"
+
+[node name="SandButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Sand"
+
+[node name="GlasButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Glas"
+
+[node name="LeafButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Leaf"
+
+[node name="ClayButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Clay
+"
+
+[node name="ToolList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 240.0
+offset_top = -221.0
+offset_right = 389.0
+offset_bottom = -28.0
+theme_override_constants/separation = 27
+
+[node name="SwordButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Sword"
+
+[node name="FishingPoleButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Fishing Pole"
+
+[node name="ShovelButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Shovel"
+
+[node name="AxeButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Axe"
+
+[node name="BuildingList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 239.0
+offset_top = -281.0
+offset_right = 386.0
+offset_bottom = 22.0
+theme_override_constants/separation = 27
+
+[node name="GreenhouseButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Greenhouse"
+
+[node name="HouseButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "House"
+
+[node name="TentButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Tent"
+
+[node name="FieldButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Field"
+
+[node name="CampfireButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Campfire"
+
+[node name="CookingPotButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Cooking Pot"
+
+[node name="FoodList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 235.0
+offset_top = -305.0
+offset_right = 392.0
+offset_bottom = 53.0
+theme_override_constants/separation = 27
+
+[node name="AppleButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Apple"
+
+[node name="BerryButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Berry"
+
+[node name="JamButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Jam"
+
+[node name="MeatButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Meat"
+
+[node name="CookedMeatButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Cooked Meat"
+
+[node name="FishButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Fish"
+
+[node name="CookedFishButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Cooked Fish"
+
+[node name="NatureList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 281.0
+offset_top = -195.0
+offset_right = 341.0
+offset_bottom = -57.0
+theme_override_constants/separation = 27
+
+[node name="TreeButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Tree"
+
+[node name="MineButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Mine"
+
+[node name="BushButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Bush"
+
+[node name="VillagerList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+offset_left = 246.0
+offset_top = -195.0
+offset_right = 379.0
+offset_bottom = -57.0
+theme_override_constants/separation = 27
+
+[node name="VillagerButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Villager"
+
+[node name="HunterButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Hunter"
+
+[node name="FarmerButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Farmer"
+
+[node name="BlacksmithButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Blacksmith"
 
 [node name="Card Recipes" type="VBoxContainer" parent="TabContainer"]
 visible = false
