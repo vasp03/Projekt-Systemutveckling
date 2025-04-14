@@ -422,7 +422,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Resources"
+text = "Resources >"
 
 [node name="ToolsButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
 layout_mode = 2
@@ -440,7 +440,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Tools"
+text = "Tools >"
 
 [node name="BuildingsButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
 layout_mode = 2
@@ -458,10 +458,9 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Buildings"
+text = "Buildings >"
 
 [node name="FoodButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -477,7 +476,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Food"
+text = "Food >"
 
 [node name="NatureButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
 layout_mode = 2
@@ -495,7 +494,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Nature"
+text = "Nature >"
 
 [node name="VillagersButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer"]
 layout_mode = 2
@@ -513,7 +512,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Villagers
+text = "Villagers >
 "
 
 [node name="ListPanel" type="Panel" parent="TabContainer/Card Types/CTBoxContainer"]
@@ -522,10 +521,10 @@ layout_mode = 2
 [node name="ResourceList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 278.0
-offset_top = -347.0
-offset_right = 352.0
-offset_bottom = 176.0
+offset_left = 277.0
+offset_top = -399.0
+offset_right = 351.0
+offset_bottom = 124.0
 theme_override_constants/separation = 27
 
 [node name="WoodButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList"]
@@ -712,10 +711,10 @@ text = "Clay
 [node name="ToolList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 240.0
-offset_top = -221.0
-offset_right = 389.0
-offset_bottom = -28.0
+offset_left = 239.0
+offset_top = -247.0
+offset_right = 388.0
+offset_bottom = -54.0
 theme_override_constants/separation = 27
 
 [node name="SwordButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList"]
@@ -793,10 +792,10 @@ text = "Axe"
 [node name="BuildingList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 239.0
-offset_top = -281.0
-offset_right = 386.0
-offset_bottom = 22.0
+offset_left = 240.0
+offset_top = -304.0
+offset_right = 387.0
+offset_bottom = -0.999969
 theme_override_constants/separation = 27
 
 [node name="GreenhouseButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList"]
@@ -910,10 +909,10 @@ text = "Cooking Pot"
 [node name="FoodList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 235.0
-offset_top = -305.0
-offset_right = 392.0
-offset_bottom = 53.0
+offset_left = 236.0
+offset_top = -332.0
+offset_right = 393.0
+offset_bottom = 26.0
 theme_override_constants/separation = 27
 
 [node name="AppleButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList"]
@@ -1045,10 +1044,10 @@ text = "Cooked Fish"
 [node name="NatureList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 281.0
-offset_top = -195.0
-offset_right = 341.0
-offset_bottom = -57.0
+offset_left = 283.0
+offset_top = -219.0
+offset_right = 343.0
+offset_bottom = -81.0
 theme_override_constants/separation = 27
 
 [node name="TreeButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList"]
@@ -1108,10 +1107,10 @@ text = "Bush"
 [node name="VillagerList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
 visible = false
 layout_mode = 2
-offset_left = 246.0
-offset_top = -195.0
-offset_right = 379.0
-offset_bottom = -57.0
+offset_left = 251.0
+offset_top = -219.0
+offset_right = 384.0
+offset_bottom = -81.0
 theme_override_constants/separation = 27
 
 [node name="VillagerButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]

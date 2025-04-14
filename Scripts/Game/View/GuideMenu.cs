@@ -68,8 +68,32 @@ public partial class GuideMenu : Control {
 
 
 	private void onButtonPressed(Button button) {
-		foreach (KeyValuePair<Button, VBoxContainer> choice in buttons)
-			choice.Value.Visible = choice.Key == button && !choice.Value.Visible;
+		foreach (KeyValuePair<Button, VBoxContainer> choice in buttons) {
+			if (choice.Key == button) {
+				bool isNowVisible = !choice.Value.Visible;
+				choice.Value.Visible = isNowVisible;
+				choice.Key.Text = GetBaseButtonText(choice.Key) + (isNowVisible ? " v" : " >");	
+			}
+			else {
+				choice.Value.Visible = false;
+				choice.Key.Text = GetBaseButtonText(choice.Key) + " >";
+			}
+		}
+	}
+	
+	private string GetBaseButtonText(Button button) {
+		string text = button.Text;
+		int arrowIndex = text.IndexOf(">");
+		if (arrowIndex == -1) {
+			arrowIndex = text.LastIndexOf('v');
+		}
+		
+		if (arrowIndex != -1) {
+			return text.Substring(0, arrowIndex).Trim();
+		}
+		
+		return text;
+		
 	}
 
 	private void OnGoBackButtonPressed() {
