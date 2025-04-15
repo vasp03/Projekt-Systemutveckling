@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Model.Living;
 
 public partial class NodeController : Node2D {
 	private CardController cardController;
@@ -17,16 +18,19 @@ public partial class NodeController : Node2D {
 		// Detect mouse movement
 		if (@event is InputEventMouseMotion mouseMotion) {
 		}
-		else if (@event is InputEventKey eventKey) {
-			if (eventKey.Pressed && eventKey.Keycode == Key.Space) {
+		else if (@event is InputEventKey eventKey && eventKey.Pressed) {
+			if (eventKey.Keycode == Key.Space) {
 				cardController.CreateCard("Random");
 			}
-			else if (eventKey.Pressed && eventKey.Keycode == Key.Escape) {
+			else if (eventKey.Keycode == Key.Escape) {
 				menuController.OpenPauseMenu();
 				Visible = false;
 			}
-			else if (eventKey.Pressed && eventKey.Keycode == Key.A) {
+			else if (eventKey.Keycode == Key.A) {
 				cardController.CreateCard("Wood");
+			}
+			else if (eventKey.Keycode == Key.S) {
+				cardController.CreateCard().CardType = new LivingPlayer();
 			}
 		}
 		else if (@event is InputEventMouseButton mouseButton) {

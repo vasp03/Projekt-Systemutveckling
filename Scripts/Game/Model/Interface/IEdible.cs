@@ -1,4 +1,4 @@
-using System;
+using Math = System.Math;
 
 namespace Goodot15.Scripts.Game.Model.Interface;
 
@@ -10,12 +10,10 @@ public interface IEdible {
 	/// <param name="foodAmount"></param>
 	/// <returns></returns>
 	public int ConsumeFood(int foodAmount) {
-		int clampedRemainingFood = Math.Max(RemainingFood - foodAmount, 0);
-		int consumedFood = RemainingFood - clampedRemainingFood;
+		int consumedAmount = Math.Min(foodAmount, RemainingFood);
 
+		RemainingFood -= consumedAmount;
 
-		RemainingFood -= consumedFood;
-
-		return consumedFood;
+		return consumedAmount;
 	}
 }

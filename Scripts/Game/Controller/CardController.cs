@@ -175,7 +175,7 @@ public class CardController {
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
 
-			if (selectedCard.HasNeighbourAbove())
+			if (selectedCard.HasNeighbourAbove)
 				selectedCard.IsMovingOtherCards = true;
 			else
 				// Set the card that is being dragged to the top
@@ -183,7 +183,7 @@ public class CardController {
 
 			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
 			// And sets the card below if it exists to not have a neighbour above
-			if (selectedCard.HasNeighbourBelow())
+			if (selectedCard.HasNeighbourBelow)
 				if (selectedCard.CardType is IStackable stackable) {
 					if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
 					stackable.NeighbourBelow = null;
@@ -225,7 +225,7 @@ public class CardController {
 			// Checks for a card under the moved card and sets if it exists as a neighbour below. 
 			CardNode underCard = GetCardUnderMovedCard();
 
-			if (underCard != null && !selectedCard.HasNeighbourBelow() && !underCard.HasNeighbourAbove())
+			if (underCard != null && !selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove)
 				selectedCard.SetOverLappedCardToStack(underCard);
 
 			selectedCard = null;

@@ -11,11 +11,11 @@ public partial class MainMenu : Control {
 
 	public override void _Ready() {
 		MenuController.configureWithNewMainMenuInstance(this);
-		
+
 		PlayButton.Pressed += OnPlayButtonPressed;
 
 		OptionsButton.Pressed += OnOptionsButtonPressed;
-		
+
 		ExitButton.Pressed += OnExitButtonPressed;
 	}
 

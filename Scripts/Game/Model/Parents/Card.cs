@@ -14,15 +14,15 @@ public abstract class Card {
 	public Card(string textureAddress, bool movable) {
 		// Generate a unique uuid as name
 		ID = Guid.NewGuid().ToString();
-		_texturePath = baseTexturePath + textureAddress + textureEnding;
+		TexturePath = baseTexturePath + textureAddress + textureEnding;
 		Movable = movable;
 	}
 
 	public CardNode CardNode { get; set; }
 
 	public string ID { get; private set; }
-	private readonly string _texturePath;
-	public string TexturePath { get => _texturePath; }
+	public string TexturePath { get; }
+
 	public bool Movable { get; set; }
 
 	public string TextureType {

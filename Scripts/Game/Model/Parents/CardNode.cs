@@ -52,6 +52,26 @@ public partial class CardNode : Node2D {
 	public bool IsMovingOtherCards { get; set; } = false;
 
 	/// <summary>
+	///     Sets the position of the card node to the given position.
+	/// </summary>
+	public bool HasNeighbourAbove {
+		get {
+			if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
+			return false;
+		}
+	}
+
+	/// <summary>
+	///     Checks if the card has a neighbour below.
+	/// </summary>
+	public bool HasNeighbourBelow {
+		get {
+			if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
+			return false;
+		}
+	}
+
+	/// <summary>
 	///     Creates a new card and adds it to the scene.
 	///     It loads the card scene from the resource path and instantiates it.
 	///     It then creates a new card by copying the card from Card scene and adding an instance of CardMaterial to it.
@@ -101,22 +121,6 @@ public partial class CardNode : Node2D {
 	/// <summary>
 	///     Sets the position of the card node to the given position.
 	/// </summary>
-	public bool HasNeighbourAbove() {
-		if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
-		return false;
-	}
-
-	/// <summary>
-	///     Checks if the card has a neighbour below.
-	/// </summary>
-	public bool HasNeighbourBelow() {
-		if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
-		return false;
-	}
-
-	/// <summary>
-	///     Sets the position of the card node to the given position.
-	/// </summary>
 	/// <returns>
 	///     True if the card has been created successfully.
 	///     False if the card has not been created successfully.
@@ -147,8 +151,7 @@ public partial class CardNode : Node2D {
 	///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
 	/// </summary>
 	public void SetHighlighted(bool isHighlighted) {
-		switch (isHighlighted)
-		{
+		switch (isHighlighted) {
 			case true when !oldIsHighlighted:
 				sprite.SetModulate(sprite.Modulate * HighLightFactor);
 				oldIsHighlighted = true;
@@ -190,6 +193,18 @@ public partial class CardNode : Node2D {
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
 	}
 
+
+	private void ClearReferences() {
+		if (CardType is IStackable stackable) {
+			if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
+
+			if (HasNeighbourAbove) stackable.NeighbourAbove.NeighbourBelow = null;
+		}
+
+		HoveredCards.Remove(this);
+		CardController.RemoveCardFromHoveredCards(this);
+	}
+
 	/// <summary>
 	///     Processes the card node and checks if the card node is being dragged.
 	/// </summary>
@@ -221,6 +236,12 @@ public partial class CardNode : Node2D {
 	}
 
 	#region Events(?)
+
+	public void Destroy() {
+		ClearReferences();
+
+		QueueFree();
+	}
 
 	public void _on_area_2d_mouse_entered() {
 		MouseIsHovering = true;

@@ -2,14 +2,14 @@
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialFood(string textureAddress)
+public class MaterialFood(string textureAddress, int startFood)
 	: CardMaterial(textureAddress), IEdible {
-	private int _remainingFood;
+	private int _remainingFood = startFood;
 
-	public int RemainingFood {
+	public virtual int RemainingFood {
 		get => _remainingFood;
 		set {
-			if (value <= 0) CardNode.QueueFree();
+			if (value <= 0) CardNode.Destroy();
 			_remainingFood = value;
 		}
 	}
