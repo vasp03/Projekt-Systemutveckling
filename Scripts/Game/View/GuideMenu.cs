@@ -50,8 +50,9 @@ public partial class GuideMenu : Control {
 		InitializeLists();
 		InitializeDescriptions();
 		InitializeResourceCardButtons();
+		InitializeToolCardButtons();
 	}
-
+	
 	private void InitializeMainButtons() {
 		toolsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ToolsButton");
 		foodButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/FoodButton");
@@ -103,9 +104,9 @@ public partial class GuideMenu : Control {
 			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/WaterButton"),
 			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/BrickButton"),
 			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/SandButton"),
-			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/GlasButton"),
-			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/LeafButton"),
-			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/ClayButton")
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/GlassButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/LeafButton"), //no leaf card yet 
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/ClayButton") //no clay card yet 
 		};
 
 		foreach (Button button in resourceCardButtons) {
@@ -114,23 +115,66 @@ public partial class GuideMenu : Control {
 		}
 	}
 
+	private void InitializeToolCardButtons() {
+		toolCardButtons = new Button[] {
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/SwordButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/FishingPoleButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/ShovelButton"), //no shovel card yet 
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/AxeButton")
+		};
+		
+		foreach (Button button in toolCardButtons) {
+			string buttonName = button.Name;
+			button.Pressed += () => OnSubButtonPressed(buttonName);
+		}
+	}
+
 	private void InitializeDescriptions() {
+		//resource cards
 		cardData["WoodButton"] = (LoadCardTexture("Wood"), "Wood is a basic resource used for crafting and building.");
 		cardData["PlanksButton"] = (LoadCardTexture("Planks"), "Planks are crafted from wood and are used for crafting and building.");
 		cardData["StickButton"] = (LoadCardTexture("Stick"), "Sticks are small pieces of wood used for crafting and building.");
 		cardData["StoneButton"] = (LoadCardTexture("Stone"), "Stone is a basic resource used for crafting and building.");
+		cardData["WaterButton"] = (LoadCardTexture("Water"), "Water is a basic resource used for crafting and building.");
+		cardData["BrickButton"] = (LoadCardTexture("Brick"), "Bricks are crafted from clay and are used for crafting and building.");
+		cardData["SandButton"] = (LoadCardTexture("Sand"), "Sand is a basic resource used for crafting and building.");
+		cardData["GlassButton"] = (LoadCardTexture("Glass"), "Glass is crafted from sand and is used for crafting and building.");
+		cardData["LeafButton"] = (LoadCardTexture("Leaf"), "Leaves are a basic resource used for crafting and building."); //no leaf card yet 
+		cardData["ClayButton"] = (LoadCardTexture("Clay"), "Clay is a basic resource used for crafting and building.");//no clay card yet 
 		
+		//tool cards
+		cardData["SwordButton"] = (LoadCardTexture("SwordMK1"), "A basic sword used for combat.");
+		cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"), "A basic fishing pole used for fishing.");
+		cardData["ShovelButton"] = (LoadCardTexture("Shovel"), "A basic shovel used for digging."); //no shovel card yet 
+		cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood.");
 		
+		//building cards
+		
+		//food cards
+		
+		//nature cards
+		
+		//villager cards
 	}
 
 	private Texture2D LoadCardTexture(string CardName) {
-		return GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/" + CardName + ".png");
+		string cardImagePath = "res://Assets/Cards/Ready To Use/" + CardName + ".png";
+		string defaultPath = "res://Assets/Cards/Ready To Use/Error.png";
+		if (!FileAccess.FileExists(cardImagePath)) { 
+			GD.PrintErr($"Card image not found: {cardImagePath}");
+			return GD.Load<Texture2D>(defaultPath);
+		}
+		
+		Texture2D cardTexture= GD.Load<Texture2D>(cardImagePath);
+		
+		return cardTexture;
 	}
 
 	private void OnSubButtonPressed(string buttonName) {
 		if (cardData.TryGetValue(buttonName, out (Texture2D, string) data)) {
 			cardImage.Texture = data.Item1;
 			cardInfoLabel.Text = data.Item2;
+			GD.Print("Button pressed: " + buttonName);
 		}
 		else {
 			GD.Print($"No data found for button: {buttonName}");
