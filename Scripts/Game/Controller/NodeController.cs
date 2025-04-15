@@ -1,5 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Living;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 
 public partial class NodeController : Node2D {
 	private CardController cardController;
@@ -15,7 +16,6 @@ public partial class NodeController : Node2D {
 	}
 
 	public override void _Input(InputEvent @event) {
-		// Detect mouse movement
 		if (@event is InputEventMouseMotion mouseMotion) {
 		}
 		else if (@event is InputEventKey eventKey && eventKey.Pressed) {
@@ -27,10 +27,11 @@ public partial class NodeController : Node2D {
 				Visible = false;
 			}
 			else if (eventKey.Keycode == Key.A) {
-				cardController.CreateCard("Wood");
+				cardController.CreateCard(new MaterialWood());
 			}
 			else if (eventKey.Keycode == Key.S) {
-				cardController.CreateCard().CardType = new LivingPlayer();
+				// TODO: DEBUG KEY, REMOVE IN PRODUCTION
+				cardController.CreateCard(new LivingPlayer());
 			}
 		}
 		else if (@event is InputEventMouseButton mouseButton) {

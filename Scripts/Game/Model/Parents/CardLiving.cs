@@ -3,38 +3,8 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model;
 
-public abstract class CardLiving(string textureAddress, bool movable)
-	: Card(textureAddress, movable), ITickable, ICardConsumer {
-	private int _health;
-
-	private int _hungerTickCount;
-
-	private int _saturation;
-
-	private int _starvationTickCount;
-	public abstract int? TicksUntilFullyStarved { get; }
-	public abstract int? TicksUntilSaturationDecrease { get; }
-
-	public int Health {
-		get => _health;
-		set => _health = Math.Max(0, value);
-	}
-
-	public int HungerTickProgress {
-		get => TicksUntilSaturationDecrease.HasValue ? _hungerTickCount : -1;
-		protected set => _hungerTickCount = Math.Max(0, value);
-	}
-
-	public int Saturation {
-		get => TicksUntilSaturationDecrease.HasValue ? _hungerTickCount : -1;
-		set => _saturation = Math.Max(0, value);
-	}
-
-	public int StarvationTickProgress {
-		get => TicksUntilFullyStarved.HasValue ? _starvationTickCount : -1;
-		set => _starvationTickCount = Math.Clamp(value, 0, TicksUntilFullyStarved ?? 0);
-	}
-
+public abstract class CardLiving
+	: Card, ITickable, ICardConsumer {
 	public abstract bool ConsumeCard(Card otherCard);
 
 	public virtual void PostTick() {
@@ -43,14 +13,116 @@ public abstract class CardLiving(string textureAddress, bool movable)
 		else
 			HungerTickProgress++;
 
-		CheckTickProgress();
+		ExecuteTickLogic();
 	}
 
-	protected virtual void CheckTickProgress() {
-		if (TicksUntilFullyStarved is not null && StarvationTickProgress >= TicksUntilFullyStarved) {
-			// TODO: Death(?)
+	protected virtual void ExecuteTickLogic() {
+		if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved)
+			StarvationTickProgress = 0;
+		// TODO: Death(?)
+		if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilFullyStarved) {
+			HungerTickProgress = 0;
+			Saturation -= SaturationLossPerCycle != -1 ? SaturationLossPerCycle : 0;
 		}
-
-		if (TicksUntilSaturationDecrease is not null && HungerTickProgress >= TicksUntilFullyStarved) Saturation--;
 	}
+
+	#region Health-related
+
+	/// <summary>
+	///     Health for this unit
+	/// </summary>
+	private int _health;
+
+	public CardLiving(string textureAddress, bool movable)
+		: base(textureAddress, movable) {
+		Health = BaseHealth;
+		Saturation = MaximumSaturation;
+	}
+
+	/// <summary>
+	///     Current hit/health points
+	/// </summary>
+	public int Health {
+		get => _health;
+		set => _health = Math.Max(0, value);
+	}
+
+	/// <summary>
+	///     Starting health
+	/// </summary>
+	public abstract int BaseHealth { get; }
+
+	#endregion Health-related
+
+	#region Hunger-related mechanics
+
+	/// <summary>
+	///     Counter for ticks, used for decreasing hunger when it reaches <see cref="TicksUntilSaturationDecrease" />
+	/// </summary>
+	private int _hungerTickCount;
+
+	/// <summary>
+	///     Current Hunger Tick Progress, in ticks
+	/// </summary>
+	public int HungerTickProgress {
+		get => TicksUntilSaturationDecrease == -1 ? 0 : _hungerTickCount;
+		protected set => _hungerTickCount = Math.Max(0, value);
+	}
+
+	/// <summary>
+	///     Current saturation, Ranges from 0-<see cref="MaximumSaturation" />
+	/// </summary>
+	private int _saturation;
+
+	/// <summary>
+	///     Current saturation points
+	/// </summary>
+	public int Saturation {
+		get => TicksUntilSaturationDecrease == -1 ? _saturation : -1;
+		set => _saturation = Math.Max(0, value);
+	}
+
+	/// <summary>
+	///     How many points required to fully feed
+	/// </summary>
+	public int Hunger => MaximumSaturation - Saturation;
+
+	/// <summary>
+	///     Determines the maximum saturation
+	/// </summary>
+	public abstract int MaximumSaturation { get; }
+
+	/// <summary>
+	///     Starvation progres in ticks
+	/// </summary>
+	private int _starvationTickCount;
+
+	/// <summary>
+	///     Current starvation progress, in ticks
+	/// </summary>
+	public int StarvationTickProgress {
+		get => TicksUntilFullyStarved == -1 ? _starvationTickCount : -1;
+		set => _starvationTickCount = Math.Clamp(value, 0, TicksUntilFullyStarved);
+	}
+
+	/// <summary>
+	///     Determines for how many ticks a card living can exist until it starves to death. <code>-1</code> means it does
+	///     nothing<br />
+	///     Make use of <see cref="Utilities.TimeToTicks" /> or <see cref="Utilities.GameScaledTimeToTicks" />
+	/// </summary>
+	public abstract int TicksUntilFullyStarved { get; }
+
+	/// <summary>
+	///     Determines for how many ticks a card living can exist until it starves to death. <code>-1</code> means it does
+	///     nothing<br />
+	///     Make use of <see cref="Utilities.TimeToTicks" /> or <see cref="Utilities.GameScaledTimeToTicks" />
+	/// </summary>
+	public abstract int TicksUntilSaturationDecrease { get; }
+
+	/// <summary>
+	///     How many saturation points are lost during each cycle of <see cref="TicksUntilSaturationDecrease" />
+	/// </summary>
+	public abstract int SaturationLossPerCycle { get; }
+
+	#endregion
 }

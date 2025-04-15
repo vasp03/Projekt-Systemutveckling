@@ -1,11 +1,11 @@
 using System;
 using Godot;
-using Goodot15.Scripts;
-using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public abstract class LivingAnimal(string textureAddress, bool movable, int cost, int health, CardNode cardNode)
-	: CardLiving(textureAddress, movable), ITickable, ICardProducer {
+namespace Goodot15.Scripts.Game.Model.Living;
+
+public abstract class LivingAnimal(string textureAddress, bool movable)
+	: CardLiving(textureAddress, movable), ICardProducer {
 	private int _produceTimer;
 	public virtual int? TicksUntilProducedCard => Utilities.TimeToTicks(days: 0.5d);
 
@@ -14,8 +14,8 @@ public abstract class LivingAnimal(string textureAddress, bool movable, int cost
 		set => _produceTimer = Math.Max(0, value);
 	}
 
-	public override int? TicksUntilFullyStarved => Utilities.TimeToTicks(days: 3d);
-	public override int? TicksUntilSaturationDecrease => Utilities.TimeToTicks(days: 1d);
+	public override int TicksUntilFullyStarved => Utilities.TimeToTicks(days: 3d);
+	public override int TicksUntilSaturationDecrease => Utilities.TimeToTicks(days: 1d);
 
 	public abstract Card ProduceCard();
 
@@ -24,8 +24,8 @@ public abstract class LivingAnimal(string textureAddress, bool movable, int cost
 		if (TicksUntilProducedCard is not null && Saturation > 0) ProduceTickProgress++;
 	}
 
-	protected override void CheckTickProgress() {
-		base.CheckTickProgress();
+	protected override void ExecuteTickLogic() {
+		base.ExecuteTickLogic();
 		if (ProduceTickProgress >= TicksUntilProducedCard) {
 			ProduceTickProgress = 0;
 			CardNode.CardController.CreateCard(ProduceCard(), CardNode.Position + Vector2.Down * 15f);
