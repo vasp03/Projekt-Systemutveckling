@@ -519,7 +519,6 @@ text = "Villagers >
 layout_mode = 2
 
 [node name="ResourceList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
-visible = false
 layout_mode = 2
 offset_left = 277.0
 offset_top = -399.0
@@ -1185,6 +1184,48 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
 text = "Blacksmith"
+
+[node name="CardImage" type="TextureRect" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.505
+anchor_right = 0.505
+offset_left = -109.56
+offset_top = -316.0
+offset_right = 110.44
+offset_bottom = 11.0
+grow_horizontal = 2
+
+[node name="DescriptionLabel" type="Label" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.502
+anchor_right = 0.502
+offset_left = 211.776
+offset_top = -307.0
+offset_right = 425.776
+offset_bottom = -271.0
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 35
+text = "DESCRIPTION"
+
+[node name="InfoLabel" type="Label" parent="TabContainer/Card Types/CTBoxContainer/ListPanel"]
+visible = false
+layout_mode = 2
+anchor_left = 0.502
+anchor_right = 0.502
+offset_left = 175.776
+offset_top = -242.0
+offset_right = 511.776
+offset_bottom = 44.0
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 20
+text = "DESCRIPTION"
+autowrap_mode = 2
 
 [node name="Card Recipes" type="VBoxContainer" parent="TabContainer"]
 visible = false

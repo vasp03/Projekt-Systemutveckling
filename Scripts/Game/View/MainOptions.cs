@@ -12,8 +12,8 @@ public partial class MainOptions : Control {
 	private HSlider sfxVolumeSlider;
 	private Label musicVolumePercentageLabel;
 	private Label sfxVolumePercentageLabel;
-	private OptionButton displayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
-	private Button goBackButton => GetNode<Button>("GoBackButton");
+	private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
+	private Button GoBackButton => GetNode<Button>("GoBackButton");
 	
 
 	private readonly string[] displayModes = {
@@ -38,8 +38,8 @@ public partial class MainOptions : Control {
 		
 		musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
 		sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
-		displayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
-		goBackButton.Pressed += OnBackButtonPressed;
+		DisplayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
+		GoBackButton.Pressed += OnBackButtonPressed;
 		
 		musicVolumeSlider.Value = soundController.GetMusicVolume();
 		sfxVolumeSlider.Value = soundController.GetSfxVolume();
@@ -66,14 +66,14 @@ public partial class MainOptions : Control {
 	
 	private void SetDisplayModeButton() {
 		int currentMode = settingsManager.DisplayMode;
-		displayModeButton.Select(currentMode);
+		DisplayModeButton.Select(currentMode);
 	}
 
 	private void PopulateDisplayModeOptions() {
-		displayModeButton.Clear();
+		DisplayModeButton.Clear();
 
 		foreach (string displayMode in displayModes) {
-			displayModeButton.AddItem(displayMode);
+			DisplayModeButton.AddItem(displayMode);
 		}
 	}
 	
