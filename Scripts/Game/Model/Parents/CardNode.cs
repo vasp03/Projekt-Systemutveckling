@@ -191,12 +191,9 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
-        if (!(CardType is ITickable)){
-            return;
-        }
-
         ITickable tickable = CardType as ITickable;
         tickable?.PreTick();
+        
         if (IsBeingDragged) {
             Vector2 mousePosition = GetGlobalMousePosition();
 

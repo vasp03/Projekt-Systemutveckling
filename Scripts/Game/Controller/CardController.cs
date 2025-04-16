@@ -45,6 +45,10 @@ public class CardController {
         cardInstance.CardController = this;
 
         cardInstance.Position = position;
+        if (cardInstance.GetParent() != null)
+        {
+            cardInstance.GetParent().RemoveChild(cardInstance);
+        }
         _gameController.AddChild(cardInstance);
 
         return cardInstance;
