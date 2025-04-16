@@ -12,17 +12,16 @@ public class CardController {
 
 	private readonly List<CardNode> hoveredCards = [];
 
-	private readonly MouseController mouseController;
+	private readonly MouseController _mouseController;
 
-	private readonly NodeController nodeController;
+	private readonly GameController _gameController;
 
 	private CardNode selectedCard;
 
 	// Constructor
-	public CardController(GameController nodeController, MouseController mouseController) {
-		GameController = nodeController;
-		this.mouseController = mouseController;
-		CardCreationHelper = new CardCreationHelper(nodeController, this);
+	public CardController(GameController _nodeController, MouseController mouseController) {
+		this._mouseController = mouseController;
+		CardCreationHelper = new CardCreationHelper(_nodeController, this);
 		CraftingController = new CraftingController(CardCreationHelper);
 
 		CreateStartingRecipes();
@@ -31,7 +30,7 @@ public class CardController {
 	public int CardCount => AllCards.Count;
 
 	public IReadOnlyCollection<CardNode> AllCards =>
-		GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+        _gameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -45,17 +44,13 @@ public class CardController {
 		cardInstance.CardType = card;
 
 		cardInstance.Position = position;
-		nodeController.AddChild(cardInstance);
+        _gameController.AddChild(cardInstance);
 
 		return cardInstance;
 	}
 
-	public CardNode CreateCard(string cardType) {
-		CardNode cardNode = CreateCard();
-		cardNode.CardType = CardCreationHelper.GetCreatedInstanceOfCard(cardType);
-		;
-
-		return cardNode;
+	public CardNode CreateCard(string cardType, Vector2 position = default) {
+        return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
 	}
 
 	/// <summary>
@@ -73,7 +68,7 @@ public class CardController {
 			CardCreationHelper.GetCreatedInstanceOfCard(CardCreationHelper.GetRandomCardType()), this);
 		if (ret) {
 			cardInstance.ZIndex = CardCount + 1;
-			nodeController.AddChild(cardInstance);
+			_gameController.AddChild(cardInstance);
 			cardInstance.SetPosition(new Vector2(100, 100));
 		}
 
@@ -203,7 +198,7 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+		_mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
 		selectedCard = GetTopCardAtMousePosition();
 		// SetTopZIndexForCard(selectedCard);
 
@@ -234,8 +229,7 @@ public class CardController {
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
 	public void SetZIndexForAllCards(CardNode cardNode) {
 		int NumberOfCards = AllCards.Count;
-		List<IStackable> stackAboveSelectedCard =
-			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+		IReadOnlyCollection<IStackable> stackAboveSelectedCard = cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
 		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
 		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
 		int CounterForCardsBelow = 1;

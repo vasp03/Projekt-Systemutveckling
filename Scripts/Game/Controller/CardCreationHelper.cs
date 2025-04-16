@@ -19,9 +19,9 @@ public class CardCreationHelper {
     }
 
 	private readonly CardController CardController;
-	private readonly NodeController NodeController;
+	private readonly GameController NodeController;
 
-	public CardCreationHelper(NodeController NodeController, CardController CardController) {
+	public CardCreationHelper(GameController NodeController, CardController CardController) {
 		this.NodeController = NodeController;
 		this.CardController = CardController;
 	}
