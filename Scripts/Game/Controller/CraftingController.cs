@@ -30,6 +30,7 @@ public class CraftingController {
         // Sort the list by the name of the card
         CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
+
         foreach (CraftingRecipe recipe in Recipes) {
             List<StringIntHolder> CardsInRecipeAndAmount = [];
 

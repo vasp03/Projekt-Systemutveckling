@@ -6,23 +6,23 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
+
+    private readonly GameController _gameController;
+
+    private readonly MouseController _mouseController;
     private readonly CardCreationHelper CardCreationHelper;
 
     private readonly CraftingController CraftingController;
 
-    private readonly GameController GameController;
-
     private readonly List<CardNode> hoveredCards = [];
-
-    private readonly MouseController mouseController;
 
     private CardNode selectedCard;
 
     // Constructor
-    public CardController(GameController nodeController, MouseController mouseController) {
-        GameController = nodeController;
-        this.mouseController = mouseController;
-        CardCreationHelper = new CardCreationHelper(nodeController, this);
+    public CardController(GameController gameController, MouseController mouseController) {
+        _gameController = gameController;
+        _mouseController = mouseController;
+        CardCreationHelper = new CardCreationHelper(gameController, this);
         CraftingController = new CraftingController(CardCreationHelper);
 
         CreateStartingRecipes();
@@ -31,10 +31,48 @@ public class CardController {
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
-        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+        _gameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted =>
         AllCards.OrderBy(x => x.ZIndex).ToArray();
+
+    public CardNode CreateCard(Card card, Vector2 position = default) {
+        ArgumentNullException.ThrowIfNull(card);
+
+        CardNode cardInstance = CreateCard();
+
+        cardInstance.CardType = card;
+        cardInstance.CardController = this;
+
+        cardInstance.Position = position;
+        _gameController.AddChild(cardInstance);
+
+        return cardInstance;
+    }
+
+    public CardNode CreateCard(string cardType, Vector2 position = default) {
+        return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
+    }
+
+    /// <summary>
+    ///     Creates a new card and adds it to the scene, with a random underlying CardType
+    /// </summary>
+    /// <returns>
+    ///     The created card instance.
+    /// </returns>
+    public CardNode CreateCard() {
+        // Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
+        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+        CardNode cardInstance = cardScene.Instantiate<CardNode>();
+
+        cardInstance.CardController = this;
+
+        cardInstance.ZIndex = CardCount + 1;
+        _gameController.AddChild(cardInstance);
+
+
+        return cardInstance;
+    }
 
     /// <summary>
     ///     Creates the starting recipes for crafting.
@@ -63,16 +101,6 @@ public class CardController {
             ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
         CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
         CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
-    }
-
-    /// <summary>
-    ///     Creates a new card and adds it to the scene.
-    /// </summary>
-    /// <returns>
-    ///     The created card instance.
-    /// </returns>
-    public void CreateCard(string type) {
-        CardCreationHelper.CreateCard(type);
     }
 
     /// <summary>
@@ -159,7 +187,7 @@ public class CardController {
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+        _mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
         selectedCard = GetTopCardAtMousePosition();
         // SetTopZIndexForCard(selectedCard);
 
@@ -168,15 +196,15 @@ public class CardController {
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(true);
 
-            if (selectedCard.HasNeighbourAbove())
+            if (selectedCard.HasNeighbourAbove)
                 selectedCard.IsMovingOtherCards = true;
             else
                 // Set the card that is being dragged to the top
-                selectedCard.ZIndex = CardCount;
+                selectedCard.ZIndex = CardCount + 1;
 
             // Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
             // And sets the card below if it exists to not have a neighbour above
-            if (selectedCard.HasNeighbourBelow())
+            if (selectedCard.HasNeighbourBelow)
                 if (selectedCard.CardType is IStackable stackable) {
                     if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
                     stackable.NeighbourBelow = null;
@@ -219,21 +247,17 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
-
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(false);
 
             // Checks for a card under the moved card and sets if it exists as a neighbour below. 
             CardNode underCard = GetCardUnderMovedCard();
 
-            if (underCard != null && !selectedCard.HasNeighbourBelow() && !underCard.HasNeighbourAbove())
+            if (underCard != null && !selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove)
                 selectedCard.SetOverLappedCardToStack(underCard);
 
             selectedCard = null;
         }
-
-        CheckForCrafting();
     }
 
     /// <summary>
@@ -251,68 +275,16 @@ public class CardController {
                 string cardInfo =
                     $"This: {card.CardType.TextureType}:{card.ZIndex} - IsBeingDragged: {card.IsBeingDragged}";
                 string aboveInfo = stackable.NeighbourAbove != null
-                    ? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
+                    ? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {
+                        ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
                     : "Above: None ";
                 string belowInfo = stackable.NeighbourBelow != null
-                    ? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
+                    ? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {
+                        ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
                     : "Below: None ";
 
-                GD.Print($"{cardInfo.PadRight(50, '-')} {aboveInfo.PadRight(50, '-')} {belowInfo.PadRight(50)}");
-                i++;
+                GD.Print("------------------");
             }
-
-        if (i == 0)
-            GD.Print("No cards found");
-        else
-            GD.Print($"Total cards: {i}");
-        GD.Print("------------------");
-    }
-
-    public void CheckForCrafting() {
-        List<List<CardNode>> allStacks = GetAllCardStacks();
-
-        foreach (List<CardNode> stack in allStacks) {
-            if (stack.Count <= 1) continue;
-
-            List<Card> cards = [];
-
-            foreach (CardNode card in stack)
-                if (card.CardType is Card cardType)
-                    cards.Add(cardType);
-
-            List<string> craftedCard = CraftingController.CheckForCrafting(cards);
-
-            if (craftedCard != null)
-                foreach (string cardName in craftedCard) {
-                    foreach (CardNode card in stack) {
-                        hoveredCards.Remove(card);
-                        card.QueueFree();
-                    }
-
-                    CardCreationHelper.CreateCard(cardName);
-                }
-        }
-    }
-
-    public List<List<CardNode>> GetAllCardStacks() {
-        List<List<CardNode>> cardStacks = [];
-
-        foreach (CardNode card in AllCardsSorted)
-            if (card.CardType is IStackable stackable && stackable.NeighbourBelow == null) {
-                List<CardNode> stack = [];
-
-                stack.Add(card);
-
-                List<IStackable> stackAbove = stackable.StackAbove;
-
-                foreach (IStackable stackableCard in stackAbove)
-                    if (stackableCard is Card stackCard)
-                        stack.Add(stackCard.CardNode);
-
-                cardStacks.Add(stack);
-            }
-
-        return cardStacks;
     }
 
     public void CreateAllCards() {
