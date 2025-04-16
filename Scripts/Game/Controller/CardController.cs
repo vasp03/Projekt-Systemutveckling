@@ -266,7 +266,6 @@ public class CardController {
         GD.Print("------------------");
         GD.Print("Cards and their neighbours:");
         GD.Print("------------------");
-        int i = 0;
 
         foreach (CardNode card in AllCardsSorted)
             if (card.CardType is IStackable stackable) {

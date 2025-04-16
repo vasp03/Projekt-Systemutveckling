@@ -1,10 +1,8 @@
 using System;
 using Goodot15.Scripts.Game.Model.Parents;
 
-public class BuildingGreenhouse(string textureAddress, bool movable, int cost, int produceTimeInSeconds, CardNode cardNode) : CardBuilding(textureAddress, movable, cost, produceTimeInSeconds, cardNode) {
-    private String cardToProduce;
-    
+public class BuildingField() : CardBuilding("Field", true, 1) {
     public override String ProduceCard() {
-        return cardToProduce;
+        return "null";
     }
 }

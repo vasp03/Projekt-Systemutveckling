@@ -1,4 +1,5 @@
 using System;
+using Goodot15.Scripts.Game.Model.Living;
 
-public class PlayerVillager(string textureAddress, bool movable, int cost, int health, CardNode cardNode) : LivingPlayer(textureAddress, movable, cost, health, cardNode) {
+public class PlayerVillager() : LivingPlayer("Villager") {
 }

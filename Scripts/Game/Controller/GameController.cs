@@ -47,7 +47,7 @@ public partial class GameController : Node2D {
                     MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
                     break;
                 case Key.A:
-                    cardController.CreateCard(new LivingPlayer());
+                    cardController.CreateCard(new PlayerVillager());
                     break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {

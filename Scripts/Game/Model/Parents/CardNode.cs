@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -90,7 +91,7 @@ public partial class CardNode : Node2D {
     }
 
     private void CheckForConsumingCards() {
-        CardNode? cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
+        CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
         if (cardUnder is not null)
@@ -190,7 +191,11 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
-        ITickable? tickable = CardType as ITickable;
+        if (!(CardType is ITickable)){
+            return;
+        }
+
+        ITickable tickable = CardType as ITickable;
         tickable?.PreTick();
         if (IsBeingDragged) {
             Vector2 mousePosition = GetGlobalMousePosition();

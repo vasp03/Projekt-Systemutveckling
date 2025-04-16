@@ -1,4 +1,5 @@
 using System;
+using Goodot15.Scripts.Game.Model.Living;
 
-public class PlayerBlacksmith(string textureAddress, bool movable, int cost, int health, CardNode cardNode) : LivingPlayer(textureAddress, movable, cost, health, cardNode) {
+public class PlayerBlacksmith() : LivingPlayer("Blacksmith") {
 }
