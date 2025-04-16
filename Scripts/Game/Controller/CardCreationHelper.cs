@@ -102,9 +102,10 @@ public class CardCreationHelper {
             case "Cookingpot" or "28":
                 return new BuildingCookingpot("Cookingpot", true, 1, 1, cardNode);
             case "Tent" or "29":
-                return new BuildingCampfire("Campfire", true, 1, 1, cardNode);
+                return new BuildingTent("Tent", true, 1, 1, cardNode);
             case "Field" or "44":
                 return new BuildingTent("Tent", true, 1, 1, cardNode);
+
 
 
             case "Apple" or "30":
@@ -142,7 +143,7 @@ public class CardCreationHelper {
             case "Random":
                 return GetCreatedInstanceOfCard(GetRandomCardType(), cardNode);
             default:
-                GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type");
+                GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type. Tried to create: " + type);
                 return new ErrorCard("Error", true, 0, cardNode);
         }
     }

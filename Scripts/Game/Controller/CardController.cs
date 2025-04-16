@@ -40,8 +40,6 @@ public class CardController {
     ///     Creates the starting recipes for crafting.
     /// </summary>
     public void CreateStartingRecipes() {
-        CraftingController.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
-        CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
         CraftingController.AddRecipe(new CraftingRecipe("Jam", ["Berry", "CookingPot"], ["Jam"]));
         CraftingController.AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood"], ["Stick"]));
         CraftingController.AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"]));
@@ -52,17 +50,17 @@ public class CardController {
         CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
         CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Bush"], ["Leaf"]));
         CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Tree"], ["Leaf"]));
-        CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stick", "Stone"], ["FishingPole"]));
+        CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
         CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
         CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
         CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager"]));
         CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("House",
-            ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks"], ["House"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Greenhouse",
-            ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
+        CraftingController.AddRecipe(new CraftingRecipe("House", ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks"], ["House"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
         CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
         CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
+        CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
     }
 
     /// <summary>

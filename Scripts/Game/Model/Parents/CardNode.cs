@@ -110,6 +110,15 @@ public partial class CardNode : Node2D {
     /// </summary>
     private void ApplyTexture() {
         Texture2D texture;
+
+        // Check if the path is not null or empty and if there is a file at the path
+        if (string.IsNullOrEmpty(CardType.TexturePath) || !FileAccess.FileExists(CardType.TexturePath)) {
+            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID);
+            texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
+            sprite.Texture = texture;
+            return;
+        }
+        
         // try to load the texture from the address
         try {
             texture = GD.Load<Texture2D>(CardType.TexturePath);
