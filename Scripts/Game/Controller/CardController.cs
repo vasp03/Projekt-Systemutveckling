@@ -245,6 +245,7 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
+        _mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(false);
 
