@@ -1,5 +1,4 @@
 using Godot;
-using Goodot15.Scripts.Game.View;
 
 public partial class MenuController : Node {
     private Control currentMenu;

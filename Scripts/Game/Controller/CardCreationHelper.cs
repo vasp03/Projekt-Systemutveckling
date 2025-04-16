@@ -18,61 +18,61 @@ public class CardCreationHelper {
         Random
     }
 
-	private readonly CardController _cardController;
-	private readonly GameController _gameController;
+    private readonly CardController _cardController;
+    private readonly GameController _gameController;
 
-	public CardCreationHelper(GameController gameController, CardController CardController) {
-		this._gameController = gameController;
-		this._cardController = CardController;
-	}
+    public CardCreationHelper(GameController gameController, CardController CardController) {
+        _gameController = gameController;
+        _cardController = CardController;
+    }
 
-	public string GetRandomCardType() {
-		Random random = new();
-		Array values = Enum.GetValues(typeof(TypeEnum));
-		TypeEnum type = (TypeEnum)values.GetValue(random.Next(values.Length));
+    public string GetRandomCardType() {
+        Random random = new();
+        Array values = Enum.GetValues(typeof(TypeEnum));
+        TypeEnum type = (TypeEnum)values.GetValue(random.Next(values.Length));
 
         while (type == TypeEnum.Random) type = (TypeEnum)values.GetValue(random.Next(values.Length));
 
         return type.ToString();
     }
 
-	public Card GetCreatedInstanceOfCard(string type) {
-		switch (type) {
-			case "Apple":
-				return new MaterialApple();
-			case "Berry":
-				return new MaterialBerry();
-			case "Leaves":
-				return new MaterialLeaves();
-			case "Mine":
-				return new MaterialMine();
-			case "Plank":
-				return new MaterialPlank();
-			case "Stick":
-				return new MaterialStick();
-			case "Stone":
-				return new MaterialStone();
-			case "SwordMk1":
-				return new MaterialSwordMk1();
-			case "Tree":
-				return new MaterialTree();
-			case "Water":
-				return new MaterialWater();
-			case "Wood":
-				return new MaterialWood();
-			case "Random":
-				return GetCreatedInstanceOfCard(GetRandomCardType());
-			default:
-				GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type");
-				return new ErrorCard();
-		}
-	}
+    public Card GetCreatedInstanceOfCard(string type) {
+        switch (type) {
+            case "Apple":
+                return new MaterialApple();
+            case "Berry":
+                return new MaterialBerry();
+            case "Leaves":
+                return new MaterialLeaves();
+            case "Mine":
+                return new MaterialMine();
+            case "Plank":
+                return new MaterialPlank();
+            case "Stick":
+                return new MaterialStick();
+            case "Stone":
+                return new MaterialStone();
+            case "SwordMk1":
+                return new MaterialSwordMk1();
+            case "Tree":
+                return new MaterialTree();
+            case "Water":
+                return new MaterialWater();
+            case "Wood":
+                return new MaterialWood();
+            case "Random":
+                return GetCreatedInstanceOfCard(GetRandomCardType());
+            default:
+                GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type");
+                return new ErrorCard();
+        }
+    }
 
     public void CreateCard(string type) {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-		bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), _cardController);
+        bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), _cardController);
 
         if (!ret) {
             GD.PrintErr("CardCreationHelper.CreateCard: Card creation failed");

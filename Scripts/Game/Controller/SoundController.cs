@@ -4,20 +4,20 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SoundController : Node {
-	private readonly Dictionary<string, AudioStream> sfx = new();
-	private string currentMusicPath;
-	private bool isMusicMuted;
-	private bool isSfxMuted;
-	private AudioStreamPlayer musicPlayer;
-	private float musicVolume = 1.0f;
-	private float sfxVolume = 1.0f;
+    private readonly Dictionary<string, AudioStream> sfx = new();
+    private string currentMusicPath;
+    private bool isMusicMuted;
+    private bool isSfxMuted;
+    private AudioStreamPlayer musicPlayer;
+    private float musicVolume = 1.0f;
+    private float sfxVolume = 1.0f;
 
-	public override void _Ready() {
-		LoadMusicPlayer();
-		LoadSounds();
-	}
+    public override void _Ready() {
+        LoadMusicPlayer();
+        LoadSounds();
+    }
 
-	// Music Setup
+    // Music Setup
 
     private void LoadMusicPlayer() {
         musicPlayer = new AudioStreamPlayer();
