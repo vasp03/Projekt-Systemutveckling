@@ -296,6 +296,7 @@ bg_color = Color(0, 0, 0, 0.596078)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c6o4a"]
 
 [node name="GuideMenu" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

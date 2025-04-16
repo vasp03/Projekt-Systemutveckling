@@ -16,6 +16,9 @@ public partial class GamePausedMenu : Control {
 
 		Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
 		resumeButton.Pressed += OnResumeButtonPressed;
+		
+		Button guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+		guideButton.Pressed += OnGuideButtonPressed;
 
 		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
 		optionsButton.Pressed += OnOptionsButtonPressed;
@@ -30,6 +33,14 @@ public partial class GamePausedMenu : Control {
 	/// </summary>
 	private void OnResumeButtonPressed() {
 		menuController.CloseMenus();
+	}
+	
+	/// <summary>
+	/// Handles the button press event for the guide button.
+	/// Opens the guide menu.
+	/// </summary>
+	private void OnGuideButtonPressed() {
+		menuController.OpenGuideMenu();
 	}
 	
 	/// <summary>
