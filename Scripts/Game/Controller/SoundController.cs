@@ -47,7 +47,7 @@ public partial class SoundController : Node {
 
 	private void PlayMusic(string musicPath) {
 		if (currentMusicPath == musicPath && musicPlayer.Playing) {
-			musicPlayer.Stop();
+			return;
 		}
 		
 		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
@@ -62,10 +62,10 @@ public partial class SoundController : Node {
 			wavStream.LoopEnd = wavStream.Data.Length;
 		}
 		
+		currentMusicPath = musicPath;
 		musicPlayer.Stream = musicStream;
 		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
 		musicPlayer.Play();
-		currentMusicPath = musicPath;
 	}
 
 	public void StopMusic() {
