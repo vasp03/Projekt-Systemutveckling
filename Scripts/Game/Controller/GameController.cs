@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Model.Living;
 
 public partial class GameController : Node2D {
     private CardController cardController;
@@ -55,6 +56,9 @@ public partial class GameController : Node2D {
                     break;
                 case Key.Key0:
                     cardController.CreateAllCards();
+                    break;
+                case Key.A:
+                    cardController.CreateCard(new LivingPlayer());
                     break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {

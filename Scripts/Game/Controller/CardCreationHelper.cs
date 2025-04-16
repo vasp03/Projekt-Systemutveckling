@@ -71,13 +71,8 @@ public class CardCreationHelper {
     public void CreateCard(string type) {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
-
-        bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), _cardController);
-
-        if (!ret) {
-            GD.PrintErr("CardCreationHelper.CreateCard: Card creation failed");
-            return;
-        }
+        
+        _cardController.CreateCard(GetCreatedInstanceOfCard(type), Vector2.One*100);
 
         cardInstance.ZIndex = _cardController.CardCount + 1;
         cardInstance.SetPosition(new Vector2(100, 100));

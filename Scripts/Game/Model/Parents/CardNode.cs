@@ -23,7 +23,7 @@ public partial class CardNode : Node2D {
         AddToGroup(CardController.CARD_GROUP_NAME);
     }
 
-    public CardController CardController { get; private set; }
+    public CardController CardController { get; set; }
 
     private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
 
@@ -72,26 +72,6 @@ public partial class CardNode : Node2D {
     }
 
     /// <summary>
-    ///     Creates a new card and adds it to the scene.
-    ///     It loads the card scene from the resource path and instantiates it.
-    ///     It then creates a new card by copying the card from Card scene and adding an instance of CardMaterial to it.
-    ///     It sets the ZIndex of the new card to be one higher than the current card count.
-    ///     It also sets the position of the new card to (100, 100).
-    /// </summary>
-    public bool CreateNode(Card card, Vector2 position, CardController cardController) {
-        CardController = cardController;
-
-        CardType = card;
-
-        // ApplyTexture();
-
-        // Set the name of the card to the name of the card
-        Name = card.ID;
-
-        return true;
-    }
-
-    /// <summary>
     ///     Sets the position of the card node to the given position.
     /// </summary>
     public void SetIsBeingDragged(bool isBeingDragged) {
@@ -116,17 +96,6 @@ public partial class CardNode : Node2D {
         if (cardUnder is not null)
             if (cardUnder.CardType is ICardConsumer cardConsumer)
                 cardConsumer.ConsumeCard(CardType);
-    }
-
-    /// <summary>
-    ///     Sets the position of the card node to the given position.
-    /// </summary>
-    /// <returns>
-    ///     True if the card has been created successfully.
-    ///     False if the card has not been created successfully.
-    /// </returns>
-    public bool CreateNode(Card card, CardController cardController) {
-        return CreateNode(card, new Vector2(100, 100), cardController);
     }
 
     /// <summary>

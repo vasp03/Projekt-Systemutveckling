@@ -19,9 +19,10 @@ public class CardController {
     private CardNode selectedCard;
 
     // Constructor
-    public CardController(GameController _nodeController, MouseController mouseController) {
+    public CardController(GameController gameController, MouseController mouseController) {
+        _gameController = gameController;
         _mouseController = mouseController;
-        CardCreationHelper = new CardCreationHelper(_nodeController, this);
+        CardCreationHelper = new CardCreationHelper(gameController, this);
         CraftingController = new CraftingController(CardCreationHelper);
 
         CreateStartingRecipes();
@@ -38,10 +39,10 @@ public class CardController {
     public CardNode CreateCard(Card card, Vector2 position = default) {
         ArgumentNullException.ThrowIfNull(card);
 
-        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-        CardNode cardInstance = cardScene.Instantiate<CardNode>();
+        CardNode cardInstance = CreateCard();
 
         cardInstance.CardType = card;
+        cardInstance.CardController = this;
 
         cardInstance.Position = position;
         _gameController.AddChild(cardInstance);
@@ -64,13 +65,11 @@ public class CardController {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        bool ret = cardInstance.CreateNode(
-            CardCreationHelper.GetCreatedInstanceOfCard(CardCreationHelper.GetRandomCardType()), this);
-        if (ret) {
-            cardInstance.ZIndex = CardCount + 1;
-            _gameController.AddChild(cardInstance);
-            cardInstance.SetPosition(new Vector2(100, 100));
-        }
+        cardInstance.CardController = this;
+
+        cardInstance.ZIndex = CardCount + 1;
+        _gameController.AddChild(cardInstance);
+
 
         return cardInstance;
     }
@@ -102,16 +101,6 @@ public class CardController {
             ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
         CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
         CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
-    }
-
-    /// <summary>
-    ///     Creates a new card and adds it to the scene.
-    /// </summary>
-    /// <returns>
-    ///     The created card instance.
-    /// </returns>
-    public void CreateCard(string type) {
-        CardCreationHelper.CreateCard(type);
     }
 
     /// <summary>
