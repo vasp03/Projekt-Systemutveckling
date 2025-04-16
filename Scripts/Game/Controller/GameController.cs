@@ -29,7 +29,7 @@ public partial class GameController : Node2D {
                     Visible = false; // Hide the game scene
                     break;
                 case Key.Space:
-                    cardController.CreateCard("Random");
+                    cardController.CreateCard("Random", Vector2.One*100);
                     break;
                 case Key.D:
                     cardController.PrintCardsNeighbours();
