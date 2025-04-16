@@ -4,42 +4,33 @@ using Godot;
 using System;
 
 using System.Collections.Generic;
+using Goodot15.Scripts.Game.Controller.Events;
 
 
 namespace Goodot15.Scripts.Game.Controller;
 public partial class GameEventManager : Node, ITickable {
-    private List<GameEvent> events = new();
+    private IList<IGameEvent> registedEvents = [];
     private PackedScene meteoriteCardScene;
-    private Node cardParent;
+    // private Node cardParent;
     private int tickCounter = 0;
     private int tickInterval = 60;
     private Random random = new();
 
     public override void _Ready() {
         meteoriteCardScene = GD.Load<PackedScene>("res://MeteoriteCard.tscn");
-        cardParent = GetNode("");
-        events.Add(new GameEvent("Meteorite Strike", SpawnMeteoriteStrike));
-    }
-    public void preTick() {
-        throw new NotImplementedException();
+        //cardParent = GetNode("");
     }
 
-    public void postTick() {
-        throw new NotImplementedException();
+    public void RegisterDefaultEvents() {
+        RegisterEvent(new MeteoriteEvent());
     }
 
-    public void SpawnMeteoriteStrike() {
-        if (meteoriteCardScene == null || cardParent == null) {
-            GD.PrintErr("Cannot spawn meteorite card, scene or parent is null");
-            return;
-        }
+    public void RegisterEvent(IGameEvent gameEvent) {
+        registedEvents.Add(gameEvent);
+    }
+    public void PreTick() {
+    }
 
-        Node2D meteorite = (Node2D)meteoriteCardScene.Instantiate();
-
-        RandomNumberGenerator randomize = new();
-        randomize.Randomize();
-        meteorite.Position = new Vector2(randomize.RandfRange(100, 800), randomize.RandfRange(100, 500));
-        
-        cardParent.AddChild(meteorite);
+    public void PostTick() {
     }
 }

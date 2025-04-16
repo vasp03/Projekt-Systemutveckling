@@ -4,10 +4,10 @@ public interface ITickable {
     /// <summary>
     ///     Invoked before any logic has been executed on an instance.
     /// </summary>
-    public void preTick();
+    public void PreTick();
 
     /// <summary>
     ///     Invoked after all logic has been executed on an instance
     /// </summary>
-    public void postTick();
+    public void PostTick();
 }

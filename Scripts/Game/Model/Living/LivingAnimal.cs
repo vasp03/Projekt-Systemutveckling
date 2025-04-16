@@ -9,10 +9,10 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
     public IStackable NeighbourAbove { get; set; }
     public IStackable NeighbourBelow { get; set; }
 
-    public void preTick() {
+    public void PreTick() {
     }
 
-    public void postTick() {
+    public void PostTick() {
     }
 
     public void SetNeighbourAbove(IStackable card) {
