@@ -1,4 +1,5 @@
 using Goodot15.Scripts.Game.Model.Interface;
+
 namespace Goodot15.Scripts.Game.Model.Living;
 
 public class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {

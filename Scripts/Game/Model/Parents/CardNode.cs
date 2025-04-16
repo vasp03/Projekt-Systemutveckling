@@ -114,7 +114,7 @@ public partial class CardNode : Node2D {
             sprite.Texture = texture;
             return;
         }
-        
+
         // try to load the texture from the address
         try {
             texture = GD.Load<Texture2D>(CardType.TexturePath);
@@ -193,7 +193,7 @@ public partial class CardNode : Node2D {
     public override void _Process(double delta) {
         ITickable tickable = CardType as ITickable;
         tickable?.PreTick();
-        
+
         if (IsBeingDragged) {
             Vector2 mousePosition = GetGlobalMousePosition();
 

@@ -81,7 +81,6 @@ public class CardCreationHelper {
                 return new MaterialLeaves();
 
 
-
             case "SwordMK1" or "21":
                 return new MaterialSwordMk1();
             case "FishingPole" or "22":
@@ -90,7 +89,6 @@ public class CardCreationHelper {
                 return new MaterialShovel();
             case "Axe" or "24":
                 return new MaterialAxe();
-
 
 
             case "Greenhouse" or "25":
@@ -105,7 +103,6 @@ public class CardCreationHelper {
                 return new BuildingTent();
             case "Field" or "44":
                 return new BuildingTent();
-
 
 
             case "Apple" or "30":
@@ -130,7 +127,6 @@ public class CardCreationHelper {
                 return new MaterialBush();
 
 
-
             case "Village" or "40":
                 return new PlayerVillager();
             case "Hunter" or "41":
@@ -148,14 +144,14 @@ public class CardCreationHelper {
         }
     }
 
-    public void CreateCard(string type) {
-        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-        CardNode cardInstance = cardScene.Instantiate<CardNode>();
-
-        _cardController.CreateCard(GetCreatedInstanceOfCard(type), Vector2.One * 100);
-
-        cardInstance.ZIndex = _cardController.CardCount + 1;
-        cardInstance.SetPosition(new Vector2(100, 100));
-        _gameController.AddChild(cardInstance);
-    }
+    // public void CreateCard(string type) {
+    //     PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+    //     CardNode cardInstance = cardScene.Instantiate<CardNode>();
+// 
+    //     _cardController.CreateCard(GetCreatedInstanceOfCard(type), Vector2.One * 100);
+// 
+    //     cardInstance.ZIndex = _cardController.CardCount + 1;
+    //     cardInstance.SetPosition(new Vector2(100, 100));
+    //     _gameController.AddChild(cardInstance);
+    // }
 }

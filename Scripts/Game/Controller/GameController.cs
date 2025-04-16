@@ -1,17 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text;
 using Godot;
 using Vector2 = Godot.Vector2;
-using Goodot15.Scripts.Game.Model.Living;
 
 public partial class GameController : Node2D {
+    private readonly List<int> numberList = new();
     private CardController cardController;
     private MenuController menuController;
     private MouseController mouseController;
-
-    private List<int> numberList = new List<int>();
 
     public override void _Ready() {
         mouseController = new MouseController();
@@ -29,7 +25,7 @@ public partial class GameController : Node2D {
                     Visible = false; // Hide the game scene
                     break;
                 case Key.Space:
-                    cardController.CreateCard("Random", Vector2.One*100);
+                    cardController.CreateCard("Random", Vector2.One * 100);
                     break;
                 case Key.D:
                     cardController.PrintCardsNeighbours();
