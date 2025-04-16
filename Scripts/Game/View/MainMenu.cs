@@ -6,7 +6,7 @@ namespace Goodot15.Scripts.Game.View;
 /// <summary>
 ///     Class representing the main menu of the game.
 /// </summary>
-public class MainMenu : Control {
+public partial class MainMenu : Control {
 	private readonly bool canContinue = false;
 	private Button continueButton;
 	private Button exitButton;

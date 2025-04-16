@@ -1,4 +1,4 @@
 using Godot;
 
-public class Global : Node {
+public partial class Global : Node {
 }

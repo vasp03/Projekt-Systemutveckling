@@ -6,7 +6,7 @@ namespace Goodot15.Scripts.Game.View;
 /// <summary>
 ///     Class representing the guide menu in the game.
 /// </summary>
-public class GuideMenu : Control {
+public partial class GuideMenu : Control {
 	private readonly Dictionary<Button, VBoxContainer> buttons = new();
 	private readonly Dictionary<string, (Texture2D, string)> cardData = new();
 	private Button[] buildingCardButtons;
