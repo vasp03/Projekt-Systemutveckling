@@ -2,6 +2,9 @@
 
 namespace Goodot15.Scripts.Game.Controller;
 
+/// <summary>
+/// Class that manages and saves the game settings.
+/// </summary>
 public partial class SettingsManager : Node{
 	
 	private const string ConfigFilePath = "user://settings.cfg";	
@@ -18,13 +21,20 @@ public partial class SettingsManager : Node{
 		ApplyDisplayMode();
 	}
 	
+	/// <summary>
+	/// Changes display mode based on the selected option and saves the setting.
+	/// </summary>
+	/// <param name="mode">the display mode selected</param>
 	public void ChangeDisplayMode(int mode) {
 		DisplayMode = mode;
 		ApplyDisplayMode();
 		SaveConfig();
 	}
 	
-	public void ApplyDisplayMode() {
+	/// <summary>
+	/// Applies the display mode settings to the game window.
+	/// </summary>
+	private void ApplyDisplayMode() {
 		switch (DisplayMode) {
 			case 0:
 				DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.Borderless, false);
@@ -42,18 +52,29 @@ public partial class SettingsManager : Node{
 		}
 	}
 	
+	/// <summary>
+	/// sets the music volume based on the selected option and saves the setting.
+	/// </summary>
+	/// <param name="volume">The volume selected</param>
 	public void SetMusicVolume(float volume) {
 		soundController.SetMusicVolume(volume);
 		MusicVolume = volume;
 		SaveConfig();
 	}
 	
+	/// <summary>
+	/// sets the SFX volume based on the selected option and saves the setting.
+	/// </summary>
+	/// <param name="volume">The volume selected</param>
 	public void SetSfxVolume(float volume) {
 		soundController.SetSfxVolume(volume);
 		SfxVolume = volume;
 		SaveConfig();
 	}
 
+	/// <summary>
+	/// Loads the saved settings from a config file.
+	/// </summary>
 	private void LoadConfig() {
 		ConfigFile config = new ConfigFile();
 		if (FileAccess.FileExists(ConfigFilePath)) {
@@ -66,6 +87,10 @@ public partial class SettingsManager : Node{
 		}
 	}
 
+	/// <summary>
+	/// Saves current settings to a config file.
+	/// Creates a new config file if it doesn't exist.
+	/// </summary>
 	private void SaveConfig()
 	{
 		ConfigFile config = new ConfigFile();

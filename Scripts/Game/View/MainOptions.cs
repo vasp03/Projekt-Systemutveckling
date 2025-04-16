@@ -3,6 +3,9 @@ using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
+/// <summary>
+/// Class representing the options menu.
+/// </summary>
 public partial class MainOptions : Control {
 	private MenuController menuController;
 	private SettingsManager settingsManager;
@@ -15,7 +18,6 @@ public partial class MainOptions : Control {
 	private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
 	private Button GoBackButton => GetNode<Button>("GoBackButton");
 	
-
 	private readonly string[] displayModes = {
 		"WINDOWED",
 		"FULLSCREEN",
@@ -50,6 +52,10 @@ public partial class MainOptions : Control {
 		soundController.SetSfxVolume(settingsManager.SfxVolume);
 	}
 	
+	/// <summary>
+	/// Handles the event for when the music volume slider value changes.
+	/// Sets the music volume
+	/// </summary>
 	private void OnMusicVolumeChanged(double value) {
 		settingsManager.SetMusicVolume((float)value);
 		GD.Print("Music volume changed to: " + soundController.GetMusicVolume());
@@ -57,6 +63,10 @@ public partial class MainOptions : Control {
 		musicVolumePercentageLabel.Text = $"{(value*100):F0}%";
 	}
 	
+	/// <summary>
+	/// Handles the event for when the SFX volume slider value changes.
+	/// Sets the SFX volume
+	/// </summary>
 	private void OnSfxVolumeChanged(double value) {
 		settingsManager.SetSfxVolume((float)value);
 		GD.Print("SFX volume changed to: " + soundController.GetSfxVolume());
@@ -64,11 +74,17 @@ public partial class MainOptions : Control {
 		sfxVolumePercentageLabel.Text = $"{(value * 100):F0}%";
 	}
 	
+	/// <summary>
+	/// Sets the display mode to the saved setting on the game startup.
+	/// </summary>
 	private void SetDisplayModeButton() {
 		int currentMode = settingsManager.DisplayMode;
 		DisplayModeButton.Select(currentMode);
 	}
-
+	
+	/// <summary>
+	/// Populates the display mode settings drop down menu with options.
+	/// </summary>
 	private void PopulateDisplayModeOptions() {
 		DisplayModeButton.Clear();
 
@@ -77,10 +93,18 @@ public partial class MainOptions : Control {
 		}
 	}
 	
+	/// <summary>
+	/// Handles the event for when a display mode is selected from the drop down menu.
+	/// Sets the display mode selected.
+	/// </summary>
 	private void OnDisplayModeSelected(int index) {
 		settingsManager.ChangeDisplayMode(index);
 	}
 
+	/// <summary>
+	/// Handles the event for when the go back button is pressed.
+	/// Goes back to the previous menu.
+	/// </summary>
 	private void OnBackButtonPressed() {
 		menuController.GoBackToPreviousMenu();
 	}
