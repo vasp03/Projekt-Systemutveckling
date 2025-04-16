@@ -5,9 +5,7 @@ namespace Goodot15.Scripts.Game.Model.Parents;
 public abstract class CardBuilding : Card, ITickable {
     private int currentProduceTick;
 
-    protected CardBuilding(string textureAddress, bool movable, int cost, int produceTimeInSeconds,
-        CardNode cardNode) : base( 
-        textureAddress, movable, cost, cardNode) {
+    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(textureAddress, movable) {
         ProduceTimeInSeconds = produceTimeInSeconds;
     }
 
@@ -25,10 +23,10 @@ public abstract class CardBuilding : Card, ITickable {
         set => ProduceTimeInTicks = value * 60;
     }
 
-    public virtual void preTick() {
+    public virtual void PreTick() {
     }
 
-    public virtual void postTick() {
+    public virtual void PostTick() {
         currentProduceTick = (currentProduceTick + 1) % ProduceTimeInTicks;
     }
 

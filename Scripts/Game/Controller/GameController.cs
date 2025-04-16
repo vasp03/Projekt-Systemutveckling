@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Text;
 using Godot;
 using Vector2 = Godot.Vector2;
+using Goodot15.Scripts.Game.Model.Living;
 
 public partial class GameController : Node2D {
     private CardController cardController;
@@ -44,6 +45,9 @@ public partial class GameController : Node2D {
                 case Key.Key8:
                 case Key.Key9:
                     MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
+                    break;
+                case Key.A:
+                    cardController.CreateCard(new LivingPlayer());
                     break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {
