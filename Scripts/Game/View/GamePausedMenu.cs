@@ -55,7 +55,8 @@ public partial class GamePausedMenu : Control {
 	/// Handles the button press event for the exit button.
 	/// Exits the game and returns to the main menu.
 	/// </summary>
-	private void OnExitButtonPressed() {
+	private async void OnExitButtonPressed() {
+		await ToSignal(GetTree(), "process_frame");
 		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
 		Visible = false;
 	}
