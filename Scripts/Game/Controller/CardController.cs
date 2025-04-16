@@ -8,19 +8,19 @@ public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 	private readonly CardCreationHelper CardCreationHelper;
 
-	private readonly List<CardNode> hoveredCards = [];
+	private readonly CraftingController CraftingController;
 
 	private readonly GameController GameController;
 
-	private CardNode selectedCard;
-
-	private readonly CraftingController CraftingController;
+	private readonly List<CardNode> hoveredCards = [];
 
 	private readonly MouseController mouseController;
 
+	private CardNode selectedCard;
+
 	// Constructor
 	public CardController(GameController nodeController, MouseController mouseController) {
-		this.GameController = nodeController;
+		GameController = nodeController;
 		this.mouseController = mouseController;
 		CardCreationHelper = new CardCreationHelper(nodeController, this);
 		CraftingController = new CraftingController(CardCreationHelper);
@@ -39,17 +39,17 @@ public class CardController {
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
 
 	/// <summary>
-	/// Creates a new card and adds it to the scene.
+	///     Creates a new card and adds it to the scene.
 	/// </summary>
 	/// <returns>
-	/// The created card instance.
+	///     The created card instance.
 	/// </returns>
 	public void CreateCard(string type) {
 		CardCreationHelper.CreateCard(type);
 	}
 
 	/// <summary>
-	/// Checks if the card is the top card on the scene.
+	///     Checks if the card is the top card on the scene.
 	/// </summary>
 	private bool CardIsTopCard(Node2D cardNode) {
 		foreach (CardNode node in hoveredCards)
@@ -59,14 +59,14 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Generates a new UUID (Universally Unique Identifier) string.
+	///     Generates a new UUID (Universally Unique Identifier) string.
 	/// </summary>
 	public static string GenerateUUID() {
 		return Guid.NewGuid().ToString();
 	}
 
 	/// <summary>
-	/// Adds the card to the hovered cards list and sets its highlighted state to true.
+	///     Adds the card to the hovered cards list and sets its highlighted state to true.
 	/// </summary>
 	public void AddCardToHoveredCards(CardNode cardNode) {
 		hoveredCards.Add(cardNode);
@@ -74,7 +74,7 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Removes the card from the hovered cards list and sets its highlighted state to false.
+	///     Removes the card from the hovered cards list and sets its highlighted state to false.
 	/// </summary>
 	public void RemoveCardFromHoveredCards(CardNode cardNode) {
 		hoveredCards.Remove(cardNode);
@@ -83,7 +83,7 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
+	///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
 	/// </summary>
 	public void CheckForHighLight() {
 		foreach (CardNode card in hoveredCards)
@@ -94,10 +94,10 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Gets the top card at the mouse position.
+	///     Gets the top card at the mouse position.
 	/// </summary>
 	/// <returns>
-	/// The top card at the mouse position or null if no card is hovered. 
+	///     The top card at the mouse position or null if no card is hovered.
 	/// </returns>
 	public CardNode GetTopCardAtMousePosition() {
 		CardNode topCard = null;
@@ -111,27 +111,25 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Gets the card under the moved card.
+	///     Gets the card under the moved card.
 	/// </summary>
 	/// <returns>
-	/// The card under the moved card or null if no card is found.
+	///     The card under the moved card or null if no card is found.
 	/// </returns>
 	private CardNode GetCardUnderMovedCard() {
 		IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
 
 		CardNode topUnderCard = null;
 
-		foreach (CardNode card in hoveredCardsSorted) {
-			if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex)) {
+		foreach (CardNode card in hoveredCardsSorted)
+			if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
 				topUnderCard = card;
-			}
-		}
 
 		return topUnderCard;
 	}
 
 	/// <summary>
-	/// Called when the left mouse button is pressed.
+	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
 		selectedCard = GetTopCardAtMousePosition();
@@ -143,43 +141,37 @@ public class CardController {
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(true);
 
-			if (selectedCard.HasNeighbourAbove()) {
+			if (selectedCard.HasNeighbourAbove())
 				selectedCard.IsMovingOtherCards = true;
-			}
-			else {
+			else
 				// Set the card that is being dragged to the top
 				selectedCard.ZIndex = CardCount + 1;
-			}
 
 			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
 			// And sets the card below if it exists to not have a neighbour above
-			if (selectedCard.HasNeighbourBelow()) {
+			if (selectedCard.HasNeighbourBelow())
 				if (selectedCard.CardType is IStackable stackable) {
-					if (stackable.NeighbourBelow != null) {
-						stackable.NeighbourBelow.NeighbourAbove = null;
-					}
+					if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
 					stackable.NeighbourBelow = null;
 				}
-			}
 		}
 	}
 
 	/// <summary>
-	/// Sets the ZIndex of all cards based on the selected card.
+	///     Sets the ZIndex of all cards based on the selected card.
 	/// </summary>
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
 	public void SetZIndexForAllCards(CardNode cardNode) {
 		List<IStackable> stackAbove = null;
 
-		if (cardNode.CardType is IStackable stackable) {
-			stackAbove = stackable.StackAbove;
-		}
+		if (cardNode.CardType is IStackable stackable) stackAbove = stackable.StackAbove;
 
 		int counterForStackedCards = CardCount - (stackAbove != null ? stackAbove.Count : 0);
 		int counterForOtherCards = 1;
 
-		foreach (CardNode card in AllCardsSorted) {
-			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) || card == cardNode) {
+		foreach (CardNode card in AllCardsSorted)
+			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) ||
+			    card == cardNode) {
 				card.ZIndex = counterForStackedCards;
 				counterForStackedCards++;
 			}
@@ -187,11 +179,10 @@ public class CardController {
 				card.ZIndex = counterForOtherCards;
 				counterForOtherCards++;
 			}
-		}
 	}
 
 	/// <summary>
-	/// Called when the left mouse button is released.
+	///     Called when the left mouse button is released.
 	/// </summary>
 	public void LeftMouseButtonReleased() {
 		mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
@@ -202,9 +193,8 @@ public class CardController {
 			// Checks for a card under the moved card and sets if it exists as a neighbour below. 
 			CardNode underCard = GetCardUnderMovedCard();
 
-			if (underCard != null && !selectedCard.HasNeighbourBelow() && !underCard.HasNeighbourAbove()) {
+			if (underCard != null && !selectedCard.HasNeighbourBelow() && !underCard.HasNeighbourAbove())
 				selectedCard.SetOverLappedCardToStack(underCard);
-			}
 
 			selectedCard = null;
 		}
@@ -213,23 +203,23 @@ public class CardController {
 	}
 
 	/// <summary>
-	/// Used to print the cards and their neighbours for debugging purposes.
+	///     Used to print the cards and their neighbours for debugging purposes.
 	/// </summary>
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
 		foreach (CardNode card in AllCardsSorted)
 			if (card.CardType is IStackable stackable)
 				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-						 " | Above: " +
-						 (stackable.NeighbourAbove != null
-							 ? stackable.NeighbourAbove.TextureType + " - " +
-							   ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-							 : "None") +
-						 " | Below: " +
-						 (stackable.NeighbourBelow != null
-							 ? stackable.NeighbourBelow.TextureType + " - " +
-							   ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-							 : "None"));
+				         " | Above: " +
+				         (stackable.NeighbourAbove != null
+					         ? stackable.NeighbourAbove.TextureType + " - " +
+					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
+					         : "None") +
+				         " | Below: " +
+				         (stackable.NeighbourBelow != null
+					         ? stackable.NeighbourBelow.TextureType + " - " +
+					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
+					         : "None"));
 
 		GD.Print("------------------");
 	}
@@ -242,15 +232,13 @@ public class CardController {
 
 			List<Card> cards = [];
 
-			foreach (CardNode card in stack) {
-				if (card.CardType is Card cardType) {
+			foreach (CardNode card in stack)
+				if (card.CardType is Card cardType)
 					cards.Add(cardType);
-				}
-			}
 
 			List<string> craftedCard = CraftingController.CheckForCrafting(cards);
 
-			if (craftedCard != null) {
+			if (craftedCard != null)
 				foreach (string cardName in craftedCard) {
 					GD.Print("Crafted: " + cardName);
 
@@ -262,17 +250,15 @@ public class CardController {
 
 					CardCreationHelper.CreateCard(cardName);
 				}
-			}
-			else {
+			else
 				GD.Print("No crafting possible");
-			}
 		}
 	}
 
 	public List<List<CardNode>> GetAllCardStacks() {
 		List<List<CardNode>> cardStacks = [];
 
-		foreach (CardNode card in AllCardsSorted) {
+		foreach (CardNode card in AllCardsSorted)
 			if (card.CardType is IStackable stackable && stackable.NeighbourBelow == null) {
 				List<CardNode> stack = [];
 
@@ -280,15 +266,12 @@ public class CardController {
 
 				List<IStackable> stackAbove = stackable.StackAbove;
 
-				foreach (IStackable stackableCard in stackAbove) {
-					if (stackableCard is Card stackCard) {
+				foreach (IStackable stackableCard in stackAbove)
+					if (stackableCard is Card stackCard)
 						stack.Add(stackCard.CardNode);
-					}
-				}
 
 				cardStacks.Add(stack);
 			}
-		}
 
 		return cardStacks;
 	}

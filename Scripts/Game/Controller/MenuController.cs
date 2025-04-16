@@ -1,17 +1,17 @@
 using Godot;
 
 /// <summary>
-/// Class that controls the flow of the menus in the game.
+///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
 	private Control currentMenu;
+	private GameController GameController;
+	private Control guideMenu;
 
 	private Control mainMenu;
-	private GameController GameController;
 	private Control optionsMenu;
 	private Control pauseMenu;
 	private Control previousMenu;
-	private Control guideMenu;
 
 
 	public override void _Ready() {
@@ -22,9 +22,9 @@ public partial class MenuController : Node {
 		guideMenu = null;
 		// this.previousMenu = mainMenu;
 	}
-	
+
 	/// <summary>
-	/// Loads and opens the main menu.
+	///     Loads and opens the main menu.
 	/// </summary>
 	public void OpenMainMenu() {
 		if (mainMenu == null) {
@@ -36,9 +36,9 @@ public partial class MenuController : Node {
 		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
 		// SwitchMenu(mainMenu);
 	}
-	
+
 	/// <summary>
-	/// Loads and opens the pause menu.
+	///     Loads and opens the pause menu.
 	/// </summary>
 	public void OpenPauseMenu() {
 		if (GetTree().Paused) return;
@@ -54,7 +54,7 @@ public partial class MenuController : Node {
 	}
 
 	/// <summary>
-	/// Loads and opens the options menu.
+	///     Loads and opens the options menu.
 	/// </summary>
 	public void OpenOptionsMenu() {
 		previousMenu = currentMenu;
@@ -63,11 +63,12 @@ public partial class MenuController : Node {
 			optionsMenu = packedOptionsMenu.Instantiate() as Control;
 			AddChild(optionsMenu);
 		}
+
 		SwitchMenu(optionsMenu);
 	}
-	
+
 	/// <summary>
-	/// Loads and opens the guide menu.
+	///     Loads and opens the guide menu.
 	/// </summary>
 	public void OpenGuideMenu() {
 		previousMenu = currentMenu;
@@ -76,11 +77,12 @@ public partial class MenuController : Node {
 			guideMenu = packedGuideMenu.Instantiate() as Control;
 			AddChild(guideMenu);
 		}
+
 		SwitchMenu(guideMenu);
 	}
-	
+
 	/// <summary>
-	/// Switches the current menu to the new menu and hides the previous menu.
+	///     Switches the current menu to the new menu and hides the previous menu.
 	/// </summary>
 	/// <param name="newMenu">The new menu that should be shown</param>
 	private void SwitchMenu(Control newMenu) {
@@ -90,9 +92,9 @@ public partial class MenuController : Node {
 			if (previousMenu != null) previousMenu.Visible = false;
 		}
 	}
-	
+
 	/// <summary>
-	/// Goes back to the previous menu.
+	///     Goes back to the previous menu.
 	/// </summary>
 	public void GoBackToPreviousMenu() {
 		if (previousMenu is not null && previousMenu.IsInsideTree()) {
@@ -101,9 +103,9 @@ public partial class MenuController : Node {
 			SwitchMenu(menuToSwitchTo);
 		}
 	}
-	
+
 	/// <summary>
-	/// Closes all the menus and resumes the game.
+	///     Closes all the menus and resumes the game.
 	/// </summary>
 	public void CloseMenus() {
 		foreach (Node menu in GetChildren())
@@ -113,17 +115,17 @@ public partial class MenuController : Node {
 		GetTree().Paused = false;
 		GameController.Visible = true;
 	}
-	
+
 	/// <summary>
-	/// sets the GameController to a variable for the MenuController.
+	///     sets the GameController to a variable for the MenuController.
 	/// </summary>
 	/// <param name="gameController">the GameController to be set</param>
 	public void SetNodeController(GameController gameController) {
-		this.GameController = gameController;
+		GameController = gameController;
 	}
 
 	/// <summary>
-	/// Configures the MenuController with a new instance of the MainMenu.
+	///     Configures the MenuController with a new instance of the MainMenu.
 	/// </summary>
 	/// <param name="menu">The new main menu instance to configure with</param>
 	public void ConfigureWithNewMainMenuInstance(Goodot15.Scripts.Game.View.MainMenu menu) {
@@ -132,9 +134,9 @@ public partial class MenuController : Node {
 
 		GetTree().Paused = false;
 	}
-	
+
 	/// <summary>
-	/// Cleans up resources and frees the MenuController when it is removed from the scene tree.
+	///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
 	/// </summary>
 	public override void _ExitTree() {
 		QueueFree();

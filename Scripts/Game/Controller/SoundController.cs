@@ -1,34 +1,59 @@
-using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
+using Godot;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-using Godot;
-using System.Collections.Generic;
-
 public partial class SoundController : Node {
+	private readonly IDictionary<string, AudioStream> _cachedMusic = new Dictionary<string, AudioStream>();
+
+	private readonly IDictionary<string, AudioStream> _cachedSounds = new Dictionary<string, AudioStream>();
+	private string currentPlayingMusicPath;
+
+	private AudioStreamPlayer musicPlayer;
+	private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
 
 	private void DebugLog(string message) {
 		GD.Print($"[{GetType().FullName}] {message}");
 	}
-	
-	private AudioStreamPlayer musicPlayer;
-	private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
-	private string currentPlayingMusicPath;
-	
-	private readonly IDictionary<string, AudioStream> _cachedSounds = new Dictionary<string, AudioStream>();
-	private readonly IDictionary<string, AudioStream> _cachedMusic = new Dictionary<string, AudioStream>();
 
 
 	public override void _Ready() {
 		SetupMusicPlayer();
 		LoadSounds();
-		
+
 		MusicVolume = SettingsManager.MusicVolume;
 		SfxVolume = SettingsManager.SfxVolume;
 	}
-	
+
+	public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
+		if (audioStreamAsset is AudioStreamOggVorbis oggStream) {
+			oggStream.Loop = true;
+		}
+		else if (audioStreamAsset is AudioStreamWav wavStream) {
+			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+
+			wavStream.LoopEnd = wavStream.Data.Length;
+		}
+	}
+
+	public override void _ExitTree() {
+		StopMusic();
+
+		UnloadSounds();
+
+		QueueFree();
+	}
+
+	private void UnloadSounds() {
+		DebugLog("Sound Controller is unloading sounds");
+		DebugLog($"Sounds: {_cachedSounds.Count}; Music: {_cachedMusic.Count}");
+		_cachedSounds.ToList().ForEach(e => e.Value.Dispose());
+		_cachedMusic.ToList().ForEach(e => e.Value.Dispose());
+
+		DebugLog("Sound Controller has unloaded sounds");
+	}
+
 	#region Music-related
 
 	private const string BASE_MUSIC_PATH = "res://Assets/Music/xDeviruchi";
@@ -56,7 +81,7 @@ public partial class SoundController : Node {
 			musicPlayer.Play();
 			return;
 		}
-		
+
 		currentPlayingMusicPath = musicPath;
 		musicPlayer.Stream = LoadMusic(musicPath);
 		musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
@@ -64,44 +89,27 @@ public partial class SoundController : Node {
 	}
 
 	private AudioStream LoadMusic(string soundAssetName) {
-		if (_cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) {
+		if (_cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
 			// Return already loaded asset
 			return audioStream;
-		}
-		else {
-			// Music not loaded, first time setup
-			DebugLog($"First time loading audio stream: {soundAssetName}");
-			audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
-			ConfigureLoopingSound(audioStream);
-			_cachedMusic.Add(soundAssetName, audioStream);
-		}
-		
+
+		// Music not loaded, first time setup
+		DebugLog($"First time loading audio stream: {soundAssetName}");
+		audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
+		ConfigureLoopingSound(audioStream);
+		_cachedMusic.Add(soundAssetName, audioStream);
+
 		return audioStream;
 	}
-	
+
 	public void StopMusic() {
 		musicPlayer?.Stop();
 		currentPlayingMusicPath = "";
 	}
-	
+
 	#endregion Music-related
 
-	public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
-		if (audioStreamAsset is AudioStreamOggVorbis oggStream) {
-			oggStream.Loop = true;
-		} else if (audioStreamAsset is AudioStreamWav wavStream) {
-			wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
 
-			wavStream.LoopEnd = wavStream.Data.Length;
-		}
-	}
-
-
-
-
-	
-
-	
 	#region SFX-related
 
 	private void LoadSounds() {
@@ -121,7 +129,7 @@ public partial class SoundController : Node {
 			return;
 		}
 
-		AudioStreamPlayer player = new AudioStreamPlayer();
+		AudioStreamPlayer player = new();
 		player.Stream = sfxAudioStream;
 		player.VolumeDb = Mathf.LinearToDb(SfxVolume);
 		AddChild(player);
@@ -129,24 +137,27 @@ public partial class SoundController : Node {
 		player.Finished += () => player.QueueFree();
 		player.Play();
 	}
-	
+
 	#endregion SFX-related
-	
+
 	#region Settings & configurability related
 
 	private float _musicVolume;
+
 	public float MusicVolume {
 		get => _musicVolume;
-		set { _musicVolume = Mathf.Clamp(value, 0.0f, 1.0f); UpdateMusicVolume(); }
-
-	}
-	
-	private void UpdateMusicVolume() {
-		if (!MusicMuted) {
-			musicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
+		set {
+			_musicVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+			UpdateMusicVolume();
 		}
 	}
-	private bool _musicMuted = false;
+
+	private void UpdateMusicVolume() {
+		if (!MusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
+	}
+
+	private bool _musicMuted;
+
 	public bool MusicMuted {
 		get => _musicMuted;
 		set {
@@ -154,6 +165,7 @@ public partial class SoundController : Node {
 			UpdateMusicMuted();
 		}
 	}
+
 	public bool ToggleMusicMuted() {
 		MusicMuted = !MusicMuted;
 		UpdateMusicMuted();
@@ -163,35 +175,19 @@ public partial class SoundController : Node {
 	private void UpdateMusicMuted() {
 		musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
 	}
-	
+
 	private float _sfxVolume;
+
 	public float SfxVolume {
 		get => _sfxVolume;
 		set => _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
 	}
-	private bool _isSfxMuted = false;
-	public bool SfxMuted { get => _isSfxMuted; set => _isSfxMuted = value; }
+
+	public bool SfxMuted { get; set; }
 
 	public bool ToggleSfxMuted() {
 		return SfxMuted = !SfxMuted;
 	}
-	
+
 	#endregion
-	
-	public override void _ExitTree() {
-		StopMusic();
-		
-		UnloadSounds();
-		
-		QueueFree();
-	}
-
-	private void UnloadSounds() {
-		DebugLog("Sound Controller is unloading sounds");
-		DebugLog($"Sounds: {_cachedSounds.Count}; Music: {_cachedMusic.Count}");
-		this._cachedSounds.ToList().ForEach(e=>e.Value.Dispose());
-		this._cachedMusic.ToList().ForEach(e=>e.Value.Dispose());
-
-		DebugLog("Sound Controller has unloaded sounds");
-	}
 }

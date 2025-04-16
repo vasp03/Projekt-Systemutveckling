@@ -9,18 +9,18 @@ public class LivingAnimal(string textureAddress, bool movable, int cost, int hea
 	public IStackable NeighbourAbove { get; set; }
 	public IStackable NeighbourBelow { get; set; }
 
+	public void preTick() {
+	}
+
+	public void postTick() {
+	}
+
 	public void SetNeighbourAbove(IStackable card) {
 		throw new NotImplementedException();
 	}
 
 	public void SetNeighbourBelow(IStackable card) {
 		throw new NotImplementedException();
-	}
-
-	public void preTick() {
-	}
-
-	public void postTick() {
 	}
 
 	public int GetProduceTimer() {

@@ -3,26 +3,25 @@
 namespace Goodot15.Scripts.Game.Controller;
 
 /// <summary>
-/// Class that manages and saves the game settings.
+///     Class that manages and saves the game settings.
 /// </summary>
-public partial class SettingsManager : Node{
-	
-	private const string ConfigFilePath = "user://settings.cfg";	
-	
+public partial class SettingsManager : Node {
+	private const string ConfigFilePath = "user://settings.cfg";
+
 	private SoundController soundController;
-	
-	public int DisplayMode { get; private set; } = 0;
+
+	public int DisplayMode { get; private set; }
 	public float MusicVolume { get; private set; } = 1.0f;
 	public float SfxVolume { get; private set; } = 1.0f;
-	
+
 	public override void _Ready() {
 		soundController = GetNode<SoundController>("/root/SoundController");
 		LoadConfig();
 		ApplyDisplayMode();
 	}
-	
+
 	/// <summary>
-	/// Changes display mode based on the selected option and saves the setting.
+	///     Changes display mode based on the selected option and saves the setting.
 	/// </summary>
 	/// <param name="mode">the display mode selected</param>
 	public void ChangeDisplayMode(int mode) {
@@ -30,9 +29,9 @@ public partial class SettingsManager : Node{
 		ApplyDisplayMode();
 		SaveConfig();
 	}
-	
+
 	/// <summary>
-	/// Applies the display mode settings to the game window.
+	///     Applies the display mode settings to the game window.
 	/// </summary>
 	private void ApplyDisplayMode() {
 		switch (DisplayMode) {
@@ -51,9 +50,9 @@ public partial class SettingsManager : Node{
 				break;
 		}
 	}
-	
+
 	/// <summary>
-	/// sets the music volume based on the selected option and saves the setting.
+	///     sets the music volume based on the selected option and saves the setting.
 	/// </summary>
 	/// <param name="volume">The volume selected</param>
 	public void SetMusicVolume(float volume) {
@@ -61,9 +60,9 @@ public partial class SettingsManager : Node{
 		MusicVolume = volume;
 		SaveConfig();
 	}
-	
+
 	/// <summary>
-	/// sets the SFX volume based on the selected option and saves the setting.
+	///     sets the SFX volume based on the selected option and saves the setting.
 	/// </summary>
 	/// <param name="volume">The volume selected</param>
 	public void SetSfxVolume(float volume) {
@@ -73,10 +72,10 @@ public partial class SettingsManager : Node{
 	}
 
 	/// <summary>
-	/// Loads the saved settings from a config file.
+	///     Loads the saved settings from a config file.
 	/// </summary>
 	private void LoadConfig() {
-		ConfigFile config = new ConfigFile();
+		ConfigFile config = new();
 		if (FileAccess.FileExists(ConfigFilePath)) {
 			Error error = config.Load(ConfigFilePath);
 			if (error == Error.Ok) {
@@ -88,19 +87,15 @@ public partial class SettingsManager : Node{
 	}
 
 	/// <summary>
-	/// Saves current settings to a config file.
-	/// Creates a new config file if it doesn't exist.
+	///     Saves current settings to a config file.
+	///     Creates a new config file if it doesn't exist.
 	/// </summary>
-	private void SaveConfig()
-	{
-		ConfigFile config = new ConfigFile();
+	private void SaveConfig() {
+		ConfigFile config = new();
 		config.SetValue("Display", "Mode", DisplayMode);
 		config.SetValue("Audio", "MusicVolume", MusicVolume);
 		config.SetValue("Audio", "SfxVolume", SfxVolume);
 		Error error = config.Save(ConfigFilePath);
-		if (error != Error.Ok)
-		{
-			GD.Print("Failed to save settings.");
-		}
+		if (error != Error.Ok) GD.Print("Failed to save settings.");
 	}
 }

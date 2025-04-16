@@ -4,18 +4,18 @@ using Goodot15.Scripts.Game.Controller;
 namespace Goodot15.Scripts.Game.View;
 
 /// <summary>
-/// Class representing the main menu of the game.
+///     Class representing the main menu of the game.
 /// </summary>
-public partial class MainMenu : Control {
-	
-	private SoundController soundController;
-	private MenuController menuController;
+public class MainMenu : Control {
+	private readonly bool canContinue = false;
 	private Button continueButton;
+	private Button exitButton;
+	private Button guideButton;
+	private MenuController menuController;
 	private Button optionsButton;
 	private Button playButton;
-	private Button guideButton;
-	private Button exitButton;
-	private bool canContinue = false;
+
+	private SoundController soundController;
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
@@ -38,50 +38,48 @@ public partial class MainMenu : Control {
 		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
 
-		if (!canContinue) {
+		if (!canContinue)
 			continueButton.Disabled = true;
-		}
-		else {
+		else
 			continueButton.Disabled = false;
-		}
 	}
-	
+
 	/// <summary>
-	/// Handles the button press event for the continue button.
-	/// Continues the saved game if available.
+	///     Handles the button press event for the continue button.
+	///     Continues the saved game if available.
 	/// </summary>
 	private void OnContinueButtonPressed() {
 		//continue saved game
 	}
-	
+
 	/// <summary>
-	/// Handles the button press event for the play button.
-	/// Starts new game.
+	///     Handles the button press event for the play button.
+	///     Starts new game.
 	/// </summary>
 	private void OnPlayButtonPressed() {
 		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
 		soundController.StopMusic();
 	}
-	
+
 	/// <summary>
-	/// Handles the button press event for the options button.
-	/// Opens the options menu.
+	///     Handles the button press event for the options button.
+	///     Opens the options menu.
 	/// </summary>
 	private void OnOptionsButtonPressed() {
 		menuController.OpenOptionsMenu();
 	}
-	
+
 	/// <summary>
-	/// Handles the button press event for the guide button.
-	/// Opens the guide menu.
+	///     Handles the button press event for the guide button.
+	///     Opens the guide menu.
 	/// </summary>
 	private void OnGuideButtonPressed() {
 		menuController.OpenGuideMenu();
 	}
-	
+
 	/// <summary>
-	/// Handles the button press event for the exit button.
-	/// Closes the game.
+	///     Handles the button press event for the exit button.
+	///     Closes the game.
 	/// </summary>
 	private void OnExitButtonPressed() {
 		GetTree().Quit();
