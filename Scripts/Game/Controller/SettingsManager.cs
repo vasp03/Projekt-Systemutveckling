@@ -57,7 +57,7 @@ public partial class SettingsManager : Node{
 	/// </summary>
 	/// <param name="volume">The volume selected</param>
 	public void SetMusicVolume(float volume) {
-		soundController.SetMusicVolume(volume);
+		soundController.MusicVolume = volume;
 		MusicVolume = volume;
 		SaveConfig();
 	}
@@ -67,7 +67,7 @@ public partial class SettingsManager : Node{
 	/// </summary>
 	/// <param name="volume">The volume selected</param>
 	public void SetSfxVolume(float volume) {
-		soundController.SetSfxVolume(volume);
+		soundController.SfxVolume = volume;
 		SfxVolume = volume;
 		SaveConfig();
 	}

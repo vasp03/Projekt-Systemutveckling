@@ -25,7 +25,7 @@ public partial class GamePausedMenu : Control {
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
 		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
-		exitButton.Pressed += ()=>OnExitButtonPressed();
+		exitButton.Pressed += OnExitButtonPressed;
 	}
 
 	/// <summary>
@@ -56,8 +56,9 @@ public partial class GamePausedMenu : Control {
 	/// Handles the button press event for the exit button.
 	/// Exits the game and returns to the main menu.
 	/// </summary>
-	private async Task OnExitButtonPressed() {
-		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+	private void OnExitButtonPressed() {
+		// Await is required to synchronize scene change
+		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
 		Visible = false;
 	}
