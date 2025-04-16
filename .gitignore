@@ -543,6 +543,7 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,rider,csharp,godot,vs
 /.vscode
+/.idea
 
 # Do not include gdUnit4 addon
 /addons/gdUnit4/*

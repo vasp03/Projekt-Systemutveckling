@@ -3,20 +3,20 @@ using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class CardCreationHelper {
-	public enum TypeEnum {
-		Apple,
-		Berry,
-		Leaves,
-		Mine,
-		Plank,
-		Stick,
-		Stone,
-		SwordMk1,
-		Tree,
-		Water,
-		Wood,
-		Random
-	}
+    public enum TypeEnum {
+        Apple,
+        Berry,
+        Leaves,
+        Mine,
+        Plank,
+        Stick,
+        Stone,
+        SwordMk1,
+        Tree,
+        Water,
+        Wood,
+        Random
+    }
 
 	private readonly CardController CardController;
 	private readonly NodeController NodeController;
@@ -31,10 +31,10 @@ public class CardCreationHelper {
 		Array values = Enum.GetValues(typeof(TypeEnum));
 		TypeEnum type = (TypeEnum)values.GetValue(random.Next(values.Length));
 
-		while (type == TypeEnum.Random) type = (TypeEnum)values.GetValue(random.Next(values.Length));
+        while (type == TypeEnum.Random) type = (TypeEnum)values.GetValue(random.Next(values.Length));
 
-		return type.ToString();
-	}
+        return type.ToString();
+    }
 
 	public Card GetCreatedInstanceOfCard(string type) {
 		switch (type) {
@@ -68,19 +68,19 @@ public class CardCreationHelper {
 		}
 	}
 
-	public void CreateCard(string type) {
-		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-		CardNode cardInstance = cardScene.Instantiate<CardNode>();
+    public void CreateCard(string type) {
+        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+        CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
 		bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), CardController);
 
-		if (!ret) {
-			GD.PrintErr("CardCreationHelper.CreateCard: Card creation failed");
-			return;
-		}
+        if (!ret) {
+            GD.PrintErr("CardCreationHelper.CreateCard: Card creation failed");
+            return;
+        }
 
-		cardInstance.ZIndex = CardController.CardCount + 1;
-		cardInstance.SetPosition(new Vector2(100, 100));
-		NodeController.AddChild(cardInstance);
-	}
+        cardInstance.ZIndex = CardController.CardCount + 1;
+        cardInstance.SetPosition(new Vector2(100, 100));
+        GameController.AddChild(cardInstance);
+    }
 }

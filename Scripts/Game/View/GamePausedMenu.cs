@@ -3,32 +3,34 @@ using Godot;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class GamePausedMenu : Control {
-	private MenuController MenuController => GetNode<MenuController>("/root/MenuController");
+    private MenuController menuController;
 
-	public override void _Ready() {
-		VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
-		buttonContainer.Show();
+    public override void _Ready() {
+        menuController = GetNode<MenuController>("/root/MenuController");
 
-		Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
-		resumeButton.Pressed += OnResumeButtonPressed;
+        VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
+        buttonContainer.Show();
 
-		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
-		optionsButton.Pressed += OnOptionsButtonPressed;
+        Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
+        resumeButton.Pressed += OnResumeButtonPressed;
 
-		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
-		exitButton.Pressed += OnExitButtonPressed;
-	}
+        Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+        optionsButton.Pressed += OnOptionsButtonPressed;
 
-	private void OnResumeButtonPressed() {
-		MenuController.CloseMenus();
-	}
+        Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
+        exitButton.Pressed += OnExitButtonPressed;
+    }
 
-	private void OnOptionsButtonPressed() {
-		MenuController.OpenOptionsMenu();
-	}
+    private void OnResumeButtonPressed() {
+        menuController.CloseMenus();
+    }
 
-	private void OnExitButtonPressed() {
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
-		Visible = false;
-	}
+    private void OnOptionsButtonPressed() {
+        menuController.OpenOptionsMenu();
+    }
+
+    private void OnExitButtonPressed() {
+        GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+        Visible = false;
+    }
 }

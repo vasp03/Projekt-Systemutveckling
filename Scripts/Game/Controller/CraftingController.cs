@@ -30,11 +30,7 @@ public class CraftingController {
 		// Sort the list by the name of the card
 		CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
-		// GD.Print("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		// GD.Print("CardForCraftingAmount");
-		// foreach (StringIntHolder cardInRecipe in CardForCraftingAmount) {
-		//     GD.Print("CardInRecipe: " + cardInRecipe.StringValue + " Amount: " + cardInRecipe.IntValue);
-		// }
+		
 
 		foreach (CraftingRecipe recipe in Recipes) {
 			List<StringIntHolder> CardsInRecipeAndAmount = [];
@@ -60,13 +56,13 @@ public class CraftingController {
 				}
 
 			if (recipeMatches) {
-				GD.Print("Recipe matches: " + recipe.Name);
+				
 				List<string> craftedCards = recipe.CardsForCraftingResult;
 				return craftedCards;
 			}
 		}
 
-		// GD.Print("No recipe found for crafting.");
+		 GD.Print("No recipe found for crafting.");
 		return null;
 	}
 }

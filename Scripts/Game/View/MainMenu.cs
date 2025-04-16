@@ -1,33 +1,35 @@
 using Godot;
 
-namespace Goodot15.Scripts.Game.View;
-
 public partial class MainMenu : Control {
-	private Button ExitButton => GetNode<Button>("ButtonContainer/ExitButton");
+    private Button exitButton;
 
-	private MenuController MenuController => GetNode<MenuController>("/root/MenuController");
-	private Button OptionsButton => GetNode<Button>("ButtonContainer/OptionsButton");
-	private Button PlayButton => GetNode<Button>("ButtonContainer/PlayButton");
+    private MenuController menuController;
+    private Button optionsButton;
+    private Button playButton;
 
-	public override void _Ready() {
-		MenuController.configureWithNewMainMenuInstance(this);
+    public override void _Ready() {
+        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController.configureWithNewMainMenuInstance(this);
 
-		PlayButton.Pressed += OnPlayButtonPressed;
+        playButton = GetNode<Button>("ButtonContainer/PlayButton");
+        playButton.Pressed += OnPlayButtonPressed;
 
-		OptionsButton.Pressed += OnOptionsButtonPressed;
+        optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+        optionsButton.Pressed += OnOptionsButtonPressed;
 
-		ExitButton.Pressed += OnExitButtonPressed;
-	}
+        exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+        exitButton.Pressed += OnExitButtonPressed;
+    }
 
-	private void OnPlayButtonPressed() {
-		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
-	}
+    private void OnPlayButtonPressed() {
+        GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
+    }
 
-	private void OnOptionsButtonPressed() {
-		MenuController.OpenOptionsMenu();
-	}
+    private void OnOptionsButtonPressed() {
+        menuController.OpenOptionsMenu();
+    }
 
-	private void OnExitButtonPressed() {
-		GetTree().Quit();
-	}
+    private void OnExitButtonPressed() {
+        GetTree().Quit();
+    }
 }

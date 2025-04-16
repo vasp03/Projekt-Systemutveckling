@@ -1,8 +1,8 @@
 using System;
 
 public abstract class Card {
-	private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
-	private const string textureEnding = ".png";
+    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
+    private const string textureEnding = ".png";
 
 	/// <summary>
 	///     Constructor for the Card class
@@ -20,17 +20,17 @@ public abstract class Card {
 
 	public CardNode CardNode { get; set; }
 
-	public string ID { get; private set; }
-	public string TexturePath { get; }
+    public string ID { get; private set; }
+    public string TexturePath { get; }
 
-	public bool Movable { get; set; }
+    public bool Movable { get; set; }
 
-	public string TextureType {
-		get {
-			string[] split = TexturePath.Split("/");
-			string textureType = split[split.Length - 1];
-			textureType = textureType.Substring(0, textureType.Length - 4);
-			return textureType;
-		}
-	}
+    public string TextureType {
+        get {
+            string[] split = TexturePath.Split("/");
+            string textureType = split[split.Length - 1];
+            textureType = textureType.Substring(0, textureType.Length - 4);
+            return textureType;
+        }
+    }
 }

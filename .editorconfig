@@ -4,7 +4,8 @@ root = true
 charset = utf-8
 
 # Coding style related settings
-indent_style = tab
+indent_style = space
+indent_size = 4
 csharp_indent_braces = false
 # Use K&R style
 csharp_new_line_before_open_brace = none
@@ -17,3 +18,5 @@ csharp_style_var_for_built_in_types = false:refactoring
 # Misc-related coding settings for better readability
 csharp_space_after_comma = true
 dotnet_style_object_initializer = true:suggestion
+
+csharp_new_line_before_else = false

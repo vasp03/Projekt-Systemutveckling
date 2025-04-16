@@ -19,86 +19,86 @@ public partial class SoundController : Node {
 
 	// Music Setup
 
-	private void LoadMusicPlayer() {
-		musicPlayer = new AudioStreamPlayer();
-		musicPlayer.Bus = "Music";
-		AddChild(musicPlayer);
-	}
+    private void LoadMusicPlayer() {
+        musicPlayer = new AudioStreamPlayer();
+        musicPlayer.Bus = "Music";
+        AddChild(musicPlayer);
+    }
 
-	public void PlayMenuMusic() {
-		PlayMusic("Music/xDeviruchi/Title Theme.wav");
-	}
+    public void PlayMenuMusic() {
+        PlayMusic("Music/xDeviruchi/Title Theme.wav");
+    }
 
-	public void PlayGameMusic() {
-		PlayMusic("Music/xDeviruchi/Definitely Our Town.wav");
-	}
+    public void PlayGameMusic() {
+        PlayMusic("Music/xDeviruchi/Definitely Our Town.wav");
+    }
 
-	public void PlayShopMusic() {
-		PlayMusic("Music/xDeviruchi/Shop.wav");
-	}
+    public void PlayShopMusic() {
+        PlayMusic("Music/xDeviruchi/Shop.wav");
+    }
 
-	private void PlayMusic(string musicPath) {
-		if (currentMusicPath == musicPath && musicPlayer.Playing) musicPlayer.Stop();
+    private void PlayMusic(string musicPath) {
+        if (currentMusicPath == musicPath && musicPlayer.Playing) musicPlayer.Stop();
 
-		AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
+        AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
 
-		// Enable looping based on file type. Either .wav or .ogg
-		if (musicStream is AudioStreamOggVorbis oggStream)
-			oggStream.Loop = true;
-		else if (musicStream is AudioStreamWav wavStream) wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+        // Enable looping based on file type. Either .wav or .ogg
+        if (musicStream is AudioStreamOggVorbis oggStream)
+            oggStream.Loop = true;
+        else if (musicStream is AudioStreamWav wavStream) wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
 
-		musicPlayer.Stream = musicStream;
-		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
-		musicPlayer.Play();
-		currentMusicPath = musicPath;
-	}
+        musicPlayer.Stream = musicStream;
+        musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
+        musicPlayer.Play();
+        currentMusicPath = musicPath;
+    }
 
-	public void StopMusic() {
-		musicPlayer?.Stop();
-		currentMusicPath = "";
-	}
+    public void StopMusic() {
+        musicPlayer?.Stop();
+        currentMusicPath = "";
+    }
 
-	public void SetMusicVolume(float volume) {
-		musicVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
-		if (!isMusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
-	}
+    public void SetMusicVolume(float volume) {
+        musicVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
+        if (!isMusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
+    }
 
-	public void ToggleMusicMuted() {
-		isMusicMuted = !isMusicMuted;
-		musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
-	}
+    public void ToggleMusicMuted() {
+        isMusicMuted = !isMusicMuted;
+        musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
+    }
 
-	// SFX Setup
+    // SFX Setup
 
-	private void LoadSounds() {
-		sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
-		sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
-		sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
-		sfx["Drop"] = GD.Load<AudioStream>("res://Sounds/Drop.wav");
-		sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
-		sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
-	}
+    private void LoadSounds() {
+        sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
+        sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
+        sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
+        sfx["Drop"] = GD.Load<AudioStream>("res://Sounds/Drop.wav");
+        sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
+        sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
+    }
 
-	public void PlaySound(string soundName) {
-		if (isSfxMuted || !sfx.ContainsKey(soundName)) {
-			GD.PushWarning($"Sound '{soundName}' not found or muted.");
-			return;
-		}
+    public void PlaySound(string soundName) {
+        if (isSfxMuted || !sfx.ContainsKey(soundName)) {
+            GD.PushWarning($"Sound '{soundName}' not found or muted.");
+            return;
+        }
 
-		AudioStreamPlayer player = new();
-		player.Stream = sfx[soundName];
-		player.VolumeDb = Mathf.LinearToDb(sfxVolume);
-		AddChild(player);
-		//Queues the node to be deleted when player.Finished emits.
-		player.Finished += () => player.QueueFree();
-		player.Play();
-	}
+        AudioStreamPlayer player = new();
+        player.Stream = sfx[soundName];
+        player.VolumeDb = Mathf.LinearToDb(sfxVolume);
+        AddChild(player);
+        //Queues the node to be deleted when player.Finished emits.
+        player.Finished += () => player.QueueFree();
+        player.Play();
+    }
 
-	public void SetVolume(float volume) {
-		sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
-	}
+    public void SetVolume(float volume) {
+        sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
+    }
 
-	public void ToggleSfxMuted() {
-		isSfxMuted = !isSfxMuted;
-	}
+    public void ToggleSfxMuted() {
+        isSfxMuted = !isSfxMuted;
+    }
 }

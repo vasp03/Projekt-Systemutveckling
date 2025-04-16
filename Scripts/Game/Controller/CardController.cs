@@ -19,21 +19,19 @@ public class CardController {
 	private CardNode selectedCard;
 
 	// Constructor
-	public CardController(NodeController nodeController, MouseController mouseController) {
-		this.nodeController = nodeController;
+	public CardController(GameController nodeController, MouseController mouseController) {
+		GameController = nodeController;
 		this.mouseController = mouseController;
 		CardCreationHelper = new CardCreationHelper(nodeController, this);
 		CraftingController = new CraftingController(CardCreationHelper);
 
-		// Add crafting recipes
-		CraftingController.AddRecipe(new CraftingRecipe("Plank", ["Wood", "Wood"], ["Plank"]));
-		CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
+		CreateStartingRecipes();
 	}
 
 	public int CardCount => AllCards.Count;
 
 	public IReadOnlyCollection<CardNode> AllCards =>
-		nodeController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+		GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -83,6 +81,45 @@ public class CardController {
 	}
 
 	/// <summary>
+	///     Creates the starting recipes for crafting.
+	/// </summary>
+	public void CreateStartingRecipes() {
+		CraftingController.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
+		CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Jam", ["Berry", "CookingPot"], ["Jam"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood"], ["Stick"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe"], ["Wood"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Tent", ["Leaf", "Leaf", "Leaf", "Leaf", "Wood"], ["Tent"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Bush"], ["Leaf"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Tree"], ["Leaf"]));
+		CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stick", "Stone"], ["FishingPole"]));
+		CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
+		CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("House",
+			["Stone", "Stone", "Stone", "Stone", "Planks", "Planks"], ["House"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Greenhouse",
+			["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
+	}
+
+	/// <summary>
+	///     Creates a new card and adds it to the scene.
+	/// </summary>
+	/// <returns>
+	///     The created card instance.
+	/// </returns>
+	public void CreateCard(string type) {
+		CardCreationHelper.CreateCard(type);
+	}
+
+	/// <summary>
 	///     Checks if the card is the top card on the scene.
 	/// </summary>
 	private bool CardIsTopCard(Node2D cardNode) {
@@ -128,10 +165,10 @@ public class CardController {
 	}
 
 	/// <summary>
-	///     Gets the top card at the mouse position.
+	/// Gets the top card at the mouse position.
 	/// </summary>
 	/// <returns>
-	///     The top card at the mouse position or null if no card is hovered.
+	/// The top card at the mouse position or null if no card is hovered. 
 	/// </returns>
 	public CardNode GetTopCardAtMousePosition() {
 		CardNode topCard = null;
@@ -166,9 +203,9 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		selectedCard = GetTopCardAtMousePosition();
-
 		mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+		selectedCard = GetTopCardAtMousePosition();
+		// SetTopZIndexForCard(selectedCard);
 
 		if (selectedCard != null) SetZIndexForAllCards(selectedCard);
 
@@ -196,7 +233,12 @@ public class CardController {
 	/// </summary>
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
 	public void SetZIndexForAllCards(CardNode cardNode) {
-		List<IStackable> stackAbove = null;
+		int NumberOfCards = AllCards.Count;
+		List<IStackable> stackAboveSelectedCard =
+			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+		int CounterForCardsBelow = 1;
 
 		if (cardNode.CardType is IStackable stackable) stackAbove = stackable.StackAbove;
 
@@ -237,20 +279,25 @@ public class CardController {
 	/// </summary>
 	public void PrintCardsNeighbours() {
 		// Print the all cards and their neighbours
-		foreach (CardNode card in AllCardsSorted)
-			if (card.CardType is IStackable stackable)
-				GD.Print("This: " + card.CardType.TextureType + ":" + card.ZIndex + " - " + card.IsBeingDragged +
-				         " | Above: " +
-				         (stackable.NeighbourAbove != null
-					         ? stackable.NeighbourAbove.TextureType + " - " +
-					           ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged
-					         : "None") +
-				         " | Below: " +
-				         (stackable.NeighbourBelow != null
-					         ? stackable.NeighbourBelow.TextureType + " - " +
-					           ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged
-					         : "None"));
-
 		GD.Print("------------------");
+		GD.Print("Cards and their neighbours:");
+		GD.Print("------------------");
+		int i = 0;
+
+		foreach (CardNode card in AllCardsSorted)
+			if (card.CardType is IStackable stackable) {
+				string cardInfo =
+					$"This: {card.CardType.TextureType}:{card.ZIndex} - IsBeingDragged: {card.IsBeingDragged}";
+				string aboveInfo = stackable.NeighbourAbove != null
+					? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {
+						((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
+					: "Above: None ";
+				string belowInfo = stackable.NeighbourBelow != null
+					? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {
+						((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
+					: "Below: None ";
+
+				GD.Print("------------------");
+			}
 	}
 }
