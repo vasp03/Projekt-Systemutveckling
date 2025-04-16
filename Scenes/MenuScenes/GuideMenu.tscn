@@ -1113,7 +1113,6 @@ offset_bottom = -81.0
 theme_override_constants/separation = 27
 
 [node name="VillagerButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

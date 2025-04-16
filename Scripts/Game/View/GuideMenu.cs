@@ -51,8 +51,26 @@ public partial class GuideMenu : Control {
 		InitializeDescriptions();
 		InitializeResourceCardButtons();
 		InitializeToolCardButtons();
+		InitializeBuildingCardButtons();
+		InitializeFoodCardButtons();
+		InitializeNatureCardButtons();
+		InitializeVillagerCardButtons();
 	}
 	
+	private Texture2D LoadCardTexture(string CardName) {
+		string cardImagePath = "res://Assets/Cards/Ready To Use/" + CardName + ".png";
+		string defaultPath = "res://Assets/Cards/Ready To Use/Error.png";
+		if (!FileAccess.FileExists(cardImagePath)) { 
+			GD.PrintErr($"Card image not found: {cardImagePath}");
+			return GD.Load<Texture2D>(defaultPath);
+		}
+		
+		Texture2D cardTexture= GD.Load<Texture2D>(cardImagePath);
+		
+		return cardTexture;
+	}
+
+	#region Initialization of submenus
 	private void InitializeMainButtons() {
 		toolsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ToolsButton");
 		foodButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/FoodButton");
@@ -128,6 +146,66 @@ public partial class GuideMenu : Control {
 			button.Pressed += () => OnSubButtonPressed(buttonName);
 		}
 	}
+	
+	private void InitializeBuildingCardButtons() {
+		buildingCardButtons = new Button[] {
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/GreenhouseButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/HouseButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/TentButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/FieldButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CampfireButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CookingPotButton")
+		};
+		
+		foreach (Button button in buildingCardButtons) {
+			string buttonName = button.Name;
+			button.Pressed += () => OnSubButtonPressed(buttonName);
+		}
+	}
+	
+	private void InitializeFoodCardButtons() {
+		foodCardButtons = new Button[] {
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/AppleButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/BerryButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/JamButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/MeatButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedMeatButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/FishButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedFishButton")
+		};
+		
+		foreach (Button button in foodCardButtons) {
+			string buttonName = button.Name;
+			button.Pressed += () => OnSubButtonPressed(buttonName);
+		}
+	}
+	
+	private void InitializeNatureCardButtons() {
+		natureCardButtons = new Button[] {
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/TreeButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/MineButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/BushButton")
+		};
+		
+		foreach (Button button in natureCardButtons) {
+			string buttonName = button.Name;
+			button.Pressed += () => OnSubButtonPressed(buttonName);
+		}
+	}
+	
+	private void InitializeVillagerCardButtons() {
+		villagerCardButtons = new Button[] {
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/VillagerButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/HunterButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/FarmerButton"),
+			GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/BlacksmithButton")
+		};
+		
+		foreach (Button button in villagerCardButtons) {
+			string buttonName = button.Name;
+			button.Pressed += () => OnSubButtonPressed(buttonName);
+		}
+	}
 
 	private void InitializeDescriptions() {
 		//resource cards
@@ -149,27 +227,36 @@ public partial class GuideMenu : Control {
 		cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood.");
 		
 		//building cards
+		cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"), "A greenhouse used for growing plants.");
+		cardData["HouseButton"] = (LoadCardTexture("House"), "A house used for better sheltering.");
+		cardData["TentButton"] = (LoadCardTexture("Tent"), "A tent used for shelter.");
+		cardData["FieldButton"] = (LoadCardTexture("Field"), "A field used for growing crops.");
+		cardData["CampfireButton"] = (LoadCardTexture("Campfire"), "A campfire used for cooking and warmth.");
+		cardData["CookingPotButton"] = (LoadCardTexture("CookingPot"), "A cooking pot used for cooking food.");
 		
 		//food cards
+		cardData["AppleButton"] = (LoadCardTexture("Apple"), "An apple used for food.");
+		cardData["BerryButton"] = (LoadCardTexture("Berry"), "A berry used for food.");
+		cardData["JamButton"] = (LoadCardTexture("Jam"), "Jam used for food.");
+		cardData["MeatButton"] = (LoadCardTexture("Meat"), "Meat used for food.");
+		cardData["CookedMeatButton"] = (LoadCardTexture("CookedMeat"), "Cooked meat used for food.");
+		cardData["FishButton"] = (LoadCardTexture("Fish"), "Fish used for food.");
+		cardData["CookedFishButton"] = (LoadCardTexture("CookedFish"), "Cooked fish used for food.");
 		
 		//nature cards
+		cardData["TreeButton"] = (LoadCardTexture("Tree"), "A tree used for wood.");
+		cardData["MineButton"] = (LoadCardTexture("Mine"), "A mine used for stone.");
+		cardData["BushButton"] = (LoadCardTexture("Bush"), "A bush used to find berries.");
 		
 		//villager cards
+		cardData["VillagerButton"] = (LoadCardTexture("Villager"), "A villager used for crafting and building.");
+		cardData["HunterButton"] = (LoadCardTexture("Hunter"), "A hunter used for hunting.");
+		cardData["FarmerButton"] = (LoadCardTexture("Farmer"), "A farmer used for farming.");
+		cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"), "A blacksmith used for crafting.");
 	}
+	#endregion
 
-	private Texture2D LoadCardTexture(string CardName) {
-		string cardImagePath = "res://Assets/Cards/Ready To Use/" + CardName + ".png";
-		string defaultPath = "res://Assets/Cards/Ready To Use/Error.png";
-		if (!FileAccess.FileExists(cardImagePath)) { 
-			GD.PrintErr($"Card image not found: {cardImagePath}");
-			return GD.Load<Texture2D>(defaultPath);
-		}
-		
-		Texture2D cardTexture= GD.Load<Texture2D>(cardImagePath);
-		
-		return cardTexture;
-	}
-
+	#region Button pressed events
 	private void OnSubButtonPressed(string buttonName) {
 		if (cardData.TryGetValue(buttonName, out (Texture2D, string) data)) {
 			cardImage.Texture = data.Item1;
@@ -199,6 +286,12 @@ public partial class GuideMenu : Control {
 		}
 	}
 	
+	private void OnGoBackButtonPressed() {
+		ResetGuideMenu();
+		menuController.GoBackToPreviousMenu();
+	}
+	#endregion
+	
 	private string GetBaseButtonText(Button button) {
 		string text = button.Text;
 		int arrowIndex = text.IndexOf(">");
@@ -211,7 +304,6 @@ public partial class GuideMenu : Control {
 		}
 		
 		return text;
-		
 	}
 	
 	private void ResetGuideMenu() {
@@ -226,10 +318,5 @@ public partial class GuideMenu : Control {
 		descriptionLabel.Visible = false;
 		cardInfoLabel.Visible = false;
 		cardImage.Visible = false;
-	}
-
-	private void OnGoBackButtonPressed() {
-		ResetGuideMenu();
-		menuController.GoBackToPreviousMenu();
 	}
 }
