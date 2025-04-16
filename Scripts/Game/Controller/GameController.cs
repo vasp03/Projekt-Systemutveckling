@@ -1,9 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Text;
 using Godot;
+using Vector2 = Godot.Vector2;
 
 public partial class GameController : Node2D {
     private CardController cardController;
     private MenuController menuController;
     private MouseController mouseController;
+
+    private List<int> numberList = new List<int>();
 
     public override void _Ready() {
         mouseController = new MouseController();
@@ -26,35 +33,17 @@ public partial class GameController : Node2D {
                 case Key.D:
                     cardController.PrintCardsNeighbours();
                     break;
-                case Key.Key1:
-                    cardController.CreateCard("Apple");
-                    break;
-                case Key.Key2:
-                    cardController.CreateCard("Berry");
-                    break;
-                case Key.Key3:
-                    cardController.CreateCard("Leaves");
-                    break;
-                case Key.Key4:
-                    cardController.CreateCard("Mine");
-                    break;
-                case Key.Key5:
-                    cardController.CreateCard("Plank");
-                    break;
-                case Key.Key6:
-                    cardController.CreateCard("Stick");
-                    break;
-                case Key.Key7:
-                    cardController.CreateCard("Stone");
-                    break;
-                case Key.Key8:
-                    cardController.CreateCard("Water");
-                    break;
-                case Key.Key9:
-                    cardController.CreateCard("Wood");
-                    break;
                 case Key.Key0:
-                    cardController.CreateAllCards();
+                case Key.Key1:
+                case Key.Key2:
+                case Key.Key3:
+                case Key.Key4:
+                case Key.Key5:
+                case Key.Key6:
+                case Key.Key7:
+                case Key.Key8:
+                case Key.Key9:
+                    MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
                     break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {
@@ -67,5 +56,23 @@ public partial class GameController : Node2D {
 
     public Vector2 GetMousePosition() {
         return GetGlobalMousePosition();
+    }
+
+    public void MultipleNumberInput(int number) {
+        GD.Print("Number pressed: " + number);
+        numberList.Add(number);
+
+        if (numberList.Count >= 2) {
+            StringBuilder numbers = new();
+            for (int i = 0; i < numberList.Count; i++) {
+                GD.PrintS(numberList[i] + "-");
+                numbers.Append(numberList[i]);
+            }
+
+            // Create a new card with the numbers in the list
+            cardController.CreateCard(numbers.ToString());
+
+            numberList.Clear();
+        }
     }
 }
