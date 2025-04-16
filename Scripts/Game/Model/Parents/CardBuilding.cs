@@ -1,12 +1,11 @@
 using Goodot15.Scripts.Game.Model.Interface;
 
-namespace Goodot15.Scripts.Game.Model;
+namespace Goodot15.Scripts.Game.Model.Parents;
 
 public abstract class CardBuilding : Card, ITickable {
     private int currentProduceTick;
 
-    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(
-        textureAddress, movable) {
+    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(textureAddress, movable) {
         ProduceTimeInSeconds = produceTimeInSeconds;
     }
 
@@ -36,5 +35,5 @@ public abstract class CardBuilding : Card, ITickable {
     ///     To supply a new Card Instance.
     /// </summary>
     /// <returns>New Card Instance</returns>
-    public abstract Card ProduceCard();
+    public abstract string ProduceCard();
 }

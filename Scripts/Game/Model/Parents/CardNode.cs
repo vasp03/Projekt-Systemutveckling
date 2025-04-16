@@ -104,10 +104,21 @@ public partial class CardNode : Node2D {
     ///     If the texture is not found, it loads the error texture.
     /// </summary>
     private void ApplyTexture() {
-        // Try to load the texture from the address; Result may produce null if texture does not exist
-        Texture2D texture = GD.Load<Texture2D>(CardType.TexturePath);
+        Texture2D texture;
 
-        if (texture is null) {
+        // Check if the path is not null or empty and if there is a file at the path
+        if (string.IsNullOrEmpty(CardType.TexturePath) || !FileAccess.FileExists(CardType.TexturePath)) {
+            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID);
+            texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
+            sprite.Texture = texture;
+            return;
+        }
+        
+        // try to load the texture from the address
+        try {
+            texture = GD.Load<Texture2D>(CardType.TexturePath);
+        }
+        catch (Exception) {
             texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
             GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
         }
