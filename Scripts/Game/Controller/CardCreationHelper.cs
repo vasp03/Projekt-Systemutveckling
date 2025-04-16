@@ -18,12 +18,12 @@ public class CardCreationHelper {
         Random
     }
 
-	private readonly CardController CardController;
-	private readonly GameController NodeController;
+	private readonly CardController _cardController;
+	private readonly GameController _gameController;
 
-	public CardCreationHelper(GameController NodeController, CardController CardController) {
-		this.NodeController = NodeController;
-		this.CardController = CardController;
+	public CardCreationHelper(GameController gameController, CardController CardController) {
+		this._gameController = gameController;
+		this._cardController = CardController;
 	}
 
 	public string GetRandomCardType() {
@@ -72,15 +72,15 @@ public class CardCreationHelper {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-		bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), CardController);
+		bool ret = cardInstance.CreateNode(GetCreatedInstanceOfCard(type), _cardController);
 
         if (!ret) {
             GD.PrintErr("CardCreationHelper.CreateCard: Card creation failed");
             return;
         }
 
-        cardInstance.ZIndex = CardController.CardCount + 1;
+        cardInstance.ZIndex = _cardController.CardCount + 1;
         cardInstance.SetPosition(new Vector2(100, 100));
-        GameController.AddChild(cardInstance);
+        _gameController.AddChild(cardInstance);
     }
 }

@@ -223,33 +223,36 @@ public class CardController {
 		}
 	}
 
-	/// <summary>
-	///     Sets the ZIndex of all cards based on the selected card.
-	/// </summary>
-	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
-	public void SetZIndexForAllCards(CardNode cardNode) {
-		int NumberOfCards = AllCards.Count;
-		IReadOnlyCollection<IStackable> stackAboveSelectedCard = cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
-		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
-		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
-		int CounterForCardsBelow = 1;
+    /// <summary>
+    ///     Sets the ZIndex of all cards based on the selected card.
+    /// </summary>
+    /// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
+    public void SetZIndexForAllCards(CardNode cardNode) {
+        int NumberOfCards = AllCards.Count;
+        List<IStackable> stackAboveSelectedCard =
+            cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+        int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+        int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+        int CounterForCardsBelow = 1;
 
-		if (cardNode.CardType is IStackable stackable) stackAbove = stackable.StackAbove;
-
-		int counterForStackedCards = CardCount - (stackAbove != null ? stackAbove.Count : 0);
-		int counterForOtherCards = 1;
-
-		foreach (CardNode card in AllCardsSorted)
-			if ((stackAbove != null && card is IStackable stackableCard && stackAbove.Contains(stackableCard)) ||
-			    card == cardNode) {
-				card.ZIndex = counterForStackedCards;
-				counterForStackedCards++;
-			}
-			else {
-				card.ZIndex = counterForOtherCards;
-				counterForOtherCards++;
-			}
-	}
+        foreach (CardNode card in AllCardsSorted)
+            if (card == cardNode) {
+                if (card.CardType is IStackable stackable) {
+                    if (stackable.NeighbourAbove == null) {
+                        GD.Print($"Card does not have a neighbour above: {card.CardType.TextureType}");
+                        card.ZIndex = NumberOfCards;
+                    } else {
+                        card.ZIndex = CounterForCardsAbove++;
+                    }
+                } else {
+                    card.ZIndex = NumberOfCards;
+                }
+            } else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
+                card.ZIndex = CounterForCardsAbove++;
+            } else {
+                card.ZIndex = CounterForCardsBelow++;
+            }
+    }
 
 	/// <summary>
 	///     Called when the left mouse button is released.
@@ -294,4 +297,18 @@ public class CardController {
 				GD.Print("------------------");
 			}
 	}
+    
+    public void CreateAllCards() {
+        CreateCard("Apple");
+        CreateCard("Berry");
+        CreateCard("Leaves");
+        CreateCard("Mine");
+        CreateCard("Planks");
+        CreateCard("Stick");
+        CreateCard("Stone");
+        CreateCard("SwordMk1");
+        CreateCard("Tree");
+        CreateCard("Water");
+        CreateCard("Wood");
+    }
 }
