@@ -36,16 +36,10 @@ public class CraftingController {
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
         }
 
-        GD.Print("Checkpoint 1");
-
         // Sort the list by the name of the card
         CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
-        GD.Print("Number of recipes: " + Recipes.Count);
-
         foreach (CraftingRecipe recipe in Recipes) {
-            GD.Print("Recipe: " + recipe.Name);
-
             List<StringIntHolder> CardsInRecipeAndAmount = [];
 
             foreach (string cardName in recipe.CardsForCrafting) {
@@ -73,18 +67,13 @@ public class CraftingController {
                     break;
                 }
 
-            GD.Print("Checkpoint 4");
 
             if (recipeMatches) {
-                GD.Print("Recipe found for crafting.");
                 List<string> craftedCards = recipe.CardsForCraftingResult;
                 return craftedCards;
             }
-
-            GD.Print("Checkpoint 5");
         }
 
-        GD.Print("No recipe found for crafting.");
         return null;
     }
 }

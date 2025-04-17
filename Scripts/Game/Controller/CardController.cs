@@ -260,7 +260,7 @@ public class CardController {
                 selectedCard.SetOverLappedCardToStack(underCard);
             }
 
-            if(selectedCard != null && selectedCard.CardType is IStackable stackable){
+            if (selectedCard != null && selectedCard.CardType is IStackable stackable) {
                 List<IStackable> stack = stackable.CardAtBottom.StackAbove;
                 if (selectedCard.CardType is IStackable stackableCard) {
                     stack.Add(stackableCard);
@@ -271,28 +271,41 @@ public class CardController {
                 foreach (IStackable card in stack) {
                     if (card is Card card1) {
                         stackOfCard.Add(card1);
-                        GD.Print($"Card in stack: {card1.CardNode.CardType.TextureType}");
                     }
                 }
 
                 if (stackOfCard != null) {
                     List<string> cardTypes = CraftingController.CheckForCrafting(stackOfCard);
 
-                    if(cardTypes != null && cardTypes.Count > 0)
-                        GD.Print("Crafting possible with the following cards: ");
-                    else
-                        GD.Print("No crafting possible with the selected cards");
-
-                    if(cardTypes != null){
+                    if (cardTypes != null) {
                         GD.Print("Crafting possible with the following cards: ");
                         foreach (string cardType in cardTypes) {
                             GD.Print(cardType);
                         }
+
+                        // Spawn a new instance of the scene CraftButton and place it above the card that is at the bottom of the stack
+                        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
+                        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
+
+                        craftButtonInstance.CardController = this;
+
+                        CardNode cardAtBottom = ((Card)stackable.CardAtBottom).CardNode;
+
+                        if(cardAtBottom == null){
+                            GD.PrintErr("Card at bottom is null");
+                            return;
+                        }
+
+                        Vector2 pos = cardAtBottom.Position;
+
+                        craftButtonInstance.Position = pos + new Vector2(0, -150);
+
+                        _gameController.AddChild(craftButtonInstance);
                     }
-                }else{
+                } else {
                     GD.PrintErr("No cards in the stack");
                 }
-            }else{
+            } else {
                 GD.PrintErr("Selected card is not a stackable card");
             }
 

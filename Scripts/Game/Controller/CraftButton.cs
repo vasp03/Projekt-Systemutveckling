@@ -1,18 +1,10 @@
 using Godot;
 using System;
 
-public partial class CraftButton : Node {
-    CardNode _cardNode;
-    CardController _cardController;
-    GameController _gameController;
-    MenuController _menuController;
+public partial class CraftButton : Node2D {
+    public CardController CardController { get; set; }
 
-    public CraftButton(CardNode cardNode, CardController cardController, GameController gameController, MenuController menuController) {
-        _cardNode = cardNode;
-        _cardController = cardController;
-        _gameController = gameController;
-        _menuController = menuController;
-    }
+    public string NameOfButton { get; set; }
 
     public void _on_button_button_down() {
         GD.Print("Craft button pressed.");

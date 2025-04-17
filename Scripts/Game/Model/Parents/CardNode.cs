@@ -20,6 +20,8 @@ public partial class CardNode : Node2D {
 
     private Vector2 oldMousePosition;
 
+    private CraftButton _craftButton;
+
     public CardNode() {
         AddToGroup(CardController.CARD_GROUP_NAME);
     }
@@ -252,4 +254,12 @@ public partial class CardNode : Node2D {
     }
 
     #endregion Events(?)
+
+    public void SetCraftButton(CraftButton craftButton) {
+        _craftButton = craftButton;
+    }
+
+    public CraftButton GetCraftButton() {
+        return _craftButton;
+    }
 }
