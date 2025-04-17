@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Godot;
 
@@ -25,7 +26,7 @@ public partial class GamePausedMenu : Control {
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
 		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
-		exitButton.Pressed += ()=> OnExitButtonPressed();
+		exitButton.Pressed += OnExitButtonPressed;
 	}
 
 	/// <summary>
@@ -56,10 +57,16 @@ public partial class GamePausedMenu : Control {
 	///     Handles the button press event for the exit button.
 	///     Exits the game and returns to the main menu.
 	/// </summary>
-	private async Task OnExitButtonPressed() {
+	private void OnExitButtonPressed() {
 		// Await is required to synchronize scene change
-		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
-		Visible = false;
+		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		this.CallDeferred(nameof(ChangeSceneDeferred));
+
+	}
+
+	private void ChangeSceneDeferred() {
+		GetTree().CurrentScene.Free();
+		Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+		Visible = false;	
 	}
 }
