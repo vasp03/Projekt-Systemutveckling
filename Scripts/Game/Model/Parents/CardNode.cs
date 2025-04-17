@@ -155,7 +155,7 @@ public partial class CardNode : Node2D {
                 thisStackable.NeighbourBelow = otherStackable;
                 otherStackable.NeighbourAbove = thisStackable;
 
-                SetPosition(underCard.Position - new Vector2(0, -20));
+                SetPosition(underCard.Position - new Vector2(0, -15));
 
                 if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
