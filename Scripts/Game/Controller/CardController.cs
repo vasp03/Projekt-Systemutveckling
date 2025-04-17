@@ -25,6 +25,7 @@ public class CardController {
         CardCreationHelper = new CardCreationHelper(gameController, this);
         CraftingController = new CraftingController(CardCreationHelper);
 
+
         CreateStartingRecipes();
     }
 
@@ -255,8 +256,24 @@ public class CardController {
             // Checks for a card under the moved card and sets if it exists as a neighbour below. 
             CardNode underCard = GetCardUnderMovedCard();
 
-            if (underCard != null && !selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove)
+            if (underCard != null && !selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove) {
                 selectedCard.SetOverLappedCardToStack(underCard);
+            }
+
+            if (selectedCard != null && selectedCard.CardType is IStackable stackableCard) {
+                Button CraftButton = _gameController.CraftButton;
+
+                if (stackableCard != null && CraftButton != null) {
+                    Card test = (Card)stackableCard.CardAtBottom;
+
+                    if (test != null) {
+                        CraftButton.Position = test.CardNode.Position + new Vector2(0, -80);
+                    } else {
+                        GD.Print("Card is null");
+                    }
+
+                }
+            }
 
             selectedCard = null;
         }
@@ -276,12 +293,10 @@ public class CardController {
                 string cardInfo =
                     $"This: {card.CardType.TextureType}:{card.ZIndex} - IsBeingDragged: {card.IsBeingDragged}";
                 string aboveInfo = stackable.NeighbourAbove != null
-                    ? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {
-                        ((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
+                    ? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
                     : "Above: None ";
                 string belowInfo = stackable.NeighbourBelow != null
-                    ? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {
-                        ((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
+                    ? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
                     : "Below: None ";
 
                 GD.Print("------------------");

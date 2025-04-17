@@ -58,6 +58,20 @@ public interface IStackable {
         }
     }
 
+    public IStackable CardAtBottom{
+        get {
+            IStackable current = this;
+            while (current != null) {
+
+                if (current.NeighbourBelow == null) return current;
+
+                current = current.NeighbourBelow;
+            }
+
+            return current;
+        }
+    }
+
     public IStackable NeighbourAbove { get; set; }
     public IStackable NeighbourBelow { get; set; }
     string TextureType { get; }

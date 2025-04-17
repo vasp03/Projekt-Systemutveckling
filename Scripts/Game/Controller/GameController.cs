@@ -9,6 +9,8 @@ public partial class GameController : Node2D {
     private MenuController menuController;
     private MouseController mouseController;
 
+    [Export] public Button CraftButton { get; set; }
+
     public override void _Ready() {
         mouseController = new MouseController();
         cardController = new CardController(this, mouseController);

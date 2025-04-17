@@ -144,6 +144,12 @@ public partial class CardNode : Node2D {
         }
     }
 
+    public CardNode GetBottomCard(){
+        
+
+        return null;
+    }
+
     /// <summary>
     ///     Sets the position of the card node to the position of the underCard.
     /// </summary>
@@ -155,7 +161,7 @@ public partial class CardNode : Node2D {
                 thisStackable.NeighbourBelow = otherStackable;
                 otherStackable.NeighbourAbove = thisStackable;
 
-                SetPosition(underCard.Position - new Vector2(0, -15));
+                SetPosition(underCard.Position - new Vector2(0, -20));
 
                 if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
