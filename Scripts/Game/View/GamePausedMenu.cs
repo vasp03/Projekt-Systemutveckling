@@ -64,6 +64,9 @@ public partial class GamePausedMenu : Control {
 
 	}
 
+    /// <summary>
+    /// Changes the scene through deferred action.
+    /// </summary>
 	private void ChangeSceneDeferred() {
 		GetTree().CurrentScene.Free();
 		Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
