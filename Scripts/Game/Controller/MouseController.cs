@@ -54,7 +54,9 @@ public partial class MouseController : Node {
 				Input.SetCustomMouseCursor(hand_close, Input.CursorShape.Arrow, offset);
 				return true;
 			case MouseCursor.loading:
-				if (!isLoading) startLoading();
+                if (!isLoading) {
+                    startLoading();
+                }
 				return true;
 			default:
 				Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
