@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using Goodot15.Scripts.Game.Model;
+namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialLeaves(string textureAddress, int cost, CardNode cardNode)
-	: CardMaterial(textureAddress, cost, cardNode) {
-	public override IReadOnlyCollection<Type> GetStackableTypes() {
-		throw new NotImplementedException();
-	}
+public class MaterialLeaves() : CardMaterial("Leaf") {
 }
