@@ -198,11 +198,12 @@ public class CardController {
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(true);
 
-            if (selectedCard.HasNeighbourAbove)
+            if (selectedCard.HasNeighbourAbove) {
                 selectedCard.IsMovingOtherCards = true;
-            else
+            } else {
                 // Set the card that is being dragged to the top
                 selectedCard.ZIndex = CardCount + 1;
+            }
 
             // Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
             // And sets the card below if it exists to not have a neighbour above
@@ -230,7 +231,6 @@ public class CardController {
             if (card == cardNode) {
                 if (card.CardType is IStackable stackable) {
                     if (stackable.NeighbourAbove == null) {
-                        GD.Print($"Card does not have a neighbour above: {card.CardType.TextureType}");
                         card.ZIndex = NumberOfCards;
                     } else {
                         card.ZIndex = CounterForCardsAbove++;
@@ -260,19 +260,40 @@ public class CardController {
                 selectedCard.SetOverLappedCardToStack(underCard);
             }
 
-            if (selectedCard != null && selectedCard.CardType is IStackable stackableCard) {
-                Button CraftButton = _gameController.CraftButton;
-
-                if (stackableCard != null && CraftButton != null) {
-                    Card test = (Card)stackableCard.CardAtBottom;
-
-                    if (test != null) {
-                        CraftButton.Position = test.CardNode.Position + new Vector2(0, -80);
-                    } else {
-                        GD.Print("Card is null");
-                    }
-
+            if(selectedCard != null && selectedCard.CardType is IStackable stackable){
+                List<IStackable> stack = stackable.CardAtBottom.StackAbove;
+                if (selectedCard.CardType is IStackable stackableCard) {
+                    stack.Add(stackableCard);
                 }
+
+                List<Card> stackOfCard = [];
+
+                foreach (IStackable card in stack) {
+                    if (card is Card card1) {
+                        stackOfCard.Add(card1);
+                        GD.Print($"Card in stack: {card1.CardNode.CardType.TextureType}");
+                    }
+                }
+
+                if (stackOfCard != null) {
+                    List<string> cardTypes = CraftingController.CheckForCrafting(stackOfCard);
+
+                    if(cardTypes != null && cardTypes.Count > 0)
+                        GD.Print("Crafting possible with the following cards: ");
+                    else
+                        GD.Print("No crafting possible with the selected cards");
+
+                    if(cardTypes != null){
+                        GD.Print("Crafting possible with the following cards: ");
+                        foreach (string cardType in cardTypes) {
+                            GD.Print(cardType);
+                        }
+                    }
+                }else{
+                    GD.PrintErr("No cards in the stack");
+                }
+            }else{
+                GD.PrintErr("Selected card is not a stackable card");
             }
 
             selectedCard = null;

@@ -58,13 +58,11 @@ public partial class GameController : Node2D {
     }
 
     public void MultipleNumberInput(int number) {
-        GD.Print("Number pressed: " + number);
         numberList.Add(number);
 
         if (numberList.Count >= 2) {
             StringBuilder numbers = new();
             for (int i = 0; i < numberList.Count; i++) {
-                GD.PrintS(numberList[i] + "-");
                 numbers.Append(numberList[i]);
             }
 

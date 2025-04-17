@@ -1,8 +1,7 @@
-[gd_scene load_steps=17 format=4 uid="uid://bx27g8lfyci4b"]
+[gd_scene load_steps=5 format=4 uid="uid://bx27g8lfyci4b"]
 
-[ext_resource type="Script" uid="uid://cbm0e65p06r5y" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://bs5j8uqgsto2r" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
-[ext_resource type="Texture2D" uid="uid://cbc7ww6mgdhkp" path="res://Assets/Cards/Stock/Bar_Black.png" id="3_hewda"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yyxd1"]
 texture = ExtResource("2_m8nr8")
@@ -13,31 +12,8 @@ texture_region_size = Vector2i(256, 256)
 tile_size = Vector2i(256, 256)
 sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m8nr8"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_47rga"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yyxd1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0vbqt"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w1dup"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uvydw"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mhr8t"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l0d1b"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w8a2l"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_so5kr"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0bgj2"]
-
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("CraftButton")]
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_ly6xb")
-CraftButton = NodePath("CraftButton")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(303, -216)
@@ -45,21 +21,3 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAA
 tile_set = SubResource("TileSet_0vbqt")
 
 [node name="Timer" type="Timer" parent="."]
-
-[node name="CraftButton" type="Button" parent="."]
-offset_left = 184.0
-offset_top = 77.0
-offset_right = 228.0
-offset_bottom = 94.0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_m8nr8")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_47rga")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_yyxd1")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_0vbqt")
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_w1dup")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_uvydw")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_mhr8t")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_l0d1b")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_w8a2l")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_so5kr")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_0bgj2")
-icon = ExtResource("3_hewda")
