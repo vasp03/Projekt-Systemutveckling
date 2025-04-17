@@ -35,6 +35,10 @@ window/vsync/vsync_mode=0
 
 project/assembly_name="Goodot 15"
 
+[editor]
+
+run/main_run_args="--verbose"
+
 [editor_plugins]
 
 enabled=PackedStringArray()

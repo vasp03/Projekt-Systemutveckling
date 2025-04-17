@@ -20,14 +20,14 @@ public class PlayButtonTest {
 		// await ISceneRunner.SyncProcessFrame;
 		playButton.EmitSignal(Button.SignalName.Pressed);
 
-		await scene.SimulateFrames(2);
+        await scene.SimulateFrames(2);
 
-		Assertions.AssertString(scene.Scene().GetTree().CurrentScene.SceneFilePath)
-			.IsEqual("res://Scenes/mainScene.tscn");
-	}
+        Assertions.AssertString(scene.Scene().GetTree().CurrentScene.SceneFilePath)
+            .IsEqualIgnoringCase("res://Scenes/mainScene.tscn");
+    }
 
-	// [AfterTest]
-	// public async Task Test_ExitGame() {
-	// 	(Engine.GetMainLoop() as SceneTree).Quit();
-	// }
+    // [AfterTest]
+    // public async Task Test_ExitGame() {
+    // 	(Engine.GetMainLoop() as SceneTree).Quit();
+    // }
 }

@@ -33,9 +33,9 @@ public partial class MenuController : Node {
 			AddChild(mainMenu);
 		}
 
-		GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
-		// SwitchMenu(mainMenu);
-	}
+        GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+        // SwitchMenu(mainMenu);
+    }
 
 	/// <summary>
 	///     Loads and opens the pause menu.
@@ -44,14 +44,14 @@ public partial class MenuController : Node {
 		if (GetTree().Paused) return;
 		GetTree().Paused = true;
 
-		if (pauseMenu == null) {
-			PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
-			pauseMenu = packedPauseMenu.Instantiate() as Control;
-			AddChild(pauseMenu);
-		}
+        if (pauseMenu == null) {
+            PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
+            pauseMenu = packedPauseMenu.Instantiate() as Control;
+            AddChild(pauseMenu);
+        }
 
-		SwitchMenu(pauseMenu);
-	}
+        SwitchMenu(pauseMenu);
+    }
 
 	/// <summary>
 	///     Loads and opens the options menu.
@@ -64,8 +64,8 @@ public partial class MenuController : Node {
 			AddChild(optionsMenu);
 		}
 
-		SwitchMenu(optionsMenu);
-	}
+        SwitchMenu(optionsMenu);
+    }
 
 	/// <summary>
 	///     Loads and opens the guide menu.
@@ -104,7 +104,7 @@ public partial class MenuController : Node {
 		}
 	}
 
-	/// <summary>
+    /// <summary>
 	///     Closes all the menus and resumes the game.
 	/// </summary>
 	public void CloseMenus() {
@@ -112,28 +112,28 @@ public partial class MenuController : Node {
 			if (menu is Control controlMenu && controlMenu.IsInsideTree())
 				controlMenu.Visible = false;
 
-		GetTree().Paused = false;
-		GameController.Visible = true;
-	}
+        GetTree().Paused = false;
+        GameController.Visible = true;
+    }
 
-	/// <summary>
+    /// <summary>
 	///     sets the GameController to a variable for the MenuController.
 	/// </summary>
 	/// <param name="gameController">the GameController to be set</param>
 	public void SetNodeController(GameController gameController) {
-		GameController = gameController;
-	}
+        GameController = gameController;
+    }
 
-	/// <summary>
+    /// <summary>
 	///     Configures the MenuController with a new instance of the MainMenu.
 	/// </summary>
 	/// <param name="menu">The new main menu instance to configure with</param>
 	public void ConfigureWithNewMainMenuInstance(Goodot15.Scripts.Game.View.MainMenu menu) {
-		mainMenu = menu;
-		currentMenu = menu;
+        mainMenu = menu;
+        currentMenu = menu;
 
-		GetTree().Paused = false;
-	}
+        GetTree().Paused = false;
+    }
 
 	/// <summary>
 	///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
