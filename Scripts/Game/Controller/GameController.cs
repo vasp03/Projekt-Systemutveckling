@@ -42,9 +42,6 @@ public partial class GameController : Node2D {
                 case Key.Key9:
                     MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
                     break;
-                case Key.A:
-                    cardController.CreateCard(new PlayerVillager());
-                    break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {
             if (mouseButton.Pressed)
@@ -70,7 +67,7 @@ public partial class GameController : Node2D {
             }
 
             // Create a new card with the numbers in the list
-            cardController.CreateCard(numbers.ToString());
+            cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
             numberList.Clear();
         }
