@@ -3,14 +3,6 @@ using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class CardCreationHelper {
-	private readonly GameController GameController;
-	private readonly CardController CardController;
-
-	public CardCreationHelper(GameController NodeController, CardController CardController) {
-		this.GameController = NodeController;
-		this.CardController = CardController;
-	}
-
 	public enum TypeEnum {
 		Apple,
 		Berry,
@@ -24,6 +16,14 @@ public class CardCreationHelper {
 		Water,
 		Wood,
 		Random
+	}
+
+	private readonly CardController CardController;
+	private readonly GameController GameController;
+
+	public CardCreationHelper(GameController NodeController, CardController CardController) {
+		GameController = NodeController;
+		this.CardController = CardController;
 	}
 
 	public string GetRandomCardType() {
