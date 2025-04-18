@@ -9,33 +9,33 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
+    private readonly IList<IGameManager> managers = [];
     private readonly List<int> numberList = new();
 
-    private readonly IList<IGameManager> managers = [];
-    
-    private CardController CardController => this.GetManager<CardController>();
-    private Goodot15.Scripts.Game.Controller.MenuController menuController => this.GetManager<MenuController>();
+    private CardController CardController => GetManager<CardController>();
+    private MenuController menuController => GetManager<MenuController>();
 
     public override void _Ready() {
-        this.RegisterDefaultManagers();
-        
+        RegisterDefaultManagers();
+
         ConfigureDefaultManagers();
     }
 
     public T RegisterManager<T>(T manager) where T : IGameManager {
-        if (this.managers.Any(e=>e.GetType()==manager.GetType())) 
+        if (managers.Any(e => e.GetType() == manager.GetType()))
             throw new InvalidOperationException("Cannot register a duplicate manager");
-        this.managers.Add(manager);
-        
+        managers.Add(manager);
+
         return manager;
     }
 
     public T GetManager<T>() where T : IGameManager {
-        if (this.managers.FirstOrDefault(e => e is T) is not T manager) 
-            throw new InvalidOperationException($"Cannot get manager of type {typeof(T).FullName} as it is not registered");
+        if (managers.FirstOrDefault(e => e is T) is not T manager)
+            throw new InvalidOperationException(
+                $"Cannot get manager of type {typeof(T).FullName} as it is not registered");
         return manager;
     }
-    
+
     private void RegisterDefaultManagers() {
         RegisterManager(new MouseController(this));
         RegisterManager(new CraftingController(this));
@@ -84,8 +84,7 @@ public partial class GameController : Node2D {
     }
 
     public override void _Process(double delta) {
-        foreach (IGameManager gameManager in managers)
-        {
+        foreach (IGameManager gameManager in managers) {
             ITickable? tickableGameManager = gameManager as ITickable;
             tickableGameManager?.PreTick();
             tickableGameManager?.PostTick();

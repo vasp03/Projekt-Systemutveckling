@@ -1,12 +1,13 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
 public partial class GamePausedMenu : Control {
-    private Controller.MenuController menuController;
+    private MenuController menuController;
 
     public override void _Ready() {
-        menuController = GetNode<Controller.MenuController>("/root/MenuController");
+        menuController = GetNode<MenuController>("/root/MenuController");
 
         VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
         buttonContainer.Show();

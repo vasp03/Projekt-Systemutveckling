@@ -1,22 +1,39 @@
-﻿using Goodot15.Scripts.Game.Model.Div;
-using Goodot15.Scripts.Game.Model.Interface;
-using Godot;
-using System;
-
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using Goodot15.Scripts.Game.Controller.Events;
-
+using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller;
-public partial class GameEventManager : GameManagerBase, ITickable {
-    private IList<IGameEvent> registedEvents = [];
-    private IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
-    
+
+public class GameEventManager : GameManagerBase, ITickable {
+    private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
+    private readonly IList<IGameEvent> registedEvents = [];
+
     private Random random = new();
 
     public GameEventManager(GameController gameController) : base(gameController) {
-        this.RegisterDefaultEvents();
+        RegisterDefaultEvents();
+    }
+
+    public void PreTick() {
+    }
+
+    public void PostTick() {
+        foreach (IGameEvent registeredEvent in registedEvents) {
+            if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
+                eventTicks[registeredEvent] = 0;
+                if (registeredEvent.Chance >= GD.Randf()) {
+                    GameEventContext gameEventContext = new(registeredEvent, CoreGameController);
+                    PostEvent(gameEventContext);
+                }
+            } else {
+                eventTicks[registeredEvent]++;
+            }
+
+            GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
+        }
     }
 
     public void RegisterDefaultEvents() {
@@ -27,32 +44,12 @@ public partial class GameEventManager : GameManagerBase, ITickable {
         eventTicks.TryAdd(gameEvent, 0);
         registedEvents.Add(gameEvent);
     }
-    public void PreTick() {
-    }
-
-    public void PostTick() {
-        foreach (IGameEvent registeredEvent in registedEvents) {
-            if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
-                eventTicks[registeredEvent] = 0;
-                if (registeredEvent.Chance >= GD.Randf()) {
-                    GameEventContext gameEventContext = new GameEventContext(registeredEvent, CoreGameController);
-                    this.PostEvent(gameEventContext);
-                }
-            } else {
-                eventTicks[registeredEvent]++;
-            }
-            GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
-        }
-    }
 
     private void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         // Fires the event to all cards as well for those cards that are listening to any game events
-        this.CoreGameController.GetManager<CardController>().AllCards.ToList().ForEach(e => {
-            if (e is IGameEventListener cardEventListener) {
-                cardEventListener.GameEventFired(gameEventContext);
-            }
+        CoreGameController.GetManager<CardController>().AllCards.ToList().ForEach(e => {
+            if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
         });
     }
 }
-

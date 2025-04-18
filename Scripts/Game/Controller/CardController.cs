@@ -9,11 +9,6 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CardController : GameManagerBase {
     public const string CARD_GROUP_NAME = "CARDS";
 
-    private MouseController MouseController => CoreGameController.GetManager<MouseController>();
-    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
-
-    private CraftingController CraftingController => CoreGameController.GetManager<CraftingController>();
-
     private readonly List<CardNode> hoveredCards = [];
 
     private CardNode selectedCard;
@@ -22,6 +17,11 @@ public class CardController : GameManagerBase {
     public CardController(GameController gameController) : base(gameController) {
         CreateStartingRecipes();
     }
+
+    private MouseController MouseController => CoreGameController.GetManager<MouseController>();
+    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
+
+    private CraftingController CraftingController => CoreGameController.GetManager<CraftingController>();
 
     public int CardCount => AllCards.Count;
 

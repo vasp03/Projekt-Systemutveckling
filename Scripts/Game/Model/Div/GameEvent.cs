@@ -3,8 +3,8 @@
 namespace Goodot15.Scripts.Game.Model.Div;
 
 public class GameEvent {
-    public string  eventName;
-    public Action  eventAction;
+    public Action eventAction;
+    public string eventName;
 
     public GameEvent(string eventName, Action eventAction) {
         this.eventName = eventName;

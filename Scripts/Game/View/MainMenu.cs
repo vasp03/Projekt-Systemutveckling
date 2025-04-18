@@ -1,14 +1,15 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 public partial class MainMenu : Control {
     private Button exitButton;
 
-    private Goodot15.Scripts.Game.Controller.MenuController menuController;
+    private MenuController menuController;
     private Button optionsButton;
     private Button playButton;
 
     public override void _Ready() {
-        menuController = GetNode<Goodot15.Scripts.Game.Controller.MenuController>("/root/MenuController");
+        menuController = GetNode<MenuController>("/root/MenuController");
         menuController.configureWithNewMainMenuInstance(this);
 
         playButton = GetNode<Button>("ButtonContainer/PlayButton");

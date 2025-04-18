@@ -43,10 +43,10 @@ public class CardCreationHelper : GameManagerBase {
         Random
     }
 
-    private CardController CardController => CoreGameController.GetManager<CardController>();
-
-    public CardCreationHelper(Goodot15.Scripts.Game.Controller.GameController gameController) : base(gameController) {
+    public CardCreationHelper(GameController gameController) : base(gameController) {
     }
+
+    private CardController CardController => CoreGameController.GetManager<CardController>();
 
     public string GetRandomCardType() {
         Random random = new();

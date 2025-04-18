@@ -3,11 +3,8 @@
 namespace Goodot15.Scripts.Game.Controller;
 
 public class GameManagerBase : IGameManager {
-    public GameController CoreGameController { get; private set; }
-    public Node CurrentScene => CoreGameController.GetTree().CurrentScene;
-
     /// <summary>
-    /// Constructs a GameManager with a GameController
+    ///     Constructs a GameManager with a GameController
     /// </summary>
     /// <param name="coreGameController"></param>
     protected GameManagerBase(GameController coreGameController) {
@@ -15,8 +12,11 @@ public class GameManagerBase : IGameManager {
     }
 
     /// <summary>
-    /// Constructs a GameManager with no GameController supplied - may be used if there is no use for a GameController
+    ///     Constructs a GameManager with no GameController supplied - may be used if there is no use for a GameController
     /// </summary>
     protected GameManagerBase() : this(null) {
     }
+
+    public GameController CoreGameController { get; }
+    public Node CurrentScene => CoreGameController.GetTree().CurrentScene;
 }

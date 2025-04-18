@@ -10,14 +10,14 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
-    private Controller.MenuController menuController;
+    private MenuController menuController;
     private SettingsManager settingsManager;
 
     private OptionButton displayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
     private Button goBackButton => GetNode<Button>("GoBackButton");
 
     public override void _Ready() {
-        menuController = GetNode<Controller.MenuController>("/root/MenuController");
+        menuController = GetNode<MenuController>("/root/MenuController");
         settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
 
         displayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));

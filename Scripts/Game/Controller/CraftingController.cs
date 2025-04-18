@@ -5,10 +5,10 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController : GameManagerBase {
-    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
-
-    public CraftingController(Goodot15.Scripts.Game.Controller.GameController gameController) : base(gameController) {
+    public CraftingController(GameController gameController) : base(gameController) {
     }
+
+    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
 
     public List<CraftingRecipe> Recipes { get; } = [];
 
