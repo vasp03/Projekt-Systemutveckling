@@ -30,6 +30,9 @@ public partial class GameController : Node2D {
                 case Key.D:
                     cardController.PrintCardsNeighbours();
                     break;
+                case Key.S:
+                    
+                    break;
                 case Key.Key0:
                 case Key.Key1:
                 case Key.Key2:
@@ -71,5 +74,9 @@ public partial class GameController : Node2D {
 
             numberList.Clear();
         }
+    }
+
+    public void SaveGame() {
+        
     }
 }

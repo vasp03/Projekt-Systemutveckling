@@ -1,4 +1,5 @@
 using System;
+using Goodot15.Scripts.Game.Model.Data;
 
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
@@ -17,7 +18,6 @@ public abstract class Card {
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
     }
-
     public CardNode CardNode { get; set; }
 
     public string ID { get; private set; }
@@ -32,5 +32,9 @@ public abstract class Card {
             textureType = textureType.Substring(0, textureType.Length - 4);
             return textureType;
         }
+    }
+
+    public virtual CardRecord ToCardRecord() {
+        return new BasicCardRecord(this);
     }
 }
