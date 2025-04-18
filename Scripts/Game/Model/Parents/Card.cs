@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
@@ -28,7 +29,7 @@ public abstract class Card {
     public string TextureType {
         get {
             string[] split = TexturePath.Split("/");
-            string textureType = split[split.Length - 1];
+            string textureType = split.Last();
             textureType = textureType.Substring(0, textureType.Length - 4);
             return textureType;
         }
