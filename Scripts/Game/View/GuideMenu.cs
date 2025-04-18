@@ -301,7 +301,7 @@ public partial class GuideMenu : Control {
         cardData["GlassButton"] = (LoadCardTexture("Glass"),
             "Glass is crafted from sand and is used for crafting and building.");
         cardData["LeafButton"] =
-            (LoadCardTexture("Leaf"),
+            (LoadCardTexture("Leaves"),
                 "Leaves are a basic resource used for crafting and building."); //no leaf card yet 
         cardData["ClayButton"] =
             (LoadCardTexture("Clay"), "Clay is a basic resource used for crafting and building."); //no clay card yet 
