@@ -4,6 +4,7 @@ using Godot;
 using System;
 
 using System.Collections.Generic;
+using System.Linq;
 using Goodot15.Scripts.Game.Controller.Events;
 
 
@@ -34,7 +35,8 @@ public partial class GameEventManager : GameManagerBase, ITickable {
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
-                    registeredEvent.OnEvent(new GameEventContext(registeredEvent, CoreGameController));
+                    GameEventContext gameEventContext = new GameEventContext(registeredEvent, CoreGameController);
+                    this.PostEvent(gameEventContext);
                 }
             } else {
                 eventTicks[registeredEvent]++;
@@ -42,4 +44,15 @@ public partial class GameEventManager : GameManagerBase, ITickable {
             GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
         }
     }
+
+    private void PostEvent(GameEventContext gameEventContext) {
+        gameEventContext.GameEventFired.OnEvent(gameEventContext);
+        // Fires the event to all cards as well for those cards that are listening to any game events
+        this.CoreGameController.GetManager<CardController>().AllCards.ToList().ForEach(e => {
+            if (e is IGameEventListener cardEventListener) {
+                cardEventListener.GameEventFired(gameEventContext);
+            }
+        });
+    }
 }
+
