@@ -1,20 +1,50 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Godot;
 using Vector2 = Godot.Vector2;
 
+namespace Goodot15.Scripts.Game.Controller;
+
 public partial class GameController : Node2D {
     private readonly List<int> numberList = new();
-    private CardController cardController;
-    private MenuController menuController;
-    private MouseController mouseController;
+
+    private readonly IList<IGameManager> managers = [];
+    
+    private CardController cardController => this.GetManager<CardController>();
+    private Goodot15.Scripts.Game.Controller.MenuController menuController => this.GetManager<MenuController>();
 
     public override void _Ready() {
-        mouseController = new MouseController();
-        cardController = new CardController(this, mouseController);
+        this.RegisterDefaultManagers();
+        
+        ConfigureDefaultManagers();
+    }
 
-        menuController = GetNode<MenuController>("/root/MenuController");
-        menuController.SetNodeController(this);
+    public T RegisterManager<T>(T manager) where T : IGameManager {
+        if (this.managers.Any(e=>e.GetType()==manager.GetType())) 
+            throw new InvalidOperationException("Cannot register a duplicate manager");
+        this.managers.Add(manager);
+        
+        return manager;
+    }
+
+    public T GetManager<T>() where T : IGameManager {
+        if (this.managers.FirstOrDefault(e => e is T) is not T manager) 
+            throw new InvalidOperationException($"Cannot get manager of type {typeof(T).FullName} as it is not registered");
+        return manager;
+    }
+    
+    private void RegisterDefaultManagers() {
+        RegisterManager(new MouseController(this));
+        RegisterManager(new CraftingController(this));
+        RegisterManager(new CardController(this));
+        RegisterManager(new CardCreationHelper(this));
+        RegisterManager(GetNode<MenuController>("/root/MenuController"));
+    }
+
+    private void ConfigureDefaultManagers() {
+        GetManager<MenuController>().SetNodeController(this);
     }
 
     public override void _Input(InputEvent @event) {

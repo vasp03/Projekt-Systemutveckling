@@ -10,14 +10,12 @@ using Goodot15.Scripts.Game.Controller.Events;
 namespace Goodot15.Scripts.Game.Controller;
 public partial class GameEventManager : Node, ITickable {
     private IList<IGameEvent> registedEvents = [];
-    private PackedScene meteoriteCardScene;
-    // private Node cardParent;
-    private int tickCounter = 0;
-    private int tickInterval = 60;
+    private IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
+    
     private Random random = new();
 
     public override void _Ready() {
-        meteoriteCardScene = GD.Load<PackedScene>("res://MeteoriteCard.tscn");
+        RegisterDefaultEvents();
         //cardParent = GetNode("");
     }
 
@@ -32,5 +30,13 @@ public partial class GameEventManager : Node, ITickable {
     }
 
     public void PostTick() {
+        foreach (IGameEvent registedEvent in registedEvents)
+        {
+            if (registedEvent.TicksUntilNextEvent <= eventTicks[registedEvent]) {
+                eventTicks[registedEvent] = 0;
+                
+                registedEvent.OnEvent(new GameEventContext());
+            }
+        }
     }
 }

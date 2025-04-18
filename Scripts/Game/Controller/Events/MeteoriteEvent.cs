@@ -2,8 +2,8 @@
 
 public class MeteoriteEvent : IGameEvent {
     public string EventName => "Meteorite Strike";
-    public int TicksUntilNextEvent { get; }
-    public double Chance { get; }
+    public int TicksUntilNextEvent => Utilities.GameScaledTimeToTicks(days: 3);
+    public double Chance => 0.5d;
     public void OnEvent(GameEventContext context) {
         // if (meteoriteCardScene == null || cardParent == null) {
         //     GD.PrintErr("Cannot spawn meteorite card, scene or parent is null");

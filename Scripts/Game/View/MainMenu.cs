@@ -3,12 +3,12 @@ using Godot;
 public partial class MainMenu : Control {
     private Button exitButton;
 
-    private MenuController menuController;
+    private Goodot15.Scripts.Game.Controller.MenuController menuController;
     private Button optionsButton;
     private Button playButton;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = GetNode<Goodot15.Scripts.Game.Controller.MenuController>("/root/MenuController");
         menuController.configureWithNewMainMenuInstance(this);
 
         playButton = GetNode<Button>("ButtonContainer/PlayButton");

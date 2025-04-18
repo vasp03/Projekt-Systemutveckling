@@ -4,34 +4,29 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class CardController {
+namespace Goodot15.Scripts.Game.Controller;
+
+public class CardController : GameManagerBase {
     public const string CARD_GROUP_NAME = "CARDS";
 
-    private readonly GameController _gameController;
+    private MouseController MouseController => CoreGameController.GetManager<MouseController>();
+    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
 
-    private readonly MouseController _mouseController;
-    private readonly CardCreationHelper CardCreationHelper;
-
-    private readonly CraftingController CraftingController;
+    private CraftingController CraftingController => CoreGameController.GetManager<CraftingController>();
 
     private readonly List<CardNode> hoveredCards = [];
 
     private CardNode selectedCard;
 
     // Constructor
-    public CardController(GameController gameController, MouseController mouseController) {
-        _gameController = gameController;
-        _mouseController = mouseController;
-        CardCreationHelper = new CardCreationHelper(gameController, this);
-        CraftingController = new CraftingController(CardCreationHelper);
-
+    public CardController(GameController gameController) : base(gameController) {
         CreateStartingRecipes();
     }
 
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
-        _gameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+        CoreGameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted =>
         AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -46,7 +41,7 @@ public class CardController {
 
         cardInstance.Position = position;
         if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
-        _gameController.AddChild(cardInstance);
+        CoreGameController.AddChild(cardInstance);
 
         return cardInstance;
     }
@@ -69,7 +64,7 @@ public class CardController {
         cardInstance.CardController = this;
 
         cardInstance.ZIndex = CardCount + 1;
-        _gameController.AddChild(cardInstance);
+        CoreGameController.AddChild(cardInstance);
 
 
         return cardInstance;
@@ -188,7 +183,7 @@ public class CardController {
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        _mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+        MouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
         selectedCard = GetTopCardAtMousePosition();
         // SetTopZIndexForCard(selectedCard);
 
@@ -248,7 +243,7 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        _mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
+        MouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(false);
 

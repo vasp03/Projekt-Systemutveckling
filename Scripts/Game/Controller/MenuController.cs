@@ -1,6 +1,8 @@
 using Godot;
 
-public partial class MenuController : Node {
+namespace Goodot15.Scripts.Game.Controller;
+
+public partial class MenuController : Node, IGameManager {
     private Control currentMenu;
     private GameController GameController;
 

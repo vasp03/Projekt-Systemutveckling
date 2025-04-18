@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public class CraftingController {
-    private readonly CardCreationHelper CardCreationHelper;
+namespace Goodot15.Scripts.Game.Controller;
 
-    public CraftingController(CardCreationHelper cardCreationHelper) {
-        CardCreationHelper = cardCreationHelper;
+public class CraftingController : GameManagerBase {
+    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
+
+    public CraftingController(Goodot15.Scripts.Game.Controller.GameController gameController) : base(gameController) {
     }
 
     public List<CraftingRecipe> Recipes { get; } = [];

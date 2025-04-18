@@ -1,7 +1,9 @@
 using Godot;
 using Timer = Godot.Timer;
 
-public partial class MouseController : Node {
+namespace Goodot15.Scripts.Game.Controller;
+
+public class MouseController : GameManagerBase  {
     public enum MouseCursor {
         point,
         point_small,
@@ -33,7 +35,7 @@ public partial class MouseController : Node {
     private Resource point = ResourceLoader.Load(path + "point.png");
     private Resource point_small = ResourceLoader.Load(path + "point_small.png");
 
-    public MouseController() {
+    public MouseController(GameController gameController) : base(gameController) {
         SetMouseCursor(MouseCursor.point_small);
     }
 
@@ -66,7 +68,8 @@ public partial class MouseController : Node {
         isLoading = true;
         loadingIndex = 0;
         if (loadingTimer == null) return;
-        loadingTimer.Connect("timeout", new Callable(this, nameof(LoadingThread)));
+        loadingTimer.Timeout += LoadingThread;
+        // loadingTimer.Connect("timeout", new Callable(this, nameof(LoadingThread)));
         loadingTimer.WaitTime = 0.200;
         loadingTimer.Start();
     }
