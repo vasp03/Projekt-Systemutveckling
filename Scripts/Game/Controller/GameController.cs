@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -12,7 +13,7 @@ public partial class GameController : Node2D {
 
     private readonly IList<IGameManager> managers = [];
     
-    private CardController cardController => this.GetManager<CardController>();
+    private CardController CardController => this.GetManager<CardController>();
     private Goodot15.Scripts.Game.Controller.MenuController menuController => this.GetManager<MenuController>();
 
     public override void _Ready() {
@@ -40,6 +41,7 @@ public partial class GameController : Node2D {
         RegisterManager(new CraftingController(this));
         RegisterManager(new CardController(this));
         RegisterManager(new CardCreationHelper(this));
+        RegisterManager(new GameEventManager(this));
         RegisterManager(GetNode<MenuController>("/root/MenuController"));
     }
 
@@ -55,10 +57,10 @@ public partial class GameController : Node2D {
                     Visible = false; // Hide the game scene
                     break;
                 case Key.Space:
-                    cardController.CreateCard("Random", Vector2.One * 100);
+                    CardController.CreateCard("Random", Vector2.One * 100);
                     break;
                 case Key.D:
-                    cardController.PrintCardsNeighbours();
+                    CardController.PrintCardsNeighbours();
                     break;
                 case Key.Key0:
                 case Key.Key1:
@@ -75,9 +77,18 @@ public partial class GameController : Node2D {
             }
         } else if (@event is InputEventMouseButton mouseButton) {
             if (mouseButton.Pressed)
-                cardController.LeftMouseButtonPressed();
+                CardController.LeftMouseButtonPressed();
             else
-                cardController.LeftMouseButtonReleased();
+                CardController.LeftMouseButtonReleased();
+        }
+    }
+
+    public override void _Process(double delta) {
+        foreach (IGameManager gameManager in managers)
+        {
+            ITickable? tickableGameManager = gameManager as ITickable;
+            tickableGameManager?.PreTick();
+            tickableGameManager?.PostTick();
         }
     }
 
@@ -97,7 +108,7 @@ public partial class GameController : Node2D {
             }
 
             // Create a new card with the numbers in the list
-            cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
+            CardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
             numberList.Clear();
         }

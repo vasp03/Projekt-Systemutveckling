@@ -8,15 +8,14 @@ using Goodot15.Scripts.Game.Controller.Events;
 
 
 namespace Goodot15.Scripts.Game.Controller;
-public partial class GameEventManager : Node, ITickable {
+public partial class GameEventManager : GameManagerBase, ITickable {
     private IList<IGameEvent> registedEvents = [];
     private IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
     
     private Random random = new();
 
-    public override void _Ready() {
-        RegisterDefaultEvents();
-        //cardParent = GetNode("");
+    public GameEventManager(GameController gameController) : base(gameController) {
+        this.RegisterDefaultEvents();
     }
 
     public void RegisterDefaultEvents() {
@@ -24,19 +23,23 @@ public partial class GameEventManager : Node, ITickable {
     }
 
     public void RegisterEvent(IGameEvent gameEvent) {
+        eventTicks.TryAdd(gameEvent, 0);
         registedEvents.Add(gameEvent);
     }
     public void PreTick() {
     }
 
     public void PostTick() {
-        foreach (IGameEvent registedEvent in registedEvents)
-        {
-            if (registedEvent.TicksUntilNextEvent <= eventTicks[registedEvent]) {
-                eventTicks[registedEvent] = 0;
-                
-                registedEvent.OnEvent(new GameEventContext());
+        foreach (IGameEvent registeredEvent in registedEvents) {
+            if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
+                eventTicks[registeredEvent] = 0;
+                if (registeredEvent.Chance >= GD.Randf()) {
+                    registeredEvent.OnEvent(new GameEventContext(registeredEvent, CoreGameController));
+                }
+            } else {
+                eventTicks[registeredEvent]++;
             }
+            GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
         }
     }
 }
