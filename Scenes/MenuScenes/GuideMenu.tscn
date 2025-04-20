@@ -332,11 +332,10 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_k5dup")
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pf5t")
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 metadata/_edit_use_anchors_ = true
 
 [node name="How To Play" type="VBoxContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -1225,6 +1224,7 @@ theme_override_font_sizes/font_size = 20
 autowrap_mode = 2
 
 [node name="Card Recipes" type="HBoxContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

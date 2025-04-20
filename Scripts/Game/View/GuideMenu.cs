@@ -9,6 +9,9 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GuideMenu : Control {
     private readonly Dictionary<Button, VBoxContainer> buttons = new();
     private readonly Dictionary<string, (Texture2D, string)> cardData = new();
+
+    private VBoxContainer howToPlayMenu;
+    
     private Button[] buildingCardButtons;
     private VBoxContainer buildingList;
     private Button buildingsButton;
@@ -40,6 +43,8 @@ public partial class GuideMenu : Control {
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
+        howToPlayMenu = GetNode<VBoxContainer>("TabContainer/How To Play");
+        
         cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
         descriptionLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
         cardInfoLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");
@@ -98,13 +103,15 @@ public partial class GuideMenu : Control {
             choice.Value.Visible = false;
             choice.Key.Text = GetBaseButtonText(choice.Key) + " >";
         }
-
+        
         cardImage.Texture = null;
         cardInfoLabel.Text = "";
 
         descriptionLabel.Visible = false;
         cardInfoLabel.Visible = false;
         cardImage.Visible = false;
+        
+        howToPlayMenu.Visible = true;
     }
 
     #region Initialization of submenus
