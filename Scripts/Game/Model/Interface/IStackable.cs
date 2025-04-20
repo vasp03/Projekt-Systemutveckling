@@ -58,14 +58,43 @@ public interface IStackable {
         }
     }
 
+    public List<IStackable> StackAboveWithItself {
+        get {
+            List<IStackable> stackForwards = [];
+
+            stackForwards.Add(this);
+
+            IStackable current = this;
+            while (current != null) {
+                current = current.NeighbourAbove;
+
+                if (current == null) break;
+
+                stackForwards.Add(current);
+            }
+
+            return stackForwards;
+        }
+    }
+
+
+    public IStackable CardAtBottom {
+        get {
+            IStackable current = this;
+            while (current != null) {
+
+                if (current.NeighbourBelow == null) return current;
+
+                current = current.NeighbourBelow;
+            }
+
+            return current;
+        }
+    }
+
     public IStackable NeighbourAbove { get; set; }
     public IStackable NeighbourBelow { get; set; }
     string TextureType { get; }
-
-    // public void ResetNeighbours() {
-    // 	NeighbourAbove = null;
-    // 	NeighbourBelow = null;
-    // }
 
     /// <summary>
     ///     Determines if this <code>IStackable</code> may stack with the other object <code>card</code>
@@ -81,4 +110,6 @@ public interface IStackable {
 
         return true;
     }
+
+    
 }

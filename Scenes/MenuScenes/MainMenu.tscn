@@ -1,17 +1,27 @@
-[gd_scene load_steps=9 format=3 uid="uid://cv0sftc5g7uci"]
+[gd_scene load_steps=14 format=3 uid="uid://cv0sftc5g7uci"]
 
-[ext_resource type="Script" uid="uid://begxhcf3ftwu3" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
+[ext_resource type="Script" uid="uid://c22cw1jt4hrpo" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_qdb5i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tt5f1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wjwqx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qdb5i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_853f1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8saeu"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qg3u4"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ghw46"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_30gjf"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_df05h"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lqnmx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8um5k"]
 
@@ -51,12 +61,36 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -103.0
-offset_top = -80.5
-offset_right = 103.0
-offset_bottom = 80.5
+offset_left = -115.0
+offset_top = -108.0
+offset_right = 116.0
+offset_bottom = 163.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ContinueButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_qdb5i")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tt5f1")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_wjwqx")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qdb5i")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_853f1")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8saeu")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_qg3u4")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_30gjf")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_lqnmx")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
+text = "CONTINUE"
 
 [node name="PlayButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -76,6 +110,25 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "PLAY"
+
+[node name="GuideButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_qdb5i")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tt5f1")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_853f1")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8saeu")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
+text = "GUIDE"
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
