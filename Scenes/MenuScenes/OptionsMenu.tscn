@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://c2fsjeslaeahy" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]

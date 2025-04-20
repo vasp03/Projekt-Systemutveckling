@@ -68,11 +68,11 @@ public partial class SoundController : Node {
     }
 
     public void PlayGameMusic() {
-        PlayMusic("Definitely Our Town.wav");
+        PlayMusic("03 - Definitely Our Town.wav");
     }
 
     public void PlayShopMusic() {
-        PlayMusic("Shop.wav");
+        PlayMusic("08 - Shop.wav");
     }
 
     private void PlayMusic(string musicPath) {
