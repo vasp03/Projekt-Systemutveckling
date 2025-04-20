@@ -4,7 +4,6 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Model.Interface;
-
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
 
@@ -19,13 +18,14 @@ public class CardController {
 
     private CardNode selectedCard;
 
+    public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
+
     // Constructor
     public CardController(GameController gameController, MouseController mouseController) {
         _gameController = gameController;
         _mouseController = mouseController;
         CardCreationHelper = new CardCreationHelper(gameController, this);
         CraftingController = new CraftingController(CardCreationHelper);
-
 
         CreateStartingRecipes();
     }
@@ -74,7 +74,6 @@ public class CardController {
 
         cardInstance.ZIndex = CardCount + 1;
         _gameController.AddChild(cardInstance);
-
 
         return cardInstance;
     }
@@ -146,11 +145,13 @@ public class CardController {
     ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
     /// </summary>
     public void CheckForHighLight() {
-        foreach (CardNode card in hoveredCards)
-            if (CardIsTopCard(card))
+        foreach (CardNode card in hoveredCards) {
+            if (CardIsTopCard(card)) {
                 card.SetHighlighted(true);
-            else
+            } else {
                 card.SetHighlighted(false);
+            }
+        }
     }
 
     /// <summary>
@@ -162,10 +163,13 @@ public class CardController {
     public CardNode GetTopCardAtMousePosition() {
         CardNode topCard = null;
 
-        foreach (CardNode card in hoveredCards)
-            if (topCard == null)
+        foreach (CardNode card in hoveredCards) {
+            if (topCard == null) {
                 topCard = card;
-            else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
+            } else if (card.GetZIndex() > topCard.GetZIndex()) {
+                topCard = card;
+            }
+        }
 
         return topCard;
     }
@@ -181,9 +185,11 @@ public class CardController {
 
         CardNode topUnderCard = null;
 
-        foreach (CardNode card in hoveredCardsSorted)
-            if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
+        foreach (CardNode card in hoveredCardsSorted) {
+            if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex)) {
                 topUnderCard = card;
+            }
+        }
 
         return topUnderCard;
     }
@@ -210,11 +216,12 @@ public class CardController {
 
             // Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
             // And sets the card below if it exists to not have a neighbour above
-            if (selectedCard.HasNeighbourBelow)
+            if (selectedCard.HasNeighbourBelow) {
                 if (selectedCard.CardType is IStackable stackable) {
                     if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
                     stackable.NeighbourBelow = null;
                 }
+            }
         }
     }
 
@@ -230,7 +237,7 @@ public class CardController {
         int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
         int CounterForCardsBelow = 1;
 
-        foreach (CardNode card in AllCardsSorted)
+        foreach (CardNode card in AllCardsSorted) {
             if (card == cardNode) {
                 if (card.CardType is IStackable stackable) {
                     if (stackable.NeighbourAbove == null) {
@@ -246,6 +253,7 @@ public class CardController {
             } else {
                 card.ZIndex = CounterForCardsBelow++;
             }
+        }
     }
 
     /// <summary>
@@ -291,7 +299,7 @@ public class CardController {
         PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
         CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
 
-        craftButtonInstance.Position = cardNode.Position + Global.CraftButtonOffset;
+        craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
 
         cardNode.CraftButton = craftButtonInstance;
 

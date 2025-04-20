@@ -36,9 +36,4 @@ public abstract class Card {
             return textureType;
         }
     }
-
-    public static explicit operator Card(List<IStackable> v) {
-        throw new NotImplementedException();
-    }
-
 }

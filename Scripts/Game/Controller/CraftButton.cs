@@ -9,7 +9,6 @@ public partial class CraftButton : Node2D {
     public CardNode CardNode { get; set; }
 
     public void _on_button_button_down() {
-        // GD.Print("Craft button pressed on card.");
     }
 
     public void _on_button_button_up() {
