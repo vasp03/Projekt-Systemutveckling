@@ -150,9 +150,7 @@ public partial class CardNode : Node2D {
     }
 
     public CardNode GetBottomCard() {
-
-
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <summary>
