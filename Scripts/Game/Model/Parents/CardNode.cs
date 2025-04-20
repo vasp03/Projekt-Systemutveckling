@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -20,6 +21,8 @@ public partial class CardNode : Node2D {
 
     private Vector2 oldMousePosition;
 
+    private CraftButton _craftButton;
+
     public CardNode() {
         AddToGroup(CardController.CARD_GROUP_NAME);
     }
@@ -30,6 +33,8 @@ public partial class CardNode : Node2D {
 
 
     private Area2D area2D => GetNode<Area2D>("Area2D");
+
+    public Vector2 CardOverlappingOffset { get; private set; } = new Vector2(0, -20);
 
     public Card CardType {
         get => _cardType;
@@ -51,6 +56,8 @@ public partial class CardNode : Node2D {
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
 
     public bool IsMovingOtherCards { get; set; } = false;
+
+    public CraftButton CraftButton { get; set; }
 
     /// <summary>
     ///     Sets the position of the card node to the given position.
@@ -94,9 +101,11 @@ public partial class CardNode : Node2D {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
-        if (cardUnder is not null)
-            if (cardUnder.CardType is ICardConsumer cardConsumer)
+        if (cardUnder is not null) {
+            if (cardUnder.CardType is ICardConsumer cardConsumer) {
                 cardConsumer.ConsumeCard(CardType);
+            }
+        }
     }
 
     /// <summary>
@@ -155,10 +164,11 @@ public partial class CardNode : Node2D {
                 thisStackable.NeighbourBelow = otherStackable;
                 otherStackable.NeighbourAbove = thisStackable;
 
-                SetPosition(underCard.Position - new Vector2(0, -15));
+                SetPosition(underCard.Position - CardOverlappingOffset);
 
-                if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
+                if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
+                }
             }
     }
 
@@ -170,10 +180,10 @@ public partial class CardNode : Node2D {
     public void SetPositionAsPartOfStack(CardNode underCard) {
         SetPosition(underCard.Position - new Vector2(0, -15));
 
-        if (CardType is IStackable { NeighbourAbove: not null } stackable)
+        if (CardType is IStackable { NeighbourAbove: not null } stackable) {
             ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
+        }
     }
-
 
     private void ClearReferences() {
         if (CardType is IStackable stackable) {
@@ -199,6 +209,10 @@ public partial class CardNode : Node2D {
 
             Position += mousePosition - oldMousePosition;
 
+            if (CraftButton != null) {
+                CraftButton.Position = Position + CardController.CraftButtonOffset;
+            }
+
             oldMousePosition = mousePosition;
         }
 
@@ -221,7 +235,6 @@ public partial class CardNode : Node2D {
 
     public void Destroy() {
         ClearReferences();
-
         QueueFree();
     }
 
@@ -246,4 +259,12 @@ public partial class CardNode : Node2D {
     }
 
     #endregion Events(?)
+
+    public void SetCraftButton(CraftButton craftButton) {
+        _craftButton = craftButton;
+    }
+
+    public CraftButton GetCraftButton() {
+        return _craftButton;
+    }
 }

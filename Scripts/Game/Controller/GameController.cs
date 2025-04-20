@@ -9,6 +9,8 @@ public partial class GameController : Node2D {
     private MenuController menuController;
     private MouseController mouseController;
 
+    [Export] public Button CraftButton { get; set; }
+
     public override void _Ready() {
         mouseController = new MouseController();
         cardController = new CardController(this, mouseController);
@@ -26,9 +28,6 @@ public partial class GameController : Node2D {
                     break;
                 case Key.Space:
                     cardController.CreateCard("Random", Vector2.One * 100);
-                    break;
-                case Key.D:
-                    cardController.PrintCardsNeighbours();
                     break;
                 case Key.Key0:
                 case Key.Key1:
@@ -56,13 +55,11 @@ public partial class GameController : Node2D {
     }
 
     public void MultipleNumberInput(int number) {
-        GD.Print("Number pressed: " + number);
         numberList.Add(number);
 
         if (numberList.Count >= 2) {
             StringBuilder numbers = new();
             for (int i = 0; i < numberList.Count; i++) {
-                GD.PrintS(numberList[i] + "-");
                 numbers.Append(numberList[i]);
             }
 
