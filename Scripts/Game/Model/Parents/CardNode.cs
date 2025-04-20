@@ -149,8 +149,8 @@ public partial class CardNode : Node2D {
         }
     }
 
-    public CardNode GetBottomCard(){
-        
+    public CardNode GetBottomCard() {
+
 
         return null;
     }
@@ -185,7 +185,6 @@ public partial class CardNode : Node2D {
             ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
     }
 
-
     private void ClearReferences() {
         if (CardType is IStackable stackable) {
             if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
@@ -209,8 +208,8 @@ public partial class CardNode : Node2D {
             Vector2 mousePosition = GetGlobalMousePosition();
 
             Position += mousePosition - oldMousePosition;
-            
-            if(CraftButton != null){
+
+            if (CraftButton != null) {
                 CraftButton.Position = Position + Global.CraftButtonOffset;
             }
 

@@ -25,6 +25,11 @@ public class CraftingController {
         Recipes.Add(recipe);
     }
 
+    /// <summary>
+    ///    Check if the cards in the stack can be crafted into a new card
+    /// </summary>
+    /// <returns> List of the cards that will be crafted from the recipie</returns>
+    /// <param name="Cards">List of cards to check</param>
     public List<string> CheckForCrafting(List<Card> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
@@ -78,6 +83,13 @@ public class CraftingController {
         return null;
     }
 
+    /// <summary>
+    ///     Check if the cards in the stack can be crafted into a new card
+    ///     Returns a list of the cards that can be crafted
+    ///     If no cards can be crafted, returns null
+    /// </summary>
+    /// <param name="Cards">List of cards to check</param>
+    /// 
     public List<string> CheckForCraftingWithStackable(List<IStackable> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
@@ -125,7 +137,7 @@ public class CraftingController {
                 return craftedCards;
             }
         }
-        
+
         return null;
     }
 }

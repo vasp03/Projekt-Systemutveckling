@@ -279,6 +279,10 @@ public class CardController {
         }
     }
 
+    /// <summary>
+    /// Adds a craft button to the specified card node.
+    /// </summary>
+    /// <param name="cardNode">The card node to add the craft button to.</param>
     private void AddCraftButton(CardNode cardNode) {
         if (cardNode.CraftButton != null) {
             return;
@@ -298,6 +302,10 @@ public class CardController {
         _gameController.AddChild(craftButtonInstance);
     }
 
+    /// <summary>
+    ///     Crafts a card from the specified card node.
+    /// </summary>
+    /// <param name="cardNode">The card node to craft from.</param>
     public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
         if (cardNode == null) return;
 
