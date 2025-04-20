@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=4 uid="uid://s0y3nn2xp4w7"]
 
-[ext_resource type="Script" uid="uid://biujg80qqd46h" path="res://Scripts/Game/View/GuideMenu.cs" id="1_3f5sc"]
+[ext_resource type="Script" uid="uid://b88nfsk823buo" path="res://Scripts/Game/View/GuideMenu.cs" id="1_3f5sc"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_jwvxl"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="1_k5dup"]
 
@@ -332,7 +332,7 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_k5dup")
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pf5t")
 tab_alignment = 1
-current_tab = 1
+current_tab = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="How To Play" type="VBoxContainer" parent="TabContainer"]
@@ -398,6 +398,7 @@ theme_override_font_sizes/font_size = 55
 text = "And all other things in the game"
 
 [node name="Card Types" type="MarginContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 130
@@ -1223,28 +1224,102 @@ theme_override_fonts/font = ExtResource("1_jwvxl")
 theme_override_font_sizes/font_size = 20
 autowrap_mode = 2
 
-[node name="Card Recipes" type="VBoxContainer" parent="TabContainer"]
-visible = false
+[node name="Card Recipes" type="HBoxContainer" parent="TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="CRScrollContainer" type="ScrollContainer" parent="TabContainer/Card Recipes"]
+custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="CRBoxContainer" type="VBoxContainer" parent="TabContainer/Card Recipes/CRScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Card Recipes/CRScrollContainer"]
+custom_minimum_size = Vector2(400, 574)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-metadata/_tab_index = 0
+theme_override_constants/separation = 19
 
-[node name="Label" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/CRBoxContainer"]
+[node name="ResourcesLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_jwvxl")
-theme_override_font_sizes/font_size = 22
-text = "Here will be a list of all recipes in game. When pressing on a recipe, a description will show up."
+theme_override_font_sizes/font_size = 45
+text = "Resource Recipes"
+
+[node name="Divider" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "_______________"
+
+[node name="ToolsLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "Tool Recipes"
+
+[node name="Divider2" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "_______________"
+
+[node name="BuildingsLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "Building Recipes"
+
+[node name="Divider3" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "_______________"
+
+[node name="FoodLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "Food Recipes"
+
+[node name="Divider4" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "_______________"
+
+[node name="NatureLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "Nature Recipes"
+
+[node name="Divider5" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "_______________"
+
+[node name="VillagersLabel" type="Label" parent="TabContainer/Card Recipes/CRScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 45
+text = "Villager Recipes"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Card Recipes"]
+custom_minimum_size = Vector2(746, 0)
+layout_mode = 2
 
 [node name="GoBackButton" type="Button" parent="."]
 process_mode = 3
