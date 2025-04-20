@@ -29,9 +29,6 @@ public partial class GameController : Node2D {
                 case Key.Space:
                     cardController.CreateCard("Random", Vector2.One * 100);
                     break;
-                case Key.D:
-                    cardController.PrintCardsNeighbours();
-                    break;
                 case Key.Key0:
                 case Key.Key1:
                 case Key.Key2:

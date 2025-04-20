@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Model.Interface;
 
 public class CardController {
@@ -36,6 +37,8 @@ public class CardController {
 
     public IReadOnlyCollection<CardNode> AllCardsSorted =>
         AllCards.OrderBy(x => x.ZIndex).ToArray();
+
+    private List<CardNode> Stacks => AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
 
     public CardNode CreateCard(Card card, Vector2 position = default) {
         ArgumentNullException.ThrowIfNull(card);
@@ -260,94 +263,73 @@ public class CardController {
                 selectedCard.SetOverLappedCardToStack(underCard);
             }
 
-            if (selectedCard != null && selectedCard.CardType is IStackable stackable) {
-                List<IStackable> stack = stackable.CardAtBottom.StackAbove;
-                if (selectedCard.CardType is IStackable stackableCard) {
-                    stack.Add(stackableCard);
-                }
-
-                List<Card> stackOfCard = [];
-
-                foreach (IStackable card in stack) {
-                    if (card is Card card1) {
-                        stackOfCard.Add(card1);
-                    }
-                }
-
-                if (stackOfCard != null) {
-                    List<string> cardTypes = CraftingController.CheckForCrafting(stackOfCard);
-
-                    if (cardTypes != null) {
-                        GD.Print("Crafting possible with the following cards: ");
-                        foreach (string cardType in cardTypes) {
-                            GD.Print(cardType);
-                        }
-
-                        // Spawn a new instance of the scene CraftButton and place it above the card that is at the bottom of the stack
-                        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
-                        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
-
-                        craftButtonInstance.CardController = this;
-
-                        CardNode cardAtBottom = ((Card)stackable.CardAtBottom).CardNode;
-
-                        if(cardAtBottom == null){
-                            GD.PrintErr("Card at bottom is null");
-                            return;
-                        }
-
-                        Vector2 pos = cardAtBottom.Position;
-
-                        craftButtonInstance.Position = pos + new Vector2(0, -150);
-
-                        _gameController.AddChild(craftButtonInstance);
-                    }
-                } else {
-                    GD.PrintErr("No cards in the stack");
-                }
-            } else {
-                GD.PrintErr("Selected card is not a stackable card");
-            }
-
             selectedCard = null;
+        }
+
+        // Checks if a card is supposed to have a craft button above it
+        foreach (CardNode card in AllCards) {
+            if (Stacks.Contains(card) && card.CardType is IStackable stackable && CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
+                AddCraftButton(card);
+            } else {
+                if (card.CraftButton != null) {
+                    card.CraftButton.QueueFree();
+                    card.CraftButton = null;
+                }
+            }
         }
     }
 
-    /// <summary>
-    ///     Used to print the cards and their neighbours for debugging purposes.
-    /// </summary>
-    public void PrintCardsNeighbours() {
-        // Print the all cards and their neighbours
-        GD.Print("------------------");
-        GD.Print("Cards and their neighbours:");
-        GD.Print("------------------");
+    private void AddCraftButton(CardNode cardNode) {
+        if (cardNode.CraftButton != null) {
+            return;
+        }
 
-        foreach (CardNode card in AllCardsSorted)
-            if (card.CardType is IStackable stackable) {
-                string cardInfo =
-                    $"This: {card.CardType.TextureType}:{card.ZIndex} - IsBeingDragged: {card.IsBeingDragged}";
-                string aboveInfo = stackable.NeighbourAbove != null
-                    ? $"Above: {stackable.NeighbourAbove.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourAbove).CardNode.IsBeingDragged} "
-                    : "Above: None ";
-                string belowInfo = stackable.NeighbourBelow != null
-                    ? $"Below: {stackable.NeighbourBelow.TextureType} - IsBeingDragged: {((Card)stackable.NeighbourBelow).CardNode.IsBeingDragged} "
-                    : "Below: None ";
+        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
+        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
 
-                GD.Print("------------------");
-            }
+        craftButtonInstance.Position = cardNode.Position + Global.CraftButtonOffset;
+
+        cardNode.CraftButton = craftButtonInstance;
+
+        craftButtonInstance.CardNode = cardNode;
+
+        craftButtonInstance.CardController = this;
+
+        _gameController.AddChild(craftButtonInstance);
     }
 
-    public void CreateAllCards() {
-        CreateCard("Apple");
-        CreateCard("Berry");
-        CreateCard("Leaves");
-        CreateCard("Mine");
-        CreateCard("Planks");
-        CreateCard("Stick");
-        CreateCard("Stone");
-        CreateCard("SwordMk1");
-        CreateCard("Tree");
-        CreateCard("Water");
-        CreateCard("Wood");
+    public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
+        if (cardNode == null) return;
+
+        if (cardNode.CraftButton != null) {
+            cardNode.CraftButton.QueueFree();
+            cardNode.CraftButton = null;
+        }
+
+        if (!(cardNode.CardType is IStackable stackable)) {
+            return;
+        }
+
+        // Check for the recipe
+        List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+        if (recipe == null) {
+            GD.Print("No recipe found for the selected card.");
+            return;
+        }
+
+        Vector2 spawnPos = cardNode.Position;
+
+        // Remove the cards in the stack part of cardNode
+        foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
+            if (stackableCard is Card card) {
+                card.CardNode.QueueFree();
+            }
+        }
+
+        foreach (string cardName in recipe) {
+            CardNode card = CreateCard(cardName, cardNode.Position);
+            card.ZIndex = cardNode.ZIndex + 1;
+            spawnPos += new Vector2(0, -15);
+        }
     }
 }

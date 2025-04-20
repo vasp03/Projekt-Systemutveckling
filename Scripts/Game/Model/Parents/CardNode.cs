@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -53,6 +54,8 @@ public partial class CardNode : Node2D {
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
 
     public bool IsMovingOtherCards { get; set; } = false;
+
+    public CraftButton CraftButton { get; set; }
 
     /// <summary>
     ///     Sets the position of the card node to the given position.
@@ -163,7 +166,7 @@ public partial class CardNode : Node2D {
                 thisStackable.NeighbourBelow = otherStackable;
                 otherStackable.NeighbourAbove = thisStackable;
 
-                SetPosition(underCard.Position - new Vector2(0, -20));
+                SetPosition(underCard.Position - Global.CardOverlappingOffset);
 
                 if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
@@ -206,6 +209,10 @@ public partial class CardNode : Node2D {
             Vector2 mousePosition = GetGlobalMousePosition();
 
             Position += mousePosition - oldMousePosition;
+            
+            if(CraftButton != null){
+                CraftButton.Position = Position + Global.CraftButtonOffset;
+            }
 
             oldMousePosition = mousePosition;
         }

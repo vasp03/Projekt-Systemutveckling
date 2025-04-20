@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Goodot15.Scripts.Game.Model.Interface;
 
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
@@ -33,4 +35,9 @@ public abstract class Card {
             return textureType;
         }
     }
+
+    public static explicit operator Card(List<IStackable> v) {
+        throw new NotImplementedException();
+    }
+
 }
