@@ -97,10 +97,8 @@ public class CardController {
         CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
         CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager"]));
         CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("House",
-            ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks"], ["House"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Greenhouse",
-            ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
+        CraftingController.AddRecipe(new CraftingRecipe("House", ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks"], ["House"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
         CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
         CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
         CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
