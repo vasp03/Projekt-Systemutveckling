@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Tests;
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
 
@@ -274,12 +275,16 @@ public class CardController {
 
         // Checks if a card is supposed to have a craft button above it
         foreach (CardNode card in AllCards) {
-            if (Stacks.Contains(card) && card.CardType is IStackable stackable && CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
-                AddCraftButton(card);
-            } else {
-                if (card.CraftButton != null) {
-                    card.CraftButton.QueueFree();
-                    card.CraftButton = null;
+            if (Stacks.Contains(card) && card.CardType is IStackable stackable) {
+                List<string> cardCanCraft = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+
+                if (cardCanCraft != null && cardCanCraft.Count > 0) {
+                    AddCraftButton(card, cardCanCraft[0]);
+                } else {
+                    if (card.CraftButton != null) {
+                        card.CraftButton.QueueFree();
+                        card.CraftButton = null;
+                    }
                 }
             }
         }
@@ -289,7 +294,7 @@ public class CardController {
     /// Adds a craft button to the specified card node.
     /// </summary>
     /// <param name="cardNode">The card node to add the craft button to.</param>
-    private void AddCraftButton(CardNode cardNode) {
+    private void AddCraftButton(CardNode cardNode, string cardType) {
         if (cardNode.CraftButton != null) {
             return;
         }
@@ -304,6 +309,8 @@ public class CardController {
         craftButtonInstance.CardNode = cardNode;
 
         craftButtonInstance.CardController = this;
+
+        craftButtonInstance.CardType = cardType;
 
         _gameController.AddChild(craftButtonInstance);
     }
