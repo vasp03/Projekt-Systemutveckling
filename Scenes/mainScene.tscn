@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://bx27g8lfyci4b"]
 
-[ext_resource type="Script" uid="uid://bs5j8uqgsto2r" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://dqbg03jh8sso1" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yyxd1"]
