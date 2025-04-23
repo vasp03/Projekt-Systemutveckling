@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using Goodot15.Scripts.Game.Model.Interface;
 using System.Linq;
-using Goodot15.Scripts;
 
 public abstract class Card {
+    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
+    private const string textureEnding = ".png";
 
     /// <summary>
     ///     Constructor for the Card class
@@ -16,7 +17,7 @@ public abstract class Card {
     public Card(string textureAddress, bool movable) {
         // Generate a unique uuid as name
         ID = Guid.NewGuid().ToString();
-        TexturePath = Global.GetTexturePath(textureAddress);
+        TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
     }
 
