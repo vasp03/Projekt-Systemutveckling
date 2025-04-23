@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b1jnxa627yfhj"
-path="res://.godot/imported/ChatGPT-PrototypeBackgroundV1_1280x720.png-1a20497f205eef2f154544df4862661a.ctex"
+path="res://.godot/imported/MainMenuBackground1280x720.png-ca9c9f328e9a3ca5a7fec8d10588d70a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Background/ChatGPT-PrototypeBackgroundV1_1280x720.png"
-dest_files=["res://.godot/imported/ChatGPT-PrototypeBackgroundV1_1280x720.png-1a20497f205eef2f154544df4862661a.ctex"]
+source_file="res://Assets/Background/MainMenuBackground1280x720.png"
+dest_files=["res://.godot/imported/MainMenuBackground1280x720.png-ca9c9f328e9a3ca5a7fec8d10588d70a.ctex"]
 
 [params]
 
