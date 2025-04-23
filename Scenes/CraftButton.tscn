@@ -1,9 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2n6rlk28fiyf"]
 
-[ext_resource type="Script" uid="uid://8umkj5cj3g5f" path="res://Scripts/Game/Controller/CraftButton.cs" id="1_ns71j"]
+[ext_resource type="Script" uid="uid://brwe3v3m6w306" path="res://Scripts/Game/Controller/CraftButton.cs" id="1_ns71j"]
 
 [node name="Control" type="Node2D"]
 script = ExtResource("1_ns71j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="Button" type="Button" parent="."]
 z_index = 4096
