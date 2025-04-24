@@ -286,60 +286,60 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeDescriptions() {
         //resource cards
-        cardData["WoodButton"] = (LoadCardTexture("Wood"), "Wood is a basic resource used for crafting and building.");
+        cardData["WoodButton"] = (LoadCardTexture("Wood"), "Wood is a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Axe \n1x Villager");
         cardData["PlanksButton"] = (LoadCardTexture("Planks"),
-            "Planks are crafted from wood and are used for crafting and building.");
+            "Planks are crafted from wood and are used for crafting and building. \nRECIPE: \n2x Tree");
         cardData["StickButton"] = (LoadCardTexture("Stick"),
-            "Sticks are small pieces of wood used for crafting and building.");
+            "Sticks are small pieces of wood used for crafting and building. \nRECIPE: \n1x Wood \n1x Axe \n1x Villager");
         cardData["StoneButton"] =
-            (LoadCardTexture("Stone"), "Stone is a basic resource used for crafting and building.");
+            (LoadCardTexture("Stone"), "Stone is a basic resource used for crafting and building. \nRECIPE: \n1x Mine \n1x Villager");
         cardData["WaterButton"] =
-            (LoadCardTexture("Water"), "Water is a basic resource used for crafting and building.");
+            (LoadCardTexture("Water"), "Water is a basic resource used for crafting and building. \nRECIPE: \n 2x Water \nRandomly appears during events");
         cardData["BrickButton"] = (LoadCardTexture("Brick"),
-            "Bricks are crafted from clay and are used for crafting and building.");
-        cardData["SandButton"] = (LoadCardTexture("Sand"), "Sand is a basic resource used for crafting and building.");
+            "Bricks are crafted from clay and are used for crafting and building. \nRECIPE: \n1x Clay \n1x Campfire");
+        cardData["SandButton"] = (LoadCardTexture("Sand"), "Sand is a basic resource used for crafting and building. \nRECIPE: \n1x Stone \n1x Villager");
         cardData["GlassButton"] = (LoadCardTexture("Glass"),
-            "Glass is crafted from sand and is used for crafting and building.");
+            "Glass is crafted from sand and is used for crafting and building. \nRECIPE: \n1x Sand \n1x Campfire");
         cardData["LeafButton"] =
             (LoadCardTexture("Leaves"),
-                "Leaves are a basic resource used for crafting and building."); //no leaf card yet 
+                "Leaves are a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Villager");
         cardData["ClayButton"] =
-            (LoadCardTexture("Clay"), "Clay is a basic resource used for crafting and building."); //no clay card yet 
+            (LoadCardTexture("Clay"), "Clay is a basic resource used for crafting and building. \nRECIPE: \n1x Sand \n1x Water"); 
 
         //tool cards
-        cardData["SwordButton"] = (LoadCardTexture("SwordMK1"), "A basic sword used for combat.");
-        cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"), "A basic fishing pole used for fishing.");
+        cardData["SwordButton"] = (LoadCardTexture("SwordMK1"), "A basic sword used for combat. \nRECIPE: \n2x Wood \n1x Stone");
+        cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"), "A basic fishing pole used for fishing. \nRECIPE: \n2x Stick \n1x Stone");
         cardData["ShovelButton"] =
-            (LoadCardTexture("Shovel"), "A basic shovel used for digging."); //no shovel card yet 
-        cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood.");
+            (LoadCardTexture("Shovel"), "A basic shovel used for digging. \nRECIPE: \n2x Stick \n2x Stone"); 
+        cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood. \nRECIPE: \n3x Stone");
 
         //building cards
-        cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"), "A greenhouse used for growing plants.");
-        cardData["HouseButton"] = (LoadCardTexture("House"), "A house used for better sheltering.");
-        cardData["TentButton"] = (LoadCardTexture("Tent"), "A tent used for shelter.");
-        cardData["FieldButton"] = (LoadCardTexture("Field"), "A field used for growing crops.");
-        cardData["CampfireButton"] = (LoadCardTexture("Campfire"), "A campfire used for cooking and warmth.");
-        cardData["CookingPotButton"] = (LoadCardTexture("CookingPot"), "A cooking pot used for cooking food.");
+        cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"), "A greenhouse used for growing plants. \nRECIPE: \n4x Glass \n2x Brick");
+        cardData["HouseButton"] = (LoadCardTexture("House"), "A house used for better sheltering. \nRECIPE: \n4x Stone \n2x Planks \n4x Brick");
+        cardData["TentButton"] = (LoadCardTexture("Tent"), "A tent used for shelter. \nRECIPE: \n4x Leaf \n1x Wood");
+        cardData["FieldButton"] = (LoadCardTexture("Field"), "A field used for growing crops. \nRECIPE: \n4x Sand \n2x Stone \n1x Water");
+        cardData["CampfireButton"] = (LoadCardTexture("Campfire"), "A campfire used for cooking and warmth. \nRECIPE: \n 3x Wood \n2x Sticks \n1x Leaf");
+        cardData["CookingPotButton"] = (LoadCardTexture("CookingPot"), "A cooking pot used for cooking food. \n2x Clay \n1x Stick");
 
         //food cards
-        cardData["AppleButton"] = (LoadCardTexture("Apple"), "An apple used for food.");
-        cardData["BerryButton"] = (LoadCardTexture("Berry"), "A berry used for food.");
-        cardData["JamButton"] = (LoadCardTexture("Jam"), "Jam used for food.");
-        cardData["MeatButton"] = (LoadCardTexture("Meat"), "Meat used for food.");
-        cardData["CookedMeatButton"] = (LoadCardTexture("CookedMeat"), "Cooked meat used for food.");
-        cardData["FishButton"] = (LoadCardTexture("Fish"), "Fish used for food.");
-        cardData["CookedFishButton"] = (LoadCardTexture("CookedFish"), "Cooked fish used for food.");
+        cardData["AppleButton"] = (LoadCardTexture("Apple"), "An apple used for food. \nRECIPE: \n1x Tree \n1x Villager");
+        cardData["BerryButton"] = (LoadCardTexture("Berry"), "A berry used for food. \nRECIPE: \n1x Bush \n1x Villager");
+        cardData["JamButton"] = (LoadCardTexture("Jam"), "Jam used for food. \nRECIPE: \n 1x Cooking Pot \n5x Berry \n1x Campfire");
+        cardData["MeatButton"] = (LoadCardTexture("Meat"), "Meat used for food. \nRECIPE: \n1x Field \n1x Tree \n1x Sword \n1x Villager");
+        cardData["CookedMeatButton"] = (LoadCardTexture("CookedMeat"), "Cooked meat used for food. \nRECIPE: \n1x Meat \n1x Campfire");
+        cardData["FishButton"] = (LoadCardTexture("Fish"), "Fish used for food. \nRECIPE: \n1x Water \n1x Fishing Pole \n1x Villager");
+        cardData["CookedFishButton"] = (LoadCardTexture("CookedFish"), "Cooked fish used for food. \nRECIPE: \n1x Fish \n1x Campfire");
 
         //nature cards
-        cardData["TreeButton"] = (LoadCardTexture("Tree"), "A tree used for wood.");
-        cardData["MineButton"] = (LoadCardTexture("Mine"), "A mine used for stone.");
-        cardData["BushButton"] = (LoadCardTexture("Bush"), "A bush used to find berries.");
+        cardData["TreeButton"] = (LoadCardTexture("Tree"), "A tree used for wood. \nRECIPE: \nAppears in random Events. \nCan be found in packs");
+        cardData["MineButton"] = (LoadCardTexture("Mine"), "A mine used for stone. \nRECIPE \n10x Stone");
+        cardData["BushButton"] = (LoadCardTexture("Bush"), "A bush used to find berries. \nRECIPE: \n6x Leaf");
 
         //villager cards
-        cardData["VillagerButton"] = (LoadCardTexture("Villager"), "A villager used for crafting and building.");
-        cardData["HunterButton"] = (LoadCardTexture("Hunter"), "A hunter used for hunting.");
-        cardData["FarmerButton"] = (LoadCardTexture("Farmer"), "A farmer used for farming.");
-        cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"), "A blacksmith used for crafting.");
+        cardData["VillagerButton"] = (LoadCardTexture("Villager"), "A villager used for crafting and building. \nRECIPE: \n2x Villager \n1x Tent or 1x House");
+        cardData["HunterButton"] = (LoadCardTexture("Hunter"), "A hunter used for hunting. Hunts food faster than other villagers. \nRECIPE \n1x Villager \n1x Sword");
+        cardData["FarmerButton"] = (LoadCardTexture("Farmer"), "A farmer used for farming. Farms food faster than other villagers. \nRECIPE \n1x Villager \n1x Shovel");
+        cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"), "A blacksmith used for crafting. Crafts items faster than other villagers. \nRECIPE \n1x Villager \n1x Axe");
     }
 
     #endregion
