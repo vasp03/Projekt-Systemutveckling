@@ -117,8 +117,9 @@ public partial class CardNode : Node2D {
         Texture2D texture;
 
         // Check if the path is not null or empty and if there is a file at the path
-        if (string.IsNullOrEmpty(CardType.TexturePath) || !FileAccess.FileExists(CardType.TexturePath)) {
-            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID);
+        if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
+            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID + " " + string.IsNullOrEmpty(CardType.TexturePath) + " " + (!FileAccess.FileExists(CardType.TexturePath)));
+            GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
             texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
             sprite.Texture = texture;
             return;
