@@ -1,14 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnb1dvoqpwrso"]
+[gd_scene load_steps=3 format=3 uid="uid://bnb1dvoqpwrso"]
 
 [ext_resource type="Script" uid="uid://cwc5hbg3l8o0a" path="res://Scripts/Game/Controller/CraftButton.cs" id="1_ns71j"]
+[ext_resource type="Texture2D" uid="uid://brdfny50kb1te" path="res://Assets/Icons/64x64/fc39.png" id="2_f4d1d"]
 
 [node name="Control" type="Node2D"]
 script = ExtResource("1_ns71j")
 
 [node name="Button" type="Button" parent="."]
 z_index = 4096
-offset_right = 38.0
-offset_bottom = 37.0
+offset_left = -7.0
+offset_top = 3.0
+offset_right = 65.0
+offset_bottom = 75.0
+scale = Vector2(0.6, 0.6)
+icon = ExtResource("2_f4d1d")
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
 [connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
