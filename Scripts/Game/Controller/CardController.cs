@@ -88,10 +88,10 @@ public class CardController {
         CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"]));
         CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe"], ["Wood"]));
         CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Tent", ["Leaf", "Leaf", "Leaf", "Leaf", "Wood"], ["Tent"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"], ["Tent"]));
         CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Bush"], ["Leaf"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Leaf", ["Villager", "Stick", "Tree"], ["Leaf"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Stick", "Bush"], ["Leaves"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Stick", "Tree"], ["Leaves"]));
         CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
         CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
         CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
