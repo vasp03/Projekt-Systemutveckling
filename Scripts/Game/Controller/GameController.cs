@@ -126,4 +126,8 @@ public partial class GameController : Node2D {
 
 		GD.Print($"Scene darkness set to {darkness}");
 	}
+
+	public override void _Process(double delta) {
+		DayTimeController.PreTick(delta);
+	}
 }

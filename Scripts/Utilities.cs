@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 
 namespace Goodot15.Scripts;
 
@@ -6,9 +7,9 @@ public static class Utilities {
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public static readonly int TICKS_PER_DAY = TimeToTicks(minutes: 1);
+    public const int TICKS_PER_DAY = 36000;
 
-    private static readonly float TICKS_PER_SECOND = 60;
+    public const double TICKS_PER_SECOND = 60;
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.
@@ -51,10 +52,6 @@ public static class Utilities {
     /// <param name="ticks">Ticks to convert</param>
     /// <returns>Seconds (60 ticks = 1 second)</returns>
     public static int TicksToTime(int ticks) {
-        return (int)Math.Floor(ticks / TICKS_PER_SECOND);
-    }
-
-    public static int TicksPerSecond() {
-        return (int)TICKS_PER_SECOND;
+        return (int)Math.Floor(ticks / (float)TICKS_PER_SECOND);
     }
 }

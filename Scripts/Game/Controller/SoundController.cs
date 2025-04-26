@@ -14,7 +14,7 @@ public partial class SoundController : Node {
     private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
 
     private void DebugLog(string message) {
-        GD.Print($"[{GetType().FullName}] {message}");
+        // GD.Print($"[{GetType().FullName}] {message}");
     }
 
 

@@ -1,21 +1,21 @@
 using Godot;
 using Goodot15.Scripts;
+using Goodot15.Scripts.Game.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-public partial class DayTimeController {
-    private static int DayDuration = 2000;
+public partial class DayTimeController : ITickable {
+    private const int DayDuration = Utilities.TICKS_PER_DAY;
+    private const double TicksPerSecond = Utilities.TICKS_PER_SECOND;
 
     private int CurrentTimeOfDay = 0;
 
-    private List<DayTimeCallback> Callbacks;
+    private List<IDayTimeCallback> Callbacks = [];
 
-    private bool IsRunning = true;
+    private double TimeCoutingToOneTick = 0;
 
-    private Thread DayTickThread;
-
-    public enum DayState {
+    public enum DAY_STATE {
         Night,
         Morning,
         Day,
@@ -23,33 +23,53 @@ public partial class DayTimeController {
         Invalid
     }
 
-    public DayTimeController() {
-        Callbacks = new List<DayTimeCallback>();
+    /// <summary>
+    ///   Ticks the day time controller
+    /// </summary>
+    /// <param name="delta">How long time it has been between frames</param>
+    public void PreTick(double delta) {
+        TimeCoutingToOneTick += delta;
+        if (TimeCoutingToOneTick < (1 / TicksPerSecond)) {
+            return;
+        } else {
+            TimeCoutingToOneTick -= 1 / TicksPerSecond;
+        }
 
-        DayTickThread = new Thread(DayTickThreadMethod);
-        DayTickThread.Start();
+        // Update the current time of day
+        CurrentTimeOfDay += 1;
+
+        // Check if the current time of day has reached the end of the day
+        if (CurrentTimeOfDay > DayDuration) {
+            CurrentTimeOfDay = 0; // Reset to the start of the day
+        }
+
+        foreach (IDayTimeCallback callback in Callbacks) {
+            callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+        }
     }
 
-    public DayTimeCallback AddCallback(DayTimeCallback callback) {
+    public void PostTick() {
+        // This method is not in use right now
+    }
+
+    public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
         if (callback == null) {
-            GD.Print("Callback is null.");
-            return null;
+            throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
         }
 
         if (Callbacks == null) {
-            Callbacks = new List<DayTimeCallback>();
+            Callbacks = [];
         }
 
         if (Callbacks.Contains(callback)) {
-            GD.Print($"Callback {callback} already exists.");
             return callback;
         }
-        GD.Print($"Adding callback: {callback}");
+
         Callbacks.Add(callback);
         return callback;
     }
 
-    public DayTimeCallback RemoveCallback(DayTimeCallback callback) {
+    public IDayTimeCallback RemoveCallback(IDayTimeCallback callback) {
         Callbacks.Remove(callback);
         return callback;
     }
@@ -66,43 +86,23 @@ public partial class DayTimeController {
     /// Evening: 7/10 - 9/10 of the day 
     /// Night: 9/10 - 1 of the day 
     /// </remarks>
-    public static DayState GetCurrentDayState(int ticks) {
+    public static DAY_STATE GetCurrentDayState(int ticks) {
         if (ticks >= 0 && ticks < DayDurationRatio(DayDuration)) { // Night
-            return DayState.Night;
+            return DAY_STATE.Night;
         } else if (ticks >= DayDurationRatio(DayDuration) && ticks < DayDurationRatio(DayDuration) * 3) { // Morning
-            return DayState.Morning;
+            return DAY_STATE.Morning;
         } else if (ticks >= DayDurationRatio(DayDuration) * 3 && ticks < DayDurationRatio(DayDuration) * 7) { // Day
-            return DayState.Day;
+            return DAY_STATE.Day;
         } else if (ticks >= DayDurationRatio(DayDuration) * 7 && ticks < DayDurationRatio(DayDuration) * 9) { // Evening
-            return DayState.Evening;
+            return DAY_STATE.Evening;
         } else if (ticks >= DayDurationRatio(DayDuration) * 9 && ticks <= DayDuration) { // Night
-            return DayState.Night;
+            return DAY_STATE.Night;
         } else {
-            return DayState.Invalid; // Invalid state
+            return DAY_STATE.Invalid; // Invalid state
         }
     }
 
     private static int DayDurationRatio(int ticks) {
         return ticks / 10;
-    }
-
-    private void DayTickThreadMethod() {
-        // Start the day tick thread
-        while (IsRunning) {
-            // Wait for the next tick
-            Thread.Sleep(1000 / Utilities.TicksPerSecond()); // 60 ticks per second
-
-            // Update the current time of day
-            CurrentTimeOfDay += 1;
-
-            // Check if the current time of day has reached the end of the day
-            if (CurrentTimeOfDay > DayDuration) {
-                CurrentTimeOfDay = 0; // Reset to the start of the day
-            }
-
-            foreach (DayTimeCallback callback in Callbacks) {
-                callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
-            }
-        }
     }
 }
