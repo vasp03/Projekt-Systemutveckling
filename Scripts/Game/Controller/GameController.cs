@@ -14,8 +14,6 @@ public partial class GameController : Node2D {
 	private DayTimeController DayTimeController;
 	private DayTimeEvent DayTimeEvent;
 
-	[Export] public Button CraftButton { get; set; }
-
 	public override void _Ready() {
 		mouseController = new MouseController();
 		cardController = new CardController(this, mouseController);

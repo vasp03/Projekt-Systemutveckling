@@ -28,11 +28,11 @@ public partial class DayTimeController : ITickable {
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
     public void PreTick(double delta) {
-        TimeCoutingToOneTick += delta;
-        if (TimeCoutingToOneTick < (1 / TicksPerSecond)) {
+        TimeCountingToOneTick += delta;
+        if (TimeCountingToOneTick < (1 / TicksPerSecond)) {
             return;
         } else {
-            TimeCoutingToOneTick -= 1 / TicksPerSecond;
+            TimeCountingToOneTick -= 1 / TicksPerSecond;
         }
 
         // Update the current time of day
