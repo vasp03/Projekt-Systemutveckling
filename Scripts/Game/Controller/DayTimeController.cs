@@ -13,7 +13,7 @@ public partial class DayTimeController : ITickable {
 
     private List<IDayTimeCallback> Callbacks = [];
 
-    private double TimeCoutingToOneTick = 0;
+    private double TimeCountingToOneTick = 0;
 
     public enum DAY_STATE {
         Night,
