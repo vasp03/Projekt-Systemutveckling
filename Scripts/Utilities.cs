@@ -42,4 +42,13 @@ public static class Utilities {
         // Scale the game ticks to real time
         return (int)Math.Floor(gameTicks * factorScaledToDays);
     }
+
+    /// <summary>
+    ///    Converts the specified ticks to time
+    /// </summary>
+    /// <param name="ticks">Ticks to convert</param>
+    /// <returns>Seconds (60 ticks = 1 second)</returns>
+    public static int TicksToTime(int ticks) {
+        return (int)Math.Floor(ticks / 60.0);
+    }
 }
