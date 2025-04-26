@@ -55,7 +55,7 @@ public partial class SoundController : Node {
 
     #region Music-related
 
-    private const string BASE_MUSIC_PATH = "res://Assets/Music/xDeviruchi";
+    private const string BASE_MUSIC_PATH = "res://Assets/Music";
 
     private void SetupMusicPlayer() {
         musicPlayer = new AudioStreamPlayer();
@@ -64,15 +64,26 @@ public partial class SoundController : Node {
     }
 
     public void PlayMenuMusic() {
-        PlayMusic("02 - Title Theme.wav");
+        PlayMusic("xDeviruchi/02 - Title Theme.wav");
     }
 
     public void PlayGameMusic() {
-        PlayMusic("03 - Definitely Our Town.wav");
+        PlayMusic("xDeviruchi/03 - Definitely Our Town.wav");
     }
 
     public void PlayShopMusic() {
-        PlayMusic("08 - Shop.wav");
+        PlayMusic("xDeviruchi/08 - Shop.wav");
+    }
+
+    public void PlayDayTimeSong(string dayTime) {
+        string musicPath = $"DayTimeSongs/{dayTime}.mp3";
+
+        if (currentPlayingMusicPath == musicPath) {
+            musicPlayer.Play();
+            return;
+        }
+
+        PlayMusic(musicPath);
     }
 
     private void PlayMusic(string musicPath) {

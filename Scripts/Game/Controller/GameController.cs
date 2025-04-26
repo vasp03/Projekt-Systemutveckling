@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Vector2 = Godot.Vector2;
@@ -9,19 +10,25 @@ public partial class GameController : Node2D {
 	private CardController cardController;
 	private MenuController menuController;
 	private MouseController mouseController;
-	
 	private SoundController soundController;
+	private DayTimeController DayTimeController;
+	private DayTimeEvent DayTimeEvent;
 
 	[Export] public Button CraftButton { get; set; }
 
 	public override void _Ready() {
 		mouseController = new MouseController();
 		cardController = new CardController(this, mouseController);
+		DayTimeController = new DayTimeController();
+
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
 
 		menuController = GetNode<MenuController>("/root/MenuController");
 		menuController.SetNodeController(this);
+
+		DayTimeEvent = new DayTimeEvent(this);
+		DayTimeController.AddCallback(DayTimeEvent);
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -73,5 +80,25 @@ public partial class GameController : Node2D {
 
 			numberList.Clear();
 		}
+	}
+
+	public CardController GetCardController() {
+		return cardController;
+	}
+
+	public MenuController GetMenuController() {
+		return menuController;
+	}
+
+	public MouseController GetMouseController() {
+		return mouseController;
+	}
+
+	public SoundController GetSoundController() {
+		return soundController;
+	}
+
+	public DayTimeController GetDayTimeController() {
+		return DayTimeController;
 	}
 }
