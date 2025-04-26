@@ -101,7 +101,9 @@ public partial class DayTimeController {
             }
 
             foreach (DayTimeCallback callback in Callbacks) {
-                callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+                Godot.Engine.GetMainLoop().Invoke(() => {
+                    callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+                });
             }
         }
     }
