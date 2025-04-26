@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 public partial class DayTimeController {
-    private static int DayDuration = Utilities.TICKS_PER_DAY;
+    private static int DayDuration = 2000;
 
     private int CurrentTimeOfDay = 0;
 
