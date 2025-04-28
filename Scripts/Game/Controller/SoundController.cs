@@ -14,13 +14,12 @@ public partial class SoundController : Node {
     private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
 
     private void DebugLog(string message) {
-        GD.Print($"[{GetType().FullName}] {message}");
+        // GD.Print($"[{GetType().FullName}] {message}");
     }
 
 
     public override void _Ready() {
         SetupMusicPlayer();
-        LoadSounds();
 
         MusicVolume = SettingsManager.MusicVolume;
         SfxVolume = SettingsManager.SfxVolume;
@@ -55,7 +54,7 @@ public partial class SoundController : Node {
 
     #region Music-related
 
-    private const string BASE_MUSIC_PATH = "res://Assets/Music/xDeviruchi";
+    private const string BASE_MUSIC_PATH = "res://Assets/Music";
 
     private void SetupMusicPlayer() {
         musicPlayer = new AudioStreamPlayer();
@@ -64,15 +63,26 @@ public partial class SoundController : Node {
     }
 
     public void PlayMenuMusic() {
-        PlayMusic("02 - Title Theme.wav");
+        PlayMusic("xDeviruchi/02 - Title Theme.wav");
     }
 
     public void PlayGameMusic() {
-        PlayMusic("03 - Definitely Our Town.wav");
+        PlayMusic("xDeviruchi/03 - Definitely Our Town.wav");
     }
 
     public void PlayShopMusic() {
-        PlayMusic("08 - Shop.wav");
+        PlayMusic("xDeviruchi/08 - Shop.wav");
+    }
+
+    public void PlayDayTimeSong(string dayTime) {
+        string musicPath = $"DayTimeSongs/{dayTime}.mp3";
+
+        if (currentPlayingMusicPath == musicPath) {
+            musicPlayer.Play();
+            return;
+        }
+
+        PlayMusic(musicPath);
     }
 
     private void PlayMusic(string musicPath) {
@@ -110,17 +120,6 @@ public partial class SoundController : Node {
 
 
     #region SFX-related
-
-    private void LoadSounds() {
-        /*
-        sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
-        sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
-        sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
-        sfx["Drop"] =  GD.Load<AudioStream>("res://Sounds/Drop.wav");
-        sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
-        sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
-        */
-    }
 
     public void PlaySound(string soundName) {
         if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {

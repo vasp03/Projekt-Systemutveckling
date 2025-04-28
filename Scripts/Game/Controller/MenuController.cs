@@ -115,6 +115,8 @@ public partial class MenuController : Node {
 
         GetTree().Paused = false;
         GameController.Visible = true;
+        GameController.GetDayTimeController().SetPaused(false);
+        GameController.GetSoundController().MusicMuted = true;
     }
 
     /// <summary>
@@ -141,5 +143,9 @@ public partial class MenuController : Node {
     /// </summary>
     public override void _ExitTree() {
         QueueFree();
+    }
+
+    public bool IsPaused() {
+        return GetTree().Paused;
     }
 }

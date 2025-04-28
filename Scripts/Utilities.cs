@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 
 namespace Goodot15.Scripts;
 
@@ -6,7 +7,9 @@ public static class Utilities {
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public static readonly int IN_GAME_DAY_TICKS_FACTOR = TimeToTicks(minutes: 10);
+    public const int TICKS_PER_DAY = 36000;
+
+    public const double TICKS_PER_SECOND = 60;
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.
@@ -18,10 +21,10 @@ public static class Utilities {
     /// <returns>Real-life time units converted to ticks (60 ticks = 1 second)</returns>
     public static int TimeToTicks(double seconds = 0, double minutes = 0, double hours = 0, double days = 0) {
         return (int)Math.Floor(
-            seconds * 60 + // Seconds to ticks
-            minutes * 60 * 60 + // Minutes to seconds to ticks
-            hours * 60 * 60 * 60 + // Hours to seconds to ticks
-            days * 24 * 60 * 60 * 60 // Days to seconds to ticks
+            seconds * TICKS_PER_SECOND + // Seconds to ticks
+            minutes * 60 * TICKS_PER_SECOND + // Minutes to seconds to ticks
+            hours * 60 * 60 * TICKS_PER_SECOND + // Hours to seconds to ticks
+            days * 24 * 60 * 60 * TICKS_PER_SECOND // Days to seconds to ticks
         );
     }
 
@@ -37,9 +40,18 @@ public static class Utilities {
         int gameTicks = TimeToTicks(seconds, minutes, hours, days);
 
         // How many real ticks per in-game tick (scaling factor)
-        double factorScaledToDays = IN_GAME_DAY_TICKS_FACTOR / (double)TimeToTicks(days: 1);
+        double factorScaledToDays = TICKS_PER_DAY / (double)TimeToTicks(days: 1);
 
         // Scale the game ticks to real time
         return (int)Math.Floor(gameTicks * factorScaledToDays);
+    }
+
+    /// <summary>
+    ///    Converts the specified ticks to time
+    /// </summary>
+    /// <param name="ticks">Ticks to convert</param>
+    /// <returns>Seconds (60 ticks = 1 second)</returns>
+    public static int TicksToTime(int ticks) {
+        return (int)Math.Floor(ticks / (float)TICKS_PER_SECOND);
     }
 }
