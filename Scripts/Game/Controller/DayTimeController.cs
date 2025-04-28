@@ -15,12 +15,15 @@ public partial class DayTimeController : ITickable {
 
     private double TimeCountingToOneTick = 0;
 
+    private bool IsPaused = false;
+
     public enum DAY_STATE {
         Night,
         Morning,
         Day,
         Evening,
-        Invalid
+        Invalid,
+        Paused
     }
 
     /// <summary>
@@ -28,6 +31,10 @@ public partial class DayTimeController : ITickable {
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
     public void PreTick(double delta) {
+        if (IsPaused) {
+            return;
+        }
+
         TimeCountingToOneTick += delta;
         if (TimeCountingToOneTick < (1 / TicksPerSecond)) {
             return;
@@ -104,5 +111,19 @@ public partial class DayTimeController : ITickable {
 
     private static int DayDurationRatio(int ticks) {
         return ticks / 10;
+    }
+
+    public void SetPaused(bool paused) {
+        IsPaused = paused;
+
+        if (IsPaused) {
+            foreach (IDayTimeCallback callback in Callbacks) {
+                callback.DayTimeChanged(DAY_STATE.Paused, CurrentTimeOfDay);
+            }
+        } else {
+            foreach (IDayTimeCallback callback in Callbacks) {
+                callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+            }
+        }
     }
 }

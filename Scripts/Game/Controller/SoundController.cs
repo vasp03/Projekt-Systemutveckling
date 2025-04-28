@@ -20,7 +20,6 @@ public partial class SoundController : Node {
 
     public override void _Ready() {
         SetupMusicPlayer();
-        LoadSounds();
 
         MusicVolume = SettingsManager.MusicVolume;
         SfxVolume = SettingsManager.SfxVolume;
@@ -121,17 +120,6 @@ public partial class SoundController : Node {
 
 
     #region SFX-related
-
-    private void LoadSounds() {
-        /*
-        sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
-        sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
-        sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
-        sfx["Drop"] =  GD.Load<AudioStream>("res://Sounds/Drop.wav");
-        sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
-        sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
-        */
-    }
 
     public void PlaySound(string soundName) {
         if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {

@@ -35,14 +35,17 @@ public class DayTimeEvent : IDayTimeCallback {
                 break;
             case DayTimeController.DAY_STATE.Day:
                 GameController.GetSoundController().PlayDayTimeSong("Day");
-                GameController.SetSceneDarkness(1f);
+                GameController.SetSceneDarkness(1.0f);
                 break;
             case DayTimeController.DAY_STATE.Evening:
                 GameController.GetSoundController().PlayDayTimeSong("Evening");
                 GameController.SetSceneDarkness(0.75f);
                 break;
+            case DayTimeController.DAY_STATE.Invalid:
+            case DayTimeController.DAY_STATE.Paused:
             default:
-                GD.PrintErr("Invalid day state.");
+                GameController.GetSoundController().StopMusic();
+                GameController.SetSceneDarkness(1.0f);
                 break;
         }
 
