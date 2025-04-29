@@ -1,104 +1,191 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SoundController : Node {
-    private readonly Dictionary<string, AudioStream> sfx = new();
-    private string currentMusicPath;
-    private bool isMusicMuted;
-    private bool isSfxMuted;
-    private AudioStreamPlayer musicPlayer;
-    private float musicVolume = 1.0f;
-    private float sfxVolume = 1.0f;
+    private readonly IDictionary<string, AudioStream> _cachedMusic = new Dictionary<string, AudioStream>();
 
-    public override void _Ready() {
-        LoadMusicPlayer();
-        LoadSounds();
+    private readonly IDictionary<string, AudioStream> _cachedSounds = new Dictionary<string, AudioStream>();
+    private string currentPlayingMusicPath;
+
+    private AudioStreamPlayer musicPlayer;
+    private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
+
+    private void DebugLog(string message) {
+        // GD.Print($"[{GetType().FullName}] {message}");
     }
 
-    // Music Setup
 
-    private void LoadMusicPlayer() {
+    public override void _Ready() {
+        SetupMusicPlayer();
+
+        MusicVolume = SettingsManager.MusicVolume;
+        SfxVolume = SettingsManager.SfxVolume;
+    }
+
+    public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
+        if (audioStreamAsset is AudioStreamOggVorbis oggStream) {
+            oggStream.Loop = true;
+        } else if (audioStreamAsset is AudioStreamWav wavStream) {
+            wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+
+            wavStream.LoopEnd = wavStream.Data.Length;
+        }
+    }
+
+    public override void _ExitTree() {
+        StopMusic();
+
+        UnloadSounds();
+
+        QueueFree();
+    }
+
+    private void UnloadSounds() {
+        DebugLog("Sound Controller is unloading sounds");
+        DebugLog($"Sounds: {_cachedSounds.Count}; Music: {_cachedMusic.Count}");
+        _cachedSounds.ToList().ForEach(e => e.Value.Dispose());
+        _cachedMusic.ToList().ForEach(e => e.Value.Dispose());
+
+        DebugLog("Sound Controller has unloaded sounds");
+    }
+
+    #region Music-related
+
+    private const string BASE_MUSIC_PATH = "res://Assets/Music";
+
+    private void SetupMusicPlayer() {
         musicPlayer = new AudioStreamPlayer();
         musicPlayer.Bus = "Music";
         AddChild(musicPlayer);
     }
 
     public void PlayMenuMusic() {
-        PlayMusic("Music/xDeviruchi/Title Theme.wav");
+        PlayMusic("xDeviruchi/02 - Title Theme.wav");
     }
 
     public void PlayGameMusic() {
-        PlayMusic("Music/xDeviruchi/Definitely Our Town.wav");
+        PlayMusic("xDeviruchi/03 - Definitely Our Town.wav");
     }
 
     public void PlayShopMusic() {
-        PlayMusic("Music/xDeviruchi/Shop.wav");
+        PlayMusic("xDeviruchi/08 - Shop.wav");
+    }
+
+    public void PlayDayTimeSong(string dayTime) {
+        string musicPath = $"DayTimeSongs/{dayTime}.mp3";
+
+        if (currentPlayingMusicPath == musicPath) {
+            musicPlayer.Play();
+            return;
+        }
+
+        PlayMusic(musicPath);
     }
 
     private void PlayMusic(string musicPath) {
-        if (currentMusicPath == musicPath && musicPlayer.Playing) musicPlayer.Stop();
+        if (currentPlayingMusicPath == musicPath) {
+            musicPlayer.Play();
+            return;
+        }
 
-        AudioStream musicStream = GD.Load<AudioStream>("res://" + musicPath);
-
-        // Enable looping based on file type. Either .wav or .ogg
-        if (musicStream is AudioStreamOggVorbis oggStream)
-            oggStream.Loop = true;
-        else if (musicStream is AudioStreamWav wavStream) wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
-
-        musicPlayer.Stream = musicStream;
-        musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
+        currentPlayingMusicPath = musicPath;
+        musicPlayer.Stream = LoadMusic(musicPath);
+        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
         musicPlayer.Play();
-        currentMusicPath = musicPath;
+    }
+
+    private AudioStream LoadMusic(string soundAssetName) {
+        if (_cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
+            // Return already loaded asset
+            return audioStream;
+
+        // Music not loaded, first time setup
+        DebugLog($"First time loading audio stream: {soundAssetName}");
+        audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
+        ConfigureLoopingSound(audioStream);
+        _cachedMusic.Add(soundAssetName, audioStream);
+
+        return audioStream;
     }
 
     public void StopMusic() {
         musicPlayer?.Stop();
-        currentMusicPath = "";
+        currentPlayingMusicPath = "";
     }
 
-    public void SetMusicVolume(float volume) {
-        musicVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
-        if (!isMusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(musicVolume);
-    }
+    #endregion Music-related
 
-    public void ToggleMusicMuted() {
-        isMusicMuted = !isMusicMuted;
-        musicPlayer.VolumeDb = isMusicMuted ? -80 : Mathf.LinearToDb(musicVolume);
-    }
 
-    // SFX Setup
-
-    private void LoadSounds() {
-        sfx["Combine"] = GD.Load<AudioStream>("res://Sounds/Combine.wav");
-        sfx["Stack"] = GD.Load<AudioStream>("res://Sounds/Stack.wav");
-        sfx["Pickup"] = GD.Load<AudioStream>("res://Sounds/Pickup.wav");
-        sfx["Drop"] = GD.Load<AudioStream>("res://Sounds/Drop.wav");
-        sfx["Hover"] = GD.Load<AudioStream>("res://Sounds/Hover.wav");
-        sfx["Click"] = GD.Load<AudioStream>("res://Sounds/Click.wav");
-    }
+    #region SFX-related
 
     public void PlaySound(string soundName) {
-        if (isSfxMuted || !sfx.ContainsKey(soundName)) {
+        if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
             GD.PushWarning($"Sound '{soundName}' not found or muted.");
             return;
         }
 
         AudioStreamPlayer player = new();
-        player.Stream = sfx[soundName];
-        player.VolumeDb = Mathf.LinearToDb(sfxVolume);
+        player.Stream = sfxAudioStream;
+        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
         AddChild(player);
-        //Queues the node to be deleted when player.Finished emits.
+        // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
         player.Play();
     }
 
-    public void SetVolume(float volume) {
-        sfxVolume = Mathf.Clamp(volume, 0.0f, 1.0f);
+    #endregion SFX-related
+
+    #region Settings & configurability related
+
+    private float _musicVolume;
+
+    public float MusicVolume {
+        get => _musicVolume;
+        set {
+            _musicVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+            UpdateMusicVolume();
+        }
     }
 
-    public void ToggleSfxMuted() {
-        isSfxMuted = !isSfxMuted;
+    private void UpdateMusicVolume() {
+        if (!MusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
     }
+
+    private bool _musicMuted;
+
+    public bool MusicMuted {
+        get => _musicMuted;
+        set {
+            _musicMuted = value;
+            UpdateMusicMuted();
+        }
+    }
+
+    public bool ToggleMusicMuted() {
+        MusicMuted = !MusicMuted;
+        UpdateMusicMuted();
+        return MusicMuted;
+    }
+
+    private void UpdateMusicMuted() {
+        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+    }
+
+    private float _sfxVolume;
+
+    public float SfxVolume {
+        get => _sfxVolume;
+        set => _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+    }
+
+    public bool SfxMuted { get; set; }
+
+    public bool ToggleSfxMuted() {
+        return SfxMuted = !SfxMuted;
+    }
+
+    #endregion
 }

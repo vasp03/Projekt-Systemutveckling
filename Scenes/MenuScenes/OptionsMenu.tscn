@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://c2fsjeslaeahy" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
@@ -85,10 +85,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -88.5
-offset_right = 104.0
-offset_bottom = 88.5
+offset_left = -120.0
+offset_top = -88.0
+offset_right = 120.0
+offset_bottom = 89.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -99,9 +99,12 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "MUSIC VOLUME"
+horizontal_alignment = 1
 
 [node name="MusicVolumeSlider" type="HSlider" parent="ButtonContainer"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="SFXVolumeLabel" type="Label" parent="ButtonContainer"]
 layout_mode = 2
@@ -110,9 +113,12 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "SFX VOLUME"
+horizontal_alignment = 1
 
 [node name="SFXVolumeSlider" type="HSlider" parent="ButtonContainer"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="DisplayModeLabel" type="Label" parent="ButtonContainer"]
 layout_mode = 2
@@ -121,9 +127,34 @@ theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 34
 text = "DISPLAY MODE"
+horizontal_alignment = 1
 
 [node name="DisplayModeButton" type="OptionButton" parent="ButtonContainer"]
 layout_mode = 2
 theme = SubResource("Theme_hndry")
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 20
+alignment = 1
+
+[node name="MusicPercentageLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 771.0
+offset_top = 306.0
+offset_right = 821.0
+offset_bottom = 332.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 25
+text = "45%"
+
+[node name="SFXPercentageLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 771.0
+offset_top = 365.0
+offset_right = 821.0
+offset_bottom = 391.0
+size_flags_horizontal = 8
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_7cv4p")
+theme_override_font_sizes/font_size = 25
+text = "1%"

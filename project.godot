@@ -22,13 +22,14 @@ Global="*res://Scripts/Global.cs"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
 SettingsManager="*res://Scripts/Game/Controller/SettingsManager.cs"
 MouseController="*res://Scripts/Game/Controller/MouseController.cs"
+SoundController="*res://Scripts/Game/Controller/SoundController.cs"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-window/vsync/vsync_mode=0
+window/vsync/vsync_mode=2
 
 [dotnet]
 
@@ -40,7 +41,7 @@ run/main_run_args="--verbose"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray()
 
 [gdunit4]
 

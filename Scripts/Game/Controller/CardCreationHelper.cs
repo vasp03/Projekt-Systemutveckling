@@ -78,7 +78,8 @@ public class CardCreationHelper : GameManagerBase {
                 return new MaterialGlass();
             case "Leaves" or "19":
                 return new MaterialLeaves();
-
+            case "Clay" or "20":
+                return new MaterialClay();
 
             case "SwordMK1" or "21":
                 return new MaterialSwordMk1();
