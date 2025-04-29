@@ -3,23 +3,23 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public interface IGameManager {
-	private static GameController gameControllerSingletonInstance;
+    private static GameController gameControllerSingletonInstance;
 
-	public static GameController GameControllerSingleton {
-		get {
-			if (gameControllerSingletonInstance is null) {
-				gameControllerSingletonInstance =
-					(Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<GameController>("/root/GameController");
-			}
+    public static GameController GameControllerSingleton {
+        get {
+            if (gameControllerSingletonInstance is null)
+                gameControllerSingletonInstance =
+                    (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<GameController>("/root/GameController");
 
-			return gameControllerSingletonInstance;
-		}
-	}
+            return gameControllerSingletonInstance;
+        }
+    }
 
-	public GameController GameController => IGameManager.GameControllerSingleton;
+    public GameController GameController => GameControllerSingleton;
 
-	public virtual void OnReady() {}
+    public virtual void OnReady() {
+    }
 
-	public virtual void OnUnload() {
-	}
+    public virtual void OnUnload() {
+    }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Goodot15.Scripts.Game.Model.Interface;
 using System.Linq;
 
 public abstract class Card {

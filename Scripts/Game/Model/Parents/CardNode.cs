@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -16,13 +15,13 @@ public partial class CardNode : Node2D {
 
     private Card _cardType;
 
+    private CraftButton _craftButton;
+
     private CardNode LastOverlappedCard;
 
     private bool oldIsHighlighted;
 
     private Vector2 oldMousePosition;
-
-    private CraftButton _craftButton;
 
     public CardNode() {
         AddToGroup(CardController.CARD_GROUP_NAME);
@@ -35,7 +34,7 @@ public partial class CardNode : Node2D {
 
     private Area2D area2D => GetNode<Area2D>("Area2D");
 
-    public Vector2 CardOverlappingOffset { get; private set; } = new Vector2(0, -20);
+    public Vector2 CardOverlappingOffset { get; private set; } = new(0, -20);
 
     public Card CardType {
         get => _cardType;
@@ -102,11 +101,9 @@ public partial class CardNode : Node2D {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
-        if (cardUnder is not null) {
-            if (cardUnder.CardType is ICardConsumer cardConsumer) {
+        if (cardUnder is not null)
+            if (cardUnder.CardType is ICardConsumer cardConsumer)
                 cardConsumer.ConsumeCard(CardType);
-            }
-        }
     }
 
     /// <summary>
@@ -119,7 +116,9 @@ public partial class CardNode : Node2D {
 
         // Check if the path is not null or empty and if there is a file at the path
         if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
-            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID + " " + string.IsNullOrEmpty(CardType.TexturePath) + " " + (!FileAccess.FileExists(CardType.TexturePath)));
+            GD.PrintErr("Texture path is null or empty for card: " + CardType.ID + " " +
+                        string.IsNullOrEmpty(CardType.TexturePath) + " " +
+                        !FileAccess.FileExists(CardType.TexturePath));
             GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
             texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
             sprite.Texture = texture;
@@ -168,9 +167,8 @@ public partial class CardNode : Node2D {
 
                 SetPosition(underCard.Position - CardOverlappingOffset);
 
-                if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+                if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-                }
             }
     }
 
@@ -182,9 +180,8 @@ public partial class CardNode : Node2D {
     public void SetPositionAsPartOfStack(CardNode underCard) {
         SetPosition(underCard.Position - new Vector2(0, -15));
 
-        if (CardType is IStackable { NeighbourAbove: not null } stackable) {
+        if (CardType is IStackable { NeighbourAbove: not null } stackable)
             ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-        }
     }
 
     private void ClearReferences() {
@@ -211,9 +208,7 @@ public partial class CardNode : Node2D {
 
             Position += mousePosition - oldMousePosition;
 
-            if (CraftButton != null) {
-                CraftButton.Position = Position + CardController.CraftButtonOffset;
-            }
+            if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
 
             oldMousePosition = mousePosition;
         }
@@ -231,6 +226,14 @@ public partial class CardNode : Node2D {
     /// </returns>
     public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
         return area2D.GetParent<CardNode>();
+    }
+
+    public void SetCraftButton(CraftButton craftButton) {
+        _craftButton = craftButton;
+    }
+
+    public CraftButton GetCraftButton() {
+        return _craftButton;
     }
 
     #region Events(?)
@@ -261,12 +264,4 @@ public partial class CardNode : Node2D {
     }
 
     #endregion Events(?)
-
-    public void SetCraftButton(CraftButton craftButton) {
-        _craftButton = craftButton;
-    }
-
-    public CraftButton GetCraftButton() {
-        return _craftButton;
-    }
 }

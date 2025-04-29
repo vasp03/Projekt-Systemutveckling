@@ -4,14 +4,11 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller.Events;
 
 public class DayTimeEvent : IDayTimeCallback {
+    private readonly DateTime LastTickTime = DateTime.Now;
     private DayTimeController.DAY_STATE OldDayState = DayTimeController.DAY_STATE.Invalid;
 
-    private DateTime LastTickTime = DateTime.Now;
-
     public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks) {
-        if (dayState == OldDayState) {
-            return;
-        }
+        if (dayState == OldDayState) return;
 
         GD.Print($"Day time changed: {dayState} ({ticks})");
 
@@ -22,7 +19,7 @@ public class DayTimeEvent : IDayTimeCallback {
 
         GameController gameController = IGameManager.GameControllerSingleton;
         SoundController soundController = gameController.GetManager<SoundController>();
-        
+
         switch (dayState) {
             case DayTimeController.DAY_STATE.Night:
                 soundController.PlayDayTimeSong("Night");

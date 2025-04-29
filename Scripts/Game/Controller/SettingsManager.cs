@@ -5,7 +5,7 @@ namespace Goodot15.Scripts.Game.Controller;
 /// <summary>
 ///     Class that manages and saves the game settings.
 /// </summary>
-public partial class SettingsManager : GameManagerBase {
+public class SettingsManager : GameManagerBase {
     private const string ConfigFilePath = "user://settings.cfg";
 
     private SoundController soundController => GameController.GetManager<SoundController>();
