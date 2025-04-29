@@ -17,10 +17,11 @@ public class SoundController : GameManagerBase {
 		// GD.Print($"[{GetType().FullName}] {message}");
 	}
 
+    public SoundController() {
+        SetupMusicPlayer();
+    }
 
 	public override void OnReady() {
-		SetupMusicPlayer();
-
 		MusicVolume = SettingsManager.MusicVolume;
 		SfxVolume = SettingsManager.SfxVolume;
 	}

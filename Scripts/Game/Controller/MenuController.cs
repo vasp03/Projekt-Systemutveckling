@@ -12,9 +12,9 @@ public class MenuController : GameManagerBase {
 
 	private static readonly Control guideMenu =
 		GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn").Instantiate<Control>();
-	private static readonly Control mainMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn").Instantiate<Control>();
-	private static readonly Control optionsMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn").Instantiate<Control>();
-	private static readonly Control pauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn").Instantiate<Control>();
+	private static Control mainMenu => GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn").Instantiate<Control>();
+	private static Control optionsMenu => GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn").Instantiate<Control>();
+	private static Control pauseMenu => GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn").Instantiate<Control>();
 	
 	private Control currentMenu;
 	private Control previousMenu;
@@ -22,7 +22,7 @@ public class MenuController : GameManagerBase {
 
 	public MenuController() {
 		this.MenuControllerNode = new Node();
-		CurrentScene.AddChild(MenuControllerNode);
+		GameController.AddChild(MenuControllerNode);
 		
 		OpenMainMenu();
 	}
@@ -95,9 +95,9 @@ public class MenuController : GameManagerBase {
 			this.previousMenu = currentMenu;
 			this.currentMenu = newMenu;
 
-			if (this.previousMenu is not null) CurrentScene.RemoveChild(previousMenu);
+			if (this.previousMenu is not null) MenuControllerNode.RemoveChild(previousMenu);
 			if (!this.currentMenu.IsInsideTree()) {
-				CurrentScene.AddChild(currentMenu);
+                MenuControllerNode.AddChild(currentMenu);
 			}
 
 			currentMenu.GlobalPosition = new Vector2(1280 / 2, 720 / 2);
@@ -151,12 +151,12 @@ public class MenuController : GameManagerBase {
 		CurrentScene.GetTree().Paused = false;
 	}
 
-	// /// <summary>
-	// ///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
-	// /// </summary>
-	// public override void _ExitTree() {
-	//     QueueFree();
-	// }
+    /// <summary>
+    ///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
+    /// </summary>
+    public override void OnUnload() {
+	    MenuControllerNode.QueueFree();
+	}
 
 	public bool IsPaused() {
 		return CurrentScene.GetTree().Paused;
