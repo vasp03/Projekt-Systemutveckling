@@ -21,19 +21,20 @@ public partial class MainOptions : Control {
     private Label sfxVolumePercentageLabel;
     private HSlider sfxVolumeSlider;
     private SoundController soundController;
-    private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
-    private Button GoBackButton => GetNode<Button>("GoBackButton");
+    private OptionButton DisplayModeButton => GetNode<OptionButton>("Node/ButtonContainer/DisplayModeButton");
+    private Button GoBackButton => GetNode<Button>("Node/GoBackButton");
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-        settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
-        soundController = GetNode<SoundController>("/root/SoundController");
+        GameController gameController = IGameManager.GameControllerSingleton;
+        menuController = gameController.GetManager<MenuController>();
+        settingsManager = gameController.GetManager<SettingsManager>();
+        soundController = gameController.GetManager<SoundController>();
 
-        musicVolumeSlider = GetNode<HSlider>("ButtonContainer/MusicVolumeSlider");
-        sfxVolumeSlider = GetNode<HSlider>("ButtonContainer/SFXVolumeSlider");
+        musicVolumeSlider = GetNode<HSlider>("Node/ButtonContainer/MusicVolumeSlider");
+        sfxVolumeSlider = GetNode<HSlider>("Node/ButtonContainer/SFXVolumeSlider");
 
-        musicVolumePercentageLabel = GetNode<Label>("MusicPercentageLabel");
-        sfxVolumePercentageLabel = GetNode<Label>("SFXPercentageLabel");
+        musicVolumePercentageLabel = GetNode<Label>("Node/MusicPercentageLabel");
+        sfxVolumePercentageLabel = GetNode<Label>("Node/SFXPercentageLabel");
 
         musicVolumePercentageLabel.Text = $"{musicVolumeSlider.Value * 100:F0}%";
         sfxVolumePercentageLabel.Text = $"{sfxVolumeSlider.Value * 100:F0}%";

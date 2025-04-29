@@ -43,10 +43,10 @@ public class CardCreationHelper : GameManagerBase {
         Random
     }
 
-    public CardCreationHelper(GameController gameController) : base(gameController) {
+    public CardCreationHelper() {
     }
 
-    private CardController CardController => CoreGameController.GetManager<CardController>();
+    private CardController CardController => GameController.GetManager<CardController>();
 
     public string GetRandomCardType() {
         Random random = new();
@@ -152,6 +152,6 @@ public class CardCreationHelper : GameManagerBase {
 // 
     //     cardInstance.ZIndex = _cardController.CardCount + 1;
     //     cardInstance.SetPosition(new Vector2(100, 100));
-    //     _gameController.AddChild(cardInstance);
+    //     _gameController.MenuControllerNode.AddChild(cardInstance);
     // }
 }

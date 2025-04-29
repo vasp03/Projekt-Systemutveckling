@@ -1,17 +1,12 @@
 using System;
 using Godot;
 
-public class DayTimeEvent : IDayTimeCallback {
-    private DayTimeController.DAY_STATE OldDayState;
+namespace Goodot15.Scripts.Game.Controller.Events;
 
-    private GameController GameController;
+public class DayTimeEvent : IDayTimeCallback {
+    private DayTimeController.DAY_STATE OldDayState = DayTimeController.DAY_STATE.Invalid;
 
     private DateTime LastTickTime = DateTime.Now;
-
-    public DayTimeEvent(GameController gameController) {
-        OldDayState = DayTimeController.DAY_STATE.Invalid;
-        GameController = gameController;
-    }
 
     public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks) {
         if (dayState == OldDayState) {
@@ -24,28 +19,32 @@ public class DayTimeEvent : IDayTimeCallback {
         GD.Print($"Current time of day: {DateTime.Now}");
         GD.Print($"Time since last tick: {(DateTime.Now - LastTickTime).Seconds} s");
 
+
+        GameController gameController = IGameManager.GameControllerSingleton;
+        SoundController soundController = gameController.GetManager<SoundController>();
+        
         switch (dayState) {
             case DayTimeController.DAY_STATE.Night:
-                GameController.GetSoundController().PlayDayTimeSong("Night");
-                GameController.SetSceneDarkness(0.5f);
+                soundController.PlayDayTimeSong("Night");
+                gameController.SetSceneDarkness(0.5f);
                 break;
             case DayTimeController.DAY_STATE.Morning:
-                GameController.GetSoundController().PlayDayTimeSong("Morning");
-                GameController.SetSceneDarkness(0.75f);
+                soundController.PlayDayTimeSong("Morning");
+                gameController.SetSceneDarkness(0.75f);
                 break;
             case DayTimeController.DAY_STATE.Day:
-                GameController.GetSoundController().PlayDayTimeSong("Day");
-                GameController.SetSceneDarkness(1.0f);
+                soundController.PlayDayTimeSong("Day");
+                gameController.SetSceneDarkness(1.0f);
                 break;
             case DayTimeController.DAY_STATE.Evening:
-                GameController.GetSoundController().PlayDayTimeSong("Evening");
-                GameController.SetSceneDarkness(0.75f);
+                soundController.PlayDayTimeSong("Evening");
+                gameController.SetSceneDarkness(0.75f);
                 break;
             case DayTimeController.DAY_STATE.Invalid:
             case DayTimeController.DAY_STATE.Paused:
             default:
-                GameController.GetSoundController().StopMusic();
-                GameController.SetSceneDarkness(1.0f);
+                soundController.StopMusic();
+                gameController.SetSceneDarkness(1.0f);
                 break;
         }
 

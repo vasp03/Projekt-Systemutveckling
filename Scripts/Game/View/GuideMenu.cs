@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -39,10 +40,10 @@ public partial class GuideMenu : Control {
     private Button villagersButton;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-        cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
-        descriptionLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
-        cardInfoLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");
+        menuController = IGameManager.GameControllerSingleton.GetManager<MenuController>();
+        cardImage = GetNode<TextureRect>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
+        descriptionLabel = GetNode<Label>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
+        cardInfoLabel = GetNode<Label>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");
 
         descriptionLabel.Visible = false;
         cardInfoLabel.Visible = false;
@@ -115,12 +116,12 @@ public partial class GuideMenu : Control {
     ///     Also initializes the go back button which exits the menu
     /// </summary>
     private void InitializeMainButtons() {
-        toolsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ToolsButton");
-        foodButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/FoodButton");
-        buildingsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/BuildingsButton");
-        natureButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/NatureButton");
-        villagersButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/VillagersButton");
-        resourcesButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ResourcesButton");
+        toolsButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ToolsButton");
+        foodButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/FoodButton");
+        buildingsButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/BuildingsButton");
+        natureButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/NatureButton");
+        villagersButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/VillagersButton");
+        resourcesButton = GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ResourcesButton");
 
         toolsButton.Pressed += () => OnMainButtonPressed(toolsButton);
         foodButton.Pressed += () => OnMainButtonPressed(foodButton);
@@ -129,7 +130,7 @@ public partial class GuideMenu : Control {
         villagersButton.Pressed += () => OnMainButtonPressed(villagersButton);
         resourcesButton.Pressed += () => OnMainButtonPressed(resourcesButton);
 
-        goBackButton = GetNode<Button>("GoBackButton");
+        goBackButton = GetNode<Button>("Node/GoBackButton");
         goBackButton.Pressed += OnGoBackButtonPressed;
     }
 
@@ -138,12 +139,12 @@ public partial class GuideMenu : Control {
     ///     container.
     /// </summary>
     private void InitializeLists() {
-        toolList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList");
-        foodList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList");
-        buildingList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList");
-        natureList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList");
-        villagerList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList");
-        resourceList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList");
+        toolList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList");
+        foodList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList");
+        buildingList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList");
+        natureList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList");
+        villagerList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList");
+        resourceList = GetNode<VBoxContainer>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList");
 
         buttons[toolsButton] = toolList;
         buttons[foodButton] = foodList;
@@ -166,18 +167,18 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeResourceCardButtons() {
         resourceCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/WoodButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/PlanksButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/StickButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/StoneButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/WaterButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/BrickButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/SandButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/GlassButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/WoodButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/PlanksButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/StickButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/StoneButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/WaterButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/BrickButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/SandButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/GlassButton"),
             GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/LeafButton"), //no leaf card yet 
+                "Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/LeafButton"), //no leaf card yet 
             GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/ClayButton") //no clay card yet 
+                "Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ResourceList/ClayButton") //no clay card yet 
         };
 
         foreach (Button button in resourceCardButtons) {
@@ -192,11 +193,11 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeToolCardButtons() {
         toolCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/SwordButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/FishingPoleButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/SwordButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/FishingPoleButton"),
             GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/ShovelButton"), //no shovel card yet 
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/AxeButton")
+                "Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/ShovelButton"), //no shovel card yet 
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/ToolList/AxeButton")
         };
 
         foreach (Button button in toolCardButtons) {
@@ -211,12 +212,12 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeBuildingCardButtons() {
         buildingCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/GreenhouseButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/HouseButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/TentButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/FieldButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CampfireButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CookingPotButton")
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/GreenhouseButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/HouseButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/TentButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/FieldButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CampfireButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/BuildingList/CookingPotButton")
         };
 
         foreach (Button button in buildingCardButtons) {
@@ -231,13 +232,13 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeFoodCardButtons() {
         foodCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/AppleButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/BerryButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/JamButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/MeatButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedMeatButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/FishButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedFishButton")
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/AppleButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/BerryButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/JamButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/MeatButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedMeatButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/FishButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/FoodList/CookedFishButton")
         };
 
         foreach (Button button in foodCardButtons) {
@@ -252,9 +253,9 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeNatureCardButtons() {
         natureCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/TreeButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/MineButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/BushButton")
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/TreeButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/MineButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/NatureList/BushButton")
         };
 
         foreach (Button button in natureCardButtons) {
@@ -269,10 +270,10 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void InitializeVillagerCardButtons() {
         villagerCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/VillagerButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/HunterButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/FarmerButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/BlacksmithButton")
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/VillagerButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/HunterButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/FarmerButton"),
+            GetNode<Button>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/VillagerList/BlacksmithButton")
         };
 
         foreach (Button button in villagerCardButtons) {

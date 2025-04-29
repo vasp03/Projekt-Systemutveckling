@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cv0sftc5g7uci"]
 
-[ext_resource type="Script" uid="uid://cbx08xjjdkxds" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
+[ext_resource type="Script" uid="uid://b7grcuqcfleei" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_qdb5i"]
 [ext_resource type="Texture2D" uid="uid://b1jnxa627yfhj" path="res://Assets/Background/MainMenuBackground1280x720.png" id="3_qdb5i"]
 
@@ -36,40 +36,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wjwqx")
 
-[node name="GameTitle" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.185
-anchor_right = 0.5
-anchor_bottom = 0.185
-offset_left = -301.0
-offset_top = -45.2
-offset_right = 301.0
-offset_bottom = 45.8
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.760844, 0.736535, 0.955096, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 5
-theme_override_fonts/font = ExtResource("2_qdb5i")
-theme_override_font_sizes/font_size = 90
-text = "PROJECT CARD"
+[node name="Node" type="Node" parent="."]
 
-[node name="ButtonContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="ChatGpt-prototypeBackgroundV11280x720" type="Sprite2D" parent="Node"]
+show_behind_parent = true
+position = Vector2(640, 360)
+texture = ExtResource("3_qdb5i")
+
+[node name="ButtonContainer" type="VBoxContainer" parent="Node"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -115.0
-offset_top = -108.0
-offset_right = 116.0
-offset_bottom = 163.0
+offset_left = -300.0
+offset_top = -102.0
+offset_right = 302.0
+offset_bottom = 211.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ContinueButton" type="Button" parent="ButtonContainer"]
+[node name="ContinueButton" type="Button" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -93,7 +80,7 @@ theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_lqnmx")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "CONTINUE"
 
-[node name="PlayButton" type="Button" parent="ButtonContainer"]
+[node name="PlayButton" type="Button" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -112,7 +99,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "PLAY"
 
-[node name="GuideButton" type="Button" parent="ButtonContainer"]
+[node name="GuideButton" type="Button" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -131,7 +118,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "GUIDE"
 
-[node name="OptionsButton" type="Button" parent="ButtonContainer"]
+[node name="OptionsButton" type="Button" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -149,7 +136,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "OPTIONS"
 
-[node name="ExitButton" type="Button" parent="ButtonContainer"]
+[node name="ExitButton" type="Button" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -167,7 +154,28 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "EXIT"
 
-[node name="ChatGpt-prototypeBackgroundV11280x720" type="Sprite2D" parent="."]
-show_behind_parent = true
-position = Vector2(640, 360)
-texture = ExtResource("3_qdb5i")
+[node name="VBoxContainer" type="VBoxContainer" parent="Node"]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.205
+anchor_right = 0.5
+anchor_bottom = 0.205
+offset_left = -301.0
+offset_top = -45.6
+offset_right = 301.0
+offset_bottom = 45.4
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="Node"]
+offset_left = 340.0
+offset_top = 91.0
+offset_right = 942.0
+offset_bottom = 186.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.760844, 0.736535, 0.955096, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_fonts/font = ExtResource("2_qdb5i")
+theme_override_font_sizes/font_size = 90
+text = "PROJECT CARD"

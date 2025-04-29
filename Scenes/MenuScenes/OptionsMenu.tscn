@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://c2fsjeslaeahy" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://btr45cvp2ombm" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
@@ -29,8 +29,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hndry")
 
-[node name="OptionsTitle" type="Label" parent="."]
-layout_mode = 1
+[node name="Node" type="Node" parent="."]
+
+[node name="OptionsTitle" type="Label" parent="Node"]
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.18
@@ -48,9 +49,8 @@ theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 90
 text = "OPTIONS"
 
-[node name="GoBackButton" type="Button" parent="."]
+[node name="GoBackButton" type="Button" parent="Node"]
 process_mode = 3
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.901
@@ -78,8 +78,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_8vi76")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eue7q")
 text = "GO BACK"
 
-[node name="ButtonContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="ButtonContainer" type="VBoxContainer" parent="Node"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -93,7 +92,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 
-[node name="MusicVolumeLabel" type="Label" parent="ButtonContainer"]
+[node name="MusicVolumeLabel" type="Label" parent="Node/ButtonContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_7cv4p")
@@ -101,12 +100,12 @@ theme_override_font_sizes/font_size = 34
 text = "MUSIC VOLUME"
 horizontal_alignment = 1
 
-[node name="MusicVolumeSlider" type="HSlider" parent="ButtonContainer"]
+[node name="MusicVolumeSlider" type="HSlider" parent="Node/ButtonContainer"]
 layout_mode = 2
 max_value = 1.0
 step = 0.01
 
-[node name="SFXVolumeLabel" type="Label" parent="ButtonContainer"]
+[node name="SFXVolumeLabel" type="Label" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 5
@@ -115,12 +114,12 @@ theme_override_font_sizes/font_size = 34
 text = "SFX VOLUME"
 horizontal_alignment = 1
 
-[node name="SFXVolumeSlider" type="HSlider" parent="ButtonContainer"]
+[node name="SFXVolumeSlider" type="HSlider" parent="Node/ButtonContainer"]
 layout_mode = 2
 max_value = 1.0
 step = 0.01
 
-[node name="DisplayModeLabel" type="Label" parent="ButtonContainer"]
+[node name="DisplayModeLabel" type="Label" parent="Node/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 5
@@ -129,15 +128,14 @@ theme_override_font_sizes/font_size = 34
 text = "DISPLAY MODE"
 horizontal_alignment = 1
 
-[node name="DisplayModeButton" type="OptionButton" parent="ButtonContainer"]
+[node name="DisplayModeButton" type="OptionButton" parent="Node/ButtonContainer"]
 layout_mode = 2
 theme = SubResource("Theme_hndry")
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 20
 alignment = 1
 
-[node name="MusicPercentageLabel" type="Label" parent="."]
-layout_mode = 0
+[node name="MusicPercentageLabel" type="Label" parent="Node"]
 offset_left = 771.0
 offset_top = 306.0
 offset_right = 821.0
@@ -147,8 +145,7 @@ theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 25
 text = "45%"
 
-[node name="SFXPercentageLabel" type="Label" parent="."]
-layout_mode = 0
+[node name="SFXPercentageLabel" type="Label" parent="Node"]
 offset_left = 771.0
 offset_top = 365.0
 offset_right = 821.0

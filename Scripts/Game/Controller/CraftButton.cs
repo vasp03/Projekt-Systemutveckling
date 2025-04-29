@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Goodot15.Scripts.Game.Controller;
 
 public partial class CraftButton : Node2D {
     public CardController CardController { get; set; }

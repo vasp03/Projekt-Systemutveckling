@@ -3,20 +3,13 @@
 namespace Goodot15.Scripts.Game.Controller;
 
 public class GameManagerBase : IGameManager {
-    /// <summary>
-    ///     Constructs a GameManager with a GameController
-    /// </summary>
-    /// <param name="coreGameController"></param>
-    protected GameManagerBase(GameController coreGameController) {
-        CoreGameController = coreGameController;
+    public Node CurrentScene => IGameManager.GameControllerSingleton.GetTree().CurrentScene;
+
+    public GameController GameController => IGameManager.GameControllerSingleton;
+
+    public virtual void OnReady() {
     }
 
-    /// <summary>
-    ///     Constructs a GameManager with no GameController supplied - may be used if there is no use for a GameController
-    /// </summary>
-    protected GameManagerBase() : this(null) {
+    public virtual void OnUnload() {
     }
-
-    public GameController CoreGameController { get; }
-    public Node CurrentScene => CoreGameController.GetTree().CurrentScene;
 }

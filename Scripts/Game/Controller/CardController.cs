@@ -17,19 +17,22 @@ public class CardController : GameManagerBase {
     public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
 
     // Constructor
-    public CardController(GameController gameController) : base(gameController) {
+    public CardController() {
+    }
+
+    public override void OnReady() {
         CreateStartingRecipes();
     }
 
-    private MouseController MouseController => CoreGameController.GetManager<MouseController>();
-    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
+    private MouseController MouseController => GameController.GetManager<MouseController>();
+    private CardCreationHelper CardCreationHelper => GameController.GetManager<CardCreationHelper>();
 
-    private CraftingController CraftingController => CoreGameController.GetManager<CraftingController>();
+    private CraftingController CraftingController => GameController.GetManager<CraftingController>();
 
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
-        CoreGameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted =>
         AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -46,7 +49,7 @@ public class CardController : GameManagerBase {
 
         cardInstance.Position = position;
         if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
-        CoreGameController.AddChild(cardInstance);
+        GameController.AddChild(cardInstance);
 
         return cardInstance;
     }
@@ -69,7 +72,7 @@ public class CardController : GameManagerBase {
         cardInstance.CardController = this;
 
         cardInstance.ZIndex = CardCount + 1;
-        CoreGameController.AddChild(cardInstance);
+        GameController.AddChild(cardInstance);
 
         return cardInstance;
     }
@@ -391,7 +394,7 @@ public class CardController : GameManagerBase {
 
         craftButtonInstance.CardController = this;
 
-        _gameController.AddChild(craftButtonInstance);
+        GameController.AddChild(craftButtonInstance);
     }
 
     /// <summary>

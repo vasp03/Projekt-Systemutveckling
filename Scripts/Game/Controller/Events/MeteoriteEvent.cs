@@ -17,6 +17,6 @@ public class MeteoriteEvent : IGameEvent {
         // randomize.Randomize();
         // meteorite.Position = new Vector2(randomize.RandfRange(100, 800), randomize.RandfRange(100, 500));
         // 
-        // cardParent.AddChild(meteorite);
+        // cardParent.MenuControllerNode.AddChild(meteorite);
     }
 }

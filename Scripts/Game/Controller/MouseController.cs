@@ -12,7 +12,7 @@ public class MouseController : GameManagerBase {
         loading
     }
 
-    private static readonly string path = "res://Assets/MouseCursor/";
+    private const string path = "res://Assets/MouseCursor/";
     private readonly Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
     private readonly Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
 
@@ -35,7 +35,7 @@ public class MouseController : GameManagerBase {
     private bool isLoading;
     private int loadingIndex;
 
-    public MouseController(GameController gameController) : base(gameController) {
+    public MouseController() {
         SetMouseCursor(MouseCursor.point_small);
     }
 

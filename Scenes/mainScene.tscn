@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=4 uid="uid://vpn6axvy6c6u"]
+[gd_scene load_steps=5 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://cbm0e65p06r5y" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 
@@ -14,7 +13,6 @@ tile_size = Vector2i(256, 256)
 sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_ly6xb")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

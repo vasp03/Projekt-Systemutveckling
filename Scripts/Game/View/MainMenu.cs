@@ -11,31 +11,29 @@ public partial class MainMenu : Control {
 	private Button continueButton;
 	private Button exitButton;
 	private Button guideButton;
-	private MenuController menuController;
 	private Button optionsButton;
 	private Button playButton;
 
-	private SoundController soundController;
+    public GameController GameController => IGameManager.GameControllerSingleton;
+    private SoundController soundController => GameController.GetManager<SoundController>();
+    private MenuController menuController => GameController.GetManager<MenuController>();
 
 	public override void _Ready() {
-		menuController = GetNode<MenuController>("/root/MenuController");
-		menuController.ConfigureWithNewMainMenuInstance(this);
-		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayMenuMusic();
 
-		continueButton = GetNode<Button>("ButtonContainer/ContinueButton");
+		continueButton = GetNode<Button>("Node/ButtonContainer/ContinueButton");
 		continueButton.Pressed += OnContinueButtonPressed;
 
-		playButton = GetNode<Button>("ButtonContainer/PlayButton");
+		playButton = GetNode<Button>("Node/ButtonContainer/PlayButton");
 		playButton.Pressed += OnPlayButtonPressed;
 
-		optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+		optionsButton = GetNode<Button>("Node/ButtonContainer/OptionsButton");
 		optionsButton.Pressed += OnOptionsButtonPressed;
 
-		guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+		guideButton = GetNode<Button>("Node/ButtonContainer/GuideButton");
 		guideButton.Pressed += OnGuideButtonPressed;
 
-		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+		exitButton = GetNode<Button>("Node/ButtonContainer/ExitButton");
 		exitButton.Pressed += OnExitButtonPressed;
 
 		if (!canContinue)
@@ -57,8 +55,10 @@ public partial class MainMenu : Control {
 	///     Starts new game.
 	/// </summary>
 	private void OnPlayButtonPressed() {
+        GetTree().Paused = false;
+        soundController.StopMusic();
+        this.QueueFree();
 		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
-		soundController.StopMusic();
 	}
 
 	/// <summary>
@@ -82,6 +82,7 @@ public partial class MainMenu : Control {
 	///     Closes the game.
 	/// </summary>
 	private void OnExitButtonPressed() {
-		GetTree().Quit();
-	}
+        GetTree().CurrentScene.QueueFree();
+        GetTree().Quit();
+    }
 }

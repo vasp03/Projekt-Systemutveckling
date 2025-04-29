@@ -4,14 +4,15 @@ using Goodot15.Scripts.Game.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Goodot15.Scripts.Game.Controller;
 
-public partial class DayTimeController : ITickable {
+public class DayTimeController : GameManagerBase, ITickable {
     private const int DayDuration = Utilities.TICKS_PER_DAY;
     private const double TicksPerSecond = Utilities.TICKS_PER_SECOND;
 
     private int CurrentTimeOfDay = 0;
 
-    private List<IDayTimeCallback> Callbacks = [];
+    private ICollection<IDayTimeCallback> Callbacks = [];
 
     private double TimeCountingToOneTick = 0;
 
@@ -30,20 +31,20 @@ public partial class DayTimeController : ITickable {
     ///   Ticks the day time controller
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
-    public void PreTick(double delta) {
+    public void PreTick() {
         if (IsPaused) {
             return;
         }
 
-        TimeCountingToOneTick += delta;
-        if (TimeCountingToOneTick < (1 / TicksPerSecond)) {
-            return;
-        } else {
-            TimeCountingToOneTick -= 1 / TicksPerSecond;
-        }
+        // TimeCountingToOneTick += delta;
+        // if (TimeCountingToOneTick < (1 / TicksPerSecond)) {
+        //     return;
+        // } else {
+        //     TimeCountingToOneTick -= 1 / TicksPerSecond;
+        // }
 
         // Update the current time of day
-        CurrentTimeOfDay += 1;
+        CurrentTimeOfDay++;
 
         // Check if the current time of day has reached the end of the day
         if (CurrentTimeOfDay > DayDuration) {
@@ -62,10 +63,6 @@ public partial class DayTimeController : ITickable {
     public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
         if (callback == null) {
             throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
-        }
-
-        if (Callbacks == null) {
-            Callbacks = [];
         }
 
         if (Callbacks.Contains(callback)) {

@@ -6,10 +6,10 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController : GameManagerBase {
-    public CraftingController(GameController gameController) : base(gameController) {
+    public CraftingController() {
     }
 
-    private CardCreationHelper CardCreationHelper => CoreGameController.GetManager<CardCreationHelper>();
+    private CardCreationHelper CardCreationHelper => GameController.GetManager<CardCreationHelper>();
 
     public List<CraftingRecipe> Recipes { get; private set; }
 
