@@ -28,7 +28,7 @@ public abstract class LivingAnimal(string textureAddress, bool movable)
         base.ExecuteTickLogic();
         if (ProduceTickProgress >= TicksUntilProducedCard) {
             ProduceTickProgress = 0;
-            CardNode.CardController.CreateCard(ProduceCard(), CardNode.Position + Vector2.Down * 15f);
+            CardNode.CardManager.CreateCard(ProduceCard(), CardNode.Position + Vector2.Down * 15f);
         }
     }
 }

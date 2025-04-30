@@ -15,11 +15,11 @@ public partial class MainMenu : Control {
     private Button playButton;
 
     public GameController GameController => IGameManager.GameControllerSingleton;
-    private SoundController soundController => GameController.GetManager<SoundController>();
-    private MenuController menuController => GameController.GetManager<MenuController>();
+    private SoundManager SoundManager => GameController.GetManager<SoundManager>();
+    private MenuManager MenuManager => GameController.GetManager<MenuManager>();
 
     public override void _Ready() {
-        soundController.PlayMenuMusic();
+        SoundManager.PlayMenuMusic();
 
         continueButton = GetNode<Button>("Node/ButtonContainer/ContinueButton");
         continueButton.Pressed += OnContinueButtonPressed;
@@ -55,10 +55,12 @@ public partial class MainMenu : Control {
     ///     Starts new game.
     /// </summary>
     private void OnPlayButtonPressed() {
+        
         GetTree().Paused = false;
-        soundController.StopMusic();
-        QueueFree();
+        SoundManager.StopMusic();
+        // QueueFree();
         GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
+        MenuManager.ClearPreviousMenu();
     }
 
     /// <summary>
@@ -66,7 +68,7 @@ public partial class MainMenu : Control {
     ///     Opens the options menu.
     /// </summary>
     private void OnOptionsButtonPressed() {
-        menuController.OpenOptionsMenu();
+        MenuManager.OpenOptionsMenu();
     }
 
     /// <summary>
@@ -74,7 +76,7 @@ public partial class MainMenu : Control {
     ///     Opens the guide menu.
     /// </summary>
     private void OnGuideButtonPressed() {
-        menuController.OpenGuideMenu();
+        MenuManager.OpenGuideMenu();
     }
 
     /// <summary>

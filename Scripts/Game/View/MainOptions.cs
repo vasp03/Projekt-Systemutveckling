@@ -13,22 +13,22 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
-    private MenuController menuController;
+    private MenuManager _menuManager;
     private Label musicVolumePercentageLabel;
 
     private HSlider musicVolumeSlider;
     private SettingsManager settingsManager;
     private Label sfxVolumePercentageLabel;
     private HSlider sfxVolumeSlider;
-    private SoundController soundController;
+    private SoundManager _soundManager;
     private OptionButton DisplayModeButton => GetNode<OptionButton>("Node/ButtonContainer/DisplayModeButton");
     private Button GoBackButton => GetNode<Button>("Node/GoBackButton");
 
     public override void _Ready() {
         GameController gameController = IGameManager.GameControllerSingleton;
-        menuController = gameController.GetManager<MenuController>();
+        _menuManager = gameController.GetManager<MenuManager>();
         settingsManager = gameController.GetManager<SettingsManager>();
-        soundController = gameController.GetManager<SoundController>();
+        _soundManager = gameController.GetManager<SoundManager>();
 
         musicVolumeSlider = GetNode<HSlider>("Node/ButtonContainer/MusicVolumeSlider");
         sfxVolumeSlider = GetNode<HSlider>("Node/ButtonContainer/SFXVolumeSlider");
@@ -44,13 +44,13 @@ public partial class MainOptions : Control {
         DisplayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
         GoBackButton.Pressed += OnBackButtonPressed;
 
-        musicVolumeSlider.Value = soundController.MusicVolume;
-        sfxVolumeSlider.Value = soundController.SfxVolume;
+        musicVolumeSlider.Value = _soundManager.MusicVolume;
+        sfxVolumeSlider.Value = _soundManager.SfxVolume;
 
         PopulateDisplayModeOptions();
         SetDisplayModeButton();
-        soundController.MusicVolume = settingsManager.MusicVolume;
-        soundController.SfxVolume = settingsManager.SfxVolume;
+        _soundManager.MusicVolume = settingsManager.MusicVolume;
+        _soundManager.SfxVolume = settingsManager.SfxVolume;
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public partial class MainOptions : Control {
     /// </summary>
     private void OnMusicVolumeChanged(double value) {
         settingsManager.SetMusicVolume((float)value);
-        GD.Print("Music volume changed to: " + soundController.MusicVolume);
+        GD.Print("Music volume changed to: " + _soundManager.MusicVolume);
 
         musicVolumePercentageLabel.Text = $"{value * 100:F0}%";
     }
@@ -70,7 +70,7 @@ public partial class MainOptions : Control {
     /// </summary>
     private void OnSfxVolumeChanged(double value) {
         settingsManager.SetSfxVolume((float)value);
-        GD.Print("SFX volume changed to: " + soundController.SfxVolume);
+        GD.Print("SFX volume changed to: " + _soundManager.SfxVolume);
 
         sfxVolumePercentageLabel.Text = $"{value * 100:F0}%";
     }
@@ -105,6 +105,6 @@ public partial class MainOptions : Control {
     ///     Goes back to the previous menu.
     /// </summary>
     private void OnBackButtonPressed() {
-        menuController.GoBackToPreviousMenu();
+        _menuManager.GoBackToPreviousMenu();
     }
 }

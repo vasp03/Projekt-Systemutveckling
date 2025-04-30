@@ -5,5 +5,5 @@ public interface IDayTimeCallback {
     /// <param name="dayState">The current day state.</param>
     /// <param name="ticks">The current time in ticks.</param>
     /// <remarks>Called every tick.</remarks>
-    public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks);
+    public void DayTimeChanged(DayTimeManager.DAY_STATE dayState, int ticks);
 }

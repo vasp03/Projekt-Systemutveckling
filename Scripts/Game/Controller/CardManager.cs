@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public class CardController : GameManagerBase {
+public class CardManager : GameManagerBase {
     public const string CARD_GROUP_NAME = "CARDS";
 
     private readonly List<CardNode> hoveredCards = [];
@@ -15,10 +15,10 @@ public class CardController : GameManagerBase {
 
     public Vector2 CraftButtonOffset { get; } = new(0, -110);
 
-    private MouseController MouseController => GameController.GetManager<MouseController>();
+    private MouseManager MouseManager => GameController.GetManager<MouseManager>();
     private CardCreationHelper CardCreationHelper => GameController.GetManager<CardCreationHelper>();
 
-    private CraftingController CraftingController => GameController.GetManager<CraftingController>();
+    private CraftingManager CraftingManager => GameController.GetManager<CraftingManager>();
 
     public int CardCount => AllCards.Count;
 
@@ -43,7 +43,7 @@ public class CardController : GameManagerBase {
         CardNode cardInstance = CreateCard();
 
         cardInstance.CardType = card;
-        cardInstance.CardController = this;
+        cardInstance.CardManager = this;
 
         cardInstance.Position = position;
         if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
@@ -67,7 +67,7 @@ public class CardController : GameManagerBase {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        cardInstance.CardController = this;
+        cardInstance.CardManager = this;
 
         cardInstance.ZIndex = CardCount + 1;
         GameController.AddChild(cardInstance);
@@ -79,147 +79,147 @@ public class CardController : GameManagerBase {
     ///     Creates the starting recipes for crafting.
     /// </summary>
     public void CreateStartingRecipes() {
-        CraftingController.AddRecipe(new CraftingRecipe("Jam",
+        CraftingManager.AddRecipe(new CraftingRecipe("Jam",
             ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "CookingPot"], ["Jam"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"],
             ["Tent"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry"]));
 
 
-        CraftingController.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"],
             ["Villager", "Villager", "Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"],
             ["Villager", "Villager", "Villager"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"],
             ["Villager", "Hunter", "Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"],
             ["Villager", "Hunter", "Villager"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"],
             ["Villager", "Blacksmith", "Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"],
             ["Villager", "Blacksmith", "Villager"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"],
             ["Villager", "Farmer", "Villager"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"],
             ["Villager", "Farmer", "Villager"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "House"],
             ["Hunter", "Hunter", "Hunter"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "Tent"],
             ["Hunter", "Hunter", "Hunter"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "House"],
             ["Hunter", "Blacksmith", "Hunter"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "Tent"],
             ["Hunter", "Blacksmith", "Hunter"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"],
             ["Hunter", "Farmer", "Hunter"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"],
             ["Hunter", "Farmer", "Hunter"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"],
             ["Blacksmith", "Blacksmith", "Blacksmith"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"],
             ["Blacksmith", "Blacksmith", "Blacksmith"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"],
             ["Blacksmith", "Farmer", "Blacksmith"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"],
             ["Blacksmith", "Farmer", "Blacksmith"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"],
             ["Farmer", "Farmer", "Farmer"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"],
             ["Farmer", "Farmer", "Farmer"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("House",
+        CraftingManager.AddRecipe(new CraftingRecipe("House",
             ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Greenhouse",
+        CraftingManager.AddRecipe(new CraftingRecipe("Greenhouse",
             ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Blacksmith"], ["Sand", "Sand", "Sand"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Farmer"], ["Sand"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Blacksmith"], ["Sand", "Sand", "Sand"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Farmer"], ["Sand"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"]));
 
-        CraftingController.AddRecipe(
+        CraftingManager.AddRecipe(
             new CraftingRecipe("FishingPole", ["Wood", "Wood", "FishingPole"], ["FishingPole"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Field",
+        CraftingManager.AddRecipe(new CraftingRecipe("Field",
             ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Campfire",
+        CraftingManager.AddRecipe(new CraftingRecipe("Campfire",
             ["Wood", "Wood", "Wood", "Sticks", "Sticks", "Leaves"], ["Campfire"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("CookingPot", ["Clay", "Clay", "Stick"], ["CookingPot"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("CookingPot", ["Clay", "Clay", "Stick"], ["CookingPot"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Bush",
+        CraftingManager.AddRecipe(new CraftingRecipe("Bush",
             ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"], ["Bush"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"],
+        CraftingManager.AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"],
             ["Meat", "Meat", "Meat"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Mine",
+        CraftingManager.AddRecipe(new CraftingRecipe("Mine",
             ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
+        CraftingManager.AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
     }
 
     /// <summary>
@@ -306,7 +306,7 @@ public class CardController : GameManagerBase {
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        MouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+        MouseManager.SetMouseCursor(MouseManager.MouseCursor.HAND_CLOSE);
         selectedCard = GetTopCardAtMousePosition();
         // SetTopZIndexForCard(selectedCard);
 
@@ -364,7 +364,7 @@ public class CardController : GameManagerBase {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        MouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
+        MouseManager.SetMouseCursor(MouseManager.MouseCursor.POINT_SMALL);
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(false);
 
@@ -380,7 +380,7 @@ public class CardController : GameManagerBase {
         // Checks if a card is supposed to have a craft button above it
         foreach (CardNode card in AllCards)
             if (Stacks.Contains(card) && card.CardType is IStackable stackable &&
-                CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
+                CraftingManager.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
                 AddCraftButton(card);
             } else {
                 if (card.CraftButton != null) {
@@ -406,7 +406,7 @@ public class CardController : GameManagerBase {
 
         craftButtonInstance.CardNode = cardNode;
 
-        craftButtonInstance.CardController = this;
+        craftButtonInstance.CardManager = this;
 
         GameController.AddChild(craftButtonInstance);
     }
@@ -426,7 +426,7 @@ public class CardController : GameManagerBase {
         if (!(cardNode.CardType is IStackable stackable)) return;
 
         // Check for the recipe
-        List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+        List<string> recipe = CraftingManager.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
         if (recipe == null) {
             GD.Print("No recipe found for the selected card.");
             return;

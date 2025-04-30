@@ -4,7 +4,7 @@ using Godot;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public class SoundController : GameManagerBase {
+public class SoundManager : GameManagerBase {
     private readonly IDictionary<string, AudioStream> _cachedMusic = new Dictionary<string, AudioStream>();
 
     private readonly IDictionary<string, AudioStream> _cachedSounds = new Dictionary<string, AudioStream>();
@@ -12,7 +12,7 @@ public class SoundController : GameManagerBase {
 
     private AudioStreamPlayer musicPlayer;
 
-    public SoundController() {
+    public SoundManager() {
         SetupMusicPlayer();
     }
 

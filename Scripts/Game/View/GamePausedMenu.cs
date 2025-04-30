@@ -7,24 +7,22 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
-    private MenuController menuController;
+    private MenuManager MenuManager => IGameManager.GameControllerSingleton.GetManager<MenuManager>();
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-
-        VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
+        VBoxContainer buttonContainer = GetNode<VBoxContainer>("Node/ButtonContainer");
         buttonContainer.Show();
 
-        Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
+        Button resumeButton = GetNode<Button>("Node/ButtonContainer/ResumeButton");
         resumeButton.Pressed += OnResumeButtonPressed;
 
-        Button guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+        Button guideButton = GetNode<Button>("Node/ButtonContainer/GuideButton");
         guideButton.Pressed += OnGuideButtonPressed;
 
-        Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+        Button optionsButton = GetNode<Button>("Node/ButtonContainer/OptionsButton");
         optionsButton.Pressed += OnOptionsButtonPressed;
 
-        Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
+        Button exitButton = GetNode<Button>("Node/ButtonContainer/ExitToMainMenuButton");
         exitButton.Pressed += OnExitButtonPressed;
     }
 
@@ -33,7 +31,7 @@ public partial class GamePausedMenu : Control {
     ///     Closes all the menus and resumes the game.
     /// </summary>
     private void OnResumeButtonPressed() {
-        menuController.CloseMenus();
+        MenuManager.CloseMenus();
     }
 
     /// <summary>
@@ -41,7 +39,7 @@ public partial class GamePausedMenu : Control {
     ///     Opens the guide menu.
     /// </summary>
     private void OnGuideButtonPressed() {
-        menuController.OpenGuideMenu();
+        MenuManager.OpenGuideMenu();
     }
 
     /// <summary>
@@ -49,7 +47,7 @@ public partial class GamePausedMenu : Control {
     ///     Opens the options menu.
     /// </summary>
     private void OnOptionsButtonPressed() {
-        menuController.OpenOptionsMenu();
+        MenuManager.OpenOptionsMenu();
     }
 
     /// <summary>

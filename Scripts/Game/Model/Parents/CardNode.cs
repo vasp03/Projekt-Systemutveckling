@@ -24,10 +24,10 @@ public partial class CardNode : Node2D {
     private Vector2 oldMousePosition;
 
     public CardNode() {
-        AddToGroup(CardController.CARD_GROUP_NAME);
+        AddToGroup(CardManager.CARD_GROUP_NAME);
     }
 
-    public CardController CardController { get; set; }
+    public CardManager CardManager { get; set; }
 
     private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
 
@@ -89,7 +89,7 @@ public partial class CardNode : Node2D {
         if (CardType is IStackable stackable) {
             CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
             if (neighbourAbove == null)
-                ZIndex = CardController.CardCount;
+                ZIndex = CardManager.CardCount;
             else
                 neighbourAbove.SetIsBeingDragged(isBeingDragged);
         }
@@ -192,7 +192,7 @@ public partial class CardNode : Node2D {
         }
 
         HoveredCards.Remove(this);
-        CardController.RemoveCardFromHoveredCards(this);
+        CardManager.RemoveCardFromHoveredCards(this);
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ public partial class CardNode : Node2D {
 
             Position += mousePosition - oldMousePosition;
 
-            if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
+            if (CraftButton != null) CraftButton.Position = Position + CardManager.CraftButtonOffset;
 
             oldMousePosition = mousePosition;
         }
@@ -245,12 +245,12 @@ public partial class CardNode : Node2D {
 
     public void _on_area_2d_mouse_entered() {
         MouseIsHovering = true;
-        CardController.AddCardToHoveredCards(this);
+        CardManager.AddCardToHoveredCards(this);
     }
 
     public void _on_area_2d_mouse_exited() {
         MouseIsHovering = false;
-        CardController.RemoveCardFromHoveredCards(this);
+        CardManager.RemoveCardFromHoveredCards(this);
     }
 
     public void _on_area_2d_area_entered(Area2D area) {

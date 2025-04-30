@@ -7,30 +7,29 @@ namespace Goodot15.Scripts.Game.Controller;
 /// <summary>
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
-public class MenuController : GameManagerBase {
+public class MenuManager : GameManagerBase {
     private readonly Node MenuControllerNode;
 
     private Control currentMenu;
     private Control previousMenu;
 
-
-    public MenuController() {
+    public MenuManager() {
         MenuControllerNode = new Node();
         GameController.AddChild(MenuControllerNode);
 
         OpenMainMenu();
     }
 
-    private static Control guideMenu =>
+    private readonly static Control guideMenu =
         GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn").Instantiate<Control>();
 
-    private static Control mainMenu =>
+    private readonly static Control mainMenu =
         GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn").Instantiate<Control>();
 
-    private static Control optionsMenu =>
+    private readonly static Control optionsMenu =
         GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn").Instantiate<Control>();
 
-    private static Control pauseMenu =>
+    private readonly static Control pauseMenu =
         GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn").Instantiate<Control>();
 
     /// <summary>
@@ -101,10 +100,15 @@ public class MenuController : GameManagerBase {
             previousMenu = currentMenu;
             currentMenu = newMenu;
 
-            if (previousMenu is not null) MenuControllerNode.RemoveChild(previousMenu);
             if (!currentMenu.IsInsideTree()) MenuControllerNode.AddChild(currentMenu);
+            
+            if (previousMenu is not null) MenuControllerNode.RemoveChild(previousMenu);
+            currentMenu.Visible = true;
+            
 
-            currentMenu.GlobalPosition = new Vector2(1280 / 2, 720 / 2);
+            currentMenu.GlobalPosition = new Vector2(GameController.GetWindow().Size[0]/2, GameController.GetWindow().Size[1]/2);
+            
+            (GameController.GetTree().CurrentScene as Node2D).Visible = false;
         }
         catch (Exception e) {
             GD.Print("stop with disposal of random objects godot");
@@ -119,6 +123,9 @@ public class MenuController : GameManagerBase {
         if (previousMenu is not null) {
             Control menuToSwitchTo = previousMenu;
             SwitchMenu(menuToSwitchTo);
+        } else {
+            // Menu is null; So it is likely the game we need to refocus
+            (GameController.GetTree().CurrentScene as Node2D).Visible = true;
         }
     }
 
@@ -126,14 +133,16 @@ public class MenuController : GameManagerBase {
     ///     Closes all the menus and resumes the game.
     /// </summary>
     public void CloseMenus() {
+        currentMenu.Visible = false;
+        
         foreach (Node menu in MenuControllerNode.GetChildren())
-            if (menu is Control controlMenu && controlMenu.IsInsideTree())
+            if (menu is Control controlMenu)
                 controlMenu.Visible = false;
 
         CurrentScene.GetTree().Paused = false;
-        GameController.Visible = true;
-        GameController.GetManager<DayTimeController>().SetPaused(false);
-        GameController.GetManager<SoundController>().MusicMuted = true;
+        (CurrentScene as Node2D).Visible = true;
+        GameController.GetManager<DayTimeManager>().SetPaused(false);
+        GameController.GetManager<SoundManager>().MusicMuted = true;
     }
 
     /// <summary>
@@ -164,5 +173,9 @@ public class MenuController : GameManagerBase {
 
     public bool IsPaused() {
         return CurrentScene.GetTree().Paused;
+    }
+
+    public void ClearPreviousMenu() {
+        previousMenu = null;
     }
 }

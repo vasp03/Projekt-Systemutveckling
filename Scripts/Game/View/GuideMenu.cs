@@ -22,7 +22,7 @@ public partial class GuideMenu : Control {
     private VBoxContainer foodList;
     private Button goBackButton;
 
-    private MenuController menuController;
+    private MenuManager _menuManager;
     private Button natureButton;
     private Button[] natureCardButtons;
     private VBoxContainer natureList;
@@ -40,7 +40,7 @@ public partial class GuideMenu : Control {
     private Button villagersButton;
 
     public override void _Ready() {
-        menuController = IGameManager.GameControllerSingleton.GetManager<MenuController>();
+        _menuManager = IGameManager.GameControllerSingleton.GetManager<MenuManager>();
         cardImage = GetNode<TextureRect>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
         descriptionLabel = GetNode<Label>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
         cardInfoLabel = GetNode<Label>("Node/TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");
@@ -413,7 +413,7 @@ public partial class GuideMenu : Control {
     /// </summary>
     private void OnGoBackButtonPressed() {
         ResetGuideMenu();
-        menuController.GoBackToPreviousMenu();
+        _menuManager.GoBackToPreviousMenu();
     }
 
     #endregion

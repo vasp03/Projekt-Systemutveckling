@@ -3,13 +3,13 @@ using Timer = Godot.Timer;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public class MouseController : GameManagerBase {
+public class MouseManager : GameManagerBase {
     public enum MouseCursor {
-        point,
-        point_small,
-        hand_open,
-        hand_close,
-        loading
+        POINT,
+        POINT_SMALL,
+        HAND_OPEN,
+        HAND_CLOSE,
+        LOADING
     }
 
     private const string path = "res://Assets/MouseCursor/";
@@ -35,28 +35,28 @@ public class MouseController : GameManagerBase {
     private bool isLoading;
     private int loadingIndex;
 
-    public MouseController() {
-        SetMouseCursor(MouseCursor.point_small);
+    public MouseManager() {
+        SetMouseCursor(MouseCursor.POINT_SMALL);
     }
 
     public bool SetMouseCursor(MouseCursor cursor) {
-        if (cursor != MouseCursor.loading && isLoading) stopLoading();
+        if (cursor != MouseCursor.LOADING && isLoading) StopLoading();
 
         switch (cursor) {
-            case MouseCursor.point:
+            case MouseCursor.POINT:
                 Input.SetCustomMouseCursor(point, Input.CursorShape.Arrow, offset);
                 return true;
-            case MouseCursor.point_small:
+            case MouseCursor.POINT_SMALL:
                 Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
                 return true;
-            case MouseCursor.hand_open:
+            case MouseCursor.HAND_OPEN:
                 Input.SetCustomMouseCursor(hand_open, Input.CursorShape.Arrow, offset);
                 return true;
-            case MouseCursor.hand_close:
+            case MouseCursor.HAND_CLOSE:
                 Input.SetCustomMouseCursor(hand_close, Input.CursorShape.Arrow, offset);
                 return true;
-            case MouseCursor.loading:
-                if (!isLoading) startLoading();
+            case MouseCursor.LOADING:
+                if (!isLoading) StartLoading();
                 return true;
             default:
                 Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
@@ -64,7 +64,7 @@ public class MouseController : GameManagerBase {
         }
     }
 
-    private void startLoading() {
+    private void StartLoading() {
         isLoading = true;
         loadingIndex = 0;
         if (loadingTimer == null) return;
@@ -74,11 +74,11 @@ public class MouseController : GameManagerBase {
         loadingTimer.Start();
     }
 
-    private void stopLoading() {
+    private void StopLoading() {
         isLoading = false;
         loadingIndex = 0;
         loadingTimer.Stop();
-        SetMouseCursor(MouseCursor.point);
+        SetMouseCursor(MouseCursor.POINT);
     }
 
     private void LoadingThread() {

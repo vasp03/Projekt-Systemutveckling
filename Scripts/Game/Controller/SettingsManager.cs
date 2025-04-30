@@ -8,7 +8,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class SettingsManager : GameManagerBase {
     private const string ConfigFilePath = "user://settings.cfg";
 
-    private SoundController soundController => GameController.GetManager<SoundController>();
+    private SoundManager SoundManager => GameController.GetManager<SoundManager>();
 
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
@@ -55,7 +55,7 @@ public class SettingsManager : GameManagerBase {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetMusicVolume(float volume) {
-        soundController.MusicVolume = volume;
+        SoundManager.MusicVolume = volume;
         MusicVolume = volume;
         SaveConfig();
     }
@@ -65,7 +65,7 @@ public class SettingsManager : GameManagerBase {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetSfxVolume(float volume) {
-        soundController.SfxVolume = volume;
+        SoundManager.SfxVolume = volume;
         SfxVolume = volume;
         SaveConfig();
     }

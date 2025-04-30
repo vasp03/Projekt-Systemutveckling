@@ -4,7 +4,7 @@ using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
-public class DayTimeController : GameManagerBase, ITickable {
+public class DayTimeManager : GameManagerBase, ITickable {
     public enum DAY_STATE {
         Night,
         Morning,

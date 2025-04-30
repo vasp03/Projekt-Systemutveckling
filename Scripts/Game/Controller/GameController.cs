@@ -12,11 +12,11 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class GameController : Node2D {
     private static readonly int a = 0;
 
-    private readonly IList<IGameManager> managers = [];
-    private readonly List<int> numberList = new();
+    private readonly IDictionary<Type,IGameManager> managers = new Dictionary<Type,IGameManager>();
+    private readonly List<int> numberList = [];
 
-    private CardController CardController => GetManager<CardController>();
-    private MenuController menuController => GetManager<MenuController>();
+    private CardManager CardManager => GetManager<CardManager>();
+    private MenuManager MenuManager => GetManager<MenuManager>();
 
     public override void _Ready() {
         RegisterDefaultManagers();
@@ -39,91 +39,96 @@ public partial class GameController : Node2D {
     }
 
     public override void _ExitTree() {
-        foreach (IGameManager gameManager in managers) gameManager.OnUnload();
+        foreach (IGameManager gameManager in managers.Values) gameManager.OnUnload();
     }
 
     private void PostReadyEventForManagers() {
-        foreach (IGameManager manager in managers) manager.OnReady();
+        foreach (IGameManager manager in managers.Values) manager.OnReady();
     }
 
     public T RegisterManager<T>(T manager) where T : IGameManager {
-        ArgumentNullException.ThrowIfNull(manager, "Manager cannot be null");
-        if (managers.Any(e => e.GetType() == manager.GetType()))
+        ArgumentNullException.ThrowIfNull(manager);
+        if (managers.ContainsKey(typeof(T))) {
             throw new InvalidOperationException("Cannot register a duplicate manager");
-
+        }
+        
         GD.Print($"Registering manager {manager.GetType().FullName}");
-
-        managers.Add(manager);
-
+        
+        managers.Add(typeof(T), manager);
+        
         return manager;
     }
 
     public T GetManager<T>() where T : IGameManager {
-        IGameManager manager = managers.FirstOrDefault(e => e.GetType() == typeof(T));
-        if (manager is null)
-            throw new InvalidOperationException(
-                $"Cannot get manager of type {typeof(T).FullName} as it is not registered");
+        if (!managers.TryGetValue(typeof(T), out IGameManager? manager)) {
+            throw new InvalidOperationException($"Cannot get manager of type {typeof(T).FullName} as it is not registered");
+        }
 
         GD.Print($"Returning manager {manager.GetType().FullName}");
         return (T)manager;
     }
 
     private void RegisterDefaultManagers() {
-        GD.Print($"{a} times");
         RegisterManager(new SettingsManager());
-        RegisterManager(new SoundController());
-        RegisterManager(new MouseController());
-        RegisterManager(new CraftingController());
+        RegisterManager(new SoundManager());
+        RegisterManager(new MouseManager());
+        RegisterManager(new CraftingManager());
         RegisterManager(new CardCreationHelper());
-        RegisterManager(new CardController());
+        RegisterManager(new CardManager());
         RegisterManager(new GameEventManager());
-        RegisterManager(new MenuController());
+        RegisterManager(new MenuManager());
 
-        RegisterManager(new DayTimeController());
+        RegisterManager(new DayTimeManager());
         //		DayTimeEvent = new DayTimeEvent(this);
         //  		DayTimeController.AddCallback(DayTimeEvent);
         // 
     }
 
     private void ConfigureDefaultManagers() {
-        GetManager<MenuController>().SetNodeController(this);
+        GetManager<MenuManager>().SetNodeController(this);
 
-        GetManager<DayTimeController>().AddCallback(new DayTimeEvent());
+        GetManager<DayTimeManager>().AddCallback(new DayTimeEvent());
     }
 
     public override void _Input(InputEvent @event) {
-        if (@event is InputEventKey eventKey && eventKey.Pressed) {
-            switch (eventKey.Keycode) {
-                case Key.Escape:
-                    menuController.OpenPauseMenu();
-                    // DayTimeController.SetPaused(true);
-                    GetManager<SoundController>().MusicMuted = true;
-                    Visible = false;
-                    break;
-                case Key.Space:
-                    CardController.CreateCard("Random", Vector2.One * 100);
-                    break;
-                case Key.D:
-                    // CardController.PrintCardsNeighbours();
-                    break;
-                case Key.Key0:
-                case Key.Key1:
-                case Key.Key2:
-                case Key.Key3:
-                case Key.Key4:
-                case Key.Key5:
-                case Key.Key6:
-                case Key.Key7:
-                case Key.Key8:
-                case Key.Key9:
-                    MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
-                    break;
+        switch (@event)
+        {
+            case InputEventKey eventKey when eventKey.Pressed:
+                switch (eventKey.Keycode) {
+                    case Key.Escape:
+                        MenuManager.OpenPauseMenu();
+                        // DayTimeController.SetPaused(true);
+                        GetManager<SoundManager>().MusicMuted = true;
+                        Visible = false;
+                        break;
+                    case Key.Space:
+                        CardManager.CreateCard("Random", Vector2.One * 100);
+                        break;
+                    case Key.D:
+                        // CardController.PrintCardsNeighbours();
+                        break;
+                    case Key.Key0:
+                    case Key.Key1:
+                    case Key.Key2:
+                    case Key.Key3:
+                    case Key.Key4:
+                    case Key.Key5:
+                    case Key.Key6:
+                    case Key.Key7:
+                    case Key.Key8:
+                    case Key.Key9:
+                        MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
+                        break;
+                }
+
+                break;
+            case InputEventMouseButton mouseButton: {
+                if (mouseButton.Pressed)
+                    CardManager.LeftMouseButtonPressed();
+                else
+                    CardManager.LeftMouseButtonReleased();
+                break;
             }
-        } else if (@event is InputEventMouseButton mouseButton) {
-            if (mouseButton.Pressed)
-                CardController.LeftMouseButtonPressed();
-            else
-                CardController.LeftMouseButtonReleased();
         }
     }
 
@@ -139,7 +144,7 @@ public partial class GameController : Node2D {
             for (int i = 0; i < numberList.Count; i++) numbers.Append(numberList[i]);
 
             // Create a new card with the numbers in the list
-            CardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
+            CardManager.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
             numberList.Clear();
         }
@@ -147,6 +152,8 @@ public partial class GameController : Node2D {
 
     // Set the scene darknes
     public void SetSceneDarkness(float darkness) {
+        // if (GetTree().CurrentScene is null)
+        //     return;
         // Clamp darkness between 0 (bright) and 1 (completely dark)
         darkness = Mathf.Clamp(darkness, 0, 1);
 
@@ -171,7 +178,7 @@ public partial class GameController : Node2D {
     }
 
     public override void _PhysicsProcess(double delta) {
-        foreach (IGameManager gameManager in managers) {
+        foreach (IGameManager gameManager in managers.Values) {
             ITickable? tickableGameManager = gameManager as ITickable;
             tickableGameManager?.PreTick();
             tickableGameManager?.PostTick();
@@ -179,6 +186,6 @@ public partial class GameController : Node2D {
     }
 
     public bool IsPaused() {
-        return menuController.IsPaused();
+        return MenuManager.IsPaused();
     }
 }
