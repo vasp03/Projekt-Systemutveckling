@@ -20,16 +20,16 @@ public class MenuManager : GameManagerBase {
         OpenMainMenu();
     }
 
-    private readonly static Control guideMenu =
+    private static Control guideMenu =>
         GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn").Instantiate<Control>();
 
-    private readonly static Control mainMenu =
+    private static Control mainMenu =>
         GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn").Instantiate<Control>();
 
-    private readonly static Control optionsMenu =
+    private static Control optionsMenu =>
         GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn").Instantiate<Control>();
 
-    private readonly static Control pauseMenu =
+    private static Control pauseMenu =>
         GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn").Instantiate<Control>();
 
     /// <summary>
@@ -101,7 +101,7 @@ public class MenuManager : GameManagerBase {
 
             if (!currentMenu.IsInsideTree()) MenuControllerNode.AddChild(currentMenu);
             
-            if (previousMenu is not null) MenuControllerNode.RemoveChild(previousMenu);
+            if (previousMenu is not null) previousMenu.QueueFree();
             currentMenu.Visible = true;
             
 

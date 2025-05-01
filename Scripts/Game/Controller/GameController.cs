@@ -190,4 +190,11 @@ public partial class GameController : Node2D {
             tickableGameManager?.PostTick();
         }
     }
+
+    public void ResetManagerStates() {
+        this.GamePaused = true;
+        foreach (IGameManager gameManager in managers.Values) {
+            gameManager.OnReset();
+        }
+    }
 }

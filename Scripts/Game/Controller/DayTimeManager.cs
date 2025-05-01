@@ -112,4 +112,7 @@ public class DayTimeManager : GameManagerBase, ITickable {
     //         foreach (IDayTimeCallback callback in Callbacks)
     //             callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
     // }
+    public override void OnReset() {
+        this.CurrentTimeOfDay = 0;
+    }
 }

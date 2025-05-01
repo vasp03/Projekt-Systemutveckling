@@ -12,4 +12,7 @@ public class GameManagerBase : IGameManager {
 
     public virtual void OnUnload() {
     }
+
+    public virtual void OnReset() {
+    }
 }

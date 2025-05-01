@@ -22,4 +22,6 @@ public interface IGameManager {
 
     public virtual void OnUnload() {
     }
+
+    public virtual void OnReset() {}
 }
