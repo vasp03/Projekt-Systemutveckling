@@ -51,8 +51,7 @@ public class MenuManager : GameManagerBase {
     ///     Loads and opens the pause menu.
     /// </summary>
     public void OpenPauseMenu() {
-        if (CurrentScene.GetTree().Paused) return;
-        CurrentScene.GetTree().Paused = true;
+        GameController.GamePaused = true;
 
         // if (pauseMenu == null) {
         //     PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -141,7 +140,8 @@ public class MenuManager : GameManagerBase {
 
         CurrentScene.GetTree().Paused = false;
         (CurrentScene as Node2D).Visible = true;
-        GameController.GetManager<DayTimeManager>().SetPaused(false);
+        GameController.GamePaused = false;
+        // GameController.GetManager<DayTimeManager>().SetPaused(false);
         GameController.GetManager<SoundManager>().MusicMuted = true;
     }
 
@@ -153,26 +153,22 @@ public class MenuManager : GameManagerBase {
         // GameController = gameController;
     }
 
-    /// <summary>
-    ///     Configures the MenuController with a new instance of the MainMenu.
-    /// </summary>
-    /// <param name="menu">The new main menu instance to configure with</param>
-    public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
-        // mainMenu = menu;
-        // currentMenu = menu;
-
-        CurrentScene.GetTree().Paused = false;
-    }
+    // /// <summary>
+    // ///     Configures the MenuController with a new instance of the MainMenu.
+    // /// </summary>
+    // /// <param name="menu">The new main menu instance to configure with</param>
+    // public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
+    //     // mainMenu = menu;
+    //     // currentMenu = menu;
+// 
+    //     CurrentScene.GetTree().Paused = false;
+    // }
 
     /// <summary>
     ///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
     /// </summary>
     public override void OnUnload() {
         MenuControllerNode.QueueFree();
-    }
-
-    public bool IsPaused() {
-        return CurrentScene.GetTree().Paused;
     }
 
     public void ClearPreviousMenu() {

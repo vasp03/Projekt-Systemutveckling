@@ -21,7 +21,7 @@ public class DayTimeManager : GameManagerBase, ITickable {
 
     private int CurrentTimeOfDay;
 
-    private bool IsPaused;
+    // private bool IsPaused;
 
     private double TimeCountingToOneTick = 0;
 
@@ -30,7 +30,7 @@ public class DayTimeManager : GameManagerBase, ITickable {
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
     public void PreTick() {
-        if (IsPaused) return;
+        if (GameController.GamePaused) return;
 
         // TimeCountingToOneTick += delta;
         // if (TimeCountingToOneTick < (1 / TicksPerSecond)) {
@@ -102,14 +102,14 @@ public class DayTimeManager : GameManagerBase, ITickable {
         return ticks / 10;
     }
 
-    public void SetPaused(bool paused) {
-        IsPaused = paused;
-
-        if (IsPaused)
-            foreach (IDayTimeCallback callback in Callbacks)
-                callback.DayTimeChanged(DAY_STATE.Paused, CurrentTimeOfDay);
-        else
-            foreach (IDayTimeCallback callback in Callbacks)
-                callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
-    }
+    // public void SetPaused(bool paused) {
+    //     IsPaused = paused;
+// 
+    //     if (IsPaused)
+    //         foreach (IDayTimeCallback callback in Callbacks)
+    //             callback.DayTimeChanged(DAY_STATE.Paused, CurrentTimeOfDay);
+    //     else
+    //         foreach (IDayTimeCallback callback in Callbacks)
+    //             callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+    // }
 }

@@ -55,8 +55,8 @@ public partial class MainMenu : Control {
     ///     Starts new game.
     /// </summary>
     private void OnPlayButtonPressed() {
-        
-        GetTree().Paused = false;
+
+        GameController.GamePaused = false;
         SoundManager.StopMusic();
         // QueueFree();
         GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");

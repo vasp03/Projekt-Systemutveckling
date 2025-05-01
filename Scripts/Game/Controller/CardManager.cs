@@ -46,8 +46,8 @@ public class CardManager : GameManagerBase {
         cardInstance.CardManager = this;
 
         cardInstance.Position = position;
-        if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
-        GameController.AddChild(cardInstance);
+        // if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
+        // GameController.AddChild(cardInstance);
 
         return cardInstance;
     }
@@ -70,7 +70,7 @@ public class CardManager : GameManagerBase {
         cardInstance.CardManager = this;
 
         cardInstance.ZIndex = CardCount + 1;
-        GameController.AddChild(cardInstance);
+        GameController.GetTree().CurrentScene.AddChild(cardInstance);
 
         return cardInstance;
     }

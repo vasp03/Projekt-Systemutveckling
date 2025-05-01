@@ -15,8 +15,14 @@ public partial class GameController : Node2D {
     private readonly IDictionary<Type,IGameManager> managers = new Dictionary<Type,IGameManager>();
     private readonly List<int> numberList = [];
 
+    public bool GamePaused { get; set; } = true;
+
     private CardManager CardManager => GetManager<CardManager>();
     private MenuManager MenuManager => GetManager<MenuManager>();
+
+    public GameController() {
+        ProcessMode = ProcessModeEnum.Always;
+    }
 
     public override void _Ready() {
         RegisterDefaultManagers();
@@ -35,7 +41,7 @@ public partial class GameController : Node2D {
     // }
 
     private void FirstTimeStart() {
-        GetTree().Paused = true;
+        // GetTree().Paused = true;
     }
 
     public override void _ExitTree() {
@@ -102,7 +108,7 @@ public partial class GameController : Node2D {
                         Visible = false;
                         break;
                     case Key.Space:
-                        CardManager.CreateCard("Random", Vector2.One * 100);
+                            CardManager.CreateCard("Random", Vector2.One * 100);
                         break;
                     case Key.D:
                         // CardController.PrintCardsNeighbours();
@@ -183,9 +189,5 @@ public partial class GameController : Node2D {
             tickableGameManager?.PreTick();
             tickableGameManager?.PostTick();
         }
-    }
-
-    public bool IsPaused() {
-        return MenuManager.IsPaused();
     }
 }
