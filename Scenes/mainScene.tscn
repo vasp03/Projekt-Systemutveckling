@@ -28,7 +28,7 @@ scale = Vector2(5.508, 3.272)
 texture = ExtResource("2_hewda")
 
 [node name="DayTimeLabel" type="Label" parent="CanvasLayer"]
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1134.0
