@@ -9,10 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public class GameEventManager : GameManagerBase, ITickable {
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
-    private readonly IList<IGameEvent> registedEvents = [];
-
-    private Random random = new();
-
+    private readonly IList<IGameEvent> registeredEvents = [];
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
@@ -21,7 +18,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     public void PostTick() {
-        foreach (IGameEvent registeredEvent in registedEvents) {
+        foreach (IGameEvent registeredEvent in registeredEvents) {
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
@@ -32,7 +29,7 @@ public class GameEventManager : GameManagerBase, ITickable {
                 eventTicks[registeredEvent]++;
             }
 
-            GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
+            // GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
         }
     }
 
@@ -42,7 +39,7 @@ public class GameEventManager : GameManagerBase, ITickable {
 
     public void RegisterEvent(IGameEvent gameEvent) {
         eventTicks.TryAdd(gameEvent, 0);
-        registedEvents.Add(gameEvent);
+        registeredEvents.Add(gameEvent);
     }
 
     private void PostEvent(GameEventContext gameEventContext) {

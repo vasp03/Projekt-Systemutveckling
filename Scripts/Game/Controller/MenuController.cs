@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.View;
 /// </summary>
 public partial class MenuController : Node {
     private Control currentMenu;
-    private GameController GameController;
+    private Goodot15.Scripts.Game.Controller.GameController GameController;
     private Control guideMenu;
 
     private Control mainMenu;
@@ -123,7 +123,7 @@ public partial class MenuController : Node {
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
-    public void SetNodeController(GameController gameController) {
+    public void SetNodeController(Goodot15.Scripts.Game.Controller.GameController gameController) {
         GameController = gameController;
     }
 

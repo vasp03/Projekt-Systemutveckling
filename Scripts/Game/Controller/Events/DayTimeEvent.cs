@@ -4,11 +4,11 @@ using Godot;
 public class DayTimeEvent : IDayTimeCallback {
     private DayTimeController.DAY_STATE OldDayState;
 
-    private GameController GameController;
+    private Goodot15.Scripts.Game.Controller.GameController GameController;
 
     private DateTime LastTickTime = DateTime.Now;
 
-    public DayTimeEvent(GameController gameController) {
+    public DayTimeEvent(Goodot15.Scripts.Game.Controller.GameController gameController) {
         OldDayState = DayTimeController.DAY_STATE.Invalid;
         GameController = gameController;
     }
