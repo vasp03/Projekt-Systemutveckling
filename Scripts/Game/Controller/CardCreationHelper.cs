@@ -46,7 +46,7 @@ public class CardCreationHelper : GameManagerBase {
     public CardCreationHelper(GameController gameController) : base(gameController) {
     }
 
-    private CardController CardController => CoreGameController.GetManager<CardController>();
+    private CardController CardController => CoreGameController.GetCardController();
 
     public string GetRandomCardType() {
         Random random = new();

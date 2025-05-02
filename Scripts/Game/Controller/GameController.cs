@@ -15,7 +15,7 @@ public partial class GameController : Node2D {
 	private DayTimeEvent DayTimeEvent;
 
 	public override void _Ready() {
-		mouseController = new MouseController();
+		mouseController = new MouseController(this);
 		cardController = new CardController(this, mouseController);
 		DayTimeController = new DayTimeController();
 

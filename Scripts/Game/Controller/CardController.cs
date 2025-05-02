@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
@@ -24,7 +25,7 @@ public class CardController {
     public CardController(GameController gameController, MouseController mouseController) {
         _gameController = gameController;
         _mouseController = mouseController;
-        CardCreationHelper = new CardCreationHelper(gameController, this);
+        CardCreationHelper = new CardCreationHelper(gameController);
         CraftingController = new CraftingController(CardCreationHelper);
 
         CreateStartingRecipes();

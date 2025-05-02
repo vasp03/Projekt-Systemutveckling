@@ -48,7 +48,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     private void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         // Fires the event to all cards as well for those cards that are listening to any game events
-        CoreGameController.GetManager<CardController>().AllCards.ToList().ForEach(e => {
+        CoreGameController.GetCardController().AllCards.ToList().ForEach(e => {
             if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
         });
     }
