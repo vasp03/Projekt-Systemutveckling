@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://burm1lfkod20f"]
+
+[ext_resource type="Script" uid="uid://b1xetuoemdmkq" path="res://Scripts/Game/Controller/TimeHudController.cs" id="1_xkrj2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m46en"]
+font_size = 51
+
+[node name="TimeHud" type="Control" node_paths=PackedStringArray("Label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xkrj2")
+Label = NodePath("Panel/Label")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1134.0
+offset_bottom = -647.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+text = "36000"
+label_settings = SubResource("LabelSettings_m46en")
