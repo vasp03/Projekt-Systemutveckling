@@ -144,15 +144,4 @@ public class CardCreationHelper {
                 return new ErrorCard();
         }
     }
-
-    // public void CreateCard(string type) {
-    //     PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-    //     CardNode cardInstance = cardScene.Instantiate<CardNode>();
-// 
-    //     _cardController.CreateCard(GetCreatedInstanceOfCard(type), Vector2.One * 100);
-// 
-    //     cardInstance.ZIndex = _cardController.CardCount + 1;
-    //     cardInstance.SetPosition(new Vector2(100, 100));
-    //     _gameController.AddChild(cardInstance);
-    // }
 }

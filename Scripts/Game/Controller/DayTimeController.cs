@@ -17,6 +17,14 @@ public partial class DayTimeController : ITickable {
 
     private bool IsPaused = false;
 
+    private GameController GameController;
+
+    private Label Label;
+
+    public DayTimeController(GameController gameController) {
+        GameController = gameController;
+    }
+
     public enum DAY_STATE {
         Night,
         Morning,
@@ -53,10 +61,23 @@ public partial class DayTimeController : ITickable {
         foreach (IDayTimeCallback callback in Callbacks) {
             callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
         }
+
+        GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
     }
 
     public void PostTick() {
         // This method is not in use right now
+    }
+
+    // Method that converts a range of 0 to DayDuration to normal clock time
+    public string GetTimeOfDay(int ticks) {
+        int hours = ticks / (DayDuration / 24);
+        int minutes = ticks % (DayDuration / 24) * 60 / (DayDuration / 24);
+
+        // Round minutes to the nearest 10 minutes
+        minutes = (int)Math.Round(minutes / 10.0) * 10;
+
+        return $"{hours:D2}:{minutes:D2}";
     }
 
     public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
@@ -73,6 +94,7 @@ public partial class DayTimeController : ITickable {
         }
 
         Callbacks.Add(callback);
+
         return callback;
     }
 

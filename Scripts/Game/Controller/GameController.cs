@@ -13,11 +13,12 @@ public partial class GameController : Node2D {
 	private SoundController soundController;
 	private DayTimeController DayTimeController;
 	private DayTimeEvent DayTimeEvent;
+	[Export] public Label TimeLabel { get; private set; }
 
 	public override void _Ready() {
 		mouseController = new MouseController();
 		cardController = new CardController(this, mouseController);
-		DayTimeController = new DayTimeController();
+		DayTimeController = new DayTimeController(this);
 
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
