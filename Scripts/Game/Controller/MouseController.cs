@@ -1,7 +1,9 @@
 using Godot;
 using Timer = Godot.Timer;
 
-public partial class MouseController : Node {
+namespace Goodot15.Scripts.Game.Controller;
+
+public class MouseController : GameManagerBase {
     public enum MouseCursor {
         point,
         point_small,
@@ -11,12 +13,10 @@ public partial class MouseController : Node {
     }
 
     private static readonly string path = "res://Assets/MouseCursor/";
-    private Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
-    private Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
-    private bool isLoading;
-    private int loadingIndex;
+    private readonly Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
+    private readonly Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
 
-    private Resource[] loadingResources = [
+    private readonly Resource[] loadingResources = [
         ResourceLoader.Load(path + "loading_1.png"),
         ResourceLoader.Load(path + "loading_2.png"),
         ResourceLoader.Load(path + "loading_3.png"),
@@ -27,13 +27,15 @@ public partial class MouseController : Node {
         ResourceLoader.Load(path + "loading_8.png")
     ];
 
-    private Timer loadingTimer = new();
-    private Vector2 offset = new(12, 12);
+    private readonly Timer loadingTimer = new();
+    private readonly Vector2 offset = new(12, 12);
 
-    private Resource point = ResourceLoader.Load(path + "point.png");
-    private Resource point_small = ResourceLoader.Load(path + "point_small.png");
+    private readonly Resource point = ResourceLoader.Load(path + "point.png");
+    private readonly Resource point_small = ResourceLoader.Load(path + "point_small.png");
+    private bool isLoading;
+    private int loadingIndex;
 
-    public MouseController() {
+    public MouseController(GameController gameController) : base(gameController) {
         SetMouseCursor(MouseCursor.point_small);
     }
 
@@ -66,7 +68,8 @@ public partial class MouseController : Node {
         isLoading = true;
         loadingIndex = 0;
         if (loadingTimer == null) return;
-        loadingTimer.Connect("timeout", new Callable(this, nameof(LoadingThread)));
+        loadingTimer.Timeout += LoadingThread;
+        // loadingTimer.Connect("timeout", new Callable(this, nameof(LoadingThread)));
         loadingTimer.WaitTime = 0.200;
         loadingTimer.Start();
     }

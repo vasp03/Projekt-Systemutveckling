@@ -2,7 +2,9 @@ using System;
 using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class CardCreationHelper {
+namespace Goodot15.Scripts.Game.Controller;
+
+public class CardCreationHelper : GameManagerBase {
     public enum TypeEnum {
         Wood,
         Stone,
@@ -41,13 +43,10 @@ public class CardCreationHelper {
         Random
     }
 
-    private readonly CardController _cardController;
-    private readonly GameController _gameController;
-
-    public CardCreationHelper(GameController gameController, CardController CardController) {
-        _gameController = gameController;
-        _cardController = CardController;
+    public CardCreationHelper(GameController gameController) : base(gameController) {
     }
+
+    private CardController CardController => CoreGameController.GetCardController();
 
     public string GetRandomCardType() {
         Random random = new();

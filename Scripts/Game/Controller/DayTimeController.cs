@@ -4,6 +4,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Goodot15.Scripts.Game.Controller;
 
 public partial class DayTimeController : ITickable {
     private const int DayDuration = Utilities.TICKS_PER_DAY;

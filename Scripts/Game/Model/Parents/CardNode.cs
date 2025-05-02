@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
