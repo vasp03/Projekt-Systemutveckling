@@ -10,7 +10,7 @@ public partial class PackController : Node {
 
     [Export] public PackedScene PackButtonScene;
     [Export] public PackedScene StarterPackScene;
-    [Export] public List<PackedScene> ThemedPackScene;
+    [Export] public PackedScene[] ThemedPackScene;
 
     public override void _Ready() {
         _gameController = GetNode<GameController>("/root/GameController");
