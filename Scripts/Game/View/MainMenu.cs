@@ -1,36 +1,87 @@
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 
+namespace Goodot15.Scripts.Game.View;
+
+/// <summary>
+///     Class representing the main menu of the game.
+/// </summary>
 public partial class MainMenu : Control {
-    private Button exitButton;
+	private readonly bool canContinue = false;
+	private Button continueButton;
+	private Button exitButton;
+	private Button guideButton;
+	private MenuController menuController;
+	private Button optionsButton;
+	private Button playButton;
 
-    private MenuController menuController;
-    private Button optionsButton;
-    private Button playButton;
+	private SoundController soundController;
 
-    public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-        menuController.configureWithNewMainMenuInstance(this);
+	public override void _Ready() {
+		menuController = GetNode<MenuController>("/root/MenuController");
+		menuController.ConfigureWithNewMainMenuInstance(this);
+		soundController = GetNode<SoundController>("/root/SoundController");
+		soundController.PlayMenuMusic();
 
-        playButton = GetNode<Button>("ButtonContainer/PlayButton");
-        playButton.Pressed += OnPlayButtonPressed;
+		continueButton = GetNode<Button>("ButtonContainer/ContinueButton");
+		continueButton.Pressed += OnContinueButtonPressed;
 
-        optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
-        optionsButton.Pressed += OnOptionsButtonPressed;
+		playButton = GetNode<Button>("ButtonContainer/PlayButton");
+		playButton.Pressed += OnPlayButtonPressed;
 
-        exitButton = GetNode<Button>("ButtonContainer/ExitButton");
-        exitButton.Pressed += OnExitButtonPressed;
-    }
+		optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+		optionsButton.Pressed += OnOptionsButtonPressed;
 
-    private void OnPlayButtonPressed() {
-        GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
-    }
+		guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+		guideButton.Pressed += OnGuideButtonPressed;
 
-    private void OnOptionsButtonPressed() {
-        menuController.OpenOptionsMenu();
-    }
+		exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+		exitButton.Pressed += OnExitButtonPressed;
 
-    private void OnExitButtonPressed() {
-        GetTree().Quit();
-    }
+		if (!canContinue)
+			continueButton.Disabled = true;
+		else
+			continueButton.Disabled = false;
+	}
+
+	/// <summary>
+	///     Handles the button press event for the continue button.
+	///     Continues the saved game if available.
+	/// </summary>
+	private void OnContinueButtonPressed() {
+		//continue saved game
+	}
+
+	/// <summary>
+	///     Handles the button press event for the play button.
+	///     Starts new game.
+	/// </summary>
+	private void OnPlayButtonPressed() {
+		GetTree().ChangeSceneToFile("res://Scenes/mainScene.tscn");
+		soundController.StopMusic();
+	}
+
+	/// <summary>
+	///     Handles the button press event for the options button.
+	///     Opens the options menu.
+	/// </summary>
+	private void OnOptionsButtonPressed() {
+		menuController.OpenOptionsMenu();
+	}
+
+	/// <summary>
+	///     Handles the button press event for the guide button.
+	///     Opens the guide menu.
+	/// </summary>
+	private void OnGuideButtonPressed() {
+		menuController.OpenGuideMenu();
+	}
+
+	/// <summary>
+	///     Handles the button press event for the exit button.
+	///     Closes the game.
+	/// </summary>
+	private void OnExitButtonPressed() {
+		GetTree().Quit();
+	}
 }

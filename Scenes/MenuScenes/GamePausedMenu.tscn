@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dhv30067wc2yy"]
 
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_i04w5"]
-[ext_resource type="Script" uid="uid://bypkolhdq5pht" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Script" uid="uid://8gqwjiuqfun7" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i04w5"]
 
@@ -76,6 +76,24 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "RESUME GAME"
+
+[node name="GuideButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_i04w5")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_i04w5")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_o2um7")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_pqm6c")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
+text = "GUIDE"
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
