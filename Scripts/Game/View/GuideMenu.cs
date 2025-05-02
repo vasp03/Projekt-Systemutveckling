@@ -288,7 +288,7 @@ public partial class GuideMenu : Control {
         //resource cards
         cardData["WoodButton"] = (LoadCardTexture("Wood"), "Wood is a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Axe \n1x Villager");
         cardData["PlanksButton"] = (LoadCardTexture("Planks"),
-            "Planks are crafted from wood and are used for crafting and building. \nRECIPE: \n2x Tree");
+            "Planks are crafted from wood and are used for crafting and building. \nRECIPE: \n2x Wood");
         cardData["StickButton"] = (LoadCardTexture("Stick"),
             "Sticks are small pieces of wood used for crafting and building. \nRECIPE: \n1x Wood \n1x Axe \n1x Villager");
         cardData["StoneButton"] =
@@ -308,10 +308,10 @@ public partial class GuideMenu : Control {
 
         //tool cards
         cardData["SwordButton"] = (LoadCardTexture("SwordMK1"), "A basic sword used for combat. \nRECIPE: \n2x Wood \n1x Stone");
-        cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"), "A basic fishing pole used for fishing. \nRECIPE: \n2x Stick \n1x Stone");
+        cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"), "A basic fishing pole used for fishing. \nRECIPE: \n3x Stick \n1x Stone");
         cardData["ShovelButton"] =
             (LoadCardTexture("Shovel"), "A basic shovel used for digging. \nRECIPE: \n2x Stick \n2x Stone"); 
-        cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood. \nRECIPE: \n3x Stone");
+        cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood. \nRECIPE: \n1x Stone \n2x Stick");
 
         //building cards
         cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"), "A greenhouse used for growing plants. \nRECIPE: \n4x Glass \n2x Brick");

@@ -110,7 +110,7 @@ public class CardController {
 
         CraftingController.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"]));
 
-        CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
+        CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stick", "Stick", "Stone"], ["FishingPole"]));
 
         CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
 
@@ -170,8 +170,6 @@ public class CardController {
         CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Wood", "Wood", "FishingPole"], ["FishingPole"]));
 
         CraftingController.AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"]));
-
-        CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"]));
 
         CraftingController.AddRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"]));
 
