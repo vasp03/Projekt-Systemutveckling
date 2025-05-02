@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -7,9 +8,11 @@ namespace Goodot15.Scripts.Game.View;
 /// </summary>
 public partial class GamePausedMenu : Control {
 	private MenuController menuController;
+	private SoundController soundController;
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
+		soundController = GetNode<SoundController>("/root/SoundController");
 
 		VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
 		buttonContainer.Show();
@@ -33,6 +36,7 @@ public partial class GamePausedMenu : Control {
 	/// </summary>
 	private void OnResumeButtonPressed() {
 		menuController.CloseMenus();
+		soundController.ToggleMusicMuted();
 	}
 
 	/// <summary>
@@ -59,6 +63,8 @@ public partial class GamePausedMenu : Control {
 		// Await is required to synchronize scene change
 		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		CallDeferred(nameof(ChangeSceneDeferred));
+		soundController.ToggleMusicMuted();
+		soundController.PlayMenuMusic();
 	}
 
 	/// <summary>
