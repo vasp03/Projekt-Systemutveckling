@@ -58,11 +58,11 @@ public static class Utilities {
     /// <summary>
     /// Converts one range to another
     /// </summary>
-    /// <param name="range1_1">Start of the first range</param>
-    /// <param name="range1_2">End of the first range</param>
-    /// <param name="range2_1">Start of the second range</param>
-    /// <param name="range2_2">End of the second range</param>
-    /// <param name="value">Value to map</param>
+    /// <param name="OldMin">Start of the old range</param>
+    /// <param name="OldMax">End of the old range</param>
+    /// <param name="NewMin">Start of the new range</param>
+    /// <param name="NewMax">End of the new range</param>
+    /// <param name="OldValue">Value to map from the old range</param>
     /// <returns>Mapped value</returns>
     internal static float MapRange(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue) {
         float oldRange = OldMax - OldMin;
