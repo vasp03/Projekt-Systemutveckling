@@ -20,12 +20,12 @@ public class DayTimeEvent : IDayTimeCallback {
     }
 
     /// <summary>
-    ///   CCalled each tick with the current time of day and the current day state
+    ///   Called each tick with the current time of day and the current day state
     /// </summary>
     /// <param name="dayState"></param>
     /// <param name="ticks"></param>
     public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks) {
-        SetSceneDarness(ticks);
+        SetSceneDarkness(ticks);
 
         if (dayState == OldDayState) {
             return;
@@ -58,7 +58,7 @@ public class DayTimeEvent : IDayTimeCallback {
     ///  Sets the darkness of the scene based on the time of day
     /// </summary>
     /// <param name="ticks">The current time of day in ticks</param>
-    private void SetSceneDarness(int ticks) {
+    private void SetSceneDarkness(int ticks) {
         // Turn ticks per day into a float between 0.5 and 1.0 with 1 being when ticks per day is half way
         // through the day and 0.5 being when ticks per day is at the start and end of the day
 
