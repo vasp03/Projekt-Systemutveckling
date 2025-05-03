@@ -11,11 +11,21 @@ public class DayTimeEvent : IDayTimeCallback {
 
     private float OldSceneDarkness = 0f;
 
+    /// <summary>
+    ///  An event to handle when the day changes and its time. 
+    /// </summary>
+    /// <author>Viktor.A</author>
     public DayTimeEvent(Goodot15.Scripts.Game.Controller.GameController gameController) {
         OldDayState = DayTimeController.DAY_STATE.Invalid;
         GameController = gameController;
     }
 
+    /// <summary>
+    ///   CCalled each tick with the current time of day and the current day state
+    /// </summary>
+    /// <param name="dayState"></param>
+    /// <param name="ticks"></param>
+    /// <author>Viktor.A</author>
     public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks) {
         SetSceneDarness(ticks);
 
@@ -46,6 +56,11 @@ public class DayTimeEvent : IDayTimeCallback {
         OldDayState = dayState;
     }
 
+    /// <summary>
+    ///  Sets the darkness of the scene based on the time of day
+    /// </summary>
+    /// <param name="ticks">The current time of day in ticks</param>
+    /// <author>Viktor.A</author>
     private void SetSceneDarness(int ticks) {
         // Turn ticks per day into a float between 0.5 and 1.0 with 1 being when ticks per day is half way
         // through the day and 0.5 being when ticks per day is at the start and end of the day

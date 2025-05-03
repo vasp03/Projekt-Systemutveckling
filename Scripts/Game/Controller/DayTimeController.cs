@@ -37,6 +37,7 @@ public partial class DayTimeController : ITickable {
     ///   Ticks the day time controller
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
+    /// <author>Viktor.A</author>
     public void PreTick(double delta) {
         if (IsPaused) {
             return;
@@ -114,6 +115,7 @@ public partial class DayTimeController : ITickable {
     /// Evening: 7/10 - 9/10 of the day 
     /// Night: 9/10 - 1 of the day 
     /// </remarks>
+    /// <author>Viktor.A</author>
     public static DAY_STATE GetCurrentDayState(int ticks) {
         if (ticks >= 0 && ticks < DayDurationRatio(DayDuration)) { // Night
             return DAY_STATE.Night;
