@@ -20,8 +20,6 @@ public partial class DayTimeController : ITickable {
 
     private GameController GameController;
 
-    private Label Label;
-
     public DayTimeController(GameController gameController) {
         GameController = gameController;
     }

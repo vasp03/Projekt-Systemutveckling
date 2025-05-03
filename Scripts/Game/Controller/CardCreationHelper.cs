@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
@@ -41,6 +42,13 @@ public class CardCreationHelper : GameManagerBase {
         Farmer,
         Blacksmith,
         Random
+    }
+
+    public enum CardTypeEnum {
+        Nature,
+        Tools,
+        Villager,
+        Food
     }
 
     public CardCreationHelper(GameController gameController) : base(gameController) {
@@ -119,6 +127,7 @@ public class CardCreationHelper : GameManagerBase {
                 return new MaterialFish();
             case "CookedFish" or "36":
                 return new MaterialCookedFish();
+
             case "Tree" or "37":
                 return new MaterialTree();
             case "Mine" or "38":
@@ -142,5 +151,44 @@ public class CardCreationHelper : GameManagerBase {
                 GD.PrintErr("CardCreationHelper.GetCreatedInstanceOfCard: Invalid card type. Tried to create: " + type);
                 return new ErrorCard();
         }
+    }
+
+    public List<string> GetCardTypePacks(CardTypeEnum type) {
+        List<string> cardTypePacks = [];
+
+        switch (type) {
+            case CardTypeEnum.Nature:
+                cardTypePacks.Add("Wood");
+                cardTypePacks.Add("Stone");
+                cardTypePacks.Add("Water");
+                cardTypePacks.Add("Stick");
+                cardTypePacks.Add("Sand");
+                cardTypePacks.Add("Leaves");
+                cardTypePacks.Add("Clay");
+                break;
+            case CardTypeEnum.Tools:
+                cardTypePacks.Add("MaterialSwordMk1");
+                cardTypePacks.Add("MaterialFishingPole");
+                cardTypePacks.Add("MaterialShovel");
+                cardTypePacks.Add("MaterialAxe");
+                break;
+            case CardTypeEnum.Villager:
+                cardTypePacks.Add("PlayerVillager");
+                cardTypePacks.Add("PlayerHunter");
+                cardTypePacks.Add("PlayerFarmer");
+                cardTypePacks.Add("PlayerBlacksmith");
+                break;
+            case CardTypeEnum.Food:
+                cardTypePacks.Add("MaterialApple");
+                cardTypePacks.Add("MaterialBerry");
+                cardTypePacks.Add("MaterialJam");
+                cardTypePacks.Add("MaterialMeat");
+                cardTypePacks.Add("MaterialCookedMeat");
+                cardTypePacks.Add("MaterialFish");
+                cardTypePacks.Add("MaterialCookedFish");
+                break;
+        }
+
+        return cardTypePacks;
     }
 }

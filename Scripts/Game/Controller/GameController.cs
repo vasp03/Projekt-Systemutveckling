@@ -5,22 +5,22 @@ using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
 public partial class GameController : Node2D {
-	private readonly List<int> numberList = new();
-	private CardController cardController;
-	private MenuController menuController;
-	private MouseController mouseController;
-	private SoundController soundController;
-	private DayTimeController DayTimeController;
-	private DayTimeEvent DayTimeEvent;
+    private readonly List<int> numberList = new();
+    private CardController cardController;
+    private MenuController menuController;
+    private MouseController mouseController;
+    private SoundController soundController;
+    private DayTimeController DayTimeController;
+    private DayTimeEvent DayTimeEvent;
     private GameEventManager GameEventManager;
-	[Export] public Label TimeLabel { get; private set; }
+    [Export] public Label TimeLabel { get; private set; }
 
     public override void _Ready() {
         mouseController = new MouseController(this);
         cardController = new CardController(this, mouseController);
         DayTimeController = new DayTimeController(this);
         GameEventManager = new GameEventManager(this);
-        
+
 
         soundController = GetNode<SoundController>("/root/SoundController");
         soundController.PlayGameMusic();
@@ -30,8 +30,8 @@ public partial class GameController : Node2D {
 
         DayTimeEvent = new DayTimeEvent(this);
         DayTimeController.AddCallback(DayTimeEvent);
-        
-        
+
+
     }
 
     public override void _Input(InputEvent @event) {
@@ -128,8 +128,6 @@ public partial class GameController : Node2D {
         }
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
-
-        GD.Print($"Scene darkness set to {darkness}");
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -139,5 +137,13 @@ public partial class GameController : Node2D {
 
     public bool IsPaused() {
         return menuController.IsPaused();
+    }
+
+    public Vector2 GetRandomPositionWithinScreen() {
+        Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+        return new Vector2(
+            GD.Randf() * screenSize.X,
+            GD.Randf() * screenSize.Y
+        );
     }
 }
