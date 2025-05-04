@@ -10,9 +10,9 @@ public class CardController {
 
 	private readonly Goodot15.Scripts.Game.Controller.GameController _gameController;
 	private readonly MouseController _mouseController;
-	private readonly CardCreationHelper CardCreationHelper;
+	public CardCreationHelper CardCreationHelper { get; private set; }
 
-	private readonly CraftingController CraftingController;
+	public CraftingController CraftingController { get; private set; }
 
 	private readonly List<CardNode> hoveredCards = [];
 
@@ -59,23 +59,23 @@ public class CardController {
 		return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
 	}
 
-    /// <summary>
-    ///     Creates a new card and adds it to the scene, with a random underlying CardType
-    /// </summary>
-    /// <returns>
-    ///     The created card instance.
-    /// </returns>
-    private CardNode CreateCard() {
-        // Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
-        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-        CardNode cardInstance = cardScene.Instantiate<CardNode>();
+	/// <summary>
+	///     Creates a new card and adds it to the scene, with a random underlying CardType
+	/// </summary>
+	/// <returns>
+	///     The created card instance.
+	/// </returns>
+	private CardNode CreateCard() {
+		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
+		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        cardInstance.CardController = this;
+		cardInstance.CardController = this;
 
-        cardInstance.ZIndex = CardCount + 1;
-        _gameController.AddChild(cardInstance);
+		cardInstance.ZIndex = CardCount + 1;
+		_gameController.AddChild(cardInstance);
 
-        return cardInstance;
+		return cardInstance;
 	}
 
 	/// <summary>

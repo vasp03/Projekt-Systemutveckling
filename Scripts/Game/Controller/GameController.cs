@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Godot;
@@ -20,7 +21,7 @@ public partial class GameController : Node2D {
 		cardController = new CardController(this, mouseController);
 		DayTimeController = new DayTimeController(this);
 		GameEventManager = new GameEventManager(this);
-		
+
 
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
@@ -30,8 +31,8 @@ public partial class GameController : Node2D {
 
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
-		
-		
+
+
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -139,5 +140,16 @@ public partial class GameController : Node2D {
 
 	public bool IsPaused() {
 		return menuController.IsPaused();
+	}
+
+	internal Vector2 GetRandomPositionWithinScreen() {
+		// Get the size of the screen
+		Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+
+		// Generate a random position within the screen bounds
+		float x = (float)GD.RandRange(0, screenSize.X);
+		float y = (float)GD.RandRange(0, screenSize.Y);
+
+		return new Vector2(x, y);
 	}
 }

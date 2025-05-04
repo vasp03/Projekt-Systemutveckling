@@ -10,7 +10,7 @@ public partial class DayTimeController : ITickable {
 	private const int DayDuration = Utilities.TICKS_PER_DAY;
 	private const double TicksPerSecond = Utilities.TICKS_PER_SECOND;
 
-  private int CurrentTimeOfDay = 0;
+	private int CurrentTimeOfDay = 0;
 
 	private List<IDayTimeCallback> Callbacks = [];
 
@@ -19,8 +19,6 @@ public partial class DayTimeController : ITickable {
 	private bool IsPaused = false;
 
 	private GameController GameController;
-
-	private Label Label;
 
 	private bool HasWarnedAboutLabel = false;
 
