@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://dqbg03jh8sso1" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://o1wb55vmxiv3" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 
@@ -16,8 +16,9 @@ texture_region_size = Vector2i(256, 256)
 tile_size = Vector2i(256, 256)
 sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("TimeLabel")]
 script = ExtResource("1_ly6xb")
+TimeLabel = NodePath("CanvasLayer/DayTimeLabel")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -33,7 +34,7 @@ anchor_bottom = 1.0
 offset_left = 1134.0
 offset_top = -1.0
 offset_bottom = -651.0
-text = "36000"
+text = "Error"
 label_settings = SubResource("LabelSettings_hewda")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]

@@ -22,6 +22,8 @@ public partial class DayTimeController : ITickable {
 
 	private Label Label;
 
+	private bool HasWarnedAboutLabel = false;
+
 	public DayTimeController(GameController gameController) {
 		GameController = gameController;
 	}
@@ -63,7 +65,18 @@ public partial class DayTimeController : ITickable {
 			callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
 		}
 
-		GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
+
+		if (HasWarnedAboutLabel) {
+			return;
+		}
+
+		if (GameController != null && GameController.TimeLabel != null) {
+			GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
+		} else {
+			GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
+			GD.PrintErr("Check Node2D if Time Label is set to a label");
+			HasWarnedAboutLabel = true;
+		}
 	}
 
 	public void PostTick() {
