@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://dljf5d13mrh38"]
+[gd_scene load_steps=13 format=4 uid="uid://dljf5d13mrh38"]
 
 [ext_resource type="Script" uid="uid://c2fsjeslaeahy" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
+[ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_7cv4p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
 
@@ -18,6 +19,15 @@
 [sub_resource type="Theme" id="Theme_hndry"]
 default_font = ExtResource("2_7cv4p")
 default_font_size = 24
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ys6ep"]
+texture = ExtResource("3_7cv4p")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_37qrb"]
+tile_size = Vector2i(128, 128)
+sources/0 = SubResource("TileSetAtlasSource_ys6ep")
 
 [node name="MainOptions" type="Control"]
 process_mode = 3
@@ -158,3 +168,9 @@ theme_override_constants/outline_size = 3
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 25
 text = "1%"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+self_modulate = Color(0.784314, 1, 0.835294, 1)
+show_behind_parent = true
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_37qrb")
