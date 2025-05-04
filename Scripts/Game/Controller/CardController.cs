@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 
-	private readonly GameController _gameController;
+	private readonly Goodot15.Scripts.Game.Controller.GameController _gameController;
 
 	private readonly MouseController _mouseController;
 	private readonly CardCreationHelper CardCreationHelper;
@@ -21,10 +22,10 @@ public class CardController {
 	public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
 
 	// Constructor
-	public CardController(GameController gameController, MouseController mouseController) {
+	public CardController(Goodot15.Scripts.Game.Controller.GameController gameController, MouseController mouseController) {
 		_gameController = gameController;
 		_mouseController = mouseController;
-		CardCreationHelper = new CardCreationHelper(gameController, this);
+		CardCreationHelper = new CardCreationHelper(gameController);
 		CraftingController = new CraftingController(CardCreationHelper);
 
 		CreateStartingRecipes();

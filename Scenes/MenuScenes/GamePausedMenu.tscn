@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dhv30067wc2yy"]
+[gd_scene load_steps=12 format=4 uid="uid://dhv30067wc2yy"]
 
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_i04w5"]
 [ext_resource type="Script" uid="uid://8gqwjiuqfun7" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_pqm6c"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i04w5"]
 
@@ -14,6 +15,15 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5vdl0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6nxmm"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_67e3d"]
+texture = ExtResource("3_pqm6c")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_5vdl0"]
+tile_size = Vector2i(128, 128)
+sources/1 = SubResource("TileSetAtlasSource_67e3d")
 
 [node name="GamePausedMenu" type="Control"]
 process_mode = 2
@@ -130,3 +140,8 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "EXIT TO MAIN MENU"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+show_behind_parent = true
+tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAABAAAAAQAAAAAAAAACAAAAAQAAAAAAAAADAAAAAQAAAAAAAAADAAEAAQAAAAAAAAACAAEAAQAAAAAAAAABAAEAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAIAAQAAAAAAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAEAAEAAQAAAAAAAAAEAAAAAQAAAAAAAAAFAAIAAQAAAAAAAAAFAAEAAQAAAAAAAAAFAAAAAQAAAAAAAAAGAAAAAQAAAAAAAAAGAAEAAQAAAAAAAAAFAAMAAQAAAAAAAAAGAAMAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAHAAEAAQAAAAAAAAAHAAAAAQAAAAAAAAAIAAEAAQAAAAAAAAAIAAIAAQAAAAAAAAAIAAMAAQAAAAAAAAAJAAMAAQAAAAAAAAAJAAIAAQAAAAAAAAAJAAEAAQAAAAAAAAAIAAAAAQAAAAAAAAAHAAMAAQAAAAAAAAAJAAAAAQAAAAAAAAAJAAQAAQAAAAAAAAAJAAUAAQAAAAAAAAAIAAUAAQAAAAAAAAAIAAQAAQAAAAAAAAAHAAQAAQAAAAAAAAAHAAUAAQAAAAAAAAAGAAQAAQAAAAAAAAAGAAUAAQAAAAAAAAAFAAUAAQAAAAAAAAAFAAQAAQAAAAAAAAAEAAMAAQAAAAAAAAAEAAQAAQAAAAAAAAAEAAUAAQAAAAAAAAADAAUAAQAAAAAAAAADAAQAAQAAAAAAAAADAAMAAQAAAAAAAAACAAMAAQAAAAAAAAACAAQAAQAAAAAAAAACAAUAAQAAAAAAAAABAAUAAQAAAAAAAAABAAQAAQAAAAAAAAABAAMAAQAAAAAAAAAAAAMAAQAAAAAAAAAAAAQAAQAAAAAAAAAAAAUAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_5vdl0")

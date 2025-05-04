@@ -4,6 +4,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Goodot15.Scripts.Game.Controller;
 
 public partial class DayTimeController : ITickable {
 	private const int DayDuration = Utilities.TICKS_PER_DAY;
@@ -16,6 +17,16 @@ public partial class DayTimeController : ITickable {
 	private double TimeCountingToOneTick = 0;
 
 	private bool IsPaused = false;
+
+	private GameController GameController;
+
+	private Label Label;
+
+	private bool HasWarnedAboutLabel = false;
+
+	public DayTimeController(GameController gameController) {
+		GameController = gameController;
+	}
 
 	public enum DAY_STATE {
 		Night,
@@ -53,10 +64,34 @@ public partial class DayTimeController : ITickable {
 		foreach (IDayTimeCallback callback in Callbacks) {
 			callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
 		}
+
+
+		if (HasWarnedAboutLabel) {
+			return;
+		}
+
+		if (GameController != null && GameController.TimeLabel != null) {
+			GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
+		} else {
+			GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
+			GD.PrintErr("Check Node2D if Time Label is set to a label");
+			HasWarnedAboutLabel = true;
+		}
 	}
 
 	public void PostTick() {
 		// This method is not in use right now
+	}
+
+	// Method that converts a range of 0 to DayDuration to normal clock time
+	public string GetTimeOfDay(int ticks) {
+		int hours = ticks / (DayDuration / 24);
+		int minutes = ticks % (DayDuration / 24) * 60 / (DayDuration / 24);
+
+		// Round minutes to the nearest 10 minutes
+		minutes = (int)Math.Round(minutes / 10.0) * 10;
+
+		return $"{hours:D2}:{minutes:D2}";
 	}
 
 	public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
@@ -73,6 +108,7 @@ public partial class DayTimeController : ITickable {
 		}
 
 		Callbacks.Add(callback);
+
 		return callback;
 	}
 

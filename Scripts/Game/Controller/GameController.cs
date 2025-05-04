@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 using Vector2 = Godot.Vector2;
 
+namespace Goodot15.Scripts.Game.Controller;
 public partial class GameController : Node2D {
 	private readonly List<int> numberList = new();
 	private CardController cardController;
@@ -13,11 +12,15 @@ public partial class GameController : Node2D {
 	private SoundController soundController;
 	private DayTimeController DayTimeController;
 	private DayTimeEvent DayTimeEvent;
+	private GameEventManager GameEventManager;
+	[Export] public Label TimeLabel { get; private set; }
 
 	public override void _Ready() {
-		mouseController = new MouseController();
+		mouseController = new MouseController(this);
 		cardController = new CardController(this, mouseController);
-		DayTimeController = new DayTimeController();
+		DayTimeController = new DayTimeController(this);
+		GameEventManager = new GameEventManager(this);
+		
 
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
@@ -27,6 +30,8 @@ public partial class GameController : Node2D {
 
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
+		
+		
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -129,6 +134,7 @@ public partial class GameController : Node2D {
 
 	public override void _PhysicsProcess(double delta) {
 		DayTimeController.PreTick(delta);
+		GameEventManager.PostTick();
 	}
 
 	public bool IsPaused() {

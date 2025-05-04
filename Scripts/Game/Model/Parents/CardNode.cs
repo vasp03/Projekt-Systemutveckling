@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -118,7 +119,7 @@ public partial class CardNode : Node2D {
 
 		// Check if the path is not null or empty and if there is a file at the path
 		if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
-			GD.PrintErr("Texture path is null or empty for card: " + CardType.ID + " " + string.IsNullOrEmpty(CardType.TexturePath) + " " + (!FileAccess.FileExists(CardType.TexturePath)));
+			GD.PrintErr("Texture path is null or empty for card: " + CardType.CardNode.CardType + " " + string.IsNullOrEmpty(CardType.TexturePath) + " " + FileAccess.FileExists(CardType.TexturePath));
 			GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
 			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
 			sprite.Texture = texture;

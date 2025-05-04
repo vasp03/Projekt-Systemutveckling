@@ -548,3 +548,4 @@ $RECYCLE.BIN/
 # Do not include gdUnit4 addon
 /addons/gdUnit4/*
 /gdunit4_testadapter/*
+export_presets.cfg
