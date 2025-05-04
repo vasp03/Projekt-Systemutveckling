@@ -9,11 +9,10 @@ public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 
 	private readonly Goodot15.Scripts.Game.Controller.GameController _gameController;
-
 	private readonly MouseController _mouseController;
-	private readonly CardCreationHelper CardCreationHelper;
+	public CardCreationHelper CardCreationHelper { get; private set; }
 
-	private readonly CraftingController CraftingController;
+	public CraftingController CraftingController { get; private set; }
 
 	private readonly List<CardNode> hoveredCards = [];
 
@@ -66,7 +65,7 @@ public class CardController {
 	/// <returns>
 	///     The created card instance.
 	/// </returns>
-	public CardNode CreateCard() {
+	private CardNode CreateCard() {
 		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
 		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
 		CardNode cardInstance = cardScene.Instantiate<CardNode>();

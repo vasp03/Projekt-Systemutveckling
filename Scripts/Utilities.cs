@@ -54,4 +54,21 @@ public static class Utilities {
     public static int TicksToTime(int ticks) {
         return (int)Math.Floor(ticks / (float)TICKS_PER_SECOND);
     }
+
+    /// <summary>
+    /// Converts one range to another
+    /// </summary>
+    /// <param name="OldMin">Start of the old range</param>
+    /// <param name="OldMax">End of the old range</param>
+    /// <param name="NewMin">Start of the new range</param>
+    /// <param name="NewMax">End of the new range</param>
+    /// <param name="OldValue">Value to map from the old range</param>
+    /// <returns>Mapped value</returns>
+    internal static float MapRange(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue) {
+        float oldRange = OldMax - OldMin;
+        float newRange = NewMax - NewMin;
+        float newValue = ((OldValue - OldMin) * newRange / oldRange) + NewMin;
+
+        return newValue;
+    }
 }

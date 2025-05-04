@@ -35,6 +35,7 @@ public class GameEventManager : GameManagerBase, ITickable {
 
     public void RegisterDefaultEvents() {
         RegisterEvent(new MeteoriteEvent());
+        RegisterEvent(new NatureResourceEvent());
     }
 
     public void RegisterEvent(IGameEvent gameEvent) {
