@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -14,7 +15,7 @@ public class NatureResourceEvent : IGameEvent {
         CardController cardController = gameController.GetCardController();
         CardCreationHelper cardCreationHelper = cardController.CardCreationHelper;
 
-        List<string> pack = cardCreationHelper.GetCardTypePacks(CardCreationHelper.CardTypeEnum.Nature);
+        List<string> pack = cardCreationHelper.GetCardTypePacks(CardPackEnum.Nature);
         string randomCardType = pack[(int)GD.RandRange(0, pack.Count)];
 
         cardController.CreateCard(randomCardType, context.GameController.GetRandomPositionWithinScreen());

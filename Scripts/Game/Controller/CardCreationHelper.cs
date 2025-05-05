@@ -1,67 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CardCreationHelper : GameManagerBase {
-    public enum TypeEnum {
-        Wood,
-        Stone,
-        Water,
-        Stick,
-        Planks,
-        Brick,
-        Sand,
-        Glass,
-        Leaf,
-        Clay,
-        SwordMK1,
-        FishingPole,
-        Shovel,
-        Axe,
-        Greenhouse,
-        House,
-        Campfire,
-        Cookingpot,
-        Tent,
-        Field,
-        Apple,
-        Berry,
-        Jam,
-        Meat,
-        CookedMeat,
-        Fish,
-        CookedFish,
-        Tree,
-        Mine,
-        Bush,
-        Village,
-        Hunter,
-        Farmer,
-        Blacksmith,
-        Random
-    }
-
-    public enum CardTypeEnum {
-        Nature,
-        Tools,
-        Villager,
-        Food
-    }
-
-    public CardCreationHelper(GameController gameController) : base(gameController) {
-    }
-
     private CardController CardController => CoreGameController.GetCardController();
 
     public string GetRandomCardType() {
         Random random = new();
-        Array values = Enum.GetValues(typeof(TypeEnum));
-        TypeEnum type = (TypeEnum)values.GetValue(random.Next(values.Length));
+        Array values = Enum.GetValues(typeof(CardTypeEnum));
+        CardTypeEnum type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
 
-        while (type == TypeEnum.Random) type = (TypeEnum)values.GetValue(random.Next(values.Length));
+        while (type == CardTypeEnum.Random) type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
 
         return type.ToString();
     }
@@ -153,11 +106,11 @@ public class CardCreationHelper : GameManagerBase {
         }
     }
 
-    public List<string> GetCardTypePacks(CardTypeEnum type) {
+    public List<string> GetCardTypePacks(CardPackEnum type) {
         List<string> cardTypePacks = [];
 
         switch (type) {
-            case CardTypeEnum.Nature:
+            case CardPackEnum.Nature:
                 cardTypePacks.Add("Wood");
                 cardTypePacks.Add("Stone");
                 cardTypePacks.Add("Water");
@@ -166,19 +119,19 @@ public class CardCreationHelper : GameManagerBase {
                 cardTypePacks.Add("Leaves");
                 cardTypePacks.Add("Clay");
                 break;
-            case CardTypeEnum.Tools:
+            case CardPackEnum.Tools:
                 cardTypePacks.Add("MaterialSwordMk1");
                 cardTypePacks.Add("MaterialFishingPole");
                 cardTypePacks.Add("MaterialShovel");
                 cardTypePacks.Add("MaterialAxe");
                 break;
-            case CardTypeEnum.Villager:
+            case CardPackEnum.Villager:
                 cardTypePacks.Add("PlayerVillager");
                 cardTypePacks.Add("PlayerHunter");
                 cardTypePacks.Add("PlayerFarmer");
                 cardTypePacks.Add("PlayerBlacksmith");
                 break;
-            case CardTypeEnum.Food:
+            case CardPackEnum.Food:
                 cardTypePacks.Add("MaterialApple");
                 cardTypePacks.Add("MaterialBerry");
                 cardTypePacks.Add("MaterialJam");

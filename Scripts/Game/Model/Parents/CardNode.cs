@@ -25,7 +25,7 @@ public partial class CardNode : Node2D {
 	private CraftButton _craftButton;
 
 	public CardNode() {
-		AddToGroup(CardController.CARD_GROUP_NAME);
+		AddToGroup("CARDS");
 	}
 
 	public CardController CardController { get; set; }
