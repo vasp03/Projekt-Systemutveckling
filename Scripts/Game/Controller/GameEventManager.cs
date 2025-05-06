@@ -29,8 +29,6 @@ public class GameEventManager : GameManagerBase, ITickable {
             } else {
                 eventTicks[registeredEvent]++;
             }
-
-            // GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
         }
     }
 

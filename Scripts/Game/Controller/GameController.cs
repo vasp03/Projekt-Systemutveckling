@@ -129,8 +129,6 @@ public partial class GameController : Node2D {
 		}
 
 		sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
-
-		GD.Print($"Scene darkness set to {darkness}");
 	}
 
 	public override void _PhysicsProcess(double delta) {

@@ -108,9 +108,11 @@ public partial class MenuController : Node {
     ///     Closes all the menus and resumes the game.
     /// </summary>
     public void CloseMenus() {
-        foreach (Node menu in GetChildren())
-            if (menu is Control controlMenu && controlMenu.IsInsideTree())
+        foreach (Node menu in GetChildren()) {
+            if (menu is Control controlMenu && controlMenu.IsInsideTree()) {
                 controlMenu.Visible = false;
+            }
+        }
 
         GetTree().Paused = false;
         GameController.Visible = true;
@@ -122,7 +124,7 @@ public partial class MenuController : Node {
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
-    public void SetNodeController(Goodot15.Scripts.Game.Controller.GameController gameController) {
+    public void SetNodeController(GameController gameController) {
         GameController = gameController;
     }
 

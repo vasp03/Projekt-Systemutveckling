@@ -2,7 +2,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model.Living;
 
-public class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
+public class LivingPlayer(string texturePath, int cardValue) : CardLiving(texturePath, true, cardValue) {
     public static readonly int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
     public static readonly int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
 

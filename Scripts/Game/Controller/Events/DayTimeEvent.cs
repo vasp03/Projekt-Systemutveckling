@@ -8,7 +8,6 @@ public class DayTimeEvent : IDayTimeCallback {
 
     private Goodot15.Scripts.Game.Controller.GameController GameController;
 
-    private DateTime LastTickTime = DateTime.Now;
 
     private float OldSceneDarkness = 0f;
 

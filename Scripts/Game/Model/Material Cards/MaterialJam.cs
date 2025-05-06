@@ -1,4 +1,4 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialJam() : MaterialFood("Jam", 1) {
+public class MaterialJam() : MaterialFood("Jam", 3, 3) {
 }
