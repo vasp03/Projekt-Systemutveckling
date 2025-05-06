@@ -167,7 +167,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "EXIT"
 
-[node name="ChatGpt-prototypeBackgroundV11280x720" type="Sprite2D" parent="."]
+[node name="MainMenuBackground1280x720" type="Sprite2D" parent="."]
 show_behind_parent = true
 position = Vector2(640, 360)
 texture = ExtResource("3_qdb5i")
