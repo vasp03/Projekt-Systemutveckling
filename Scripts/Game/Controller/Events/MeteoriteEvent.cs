@@ -1,25 +1,19 @@
 ﻿using Godot;
+using Goodot15.Scripts.Game.Model.Div;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
-public class MeteoriteEvent : IGameEvent {
-    public string EventName => "Meteorite Strike";
-    public int TicksUntilNextEvent => Utilities.TimeToTicks(seconds: 1);
-    public double Chance => .5d;
+public class MeteoriteEvent : GameEventBase {
+    public override string EventName => "Meteorite Strike";
+    public override int TicksUntilNextEvent => Utilities.GameScaledTimeToTicks(days: 1); // Utilities.GameScaledTimeToTicks(days: 1);
+    public override double Chance => 0.25d;
+    
 
-    public void OnEvent(GameEventContext context) {
-        // GD.Print("it happened");
-        // if (meteoriteCardScene == null || cardParent == null) {
-        //     GD.PrintErr("Cannot spawn meteorite card, scene or parent is null");
-        //     return;
-        // }
-// 
-        // Node2D meteorite = (Node2D)meteoriteCardScene.Instantiate();
-// 
-        // RandomNumberGenerator randomize = new();
-        // randomize.Randomize();
-        // meteorite.Position = new Vector2(randomize.RandfRange(100, 800), randomize.RandfRange(100, 500));
-        // 
-        // cardParent.AddChild(meteorite);
+    public override void OnEvent(GameEventContext context) {
+        context.GameController.GetCardController()
+            .CreateCard(new MaterialMeteorite(), context.GameController.GetRandomPositionWithinScreen());
+        context.GameController.GetSoundController().PlaySound("Explosions/Short/meteoriteHit.wav");
+        context.GameController.CameraController.Shake(5f, Utilities.TimeToTicks(seconds: 1d));
     }
 }

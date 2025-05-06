@@ -1,21 +1,24 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Godot;
 using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
+
 public partial class GameController : Node2D {
 	private readonly List<int> numberList = new();
 	private CardController cardController;
-	private MenuController menuController;
-	private MouseController mouseController;
-	private SoundController soundController;
 	private DayTimeController DayTimeController;
 	private DayTimeEvent DayTimeEvent;
 	private GameEventManager GameEventManager;
+	private MenuController menuController;
+	private MouseController mouseController;
+	private SoundController soundController;
+	private CameraController cameraController;
 	[Export] public Label TimeLabel { get; private set; }
 
+	public static GameController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
+	
 	public override void _Ready() {
 		mouseController = new MouseController(this);
 		cardController = new CardController(this, mouseController);
@@ -29,10 +32,10 @@ public partial class GameController : Node2D {
 		menuController = GetNode<MenuController>("/root/MenuController");
 		menuController.SetNodeController(this);
 
+		cameraController = new CameraController();
+
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
-
-
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -107,6 +110,8 @@ public partial class GameController : Node2D {
 	public DayTimeController GetDayTimeController() {
 		return DayTimeController;
 	}
+	
+	public CameraController CameraController => cameraController;
 
 	// Set the scene darknes
 	public void SetSceneDarkness(float darkness) {
@@ -136,6 +141,7 @@ public partial class GameController : Node2D {
 	public override void _PhysicsProcess(double delta) {
 		DayTimeController.PreTick(delta);
 		GameEventManager.PostTick();
+		CameraController.PostTick();
 	}
 
 	public bool IsPaused() {

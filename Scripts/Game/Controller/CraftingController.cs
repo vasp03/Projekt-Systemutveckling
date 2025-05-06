@@ -27,7 +27,7 @@ public class CraftingController {
     }
 
     /// <summary>
-    ///    Check if the cards in the stack can be crafted into a new card
+    ///     Check if the cards in the stack can be crafted into a new card
     /// </summary>
     /// <returns> List of the cards that will be crafted from the recipie</returns>
     /// <param name="Cards">List of cards to check</param>
@@ -93,7 +93,6 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    /// 
     public List<string> CheckForCraftingWithStackable(List<IStackable> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
@@ -136,6 +135,7 @@ public class CraftingController {
                     recipeMatches = false;
                     break;
                 }
+
             if (recipeMatches) {
                 List<string> craftedCards = recipe.CardsForCraftingResult;
                 return craftedCards;

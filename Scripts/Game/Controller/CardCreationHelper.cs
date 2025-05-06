@@ -6,6 +6,13 @@ using Goodot15.Scripts.Game.Model.Material_Cards;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CardCreationHelper : GameManagerBase {
+    public enum CardTypeEnum {
+        Nature,
+        Tools,
+        Villager,
+        Food
+    }
+
     public enum TypeEnum {
         Wood,
         Stone,
@@ -15,7 +22,7 @@ public class CardCreationHelper : GameManagerBase {
         Brick,
         Sand,
         Glass,
-        Leaf,
+        Leaves,
         Clay,
         SwordMK1,
         FishingPole,
@@ -42,13 +49,6 @@ public class CardCreationHelper : GameManagerBase {
         Farmer,
         Blacksmith,
         Random
-    }
-
-    public enum CardTypeEnum {
-        Nature,
-        Tools,
-        Villager,
-        Food
     }
 
     public CardCreationHelper(GameController gameController) : base(gameController) {

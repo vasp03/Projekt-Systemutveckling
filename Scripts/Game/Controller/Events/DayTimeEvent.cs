@@ -1,26 +1,26 @@
 using System;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 using Utilities = Goodot15.Scripts.Utilities;
 
 public class DayTimeEvent : IDayTimeCallback {
-    private DayTimeController.DAY_STATE OldDayState;
-
-    private Goodot15.Scripts.Game.Controller.GameController GameController;
+    private readonly GameController GameController;
 
     private DateTime LastTickTime = DateTime.Now;
+    private DayTimeController.DAY_STATE OldDayState;
 
-    private float OldSceneDarkness = 0f;
+    private float OldSceneDarkness;
 
     /// <summary>
-    ///  An event to handle when the day changes and its time. 
+    ///     An event to handle when the day changes and its time.
     /// </summary>
-    public DayTimeEvent(Goodot15.Scripts.Game.Controller.GameController gameController) {
+    public DayTimeEvent(GameController gameController) {
         OldDayState = DayTimeController.DAY_STATE.Invalid;
         GameController = gameController;
     }
 
     /// <summary>
-    ///   Called each tick with the current time of day and the current day state
+    ///     Called each tick with the current time of day and the current day state
     /// </summary>
     /// <param name="dayState"></param>
     /// <param name="ticks"></param>
@@ -55,7 +55,7 @@ public class DayTimeEvent : IDayTimeCallback {
     }
 
     /// <summary>
-    ///  Sets the darkness of the scene based on the time of day
+    ///     Sets the darkness of the scene based on the time of day
     /// </summary>
     /// <param name="ticks">The current time of day in ticks</param>
     private void SetSceneDarkness(int ticks) {

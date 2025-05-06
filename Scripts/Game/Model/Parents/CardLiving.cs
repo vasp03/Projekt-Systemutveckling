@@ -1,4 +1,6 @@
 using System;
+using Godot;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model;
@@ -22,11 +24,39 @@ public abstract class CardLiving
         // TODO: Death(?)
         if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilFullyStarved) {
             HungerTickProgress = 0;
-            Saturation -= SaturationLossPerCycle != -1 ? SaturationLossPerCycle : 0;
+            Saturation -= SaturationLossPerCycle != -1
+                ? SaturationLossPerCycle
+                : 0;
+        }
+
+        if (Health <= 0) {
+            deathTimer--;
+            if (deathTimer <= 0) {
+                CardNode.Destroy();
+            } else {
+                CardNode.Modulate = new Color(1f, .5f, .5f);
+            }
+            // CardNode.CardType = new ErrorCard();
+        } else {
+            if (remainingDamageEffectPulseTimer > 0) {
+                remainingDamageEffectPulseTimer--;
+
+                this.CardNode.Modulate = new Color(
+                    1f,
+                    1f - (((float)remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer) / 2f),
+                    1f - (((float)remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer) / 2f),
+                    1f
+                );
+            }
         }
     }
 
     #region Health-related
+
+    private int deathTimer = Utilities.TimeToTicks(5);
+
+    private static readonly int damageEffectPulseTimer = Utilities.TimeToTicks(seconds: 1);
+    private int remainingDamageEffectPulseTimer = 0;
 
     /// <summary>
     ///     Health for this unit
@@ -44,7 +74,20 @@ public abstract class CardLiving
     /// </summary>
     public int Health {
         get => _health;
-        set => _health = Math.Max(0, value);
+        set {
+            if (value < _health) {
+                remainingDamageEffectPulseTimer = damageEffectPulseTimer;
+                HurtSound();
+            }
+            _health = Math.Max(0, value);
+        }
+    }
+
+    private void HurtSound() {
+        if (_health > 0) {
+            GameController.Singleton.GetSoundController()
+                .PlaySound("General Sounds/Negative Sounds/sfx_sounds_damage1.wav");
+        }
     }
 
     /// <summary>
@@ -65,7 +108,9 @@ public abstract class CardLiving
     ///     Current Hunger Tick Progress, in ticks
     /// </summary>
     public int HungerTickProgress {
-        get => TicksUntilSaturationDecrease == -1 ? 0 : _hungerTickCount;
+        get => TicksUntilSaturationDecrease == -1
+            ? 0
+            : _hungerTickCount;
         protected set => _hungerTickCount = Math.Max(0, value);
     }
 
@@ -78,7 +123,9 @@ public abstract class CardLiving
     ///     Current saturation points
     /// </summary>
     public int Saturation {
-        get => TicksUntilSaturationDecrease == -1 ? _saturation : -1;
+        get => TicksUntilSaturationDecrease == -1
+            ? _saturation
+            : -1;
         set => _saturation = Math.Max(0, value);
     }
 
@@ -101,7 +148,9 @@ public abstract class CardLiving
     ///     Current starvation progress, in ticks
     /// </summary>
     public int StarvationTickProgress {
-        get => TicksUntilFullyStarved == -1 ? _starvationTickCount : -1;
+        get => TicksUntilFullyStarved == -1
+            ? _starvationTickCount
+            : -1;
         set => _starvationTickCount = Math.Clamp(value, 0, TicksUntilFullyStarved);
     }
 

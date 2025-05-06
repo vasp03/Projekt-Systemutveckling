@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://o1wb55vmxiv3" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://d25xg6uqjwb85" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 
@@ -19,6 +19,9 @@ sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 [node name="Node2D" type="Node2D" node_paths=PackedStringArray("TimeLabel")]
 script = ExtResource("1_ly6xb")
 TimeLabel = NodePath("CanvasLayer/DayTimeLabel")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

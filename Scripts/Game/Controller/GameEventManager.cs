@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Controller.Events;
@@ -10,6 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class GameEventManager : GameManagerBase, ITickable {
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
     private readonly IList<IGameEvent> registeredEvents = [];
+
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
@@ -36,6 +36,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     public void RegisterDefaultEvents() {
         RegisterEvent(new MeteoriteEvent());
         RegisterEvent(new NatureResourceEvent());
+        RegisterEvent(new FireEvent());
     }
 
     public void RegisterEvent(IGameEvent gameEvent) {
