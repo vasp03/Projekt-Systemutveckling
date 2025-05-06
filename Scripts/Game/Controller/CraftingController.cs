@@ -6,13 +6,14 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 public class CraftingController {
     private readonly CardCreationHelper CardCreationHelper;
-    public List<CraftingRecipe> Recipes { get; private set; }
 
     public CraftingController(CardCreationHelper cardCreationHelper) {
         CardCreationHelper = cardCreationHelper;
 
         CreateStartingRecipes();
     }
+
+    public List<CraftingRecipe> Recipes { get; private set; }
 
     public void AddRecipe(CraftingRecipe recipe) {
         if (recipe == null) {
@@ -28,7 +29,7 @@ public class CraftingController {
     }
 
     /// <summary>
-    ///    Check if the cards in the stack can be crafted into a new card
+    ///     Check if the cards in the stack can be crafted into a new card
     /// </summary>
     /// <returns> List of the cards that will be crafted from the recipie</returns>
     /// <param name="Cards">List of cards to check</param>
@@ -94,7 +95,6 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    /// 
     public StringAndBoolRet CheckForCraftingWithStackable(List<IStackable> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
@@ -103,7 +103,6 @@ public class CraftingController {
                 CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
             if (cardForCrafting != null) {
                 cardForCrafting.IntValue++;
-
             } else {
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
             }
@@ -154,7 +153,8 @@ public class CraftingController {
     ///     Creates the starting recipes for crafting.
     /// </summary>
     public void CreateStartingRecipes() {
-        AddRecipe(new CraftingRecipe("Jam", ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "CookingPot"], ["Jam"]));
+        AddRecipe(new CraftingRecipe("Jam", ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "CookingPot"],
+            ["Jam"]));
 
         AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"]));
 
@@ -187,14 +187,18 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
 
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager", "Villager", "Villager"]));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager", "Villager", "Villager"]));
+        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"],
+            ["Villager", "Villager", "Villager"]));
+        AddRecipe(
+            new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager", "Villager", "Villager"]));
 
         AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"], ["Villager", "Hunter", "Villager"]));
         AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"], ["Villager", "Hunter", "Villager"]));
 
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"], ["Villager", "Blacksmith", "Villager"]));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"], ["Villager", "Blacksmith", "Villager"]));
+        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"],
+            ["Villager", "Blacksmith", "Villager"]));
+        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"],
+            ["Villager", "Blacksmith", "Villager"]));
 
         AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"], ["Villager", "Farmer", "Villager"]));
         AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"], ["Villager", "Farmer", "Villager"]));
@@ -208,18 +212,24 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"], ["Hunter", "Farmer", "Hunter"]));
         AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"], ["Hunter", "Farmer", "Hunter"]));
 
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"], ["Blacksmith", "Blacksmith", "Blacksmith"]));
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"], ["Blacksmith", "Blacksmith", "Blacksmith"]));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"],
+            ["Blacksmith", "Blacksmith", "Blacksmith"]));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"],
+            ["Blacksmith", "Blacksmith", "Blacksmith"]));
 
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"], ["Blacksmith", "Farmer", "Blacksmith"]));
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"], ["Blacksmith", "Farmer", "Blacksmith"]));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"],
+            ["Blacksmith", "Farmer", "Blacksmith"]));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"],
+            ["Blacksmith", "Farmer", "Blacksmith"]));
 
         AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"], ["Farmer", "Farmer", "Farmer"]));
         AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"], ["Farmer", "Farmer", "Farmer"]));
 
-        AddRecipe(new CraftingRecipe("House", ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"]));
+        AddRecipe(new CraftingRecipe("House",
+            ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"]));
 
-        AddRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
+        AddRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"],
+            ["Greenhouse"]));
 
         AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
 
@@ -257,7 +267,8 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"]));
         AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"]));
 
-        AddRecipe(new CraftingRecipe("Mine", ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
+        AddRecipe(new CraftingRecipe("Mine",
+            ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
 
         AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], true));
 

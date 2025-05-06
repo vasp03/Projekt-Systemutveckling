@@ -9,6 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CardCreationHelper : GameManagerBase {
     public CardCreationHelper(GameController gameController) : base(gameController) {
     }
+
     private CardController CardController => GameController.GetCardController();
 
     public string GetRandomCardType() {

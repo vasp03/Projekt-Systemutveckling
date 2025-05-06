@@ -5,15 +5,16 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SoundController : Node {
+    private const string BASE_MUSIC_PATH = "res://Assets/Music";
     private readonly IDictionary<string, AudioStream> CachedMusic = new Dictionary<string, AudioStream>();
     private readonly IDictionary<string, AudioStream> CachedSounds = new Dictionary<string, AudioStream>();
+    private bool _musicMuted;
+    private float _musicVolume;
+    private float _sfxVolume;
     private string CurrentPlayingMusicPath;
     private AudioStreamPlayer MusicPlayer;
     private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
     public bool SfxMuted { get; set; }
-    private float _musicVolume;
-    private bool _musicMuted;
-    private float _sfxVolume;
 
     public float MusicVolume {
         get => _musicVolume;
@@ -66,8 +67,6 @@ public partial class SoundController : Node {
         CachedMusic.ToList().ForEach(e => e.Value.Dispose());
     }
 
-    private const string BASE_MUSIC_PATH = "res://Assets/Music";
-
     private void SetupMusicPlayer() {
         MusicPlayer = new AudioStreamPlayer();
         MusicPlayer.Bus = "Music";
@@ -105,7 +104,9 @@ public partial class SoundController : Node {
 
         CurrentPlayingMusicPath = musicPath;
         MusicPlayer.Stream = LoadMusic(musicPath);
-        MusicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        MusicPlayer.VolumeDb = MusicMuted
+            ? -80
+            : Mathf.LinearToDb(MusicVolume);
         MusicPlayer.Play();
     }
 
@@ -156,7 +157,9 @@ public partial class SoundController : Node {
     }
 
     private void UpdateMusicMuted() {
-        MusicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        MusicPlayer.VolumeDb = MusicMuted
+            ? -80
+            : Mathf.LinearToDb(MusicVolume);
     }
 
     public bool ToggleSfxMuted() {

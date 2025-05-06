@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata;
 
 namespace Goodot15.Scripts;
 
@@ -47,7 +46,7 @@ public static class Utilities {
     }
 
     /// <summary>
-    ///    Converts the specified ticks to time
+    ///     Converts the specified ticks to time
     /// </summary>
     /// <param name="ticks">Ticks to convert</param>
     /// <returns>Seconds (60 ticks = 1 second)</returns>
@@ -56,7 +55,7 @@ public static class Utilities {
     }
 
     /// <summary>
-    /// Converts one range to another
+    ///     Converts one range to another
     /// </summary>
     /// <param name="OldMin">Start of the old range</param>
     /// <param name="OldMax">End of the old range</param>
@@ -67,7 +66,7 @@ public static class Utilities {
     internal static float MapRange(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue) {
         float oldRange = OldMax - OldMin;
         float newRange = NewMax - NewMin;
-        float newValue = ((OldValue - OldMin) * newRange / oldRange) + NewMin;
+        float newValue = (OldValue - OldMin) * newRange / oldRange + NewMin;
 
         return newValue;
     }

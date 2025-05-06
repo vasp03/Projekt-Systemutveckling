@@ -1,8 +1,8 @@
-namespace Goodot15.Scripts.Game.Model.Enums {
-    public enum CardPackEnum {
-        Nature,
-        Tools,
-        Villager,
-        Food
-    }
+namespace Goodot15.Scripts.Game.Model.Enums;
+
+public enum CardPackEnum {
+    Nature,
+    Tools,
+    Villager,
+    Food
 }

@@ -7,7 +7,7 @@ public class GameEvent {
     public string EventName;
 
     public GameEvent(string eventName, Action eventAction) {
-        this.EventName = eventName;
-        this.EventAction = eventAction;
+        EventName = eventName;
+        EventAction = eventAction;
     }
 }

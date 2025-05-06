@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -12,242 +10,244 @@ using Goodot15.Scripts.Game.Model.Interface;
 ///     It inherits from Node2D and is used to represent a card in the game.
 /// </summary>
 public partial class CardNode : Node2D {
-	private const float HighLightFactor = 1.3f;
-	private Card _cardType;
-	private CardNode LastOverlappedCard;
-	private bool oldIsHighlighted;
-	private Vector2 oldMousePosition;
-	private CraftButton _craftButton;
-	public CardController CardController { get; set; }
-	private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
-	private Area2D area2D => GetNode<Area2D>("Area2D");
-	public Vector2 CardOverlappingOffset { get; private set; } = new Vector2(0, -20);
-	public bool MouseIsHovering { get; private set; }
-	public bool IsBeingDragged { get; private set; }
-	public List<CardNode> HoveredCards { get; } = [];
-	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
-	public bool IsMovingOtherCards { get; set; } = false;
-	public CraftButton CraftButton { get; set; }
-	public string CARD_Group { get; private set; } = "CARDS";
+    private const float HighLightFactor = 1.3f;
+    private Card _cardType;
+    private CraftButton _craftButton;
+    private CardNode LastOverlappedCard;
+    private bool oldIsHighlighted;
+    private Vector2 oldMousePosition;
 
-	public Card CardType {
-		get => _cardType;
-		set {
-			if (_cardType is not null) _cardType.CardNode = null;
+    public CardNode() {
+        AddToGroup(CARD_Group);
+    }
 
-			value.CardNode = this;
-			_cardType = value;
-			ApplyTexture();
-		}
-	}
+    public CardController CardController { get; set; }
+    private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
+    private Area2D area2D => GetNode<Area2D>("Area2D");
+    public Vector2 CardOverlappingOffset { get; private set; } = new(0, -20);
+    public bool MouseIsHovering { get; private set; }
+    public bool IsBeingDragged { get; private set; }
+    public List<CardNode> HoveredCards { get; } = [];
+    public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
+    public bool IsMovingOtherCards { get; set; } = false;
+    public CraftButton CraftButton { get; set; }
+    public string CARD_Group { get; private set; } = "CARDS";
 
-	/// <summary>
-	///     Sets the position of the card node to the given position.
-	/// </summary>
-	public bool HasNeighbourAbove {
-		get {
-			if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
-			return false;
-		}
-	}
+    public Card CardType {
+        get => _cardType;
+        set {
+            if (_cardType is not null) _cardType.CardNode = null;
 
-	/// <summary>
-	///     Checks if the card has a neighbour below.
-	/// </summary>
-	public bool HasNeighbourBelow {
-		get {
-			if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
-			return false;
-		}
-	}
+            value.CardNode = this;
+            _cardType = value;
+            ApplyTexture();
+        }
+    }
 
-	public CardNode() {
-		AddToGroup(CARD_Group);
-	}
+    /// <summary>
+    ///     Sets the position of the card node to the given position.
+    /// </summary>
+    public bool HasNeighbourAbove {
+        get {
+            if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
+            return false;
+        }
+    }
 
-	/// <summary>
-	///     Sets the position of the card node to the given position.
-	/// </summary>
-	public void SetIsBeingDragged(bool isBeingDragged) {
-		oldMousePosition = GetGlobalMousePosition();
-		IsBeingDragged = isBeingDragged;
+    /// <summary>
+    ///     Checks if the card has a neighbour below.
+    /// </summary>
+    public bool HasNeighbourBelow {
+        get {
+            if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
+            return false;
+        }
+    }
 
-		if (CardType is IStackable stackable) {
-			CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-			if (neighbourAbove == null)
-				ZIndex = CardController.CardCount;
-			else
-				neighbourAbove.SetIsBeingDragged(isBeingDragged);
-		}
+    /// <summary>
+    ///     Sets the position of the card node to the given position.
+    /// </summary>
+    public void SetIsBeingDragged(bool isBeingDragged) {
+        oldMousePosition = GetGlobalMousePosition();
+        IsBeingDragged = isBeingDragged;
 
-		if (!isBeingDragged) CheckForConsumingCards();
-	}
+        if (CardType is IStackable stackable) {
+            CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
+            if (neighbourAbove == null)
+                ZIndex = CardController.CardCount;
+            else
+                neighbourAbove.SetIsBeingDragged(isBeingDragged);
+        }
 
-	private void CheckForConsumingCards() {
-		CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
-			.LastOrDefault(e => e.ZIndex <= ZIndex);
+        if (!isBeingDragged) CheckForConsumingCards();
+    }
 
-		if (cardUnder is not null) {
-			if (cardUnder.CardType is ICardConsumer cardConsumer) {
-				cardConsumer.ConsumeCard(CardType);
-			}
-		}
-	}
+    private void CheckForConsumingCards() {
+        CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
+            .LastOrDefault(e => e.ZIndex <= ZIndex);
 
-	/// <summary>
-	///     Applies the texture to the sprite of the card node.
-	///     It tries to load the texture from the address of the card type.
-	///     If the texture is not found, it loads the error texture.
-	/// </summary>
-	private void ApplyTexture() {
-		Texture2D texture;
+        if (cardUnder is not null) {
+            if (cardUnder.CardType is ICardConsumer cardConsumer) {
+                cardConsumer.ConsumeCard(CardType);
+            }
+        }
+    }
 
-		// Check if the path is not null or empty and if there is a file at the path
-		if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
-			GD.PrintErr("Texture path is null or empty for card: " + CardType.CardNode.CardType + " " + string.IsNullOrEmpty(CardType.TexturePath) + " " + FileAccess.FileExists(CardType.TexturePath));
-			GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
-			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
-			sprite.Texture = texture;
-			return;
-		}
+    /// <summary>
+    ///     Applies the texture to the sprite of the card node.
+    ///     It tries to load the texture from the address of the card type.
+    ///     If the texture is not found, it loads the error texture.
+    /// </summary>
+    private void ApplyTexture() {
+        Texture2D texture;
 
-		// try to load the texture from the address
-		try {
-			texture = GD.Load<Texture2D>(CardType.TexturePath);
-		}
-		catch (Exception) {
-			texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
-			GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
-		}
+        // Check if the path is not null or empty and if there is a file at the path
+        if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
+            GD.PrintErr("Texture path is null or empty for card: " + CardType.CardNode.CardType + " " +
+                        string.IsNullOrEmpty(CardType.TexturePath) + " " + FileAccess.FileExists(CardType.TexturePath));
+            GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
+            texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
+            sprite.Texture = texture;
+            return;
+        }
 
-		sprite.Texture = texture;
-	}
+        // try to load the texture from the address
+        try {
+            texture = GD.Load<Texture2D>(CardType.TexturePath);
+        }
+        catch (Exception) {
+            texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
+            GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
+        }
 
-	/// <summary>
-	///     Sets the highlighted state of the card node.
-	///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
-	/// </summary>
-	public void SetHighlighted(bool isHighlighted) {
-		switch (isHighlighted) {
-			case true when !oldIsHighlighted:
-				sprite.SetModulate(sprite.Modulate * HighLightFactor);
-				oldIsHighlighted = true;
-				break;
-			case false when oldIsHighlighted:
-				oldIsHighlighted = false;
-				sprite.SetModulate(sprite.Modulate / HighLightFactor);
-				break;
-		}
-	}
+        sprite.Texture = texture;
+    }
 
-	/// <summary>
-	///     Sets the position of the card node to the position of the underCard.
-	/// </summary>
-	public void SetOverLappedCardToStack(CardNode underCard) {
-		if (underCard == null || LastOverlappedCard == this) return;
+    /// <summary>
+    ///     Sets the highlighted state of the card node.
+    ///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
+    /// </summary>
+    public void SetHighlighted(bool isHighlighted) {
+        switch (isHighlighted) {
+            case true when !oldIsHighlighted:
+                sprite.SetModulate(sprite.Modulate * HighLightFactor);
+                oldIsHighlighted = true;
+                break;
+            case false when oldIsHighlighted:
+                oldIsHighlighted = false;
+                sprite.SetModulate(sprite.Modulate / HighLightFactor);
+                break;
+        }
+    }
 
-		if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
-			if (ZIndex > underCard.ZIndex) {
-				thisStackable.NeighbourBelow = otherStackable;
-				otherStackable.NeighbourAbove = thisStackable;
+    /// <summary>
+    ///     Sets the position of the card node to the position of the underCard.
+    /// </summary>
+    public void SetOverLappedCardToStack(CardNode underCard) {
+        if (underCard == null || LastOverlappedCard == this) return;
 
-				SetPosition(underCard.Position - CardOverlappingOffset);
+        if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
+            if (ZIndex > underCard.ZIndex) {
+                thisStackable.NeighbourBelow = otherStackable;
+                otherStackable.NeighbourAbove = thisStackable;
 
-				if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
-					((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-				}
-			}
-	}
+                SetPosition(underCard.Position - CardOverlappingOffset);
 
-	/// <summary>
-	///     Sets the position of the card node as part of a stack.
-	///     Does the same as SetOverLappedCardToStack but does not change the neighbours.
-	/// </summary>
-	/// <param name="underCard"></param>
-	public void SetPositionAsPartOfStack(CardNode underCard) {
-		SetPosition(underCard.Position - new Vector2(0, -15));
+                if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+                    ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
+                }
+            }
+    }
 
-		if (CardType is IStackable { NeighbourAbove: not null } stackable) {
-			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-		}
-	}
+    /// <summary>
+    ///     Sets the position of the card node as part of a stack.
+    ///     Does the same as SetOverLappedCardToStack but does not change the neighbours.
+    /// </summary>
+    /// <param name="underCard"></param>
+    public void SetPositionAsPartOfStack(CardNode underCard) {
+        SetPosition(underCard.Position - new Vector2(0, -15));
 
-	private void ClearReferences() {
-		if (CardType is IStackable stackable) {
-			if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
+        if (CardType is IStackable { NeighbourAbove: not null } stackable) {
+            ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
+        }
+    }
 
-			if (HasNeighbourAbove) stackable.NeighbourAbove.NeighbourBelow = null;
-		}
+    private void ClearReferences() {
+        if (CardType is IStackable stackable) {
+            if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
 
-		HoveredCards.Remove(this);
-		CardController.RemoveCardFromHoveredCards(this);
-	}
+            if (HasNeighbourAbove) stackable.NeighbourAbove.NeighbourBelow = null;
+        }
 
-	/// <summary>
-	///     Processes the card node and checks if the card node is being dragged.
-	/// </summary>
-	/// <param name="delta"></param>
-	public override void _Process(double delta) {
-		ITickable tickable = CardType as ITickable;
-		tickable?.PreTick();
+        HoveredCards.Remove(this);
+        CardController.RemoveCardFromHoveredCards(this);
+    }
 
-		if (IsBeingDragged) {
-			Vector2 mousePosition = GetGlobalMousePosition();
+    /// <summary>
+    ///     Processes the card node and checks if the card node is being dragged.
+    /// </summary>
+    /// <param name="delta"></param>
+    public override void _Process(double delta) {
+        ITickable tickable = CardType as ITickable;
+        tickable?.PreTick();
 
-			Position += mousePosition - oldMousePosition;
+        if (IsBeingDragged) {
+            Vector2 mousePosition = GetGlobalMousePosition();
 
-			if (CraftButton != null) {
-				CraftButton.Position = Position + CardController.CraftButtonOffset;
-			}
+            Position += mousePosition - oldMousePosition;
 
-			oldMousePosition = mousePosition;
-		}
+            if (CraftButton != null) {
+                CraftButton.Position = Position + CardController.CraftButtonOffset;
+            }
 
-		tickable?.PostTick();
-	}
+            oldMousePosition = mousePosition;
+        }
 
-	/// <summary>
-	///     Gets the card node from the area2D.
-	///     This is used to get the card node from the area2D when the mouse enters or exits the area2D.
-	/// </summary>
-	/// <param name="area2D"></param>
-	/// <returns>
-	///     The card node that is the parent of the area2D.
-	/// </returns>
-	public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
-		return area2D.GetParent<CardNode>();
-	}
+        tickable?.PostTick();
+    }
 
-	public void Destroy() {
-		ClearReferences();
-		QueueFree();
-	}
+    /// <summary>
+    ///     Gets the card node from the area2D.
+    ///     This is used to get the card node from the area2D when the mouse enters or exits the area2D.
+    /// </summary>
+    /// <param name="area2D"></param>
+    /// <returns>
+    ///     The card node that is the parent of the area2D.
+    /// </returns>
+    public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
+        return area2D.GetParent<CardNode>();
+    }
 
-	public void _on_area_2d_mouse_entered() {
-		MouseIsHovering = true;
-		CardController.AddCardToHoveredCards(this);
-	}
+    public void Destroy() {
+        ClearReferences();
+        QueueFree();
+    }
 
-	public void _on_area_2d_mouse_exited() {
-		MouseIsHovering = false;
-		CardController.RemoveCardFromHoveredCards(this);
-	}
+    public void _on_area_2d_mouse_entered() {
+        MouseIsHovering = true;
+        CardController.AddCardToHoveredCards(this);
+    }
 
-	public void _on_area_2d_area_entered(Area2D area) {
-		LastOverlappedCard = GetCardNodeFromArea2D(area);
-		HoveredCards.Add(GetCardNodeFromArea2D(area));
-	}
+    public void _on_area_2d_mouse_exited() {
+        MouseIsHovering = false;
+        CardController.RemoveCardFromHoveredCards(this);
+    }
 
-	public void _on_area_2d_area_exited(Area2D area) {
-		LastOverlappedCard = null;
-		HoveredCards.Remove(GetCardNodeFromArea2D(area));
-	}
+    public void _on_area_2d_area_entered(Area2D area) {
+        LastOverlappedCard = GetCardNodeFromArea2D(area);
+        HoveredCards.Add(GetCardNodeFromArea2D(area));
+    }
 
-	public void SetCraftButton(CraftButton craftButton) {
-		_craftButton = craftButton;
-	}
+    public void _on_area_2d_area_exited(Area2D area) {
+        LastOverlappedCard = null;
+        HoveredCards.Remove(GetCardNodeFromArea2D(area));
+    }
 
-	public CraftButton GetCraftButton() {
-		return _craftButton;
-	}
+    public void SetCraftButton(CraftButton craftButton) {
+        _craftButton = craftButton;
+    }
+
+    public CraftButton GetCraftButton() {
+        return _craftButton;
+    }
 }

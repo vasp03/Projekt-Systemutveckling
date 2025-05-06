@@ -1,11 +1,14 @@
 using Godot;
-using Timer = Godot.Timer;
 using Goodot15.Scripts.Game.Model.Enums;
+using Timer = Godot.Timer;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public class MouseController : GameManagerBase {
     private const string PATH = "res://Assets/MouseCursor/";
+
+    private readonly static Timer LoadingTimer = new();
+    private readonly static Vector2 Offset = new(12, 12);
     private readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
     private readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
@@ -20,8 +23,6 @@ public class MouseController : GameManagerBase {
         ResourceLoader.Load(PATH + "loading_8.png")
     ];
 
-    private static readonly Timer LoadingTimer = new Timer();
-    private static readonly Vector2 Offset = new Vector2(12, 12);
     private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
     private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
     private bool IsLoading;

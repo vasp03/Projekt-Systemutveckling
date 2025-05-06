@@ -22,7 +22,9 @@ public abstract class CardLiving
         // TODO: Death(?)
         if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilFullyStarved) {
             HungerTickProgress = 0;
-            Saturation -= SaturationLossPerCycle != -1 ? SaturationLossPerCycle : 0;
+            Saturation -= SaturationLossPerCycle != -1
+                ? SaturationLossPerCycle
+                : 0;
         }
     }
 
@@ -64,7 +66,9 @@ public abstract class CardLiving
     ///     Current Hunger Tick Progress, in ticks
     /// </summary>
     public int HungerTickProgress {
-        get => TicksUntilSaturationDecrease == -1 ? 0 : _hungerTickCount;
+        get => TicksUntilSaturationDecrease == -1
+            ? 0
+            : _hungerTickCount;
         protected set => _hungerTickCount = Math.Max(0, value);
     }
 
@@ -77,7 +81,9 @@ public abstract class CardLiving
     ///     Current saturation points
     /// </summary>
     public int Saturation {
-        get => TicksUntilSaturationDecrease == -1 ? _saturation : -1;
+        get => TicksUntilSaturationDecrease == -1
+            ? _saturation
+            : -1;
         set => _saturation = Math.Max(0, value);
     }
 
@@ -100,7 +106,9 @@ public abstract class CardLiving
     ///     Current starvation progress, in ticks
     /// </summary>
     public int StarvationTickProgress {
-        get => TicksUntilFullyStarved == -1 ? _starvationTickCount : -1;
+        get => TicksUntilFullyStarved == -1
+            ? _starvationTickCount
+            : -1;
         set => _starvationTickCount = Math.Clamp(value, 0, TicksUntilFullyStarved);
     }
 
