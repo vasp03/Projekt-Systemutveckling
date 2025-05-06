@@ -6,10 +6,12 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
-    private MenuController menuController;
+	private MenuController menuController;
+	private SoundController soundController;
 
-    public override void _Ready() {
+	public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
+        soundController = GetNode<SoundController>("/root/SoundController");
 
         VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
         buttonContainer.Show();
@@ -26,14 +28,14 @@ public partial class GamePausedMenu : Control {
         Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
         exitButton.Pressed += OnExitButtonPressed;
     }
-
-    /// <summary>
-    ///     Handles the button press event for the resume button.
-    ///     Closes all the menus and resumes the game.
-    /// </summary>
-    private void OnResumeButtonPressed() {
-        menuController.CloseMenus();
-    }
+	/// <summary>
+	///     Handles the button press event for the resume button.
+	///     Closes all the menus and resumes the game.
+	/// </summary>
+	private void OnResumeButtonPressed() {
+		menuController.CloseMenus();
+		soundController.ToggleMusicMuted();
+	}
 
     /// <summary>
     ///     Handles the button press event for the guide button.
@@ -50,16 +52,18 @@ public partial class GamePausedMenu : Control {
     private void OnOptionsButtonPressed() {
         menuController.OpenOptionsMenu();
     }
-
-    /// <summary>
-    ///     Handles the button press event for the exit button.
-    ///     Exits the game and returns to the main menu.
-    /// </summary>
-    private void OnExitButtonPressed() {
-        // Await is required to synchronize scene change
-        // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-        CallDeferred(nameof(ChangeSceneDeferred));
-    }
+  
+	/// <summary>
+	///     Handles the button press event for the exit button.
+	///     Exits the game and returns to the main menu.
+	/// </summary>
+	private void OnExitButtonPressed() {
+		// Await is required to synchronize scene change
+		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		CallDeferred(nameof(ChangeSceneDeferred));
+		soundController.ToggleMusicMuted();
+		soundController.PlayMenuMusic();
+	}
 
     /// <summary>
     ///     Changes the scene through deferred action.
