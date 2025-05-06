@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Living;
+using Goodot15.Scripts.Game.Model.Parents;
 public class CardController {
 	private readonly GameController GameController;
 	private readonly MouseController MouseController;
@@ -152,35 +155,6 @@ public class CardController {
 	}
 
 	/// <summary>
-	///     Called when the left mouse button is pressed.
-	/// </summary>
-	public void LeftMouseButtonPressed() {
-		MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
-		SelectedCard = GetTopCardAtMousePosition();
-		// SetTopZIndexForCard(selectedCard);
-
-		if (SelectedCard != null) SetZIndexForAllCards(SelectedCard);
-
-		if (SelectedCard != null) {
-			SelectedCard.SetIsBeingDragged(true);
-
-			if (SelectedCard.HasNeighbourAbove) {
-				// CardTypeEnum
-				SelectedCard.ZIndex = CardCount + 1;
-			}
-
-			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
-			// And sets the card below if it exists to not have a neighbour above
-			if (SelectedCard.HasNeighbourBelow) {
-				if (SelectedCard.CardType is IStackable stackable) {
-					if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
-					stackable.NeighbourBelow = null;
-				}
-			}
-		}
-	}
-
-	/// <summary>
 	///     Sets the ZIndex of all cards based on the selected card.
 	/// </summary>
 	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
@@ -207,6 +181,36 @@ public class CardController {
 				card.ZIndex = CounterForCardsAbove++;
 			} else {
 				card.ZIndex = CounterForCardsBelow++;
+			}
+		}
+	}
+
+	/// <summary>
+	///     Called when the left mouse button is pressed.
+	/// </summary>
+	public void LeftMouseButtonPressed() {
+		MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
+		SelectedCard = GetTopCardAtMousePosition();
+
+		if (SelectedCard != null) SetZIndexForAllCards(SelectedCard);
+
+		if (SelectedCard != null) {
+			SelectedCard.SetIsBeingDragged(true);
+
+			if (SelectedCard.HasNeighbourAbove) {
+				SelectedCard.IsMovingOtherCards = true;
+			} else {
+				// Set the card that is being dragged to the top
+				SelectedCard.ZIndex = CardCount + 1;
+			}
+
+			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
+			// And sets the card below if it exists to not have a neighbour above
+			if (SelectedCard.HasNeighbourBelow) {
+				if (SelectedCard.CardType is IStackable stackable) {
+					if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
+					stackable.NeighbourBelow = null;
+				}
 			}
 		}
 	}
@@ -282,8 +286,9 @@ public class CardController {
 		}
 
 		// Check for the recipe
-		List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
-		if (recipe == null) {
+		StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+
+		if (recipe.StringList == null || recipe.StringList.Count == 0) {
 			GD.Print("No recipe found for the selected card.");
 			return;
 		}
@@ -293,14 +298,32 @@ public class CardController {
 		// Remove the cards in the stack part of cardNode
 		foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
 			if (stackableCard is Card card) {
+				stackableCard.ClearNeighbours();
+				if (stackableCard is CardBuilding || (stackableCard is LivingPlayer && !recipe.BoolValue)) {
+					continue;
+				}
+
+				if (stackableCard is IDurability durability) {
+					bool ret = durability.DecrementDurability();
+
+					GD.Print("Ret: " + recipe.BoolValue + " " + ret);
+
+					if (ret || recipe.BoolValue) {
+						card.CardNode.QueueFree();
+					}
+					continue;
+				}
+
 				card.CardNode.QueueFree();
 			}
 		}
 
-		foreach (string cardName in recipe) {
+		foreach (string cardName in recipe.StringList) {
+			GD.Print("Crafting card: " + cardName);
+
 			CardNode card = CreateCard(cardName, cardNode.Position);
 			card.ZIndex = cardNode.ZIndex + 1;
-			spawnPos += new Vector2(0, -15);
+			spawnPos += new Vector2(0, -20);
 		}
 	}
 }

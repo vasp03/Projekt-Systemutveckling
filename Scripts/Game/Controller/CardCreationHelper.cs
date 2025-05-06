@@ -65,7 +65,7 @@ public class CardCreationHelper : GameManagerBase {
             case "Tent" or "29":
                 return new BuildingTent();
             case "Field" or "44":
-                return new BuildingTent();
+                return new BuildingField();
 
 
             case "Apple" or "30":

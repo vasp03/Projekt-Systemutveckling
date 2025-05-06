@@ -22,6 +22,10 @@ MenuController="*res://Scripts/Game/Controller/MenuController.cs"
 SettingsManager="*res://Scripts/Game/Controller/SettingsManager.cs"
 SoundController="*res://Scripts/Game/Controller/SoundController.cs"
 
+[debug]
+
+vulkan/debug_layers=false
+
 [display]
 
 window/size/viewport_width=1280
@@ -56,7 +60,3 @@ LMB={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-
-[debug]
-
-vulkan/debug_layers=false

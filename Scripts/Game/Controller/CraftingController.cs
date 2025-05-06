@@ -95,16 +95,18 @@ public class CraftingController {
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
     /// 
-    public List<string> CheckForCraftingWithStackable(List<IStackable> Cards) {
+    public StringAndBoolRet CheckForCraftingWithStackable(List<IStackable> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
         foreach (IStackable card in Cards) {
             StringIntHolder cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
-            if (cardForCrafting != null)
+            if (cardForCrafting != null) {
                 cardForCrafting.IntValue++;
-            else
+
+            } else {
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
+            }
         }
 
         // Sort the list by the name of the card
@@ -131,15 +133,17 @@ public class CraftingController {
                 continue;
             }
 
-            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
+            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++) {
                 if (CardsInRecipeAndAmount[i].StringValue != CardForCraftingAmount[i].StringValue ||
                     CardsInRecipeAndAmount[i].IntValue != CardForCraftingAmount[i].IntValue) {
                     recipeMatches = false;
                     break;
                 }
+            }
+
             if (recipeMatches) {
                 List<string> craftedCards = recipe.CardsForCraftingResult;
-                return craftedCards;
+                return new StringAndBoolRet(craftedCards, recipe.ConsumeTool);
             }
         }
 
@@ -174,7 +178,6 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry"]));
         AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry"]));
         AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry"]));
-
 
         AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"]));
 
@@ -256,10 +259,10 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("Mine", ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
 
-        AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"]));
+        AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], true));
 
-        AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"]));
+        AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"], true));
 
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], true));
     }
 }

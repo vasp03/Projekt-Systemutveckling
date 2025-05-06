@@ -111,5 +111,8 @@ public interface IStackable {
         return true;
     }
 
-
+    public void ClearNeighbours(){
+        NeighbourAbove = null;
+        NeighbourBelow = null;
+    }
 }
