@@ -56,7 +56,7 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
         if (isPaused) {
             GameController.SetSceneDarkness(1.0f);
         } else {
-            SetSceneDarkness(GameController.GetDayTimeController().GetTicks());
+            GameController.SetSceneDarkness(OldSceneDarkness);
         }
     }
 
