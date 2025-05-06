@@ -157,11 +157,17 @@ public class DayTimeController : ITickable {
         if (IsPaused) {
             foreach (IDayTimeCallback callback in Callbacks) {
                 callback.DayTimeChanged(DayStateEnum.Paused, CurrentTimeOfDay);
+                GameController.TimeLabel.Visible = false;
             }
         } else {
             foreach (IDayTimeCallback callback in Callbacks) {
                 callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+                GameController.TimeLabel.Visible = true;
             }
         }
+    }
+
+    public int GetTicks() {
+        return CurrentTimeOfDay;
     }
 }

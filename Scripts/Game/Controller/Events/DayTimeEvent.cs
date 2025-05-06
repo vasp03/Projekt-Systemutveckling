@@ -3,11 +3,9 @@ using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Utilities = Goodot15.Scripts.Utilities;
 
-public class DayTimeEvent : IDayTimeCallback {
+public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     private readonly GameController GameController;
     private DayStateEnum OldDayState;
-
-
     private float OldSceneDarkness;
 
     /// <summary>
@@ -16,6 +14,7 @@ public class DayTimeEvent : IDayTimeCallback {
     public DayTimeEvent(GameController gameController) {
         OldDayState = DayStateEnum.Invalid;
         GameController = gameController;
+        GameController.GetMenuController().AddPauseCallback(this);
     }
 
     /// <summary>
@@ -51,6 +50,14 @@ public class DayTimeEvent : IDayTimeCallback {
         }
 
         OldDayState = dayState;
+    }
+
+    public void PauseToggle(bool isPaused) {
+        if (isPaused) {
+            GameController.SetSceneDarkness(1.0f);
+        } else {
+            SetSceneDarkness(GameController.GetDayTimeController().GetTicks());
+        }
     }
 
 

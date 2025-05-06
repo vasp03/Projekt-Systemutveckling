@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
@@ -13,6 +14,7 @@ public partial class MenuController : Node {
     private Control OptionsMenu;
     private Control PauseMenu;
     private Control PreviousMenu;
+    private List<IPauseCallback> PauseCallbacks;
 
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
@@ -43,6 +45,7 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
+        CallCallbacks(true);
 
         if (PauseMenu == null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -115,6 +118,8 @@ public partial class MenuController : Node {
         }
 
         GetTree().Paused = false;
+        CallCallbacks(false);
+
         GameController.Visible = true;
         GameController.GetDayTimeController().SetPaused(false);
         GameController.GetSoundController().MusicMuted = true;
@@ -137,6 +142,7 @@ public partial class MenuController : Node {
         CurrentMenu = menu;
 
         GetTree().Paused = false;
+        CallCallbacks(false);
     }
 
     /// <summary>
@@ -148,5 +154,27 @@ public partial class MenuController : Node {
 
     public bool IsPaused() {
         return GetTree().Paused;
+    }
+
+    private void CallCallbacks(bool isPaused) {
+        if (PauseCallbacks == null) return;
+
+        foreach (IPauseCallback callback in PauseCallbacks) {
+            callback.PauseToggle(isPaused);
+        }
+    }
+
+    public void AddPauseCallback(IPauseCallback callback) {
+        if (PauseCallbacks == null) {
+            PauseCallbacks = new List<IPauseCallback>();
+        }
+
+        PauseCallbacks.Add(callback);
+    }
+
+    public void RemovePauseCallback(IPauseCallback callback) {
+        if (PauseCallbacks != null) {
+            PauseCallbacks.Remove(callback);
+        }
     }
 }

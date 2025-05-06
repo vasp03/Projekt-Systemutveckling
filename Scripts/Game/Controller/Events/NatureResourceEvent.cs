@@ -11,8 +11,6 @@ public class NatureResourceEvent : IGameEvent {
     public double Chance => .1d;
 
     public void OnEvent(GameEventContext context) {
-        return;
-
         GameController gameController = context.GameController;
         CardController cardController = gameController.GetCardController();
         CardCreationHelper cardCreationHelper = cardController.CardCreationHelper;
