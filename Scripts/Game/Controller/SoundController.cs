@@ -23,6 +23,29 @@ public partial class SoundController : Node {
 
         MusicVolume = SettingsManager.MusicVolume;
         SfxVolume = SettingsManager.SfxVolume;
+        
+    
+        musicPlayer.Finished += OnMusicFinished;
+    }
+
+    public void OnMusicFinished() {
+        if (ShouldCurrentSongLoop()) {
+            GD.Print("Looping music" + currentPlayingMusicPath);
+            musicPlayer.Play();
+        }
+    }
+    
+    /*
+     * Helper method for OnMusicFinished class
+     * Checks to see if a song should replay after .finished has emitted
+     * Necessary cause MP3 songs don't have built in looping through Godot
+     */
+    public bool ShouldCurrentSongLoop() {
+        if (string.IsNullOrEmpty(currentPlayingMusicPath)) {
+            return false;
+        }
+
+        return currentPlayingMusicPath.Contains("DayTimeSongs/Day");
     }
 
     public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
