@@ -176,7 +176,7 @@ public partial class SoundController : Node {
         if (!MusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
     }
 
-    private bool _musicMuted;
+    public bool _musicMuted { get; set; }
 
     public bool MusicMuted {
         get => _musicMuted;
