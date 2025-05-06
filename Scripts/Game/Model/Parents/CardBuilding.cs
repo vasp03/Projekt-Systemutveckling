@@ -3,10 +3,9 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Model.Parents;
 
 public abstract class CardBuilding : Card, ITickable {
-    private int currentProduceTick;
+    private int CurrentProduceTick;
 
-    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(textureAddress,
-        movable) {
+    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(textureAddress, movable) {
         ProduceTimeInSeconds = produceTimeInSeconds;
     }
 
@@ -28,13 +27,6 @@ public abstract class CardBuilding : Card, ITickable {
     }
 
     public virtual void PostTick() {
-        currentProduceTick = (currentProduceTick + 1) % ProduceTimeInTicks;
+        CurrentProduceTick = (CurrentProduceTick + 1) % ProduceTimeInTicks;
     }
-
-    /// <summary>
-    ///     Invoked when a new card is going to be produced. Meant to be overriden
-    ///     To supply a new Card Instance.
-    /// </summary>
-    /// <returns>New Card Instance</returns>
-    public abstract string ProduceCard();
 }

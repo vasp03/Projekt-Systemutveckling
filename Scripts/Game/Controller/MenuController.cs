@@ -1,26 +1,25 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
 
 /// <summary>
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
-    private Control currentMenu;
-    private Goodot15.Scripts.Game.Controller.GameController GameController;
-    private Control guideMenu;
-
-    private Control mainMenu;
-    private Control optionsMenu;
-    private Control pauseMenu;
-    private Control previousMenu;
-
+    private Control CurrentMenu;
+    private GameController GameController;
+    private Control GuideMenu;
+    private Control MainMenu;
+    private Control OptionsMenu;
+    private Control PauseMenu;
+    private Control PreviousMenu;
 
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
-        currentMenu = mainMenu;
-        pauseMenu = null;
-        optionsMenu = null;
-        guideMenu = null;
+        CurrentMenu = MainMenu;
+        PauseMenu = null;
+        OptionsMenu = null;
+        GuideMenu = null;
         // this.previousMenu = mainMenu;
     }
 
@@ -28,10 +27,10 @@ public partial class MenuController : Node {
     ///     Loads and opens the main menu.
     /// </summary>
     public void OpenMainMenu() {
-        if (mainMenu == null) {
+        if (MainMenu == null) {
             PackedScene packedMainMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn");
-            mainMenu = packedMainMenu.Instantiate() as Control;
-            AddChild(mainMenu);
+            MainMenu = packedMainMenu.Instantiate() as Control;
+            AddChild(MainMenu);
         }
 
         GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
@@ -45,41 +44,41 @@ public partial class MenuController : Node {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
 
-        if (pauseMenu == null) {
+        if (PauseMenu == null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
-            pauseMenu = packedPauseMenu.Instantiate() as Control;
-            AddChild(pauseMenu);
+            PauseMenu = packedPauseMenu.Instantiate() as Control;
+            AddChild(PauseMenu);
         }
 
-        SwitchMenu(pauseMenu);
+        SwitchMenu(PauseMenu);
     }
 
     /// <summary>
     ///     Loads and opens the options menu.
     /// </summary>
     public void OpenOptionsMenu() {
-        previousMenu = currentMenu;
-        if (optionsMenu == null) {
+        PreviousMenu = CurrentMenu;
+        if (OptionsMenu == null) {
             PackedScene packedOptionsMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn");
-            optionsMenu = packedOptionsMenu.Instantiate() as Control;
-            AddChild(optionsMenu);
+            OptionsMenu = packedOptionsMenu.Instantiate() as Control;
+            AddChild(OptionsMenu);
         }
 
-        SwitchMenu(optionsMenu);
+        SwitchMenu(OptionsMenu);
     }
 
     /// <summary>
     ///     Loads and opens the guide menu.
     /// </summary>
     public void OpenGuideMenu() {
-        previousMenu = currentMenu;
-        if (guideMenu == null) {
+        PreviousMenu = CurrentMenu;
+        if (GuideMenu == null) {
             PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
-            guideMenu = packedGuideMenu.Instantiate() as Control;
-            AddChild(guideMenu);
+            GuideMenu = packedGuideMenu.Instantiate() as Control;
+            AddChild(GuideMenu);
         }
 
-        SwitchMenu(guideMenu);
+        SwitchMenu(GuideMenu);
     }
 
     /// <summary>
@@ -88,9 +87,9 @@ public partial class MenuController : Node {
     /// <param name="newMenu">The new menu that should be shown</param>
     private void SwitchMenu(Control newMenu) {
         if (newMenu is not null && newMenu.IsInsideTree()) {
-            currentMenu = newMenu;
+            CurrentMenu = newMenu;
             newMenu.Visible = true;
-            if (previousMenu != null) previousMenu.Visible = false;
+            if (PreviousMenu != null) PreviousMenu.Visible = false;
         }
     }
 
@@ -98,9 +97,9 @@ public partial class MenuController : Node {
     ///     Goes back to the previous menu.
     /// </summary>
     public void GoBackToPreviousMenu() {
-        if (previousMenu is not null && previousMenu.IsInsideTree()) {
-            Control menuToSwitchTo = previousMenu;
-            previousMenu = currentMenu;
+        if (PreviousMenu is not null && PreviousMenu.IsInsideTree()) {
+            Control menuToSwitchTo = PreviousMenu;
+            PreviousMenu = CurrentMenu;
             SwitchMenu(menuToSwitchTo);
         }
     }
@@ -132,8 +131,8 @@ public partial class MenuController : Node {
     /// </summary>
     /// <param name="menu">The new main menu instance to configure with</param>
     public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
-        mainMenu = menu;
-        currentMenu = menu;
+        MainMenu = menu;
+        CurrentMenu = menu;
 
         GetTree().Paused = false;
     }

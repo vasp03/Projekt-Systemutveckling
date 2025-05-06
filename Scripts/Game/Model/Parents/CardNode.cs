@@ -13,29 +13,22 @@ using Goodot15.Scripts.Game.Model.Interface;
 /// </summary>
 public partial class CardNode : Node2D {
 	private const float HighLightFactor = 1.3f;
-
 	private Card _cardType;
-
 	private CardNode LastOverlappedCard;
-
 	private bool oldIsHighlighted;
-
 	private Vector2 oldMousePosition;
-
 	private CraftButton _craftButton;
-
-	public CardNode() {
-		AddToGroup("CARDS");
-	}
-
 	public CardController CardController { get; set; }
-
 	private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
-
-
 	private Area2D area2D => GetNode<Area2D>("Area2D");
-
 	public Vector2 CardOverlappingOffset { get; private set; } = new Vector2(0, -20);
+	public bool MouseIsHovering { get; private set; }
+	public bool IsBeingDragged { get; private set; }
+	public List<CardNode> HoveredCards { get; } = [];
+	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
+	public bool IsMovingOtherCards { get; set; } = false;
+	public CraftButton CraftButton { get; set; }
+	public string CARD_Group { get; private set; } = "CARDS";
 
 	public Card CardType {
 		get => _cardType;
@@ -47,18 +40,6 @@ public partial class CardNode : Node2D {
 			ApplyTexture();
 		}
 	}
-
-	public bool MouseIsHovering { get; private set; }
-
-	public bool IsBeingDragged { get; private set; }
-
-	public List<CardNode> HoveredCards { get; } = [];
-
-	public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
-
-	public bool IsMovingOtherCards { get; set; } = false;
-
-	public CraftButton CraftButton { get; set; }
 
 	/// <summary>
 	///     Sets the position of the card node to the given position.
@@ -78,6 +59,10 @@ public partial class CardNode : Node2D {
 			if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
 			return false;
 		}
+	}
+
+	public CardNode() {
+		AddToGroup(CARD_Group);
 	}
 
 	/// <summary>
@@ -233,8 +218,6 @@ public partial class CardNode : Node2D {
 		return area2D.GetParent<CardNode>();
 	}
 
-	#region Events(?)
-
 	public void Destroy() {
 		ClearReferences();
 		QueueFree();
@@ -259,8 +242,6 @@ public partial class CardNode : Node2D {
 		LastOverlappedCard = null;
 		HoveredCards.Remove(GetCardNodeFromArea2D(area));
 	}
-
-	#endregion Events(?)
 
 	public void SetCraftButton(CraftButton craftButton) {
 		_craftButton = craftButton;

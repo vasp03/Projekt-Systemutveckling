@@ -7,7 +7,9 @@ using Goodot15.Scripts.Game.Model.Material_Cards;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CardCreationHelper : GameManagerBase {
-    private CardController CardController => CoreGameController.GetCardController();
+    public CardCreationHelper(GameController gameController) : base(gameController) {
+    }
+    private CardController CardController => GameController.GetCardController();
 
     public string GetRandomCardType() {
         Random random = new();

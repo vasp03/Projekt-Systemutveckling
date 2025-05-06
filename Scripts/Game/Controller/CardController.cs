@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 public class CardController {
 	private readonly GameController GameController;
@@ -19,10 +20,10 @@ public class CardController {
 	public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 	private List<CardNode> Stacks => AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
 
-	public CardController(Goodot15.Scripts.Game.Controller.GameController gameController, MouseController mouseController) {
+	public CardController(GameController gameController, MouseController mouseController) {
 		GameController = gameController;
 		MouseController = mouseController;
-		CardCreationHelper = new CardCreationHelper();
+		CardCreationHelper = new CardCreationHelper(gameController);
 		CraftingController = new CraftingController(CardCreationHelper);
 	}
 
@@ -154,7 +155,7 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		MouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+		MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
 		SelectedCard = GetTopCardAtMousePosition();
 		// SetTopZIndexForCard(selectedCard);
 
@@ -214,7 +215,7 @@ public class CardController {
 	///     Called when the left mouse button is released.
 	/// </summary>
 	public void LeftMouseButtonReleased() {
-		MouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
+		MouseController.SetMouseCursor(MouseCursorEnum.point_small);
 		if (SelectedCard != null) {
 			SelectedCard.SetIsBeingDragged(false);
 

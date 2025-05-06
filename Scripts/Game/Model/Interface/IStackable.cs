@@ -111,5 +111,5 @@ public interface IStackable {
         return true;
     }
 
-    
+
 }

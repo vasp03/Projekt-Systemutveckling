@@ -6,16 +6,14 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Class that manages and saves the game settings.
 /// </summary>
 public partial class SettingsManager : Node {
-    private const string ConfigFilePath = "user://settings.cfg";
-
-    private SoundController soundController;
-
+    private const string CONFIG_FILE = "user://settings.cfg";
+    private SoundController SoundController;
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;
 
     public override void _Ready() {
-        soundController = GetNode<SoundController>("/root/SoundController");
+        SoundController = GetNode<SoundController>("/root/SoundController");
         LoadConfig();
         ApplyDisplayMode();
     }
@@ -56,7 +54,7 @@ public partial class SettingsManager : Node {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetMusicVolume(float volume) {
-        soundController.MusicVolume = volume;
+        SoundController.MusicVolume = volume;
         MusicVolume = volume;
         SaveConfig();
     }
@@ -66,7 +64,7 @@ public partial class SettingsManager : Node {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetSfxVolume(float volume) {
-        soundController.SfxVolume = volume;
+        SoundController.SfxVolume = volume;
         SfxVolume = volume;
         SaveConfig();
     }
@@ -76,8 +74,8 @@ public partial class SettingsManager : Node {
     /// </summary>
     private void LoadConfig() {
         ConfigFile config = new();
-        if (FileAccess.FileExists(ConfigFilePath)) {
-            Error error = config.Load(ConfigFilePath);
+        if (FileAccess.FileExists(CONFIG_FILE)) {
+            Error error = config.Load(CONFIG_FILE);
             if (error == Error.Ok) {
                 DisplayMode = (int)config.GetValue("Display", "Mode", 0);
                 MusicVolume = (float)config.GetValue("Audio", "MusicVolume", 1.0f);
@@ -95,7 +93,7 @@ public partial class SettingsManager : Node {
         config.SetValue("Display", "Mode", DisplayMode);
         config.SetValue("Audio", "MusicVolume", MusicVolume);
         config.SetValue("Audio", "SfxVolume", SfxVolume);
-        Error error = config.Save(ConfigFilePath);
+        Error error = config.Save(CONFIG_FILE);
         if (error != Error.Ok) GD.Print("Failed to save settings.");
     }
 }

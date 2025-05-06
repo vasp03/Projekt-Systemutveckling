@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model.Enums;
 
 public partial class DayTimeController : ITickable {
 	private const int DayDuration = Utilities.TICKS_PER_DAY;
@@ -24,15 +25,6 @@ public partial class DayTimeController : ITickable {
 
 	public DayTimeController(GameController gameController) {
 		GameController = gameController;
-	}
-
-	public enum DAY_STATE {
-		Night,
-		Morning,
-		Day,
-		Evening,
-		Invalid,
-		Paused
 	}
 
 	/// <summary>
@@ -127,19 +119,19 @@ public partial class DayTimeController : ITickable {
 	/// Evening: 7/10 - 9/10 of the day 
 	/// Night: 9/10 - 1 of the day 
 	/// </remarks>
-	public static DAY_STATE GetCurrentDayState(int ticks) {
+	public static DayStateEnum GetCurrentDayState(int ticks) {
 		if (ticks >= 0 && ticks < DayDurationRatio(DayDuration)) { // Night
-			return DAY_STATE.Night;
+			return DayStateEnum.Night;
 		} else if (ticks >= DayDurationRatio(DayDuration) && ticks < DayDurationRatio(DayDuration) * 3) { // Morning
-			return DAY_STATE.Morning;
+			return DayStateEnum.Morning;
 		} else if (ticks >= DayDurationRatio(DayDuration) * 3 && ticks < DayDurationRatio(DayDuration) * 7) { // Day
-			return DAY_STATE.Day;
+			return DayStateEnum.Day;
 		} else if (ticks >= DayDurationRatio(DayDuration) * 7 && ticks < DayDurationRatio(DayDuration) * 9) { // Evening
-			return DAY_STATE.Evening;
+			return DayStateEnum.Evening;
 		} else if (ticks >= DayDurationRatio(DayDuration) * 9 && ticks <= DayDuration) { // Night
-			return DAY_STATE.Night;
+			return DayStateEnum.Night;
 		} else {
-			return DAY_STATE.Invalid; // Invalid state
+			return DayStateEnum.Invalid; // Invalid state
 		}
 	}
 
@@ -152,7 +144,7 @@ public partial class DayTimeController : ITickable {
 
 		if (IsPaused) {
 			foreach (IDayTimeCallback callback in Callbacks) {
-				callback.DayTimeChanged(DAY_STATE.Paused, CurrentTimeOfDay);
+				callback.DayTimeChanged(DayStateEnum.Paused, CurrentTimeOfDay);
 			}
 		} else {
 			foreach (IDayTimeCallback callback in Callbacks) {

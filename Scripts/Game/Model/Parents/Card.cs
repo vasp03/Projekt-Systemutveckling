@@ -4,8 +4,8 @@ using Goodot15.Scripts.Game.Model.Interface;
 using System.Linq;
 
 public abstract class Card {
-    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
-    private const string textureEnding = ".png";
+    private const string BaseTexturePath = "res://Assets/Cards/Ready To Use/";
+    private const string TextureEnding = ".png";
 
     /// <summary>
     ///     Constructor for the Card class
@@ -17,7 +17,7 @@ public abstract class Card {
     public Card(string textureAddress, bool movable) {
         // Generate a unique uuid as name
         ID = Guid.NewGuid().ToString();
-        TexturePath = baseTexturePath + textureAddress + textureEnding;
+        TexturePath = BaseTexturePath + textureAddress + TextureEnding;
         Movable = movable;
     }
 

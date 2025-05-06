@@ -5,18 +5,36 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SoundController : Node {
-    private readonly IDictionary<string, AudioStream> _cachedMusic = new Dictionary<string, AudioStream>();
-
-    private readonly IDictionary<string, AudioStream> _cachedSounds = new Dictionary<string, AudioStream>();
-    private string currentPlayingMusicPath;
-
-    private AudioStreamPlayer musicPlayer;
+    private readonly IDictionary<string, AudioStream> CachedMusic = new Dictionary<string, AudioStream>();
+    private readonly IDictionary<string, AudioStream> CachedSounds = new Dictionary<string, AudioStream>();
+    private string CurrentPlayingMusicPath;
+    private AudioStreamPlayer MusicPlayer;
     private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
+    public bool SfxMuted { get; set; }
+    private float _musicVolume;
+    private bool _musicMuted;
+    private float _sfxVolume;
 
-    private void DebugLog(string message) {
-        // GD.Print($"[{GetType().FullName}] {message}");
+    public float MusicVolume {
+        get => _musicVolume;
+        set {
+            _musicVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+            UpdateMusicVolume();
+        }
     }
 
+    public bool MusicMuted {
+        get => _musicMuted;
+        set {
+            _musicMuted = value;
+            UpdateMusicMuted();
+        }
+    }
+
+    public float SfxVolume {
+        get => _sfxVolume;
+        set => _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+    }
 
     public override void _Ready() {
         SetupMusicPlayer();
@@ -44,22 +62,16 @@ public partial class SoundController : Node {
     }
 
     private void UnloadSounds() {
-        DebugLog("Sound Controller is unloading sounds");
-        DebugLog($"Sounds: {_cachedSounds.Count}; Music: {_cachedMusic.Count}");
-        _cachedSounds.ToList().ForEach(e => e.Value.Dispose());
-        _cachedMusic.ToList().ForEach(e => e.Value.Dispose());
-
-        DebugLog("Sound Controller has unloaded sounds");
+        CachedSounds.ToList().ForEach(e => e.Value.Dispose());
+        CachedMusic.ToList().ForEach(e => e.Value.Dispose());
     }
-
-    #region Music-related
 
     private const string BASE_MUSIC_PATH = "res://Assets/Music";
 
     private void SetupMusicPlayer() {
-        musicPlayer = new AudioStreamPlayer();
-        musicPlayer.Bus = "Music";
-        AddChild(musicPlayer);
+        MusicPlayer = new AudioStreamPlayer();
+        MusicPlayer.Bus = "Music";
+        AddChild(MusicPlayer);
     }
 
     public void PlayMenuMusic() {
@@ -77,8 +89,8 @@ public partial class SoundController : Node {
     public void PlayDayTimeSong(string dayTime) {
         string musicPath = $"DayTimeSongs/{dayTime}.mp3";
 
-        if (currentPlayingMusicPath == musicPath) {
-            musicPlayer.Play();
+        if (CurrentPlayingMusicPath == musicPath) {
+            MusicPlayer.Play();
             return;
         }
 
@@ -86,43 +98,37 @@ public partial class SoundController : Node {
     }
 
     private void PlayMusic(string musicPath) {
-        if (currentPlayingMusicPath == musicPath) {
-            musicPlayer.Play();
+        if (CurrentPlayingMusicPath == musicPath) {
+            MusicPlayer.Play();
             return;
         }
 
-        currentPlayingMusicPath = musicPath;
-        musicPlayer.Stream = LoadMusic(musicPath);
-        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
-        musicPlayer.Play();
+        CurrentPlayingMusicPath = musicPath;
+        MusicPlayer.Stream = LoadMusic(musicPath);
+        MusicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        MusicPlayer.Play();
     }
 
     private AudioStream LoadMusic(string soundAssetName) {
-        if (_cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
-            // Return already loaded asset
+        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) {
             return audioStream;
+        }
 
         // Music not loaded, first time setup
-        DebugLog($"First time loading audio stream: {soundAssetName}");
         audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
         ConfigureLoopingSound(audioStream);
-        _cachedMusic.Add(soundAssetName, audioStream);
+        CachedMusic.Add(soundAssetName, audioStream);
 
         return audioStream;
     }
 
     public void StopMusic() {
-        musicPlayer?.Stop();
-        currentPlayingMusicPath = "";
+        MusicPlayer?.Stop();
+        CurrentPlayingMusicPath = "";
     }
 
-    #endregion Music-related
-
-
-    #region SFX-related
-
     public void PlaySound(string soundName) {
-        if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
+        if (SfxMuted || !CachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
             GD.PushWarning($"Sound '{soundName}' not found or muted.");
             return;
         }
@@ -131,36 +137,15 @@ public partial class SoundController : Node {
         player.Stream = sfxAudioStream;
         player.VolumeDb = Mathf.LinearToDb(SfxVolume);
         AddChild(player);
+
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
         player.Play();
     }
 
-    #endregion SFX-related
-
-    #region Settings & configurability related
-
-    private float _musicVolume;
-
-    public float MusicVolume {
-        get => _musicVolume;
-        set {
-            _musicVolume = Mathf.Clamp(value, 0.0f, 1.0f);
-            UpdateMusicVolume();
-        }
-    }
-
     private void UpdateMusicVolume() {
-        if (!MusicMuted) musicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
-    }
-
-    private bool _musicMuted;
-
-    public bool MusicMuted {
-        get => _musicMuted;
-        set {
-            _musicMuted = value;
-            UpdateMusicMuted();
+        if (!MusicMuted) {
+            MusicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
         }
     }
 
@@ -171,21 +156,10 @@ public partial class SoundController : Node {
     }
 
     private void UpdateMusicMuted() {
-        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        MusicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
     }
-
-    private float _sfxVolume;
-
-    public float SfxVolume {
-        get => _sfxVolume;
-        set => _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
-    }
-
-    public bool SfxMuted { get; set; }
 
     public bool ToggleSfxMuted() {
         return SfxMuted = !SfxMuted;
     }
-
-    #endregion
 }
