@@ -23,7 +23,7 @@ public class GameEventManager : GameManagerBase, ITickable {
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
-                    GameEventContext gameEventContext = new(registeredEvent, CoreGameController);
+                    GameEventContext gameEventContext = new(registeredEvent, GameController);
                     PostEvent(gameEventContext);
                 }
             } else {
@@ -47,7 +47,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     private void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         // Fires the event to all cards as well for those cards that are listening to any game events
-        CoreGameController.GetCardController().AllCards.ToList().ForEach(e => {
+        GameController.GetCardController().AllCards.ToList().ForEach(e => {
             if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
         });
     }
