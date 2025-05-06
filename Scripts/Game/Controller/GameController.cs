@@ -6,7 +6,7 @@ using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
 public partial class GameController : Node2D {
-	private readonly List<int> numberList = new();
+	private readonly List<int> numberList = new List<int>();
 	private CardController cardController;
 	private MenuController menuController;
 	private MouseController mouseController;
@@ -14,7 +14,7 @@ public partial class GameController : Node2D {
 	private DayTimeController DayTimeController;
 	private DayTimeEvent DayTimeEvent;
 	private GameEventManager GameEventManager;
-	[Export] public Label TimeLabel { get; private set; }
+	public Label TimeLabel { get; private set; }
 
 	public override void _Ready() {
 		mouseController = new MouseController(this);
@@ -32,7 +32,7 @@ public partial class GameController : Node2D {
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
 
-
+		TimeLabel = GetNode<Label>("CanvasLayer/DayTimeLabel");
 	}
 
 	public override void _Input(InputEvent @event) {
