@@ -225,11 +225,15 @@ public class CardController {
         CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"]));
 
         CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
-        
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Villager", "Axe", "Meteorite"], ["Stone", "Stone", "Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Farmer", "Axe", "Meteorite"], ["Stone", "Stone", "Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Blacksmith", "Axe", "Meteorite"], ["Stone", "Stone", "Stone"]));
-        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Hunter", "Axe", "Meteorite"], ["Stone", "Stone", "Stone"]));
+
+        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Villager", "Axe", "Meteorite"],
+            ["Stone", "Stone", "Stone"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Farmer", "Axe", "Meteorite"],
+            ["Stone", "Stone", "Stone"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Blacksmith", "Axe", "Meteorite"],
+            ["Stone", "Stone", "Stone"]));
+        CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Hunter", "Axe", "Meteorite"],
+            ["Stone", "Stone", "Stone"]));
     }
 
     /// <summary>

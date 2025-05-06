@@ -27,7 +27,7 @@ public class MaterialFireCard() : CardMaterial("Fire"), ITickable, ICardConsumer
             CardNode.CardController.AllCards.ToList().ForEach(e => {
                 if (e.CardType is CardLiving cardLiving) {
                     cardLiving.Health -= FIRE_DAMAGE;
-                    
+
 #if DEBUG
                     GD.Print("dealt damage to " + cardLiving + " at " + cardLiving.CardNode.Position);
 #endif
@@ -37,7 +37,8 @@ public class MaterialFireCard() : CardMaterial("Fire"), ITickable, ICardConsumer
     }
 
     public void Extinguish() {
-        GameController.Singleton.GetSoundController().PlaySound("General Sounds/Interactions/sfx_sounds_interaction5.wav");
+        GameController.Singleton.GetSoundController()
+            .PlaySound("General Sounds/Interactions/sfx_sounds_interaction5.wav");
         CardNode.Destroy();
     }
 }

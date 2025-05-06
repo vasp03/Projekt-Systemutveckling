@@ -41,11 +41,10 @@ public abstract class CardLiving
             if (remainingDamageEffectPulseTimer > 0) {
                 remainingDamageEffectPulseTimer--;
 
-                this.CardNode.Modulate = new Color(
+                CardNode.Modulate = new Color(
                     1f,
-                    1f - (((float)remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer) / 2f),
-                    1f - (((float)remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer) / 2f),
-                    1f
+                    1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f,
+                    1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f
                 );
             }
         }
@@ -55,8 +54,8 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private static readonly int damageEffectPulseTimer = Utilities.TimeToTicks(seconds: 1);
-    private int remainingDamageEffectPulseTimer = 0;
+    private readonly static int damageEffectPulseTimer = Utilities.TimeToTicks(1);
+    private int remainingDamageEffectPulseTimer;
 
     /// <summary>
     ///     Health for this unit
@@ -79,6 +78,7 @@ public abstract class CardLiving
                 remainingDamageEffectPulseTimer = damageEffectPulseTimer;
                 HurtSound();
             }
+
             _health = Math.Max(0, value);
         }
     }

@@ -15,8 +15,9 @@ public class DayTimeController : ITickable {
         Paused
     }
 
-    private static readonly int DayDuration = Utilities.TICKS_PER_DAY;
     private const double TicksPerSecond = Utilities.TICKS_PER_SECOND;
+
+    private readonly static int DayDuration = Utilities.TICKS_PER_DAY;
 
     private readonly GameController GameController;
 
