@@ -18,7 +18,7 @@ public partial class CardNode : Node2D {
     private Vector2 oldMousePosition;
 
     public CardNode() {
-        AddToGroup(CARD_Group);
+        AddToGroup(CardController.CARD_GROUP_NAME);
     }
 
     public CardController CardController { get; set; }
@@ -88,7 +88,9 @@ public partial class CardNode : Node2D {
 
         if (cardUnder is not null) {
             if (cardUnder.CardType is ICardConsumer cardConsumer) {
-                cardConsumer.ConsumeCard(CardType);
+                if (cardConsumer.ConsumeCard(CardType)) {
+                    Destroy();
+                }
             }
         }
     }
@@ -218,6 +220,16 @@ public partial class CardNode : Node2D {
         return area2D.GetParent<CardNode>();
     }
 
+    public void SetCraftButton(CraftButton craftButton) {
+        _craftButton = craftButton;
+    }
+
+    public CraftButton GetCraftButton() {
+        return _craftButton;
+    }
+
+    #region Events(?)
+
     public void Destroy() {
         ClearReferences();
         QueueFree();
@@ -243,11 +255,5 @@ public partial class CardNode : Node2D {
         HoveredCards.Remove(GetCardNodeFromArea2D(area));
     }
 
-    public void SetCraftButton(CraftButton craftButton) {
-        _craftButton = craftButton;
-    }
-
-    public CraftButton GetCraftButton() {
-        return _craftButton;
-    }
+    #endregion Events(?)
 }

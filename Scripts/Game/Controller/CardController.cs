@@ -5,6 +5,7 @@ using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+
 using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
 
@@ -62,6 +63,12 @@ public class CardController {
         return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
     }
 
+    /// <summary>
+    ///     Creates a new card and adds it to the scene, with a random underlying CardType
+    /// </summary>
+    /// <returns>
+    ///     The created card instance.
+    /// </returns>
     private CardNode CreateCard() {
         // Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
@@ -158,21 +165,17 @@ public class CardController {
         return topUnderCard;
     }
 
-    /// <summary>
-    ///     Sets the ZIndex of all cards based on the selected card.
-    /// </summary>
-    /// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
-    public void SetZIndexForAllCards(CardNode cardNode) {
-        List<IStackable> stackAboveSelectedCard = cardNode.CardType is IStackable stackableCard
-            ? stackableCard.StackAbove
-            : null;
-
-        int NumberOfCards = AllCards.Count;
-        int NumberOfCardsAbove = stackAboveSelectedCard != null
-            ? stackAboveSelectedCard.Count
-            : 0;
-        int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
-        int CounterForCardsBelow = 1;
+	/// <summary>
+	///     Sets the ZIndex of all cards based on the selected card.
+	/// </summary>
+	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
+	public void SetZIndexForAllCards(CardNode cardNode) {
+		int NumberOfCards = AllCards.Count;
+		List<IStackable> stackAboveSelectedCard =
+			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+		int CounterForCardsBelow = 1;
 
         foreach (CardNode card in AllCardsSorted) {
             if (card == cardNode) {
@@ -328,12 +331,10 @@ public class CardController {
             }
         }
 
-        foreach (string cardName in recipe.StringList) {
-            GD.Print("Crafting card: " + cardName);
-
-            CardNode card = CreateCard(cardName, cardNode.Position);
-            card.ZIndex = cardNode.ZIndex + 1;
-            spawnPos += new Vector2(0, -20);
-        }
-    }
+		foreach (string cardName in recipe) {
+			CardNode card = CreateCard(cardName, cardNode.Position);
+			card.ZIndex = cardNode.ZIndex + 1;
+			spawnPos += new Vector2(0, -15);
+		}
+	}
 }

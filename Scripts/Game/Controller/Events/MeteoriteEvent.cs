@@ -1,10 +1,20 @@
-﻿namespace Goodot15.Scripts.Game.Controller.Events;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MeteoriteEvent : IGameEvent {
-    public string EventName => "Meteorite Strike";
-    public int TicksUntilNextEvent => Utilities.TimeToTicks(1);
-    public double Chance => .5d;
+namespace Goodot15.Scripts.Game.Controller.Events;
 
-    public void OnEvent(GameEventContext context) {
+public class MeteoriteEvent : GameEventBase {
+    public override string EventName => "Meteorite Strike";
+
+    public override int TicksUntilNextEvent =>
+        Utilities.GameScaledTimeToTicks(days: 1); // Utilities.GameScaledTimeToTicks(days: 1);
+
+    public override double Chance => 0.25d;
+
+
+    public override void OnEvent(GameEventContext context) {
+        context.GameController.GetCardController()
+            .CreateCard(new MaterialMeteorite(), context.GameController.GetRandomPositionWithinScreen());
+        context.GameController.GetSoundController().PlaySound("Explosions/Short/meteoriteHit.wav");
+        context.GameController.CameraController.Shake(5f, Utilities.TimeToTicks(1d));
     }
 }

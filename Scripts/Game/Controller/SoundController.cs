@@ -91,9 +91,30 @@ public partial class SoundController : Node {
     }
 
     private void SetupMusicPlayer() {
-        MusicPlayer = new AudioStreamPlayer();
-        MusicPlayer.Bus = "Music";
-        AddChild(MusicPlayer);
+        musicPlayer = new AudioStreamPlayer();
+        musicPlayer.Bus = "Music";
+        AddChild(musicPlayer);
+        musicPlayer.Finished += OnMusicFinished;
+    }
+
+    public void OnMusicFinished() {
+        if (ShouldCurrentSongLoop()) {
+            GD.Print("Looping music" + currentPlayingMusicPath);
+            musicPlayer.Play();
+        }
+    }
+
+    /*
+     * Helper method for OnMusicFinished class
+     * Checks to see if a song should replay after .finished has emitted
+     * Necessary cause MP3 songs don't have built in looping through Godot
+     */
+    public bool ShouldCurrentSongLoop() {
+        if (string.IsNullOrEmpty(currentPlayingMusicPath)) {
+            return false;
+        }
+
+        return currentPlayingMusicPath.Contains("DayTimeSongs/Day");
     }
 
     public void PlayMenuMusic() {
@@ -151,6 +172,13 @@ public partial class SoundController : Node {
         CurrentPlayingMusicPath = "";
     }
 
+    #endregion Music-related
+
+
+    #region SFX-related
+
+    private const string BASE_SOUND_PATH = "res://Assets/Sounds";
+
     public void PlaySound(string soundName) {
         if (SfxMuted || !CachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
             GD.PushWarning($"Sound '{soundName}' not found or muted.");
@@ -158,13 +186,41 @@ public partial class SoundController : Node {
         }
 
         AudioStreamPlayer player = new();
-        player.Stream = sfxAudioStream;
+        player.Stream = LoadSound(soundName);
         player.VolumeDb = Mathf.LinearToDb(SfxVolume);
         AddChild(player);
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
         player.Play();
+    }
+
+    private AudioStream LoadSound(string soundAssetName) {
+        if (_cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
+            // Return already loaded asset
+            return audioStream;
+
+        // Music not loaded, first time setup
+        DebugLog($"First time loading audio sound stream: {soundAssetName}");
+        audioStream = GD.Load<AudioStream>($"{BASE_SOUND_PATH}/{soundAssetName}");
+        // ConfigureLoopingSound(audioStream);
+        _cachedMusic.Add(soundAssetName, audioStream);
+
+        return audioStream;
+    }
+
+    #endregion SFX-related
+
+    #region Settings & configurability related
+
+    private float _musicVolume;
+
+    public float MusicVolume {
+        get => _musicVolume;
+        set {
+            _musicVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+            UpdateMusicVolume();
+        }
     }
 
     private void UpdateMusicVolume() {

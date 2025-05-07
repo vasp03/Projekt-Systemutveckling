@@ -3,12 +3,12 @@
 namespace Goodot15.Scripts;
 
 public static class Utilities {
+    public const double TICKS_PER_SECOND = 60;
+
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public const int TICKS_PER_DAY = 36000;
-
-    public const double TICKS_PER_SECOND = 60;
+    public readonly static int TICKS_PER_DAY = TimeToTicks(minutes: 5);
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.

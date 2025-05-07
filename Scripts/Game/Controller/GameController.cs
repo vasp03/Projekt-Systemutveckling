@@ -14,7 +14,11 @@ public partial class GameController : Node2D {
     private MenuController menuController;
     private MouseController mouseController;
     private SoundController soundController;
-    public Label TimeLabel { get; private set; }
+    [Export] public Label TimeLabel { get; private set; }
+
+    public static GameController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
+
+    public CameraController CameraController { get; private set; }
 
     public override void _Ready() {
         mouseController = new MouseController(this);
@@ -28,6 +32,8 @@ public partial class GameController : Node2D {
 
         menuController = GetNode<MenuController>("/root/MenuController");
         menuController.SetNodeController(this);
+
+        CameraController = new CameraController();
 
         DayTimeEvent = new DayTimeEvent(this);
         DayTimeController.AddCallback(DayTimeEvent);
@@ -134,6 +140,7 @@ public partial class GameController : Node2D {
     public override void _PhysicsProcess(double delta) {
         DayTimeController.PreTick(delta);
         GameEventManager.PostTick();
+        CameraController.PostTick();
     }
 
     public bool IsPaused() {
