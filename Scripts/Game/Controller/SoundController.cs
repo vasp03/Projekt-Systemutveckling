@@ -142,18 +142,14 @@ public partial class SoundController : Node {
     private const string BASE_SOUND_PATH = "res://Assets/Sounds";
 
     public void PlaySound(string soundName) {
-        if (SfxMuted || !CachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
-            GD.PushWarning($"Sound '{soundName}' not found or muted.");
-            return;
-        }
-
         AudioStreamPlayer player = new();
         player.Stream = LoadSound(soundName);
         player.VolumeDb = Mathf.LinearToDb(SfxVolume);
-        AddChild(player);
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
+        
+        AddChild(player);
         player.Play();
     }
 

@@ -5,7 +5,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialFireCard() : CardMaterial("Fire", 0), ITickable, ICardConsumer {
+public class MaterialFire() : CardMaterial("Fire", 0), ITickable, ICardConsumer {
     private const int FIRE_DAMAGE = 1;
 
     private int LastFireDamageTick;
@@ -27,10 +27,6 @@ public class MaterialFireCard() : CardMaterial("Fire", 0), ITickable, ICardConsu
             CardNode.CardController.AllCards.ToList().ForEach(e => {
                 if (e.CardType is CardLiving cardLiving) {
                     cardLiving.Health -= FIRE_DAMAGE;
-
-#if DEBUG
-                    GD.Print("dealt damage to " + cardLiving + " at " + cardLiving.CardNode.Position);
-#endif
                 }
             });
         }
