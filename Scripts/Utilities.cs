@@ -8,7 +8,9 @@ public static class Utilities {
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public const int TICKS_PER_DAY = 1000;
+    /// <remarks>
+    ///   5 minutes = 1 in-game day
+    public const int TICKS_PER_DAY = 18000;
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.
