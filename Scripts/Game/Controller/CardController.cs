@@ -4,7 +4,10 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
+
 public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 
@@ -17,8 +20,10 @@ public class CardController {
 	private readonly List<CardNode> hoveredCards = [];
 
 	private CardNode selectedCard;
+    private CardLivingOverlay currentOverlay;
 
 	public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
+    public Vector2 CardLivingOverlayOffset { get; private set; } = new Vector2(-67, 70);
 
 	// Constructor
 	public CardController(Goodot15.Scripts.Game.Controller.GameController gameController, MouseController mouseController) {
@@ -227,6 +232,12 @@ public class CardController {
 		hoveredCards.Remove(cardNode);
 		CheckForHighLight();
 		cardNode.SetHighlighted(false);
+        if (cardNode.CardType is CardLiving cardLiving) {
+            GD.Print("removed info");
+            HideHealthAndHunger();
+        } else {
+            GD.Print("COULDNT REMOVE info");
+        }
 	}
 
 	/// <summary>
@@ -236,11 +247,38 @@ public class CardController {
 		foreach (CardNode card in hoveredCards) {
 			if (CardIsTopCard(card)) {
 				card.SetHighlighted(true);
+                if (!card.IsBeingDragged && card.CardType is CardLiving cardLiving) {
+                    ShowHealthAndHunger(cardLiving);
+                }
 			} else {
 				card.SetHighlighted(false);
 			}
 		}
 	}
+    
+    private void ShowHealthAndHunger(CardLiving cardLiving) {
+        HideHealthAndHunger();
+        
+        PackedScene cardLivingOverlay = GD.Load<PackedScene>("res://Scenes/ProgressBars/CardLivingOverlay.tscn");
+        currentOverlay = cardLivingOverlay.Instantiate<CardLivingOverlay>();
+        
+        currentOverlay.Position = cardLiving.CardNode.Position + CardLivingOverlayOffset;
+
+        
+        currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+        currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
+
+        // Add the overlay to the same parent as the card
+        cardLiving.CardNode.GetParent().AddChild(currentOverlay);
+    }
+
+    public void HideHealthAndHunger() {
+        // Remove the existing overlay if it exists
+        if (currentOverlay != null && currentOverlay.IsInsideTree()) {
+            currentOverlay.QueueFree();
+            currentOverlay = null;
+        }
+    }
 
 	/// <summary>
 	///     Gets the top card at the mouse position.
@@ -358,7 +396,6 @@ public class CardController {
 			if (underCard != null && !selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove) {
 				selectedCard.SetOverLappedCardToStack(underCard);
 			}
-
 			selectedCard = null;
 		}
 

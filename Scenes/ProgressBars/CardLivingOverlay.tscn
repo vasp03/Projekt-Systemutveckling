@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://idtr25yxwinx"]
+
+[ext_resource type="Script" uid="uid://20fu3ycta0uw" path="res://Scripts/Game/View/CardLivingOverlay.cs" id="1_36pmb"]
+[ext_resource type="Texture2D" uid="uid://c6nmnguycxfs" path="res://Assets/Icons/progressbarUnder.png" id="2_46rr5"]
+[ext_resource type="Texture2D" uid="uid://8xlv48bcjnv8" path="res://Assets/Icons/progressbarOver.png" id="3_yu1ui"]
+[ext_resource type="Texture2D" uid="uid://cdbrx30gh2f0n" path="res://Assets/Icons/healthbarProgress.png" id="4_qgsu4"]
+[ext_resource type="Texture2D" uid="uid://bg5no58cvu2m6" path="res://Assets/Icons/hungerbarProgress.png" id="5_na715"]
+[ext_resource type="Texture2D" uid="uid://c183lahxmddc" path="res://Assets/Icons/HealthHeart.png" id="6_h6tb3"]
+[ext_resource type="Texture2D" uid="uid://b8sm7cdb80hb3" path="res://Assets/Icons/64x64/fc489.png" id="7_64835"]
+
+[node name="CardLivingOverlay" type="Node2D"]
+script = ExtResource("1_36pmb")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = 27.0
+offset_top = 3.0
+offset_right = 110.0
+offset_bottom = 25.0
+value = 50.0
+texture_under = ExtResource("2_46rr5")
+texture_over = ExtResource("3_yu1ui")
+texture_progress = ExtResource("4_qgsu4")
+texture_progress_offset = Vector2(2, 1)
+
+[node name="SaturationBar" type="TextureProgressBar" parent="."]
+offset_left = 26.5
+offset_top = 22.5
+offset_right = 109.5
+offset_bottom = 33.5
+value = 100.0
+texture_under = ExtResource("2_46rr5")
+texture_over = ExtResource("3_yu1ui")
+texture_progress = ExtResource("5_na715")
+texture_progress_offset = Vector2(2, 1)
+
+[node name="HealthIcon" type="Sprite2D" parent="."]
+position = Vector2(16, 8)
+scale = Vector2(0.0629921, 0.0629921)
+texture = ExtResource("6_h6tb3")
+
+[node name="SaturationIcon" type="Sprite2D" parent="."]
+position = Vector2(14.5, 27.5)
+scale = Vector2(0.359375, 0.359375)
+texture = ExtResource("7_64835")

@@ -5,6 +5,7 @@ using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -94,6 +95,11 @@ public partial class CardNode : Node2D {
 			else
 				neighbourAbove.SetIsBeingDragged(isBeingDragged);
 		}
+        
+        
+        if (isBeingDragged && CardType is CardLiving cardLiving) {
+            CardController.HideHealthAndHunger();
+        }
 
 		if (!isBeingDragged) CheckForConsumingCards();
 	}
