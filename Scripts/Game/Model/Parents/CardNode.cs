@@ -32,7 +32,6 @@ public partial class CardNode : Node2D {
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
-    public string CARD_Group { get; private set; } = "CARDS";
 
     public Card CardType {
         get => _cardType;
