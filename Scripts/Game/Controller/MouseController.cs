@@ -1,88 +1,86 @@
 using Godot;
+using Goodot15.Scripts.Game.Model.Enums;
 using Timer = Godot.Timer;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public class MouseController : GameManagerBase {
-    public enum MouseCursor {
-        point,
-        point_small,
-        hand_open,
-        hand_close,
-        loading
-    }
+    private const string PATH = "res://Assets/MouseCursor/";
 
-    private static readonly string path = "res://Assets/MouseCursor/";
-    private readonly Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
-    private readonly Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
+    private readonly static Timer LoadingTimer = new();
+    private readonly static Vector2 Offset = new(12, 12);
+    private readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
+    private readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
     private readonly Resource[] loadingResources = [
-        ResourceLoader.Load(path + "loading_1.png"),
-        ResourceLoader.Load(path + "loading_2.png"),
-        ResourceLoader.Load(path + "loading_3.png"),
-        ResourceLoader.Load(path + "loading_4.png"),
-        ResourceLoader.Load(path + "loading_5.png"),
-        ResourceLoader.Load(path + "loading_6.png"),
-        ResourceLoader.Load(path + "loading_7.png"),
-        ResourceLoader.Load(path + "loading_8.png")
+        ResourceLoader.Load(PATH + "loading_1.png"),
+        ResourceLoader.Load(PATH + "loading_2.png"),
+        ResourceLoader.Load(PATH + "loading_3.png"),
+        ResourceLoader.Load(PATH + "loading_4.png"),
+        ResourceLoader.Load(PATH + "loading_5.png"),
+        ResourceLoader.Load(PATH + "loading_6.png"),
+        ResourceLoader.Load(PATH + "loading_7.png"),
+        ResourceLoader.Load(PATH + "loading_8.png")
     ];
 
-    private readonly Timer loadingTimer = new();
-    private readonly Vector2 offset = new(12, 12);
-
-    private readonly Resource point = ResourceLoader.Load(path + "point.png");
-    private readonly Resource point_small = ResourceLoader.Load(path + "point_small.png");
-    private bool isLoading;
-    private int loadingIndex;
+    private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
+    private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
+    private bool IsLoading;
+    private int LoadingIndex;
 
     public MouseController(GameController gameController) : base(gameController) {
-        SetMouseCursor(MouseCursor.point_small);
+        SetMouseCursor(MouseCursorEnum.point_small);
     }
 
-    public bool SetMouseCursor(MouseCursor cursor) {
-        if (cursor != MouseCursor.loading && isLoading) stopLoading();
+    public bool SetMouseCursor(MouseCursorEnum cursor) {
+        if (cursor != MouseCursorEnum.loading && IsLoading) {
+            stopLoading();
+        }
 
         switch (cursor) {
-            case MouseCursor.point:
-                Input.SetCustomMouseCursor(point, Input.CursorShape.Arrow, offset);
+            case MouseCursorEnum.point:
+                Input.SetCustomMouseCursor(Point, Input.CursorShape.Arrow, Offset);
                 return true;
-            case MouseCursor.point_small:
-                Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
+            case MouseCursorEnum.point_small:
+                Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
                 return true;
-            case MouseCursor.hand_open:
-                Input.SetCustomMouseCursor(hand_open, Input.CursorShape.Arrow, offset);
+            case MouseCursorEnum.hand_open:
+                Input.SetCustomMouseCursor(Hand_open, Input.CursorShape.Arrow, Offset);
                 return true;
-            case MouseCursor.hand_close:
-                Input.SetCustomMouseCursor(hand_close, Input.CursorShape.Arrow, offset);
+            case MouseCursorEnum.hand_close:
+                Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
                 return true;
-            case MouseCursor.loading:
-                if (!isLoading) startLoading();
+            case MouseCursorEnum.loading:
+                if (!IsLoading) startLoading();
                 return true;
             default:
-                Input.SetCustomMouseCursor(point_small, Input.CursorShape.Arrow, offset);
+                Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
                 return false;
         }
     }
 
     private void startLoading() {
-        isLoading = true;
-        loadingIndex = 0;
-        if (loadingTimer == null) return;
-        loadingTimer.Timeout += LoadingThread;
-        // loadingTimer.Connect("timeout", new Callable(this, nameof(LoadingThread)));
-        loadingTimer.WaitTime = 0.200;
-        loadingTimer.Start();
+        IsLoading = true;
+        LoadingIndex = 0;
+
+        if (LoadingTimer == null) {
+            return;
+        }
+
+        LoadingTimer.Timeout += LoadingThread;
+        LoadingTimer.WaitTime = 0.200;
+        LoadingTimer.Start();
     }
 
     private void stopLoading() {
-        isLoading = false;
-        loadingIndex = 0;
-        loadingTimer.Stop();
-        SetMouseCursor(MouseCursor.point);
+        IsLoading = false;
+        LoadingIndex = 0;
+        LoadingTimer.Stop();
+        SetMouseCursor(MouseCursorEnum.point);
     }
 
     private void LoadingThread() {
-        loadingIndex = (loadingIndex + 1) % 8;
-        Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, offset);
+        LoadingIndex = (LoadingIndex + 1) % 8;
+        Input.SetCustomMouseCursor(loadingResources[LoadingIndex], Input.CursorShape.Arrow, Offset);
     }
 }

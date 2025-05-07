@@ -18,10 +18,13 @@ config/icon="res://Assets/Icons/icon.svg"
 
 [autoload]
 
-Global="*res://Scripts/Global.cs"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
 SettingsManager="*res://Scripts/Game/Controller/SettingsManager.cs"
 SoundController="*res://Scripts/Game/Controller/SoundController.cs"
+
+[debug]
+
+vulkan/debug_layers=false
 
 [display]
 

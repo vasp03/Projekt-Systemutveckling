@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using Goodot15.Scripts.Game.Model.Interface;
 using System.Linq;
 
 public abstract class Card {
-    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
-    private const string textureEnding = ".png";
+    private const string BaseTexturePath = "res://Assets/Cards/Ready To Use/";
+    private const string TextureEnding = ".png";
+    public readonly int CardValue;
 
     /// <summary>
     ///     Constructor for the Card class
@@ -14,18 +13,17 @@ public abstract class Card {
     /// <param name="textureAddress"></param>
     /// <param name="movable"></param>
     /// <param name="name"></param>
-    public Card(string textureAddress, bool movable) {
+    public Card(string textureAddress, bool movable, int cardValue) {
         // Generate a unique uuid as name
         ID = Guid.NewGuid().ToString();
-        TexturePath = baseTexturePath + textureAddress + textureEnding;
+        TexturePath = BaseTexturePath + textureAddress + TextureEnding;
         Movable = movable;
+        CardValue = cardValue;
     }
-
-    public CardNode CardNode { get; set; }
 
     public string ID { get; private set; }
     public string TexturePath { get; }
-
+    public CardNode CardNode { get; set; }
     public bool Movable { get; set; }
 
     public string TextureType {

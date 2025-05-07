@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Controller.Events;
@@ -9,7 +8,8 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public class GameEventManager : GameManagerBase, ITickable {
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
-    private readonly IList<IGameEvent> registeredEvents = [];
+    private readonly IList<IGameEvent> RegisteredEvents = [];
+
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
@@ -18,18 +18,16 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     public void PostTick() {
-        foreach (IGameEvent registeredEvent in registeredEvents) {
+        foreach (IGameEvent registeredEvent in RegisteredEvents) {
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
-                    GameEventContext gameEventContext = new(registeredEvent, CoreGameController);
+                    GameEventContext gameEventContext = new(registeredEvent, GameController);
                     PostEvent(gameEventContext);
                 }
             } else {
                 eventTicks[registeredEvent]++;
             }
-
-            // GD.Print(registeredEvent.GetType().FullName + ": " + eventTicks[registeredEvent]);
         }
     }
 
@@ -40,13 +38,13 @@ public class GameEventManager : GameManagerBase, ITickable {
 
     public void RegisterEvent(IGameEvent gameEvent) {
         eventTicks.TryAdd(gameEvent, 0);
-        registeredEvents.Add(gameEvent);
+        RegisteredEvents.Add(gameEvent);
     }
 
     private void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         // Fires the event to all cards as well for those cards that are listening to any game events
-        CoreGameController.GetCardController().AllCards.ToList().ForEach(e => {
+        GameController.GetCardController().AllCards.ToList().ForEach(e => {
             if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
         });
     }

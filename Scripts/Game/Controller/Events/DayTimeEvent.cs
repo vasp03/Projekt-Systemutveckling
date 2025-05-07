@@ -1,30 +1,28 @@
-using System;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model.Enums;
 using Utilities = Goodot15.Scripts.Utilities;
 
-public class DayTimeEvent : IDayTimeCallback {
-    private DayTimeController.DAY_STATE OldDayState;
-
-    private Goodot15.Scripts.Game.Controller.GameController GameController;
-
-    private DateTime LastTickTime = DateTime.Now;
-
-    private float OldSceneDarkness = 0f;
+public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
+    private readonly GameController GameController;
+    private DayStateEnum OldDayState;
+    private float OldSceneDarkness;
 
     /// <summary>
-    ///  An event to handle when the day changes and its time. 
+    ///     An event to handle when the day changes and its time.
     /// </summary>
-    public DayTimeEvent(Goodot15.Scripts.Game.Controller.GameController gameController) {
-        OldDayState = DayTimeController.DAY_STATE.Invalid;
+    public DayTimeEvent(GameController gameController) {
+        OldDayState = DayStateEnum.Invalid;
         GameController = gameController;
+        GameController.GetMenuController().AddPauseCallback(this);
     }
 
     /// <summary>
-    ///   Called each tick with the current time of day and the current day state
+    ///     Called each tick with the current time of day and the current day state
     /// </summary>
     /// <param name="dayState"></param>
     /// <param name="ticks"></param>
-    public void DayTimeChanged(DayTimeController.DAY_STATE dayState, int ticks) {
+    public void DayTimeChanged(DayStateEnum dayState, int ticks) {
         SetSceneDarkness(ticks);
 
         if (dayState == OldDayState) {
@@ -32,20 +30,20 @@ public class DayTimeEvent : IDayTimeCallback {
         }
 
         switch (dayState) {
-            case DayTimeController.DAY_STATE.Night:
+            case DayStateEnum.Night:
                 GameController.GetSoundController().PlayDayTimeSong("Night");
                 break;
-            case DayTimeController.DAY_STATE.Morning:
+            case DayStateEnum.Morning:
                 GameController.GetSoundController().PlayDayTimeSong("Morning");
                 break;
-            case DayTimeController.DAY_STATE.Day:
+            case DayStateEnum.Day:
                 GameController.GetSoundController().PlayDayTimeSong("Day");
                 break;
-            case DayTimeController.DAY_STATE.Evening:
+            case DayStateEnum.Evening:
                 GameController.GetSoundController().PlayDayTimeSong("Evening");
                 break;
-            case DayTimeController.DAY_STATE.Invalid:
-            case DayTimeController.DAY_STATE.Paused:
+            case DayStateEnum.Invalid:
+            case DayStateEnum.Paused:
             default:
                 GameController.GetSoundController().StopMusic();
                 break;
@@ -54,8 +52,17 @@ public class DayTimeEvent : IDayTimeCallback {
         OldDayState = dayState;
     }
 
+    public void PauseToggle(bool isPaused) {
+        if (isPaused) {
+            GameController.SetSceneDarkness(1.0f);
+        } else {
+            GameController.SetSceneDarkness(OldSceneDarkness);
+        }
+    }
+
+
     /// <summary>
-    ///  Sets the darkness of the scene based on the time of day
+    ///     Sets the darkness of the scene based on the time of day
     /// </summary>
     /// <param name="ticks">The current time of day in ticks</param>
     private void SetSceneDarkness(int ticks) {

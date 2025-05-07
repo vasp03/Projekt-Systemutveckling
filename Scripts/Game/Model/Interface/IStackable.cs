@@ -82,7 +82,6 @@ public interface IStackable {
         get {
             IStackable current = this;
             while (current != null) {
-
                 if (current.NeighbourBelow == null) return current;
 
                 current = current.NeighbourBelow;
@@ -111,5 +110,8 @@ public interface IStackable {
         return true;
     }
 
-    
+    public void ClearNeighbours() {
+        NeighbourAbove = null;
+        NeighbourBelow = null;
+    }
 }

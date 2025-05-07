@@ -1,155 +1,153 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Godot;
 using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
+
 public partial class GameController : Node2D {
-	private readonly List<int> numberList = new();
-	private CardController cardController;
-	private MenuController menuController;
-	private MouseController mouseController;
-	private SoundController soundController;
-	private DayTimeController DayTimeController;
-	private DayTimeEvent DayTimeEvent;
-	private GameEventManager GameEventManager;
-	[Export] public Label TimeLabel { get; private set; }
+    private readonly List<int> numberList = new();
+    private CardController cardController;
+    private DayTimeController DayTimeController;
+    private DayTimeEvent DayTimeEvent;
+    private GameEventManager GameEventManager;
+    private MenuController menuController;
+    private MouseController mouseController;
+    private SoundController soundController;
+    public Label TimeLabel { get; private set; }
 
-	public override void _Ready() {
-		mouseController = new MouseController(this);
-		cardController = new CardController(this, mouseController);
-		DayTimeController = new DayTimeController(this);
-		GameEventManager = new GameEventManager(this);
-
-
-		soundController = GetNode<SoundController>("/root/SoundController");
-		soundController.PlayGameMusic();
-
-		menuController = GetNode<MenuController>("/root/MenuController");
-		menuController.SetNodeController(this);
-
-		DayTimeEvent = new DayTimeEvent(this);
-		DayTimeController.AddCallback(DayTimeEvent);
+    public override void _Ready() {
+        mouseController = new MouseController(this);
+        cardController = new CardController(this, mouseController);
+        DayTimeController = new DayTimeController(this);
+        GameEventManager = new GameEventManager(this);
 
 
-	}
+        soundController = GetNode<SoundController>("/root/SoundController");
+        soundController.PlayGameMusic();
 
-	public override void _Input(InputEvent @event) {
-		if (@event is InputEventKey eventKey && eventKey.Pressed) {
-			switch (eventKey.Keycode) {
-				case Key.Escape:
-					menuController.OpenPauseMenu();
-					DayTimeController.SetPaused(true);
-					soundController.MusicMuted = true;
-					Visible = false;
-					break;
-				case Key.Space:
-					cardController.CreateCard("Random", Vector2.One * 100);
-					break;
-				case Key.Key0:
-				case Key.Key1:
-				case Key.Key2:
-				case Key.Key3:
-				case Key.Key4:
-				case Key.Key5:
-				case Key.Key6:
-				case Key.Key7:
-				case Key.Key8:
-				case Key.Key9:
-					MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
-					break;
-			}
-		} else if (@event is InputEventMouseButton mouseButton) {
-			if (mouseButton.Pressed)
-				cardController.LeftMouseButtonPressed();
-			else
-				cardController.LeftMouseButtonReleased();
-		}
-	}
+        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController.SetNodeController(this);
 
-	public Vector2 GetMousePosition() {
-		return GetGlobalMousePosition();
-	}
+        DayTimeEvent = new DayTimeEvent(this);
+        DayTimeController.AddCallback(DayTimeEvent);
 
-	public void MultipleNumberInput(int number) {
-		numberList.Add(number);
+        TimeLabel = GetNode<Label>("CanvasLayer/DayTimeLabel");
+    }
 
-		if (numberList.Count >= 2) {
-			StringBuilder numbers = new();
-			for (int i = 0; i < numberList.Count; i++) {
-				numbers.Append(numberList[i]);
-			}
+    public override void _Input(InputEvent @event) {
+        if (@event is InputEventKey eventKey && eventKey.Pressed) {
+            switch (eventKey.Keycode) {
+                case Key.Escape:
+                    menuController.OpenPauseMenu();
+                    DayTimeController.SetPaused(true);
+                    soundController.MusicMuted = true;
+                    Visible = false;
+                    break;
+                case Key.Space:
+                    cardController.CreateCard("Random", Vector2.One * 100);
+                    break;
+                case Key.Key0:
+                case Key.Key1:
+                case Key.Key2:
+                case Key.Key3:
+                case Key.Key4:
+                case Key.Key5:
+                case Key.Key6:
+                case Key.Key7:
+                case Key.Key8:
+                case Key.Key9:
+                    MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
+                    break;
+            }
+        } else if (@event is InputEventMouseButton mouseButton) {
+            if (mouseButton.Pressed)
+                cardController.LeftMouseButtonPressed();
+            else
+                cardController.LeftMouseButtonReleased();
+        }
+    }
 
-			// Create a new card with the numbers in the list
-			cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
+    public Vector2 GetMousePosition() {
+        return GetGlobalMousePosition();
+    }
 
-			numberList.Clear();
-		}
-	}
+    public void MultipleNumberInput(int number) {
+        numberList.Add(number);
 
-	public CardController GetCardController() {
-		return cardController;
-	}
+        if (numberList.Count >= 2) {
+            StringBuilder numbers = new();
+            for (int i = 0; i < numberList.Count; i++) {
+                numbers.Append(numberList[i]);
+            }
 
-	public MenuController GetMenuController() {
-		return menuController;
-	}
+            // Create a new card with the numbers in the list
+            cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
-	public MouseController GetMouseController() {
-		return mouseController;
-	}
+            numberList.Clear();
+        }
+    }
 
-	public SoundController GetSoundController() {
-		return soundController;
-	}
+    public CardController GetCardController() {
+        return cardController;
+    }
 
-	public DayTimeController GetDayTimeController() {
-		return DayTimeController;
-	}
+    public MenuController GetMenuController() {
+        return menuController;
+    }
 
-	// Set the scene darknes
-	public void SetSceneDarkness(float darkness) {
-		// Clamp darkness between 0 (bright) and 1 (completely dark)
-		darkness = Mathf.Clamp(darkness, 0, 1);
+    public MouseController GetMouseController() {
+        return mouseController;
+    }
 
-		// Get Canvaslayer and sprite2d child
-		CanvasLayer canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
+    public SoundController GetSoundController() {
+        return soundController;
+    }
 
-		if (canvasLayer == null) {
-			GD.PrintErr("CanvasLayer not found.");
-			return;
-		}
+    public DayTimeController GetDayTimeController() {
+        return DayTimeController;
+    }
 
-		Sprite2D sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+    // Set the scene darknes
+    public void SetSceneDarkness(float darkness) {
+        // Clamp darkness between 0 (bright) and 1 (completely dark)
+        darkness = Mathf.Clamp(darkness, 0, 1);
 
-		if (sprite == null) {
-			GD.PrintErr("Darkness sprite not found.");
-			return;
-		}
+        // Get Canvaslayer and sprite2d child
+        CanvasLayer canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
 
-		sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
+        if (canvasLayer == null) {
+            GD.PrintErr("CanvasLayer not found.");
+            return;
+        }
 
-		GD.Print($"Scene darkness set to {darkness}");
-	}
+        Sprite2D sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
 
-	public override void _PhysicsProcess(double delta) {
-		DayTimeController.PreTick(delta);
-		GameEventManager.PostTick();
-	}
+        if (sprite == null) {
+            GD.PrintErr("Darkness sprite not found.");
+            return;
+        }
 
-	public bool IsPaused() {
-		return menuController.IsPaused();
-	}
+        sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
+    }
 
-	internal Vector2 GetRandomPositionWithinScreen() {
-		// Get the size of the screen
-		Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+    public override void _PhysicsProcess(double delta) {
+        DayTimeController.PreTick(delta);
+        GameEventManager.PostTick();
+    }
 
-		// Generate a random position within the screen bounds
-		float x = (float)GD.RandRange(0, screenSize.X);
-		float y = (float)GD.RandRange(0, screenSize.Y);
+    public bool IsPaused() {
+        return menuController.IsPaused();
+    }
 
-		return new Vector2(x, y);
-	}
+    internal Vector2 GetRandomPositionWithinScreen() {
+        // Get the size of the screen
+        Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+
+        // Generate a random position within the screen bounds
+        float x = (float)GD.RandRange(0, screenSize.X);
+        float y = (float)GD.RandRange(0, screenSize.Y);
+
+        return new Vector2(x, y);
+    }
 }
