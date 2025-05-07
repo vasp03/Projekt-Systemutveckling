@@ -25,9 +25,7 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     public void DayTimeChanged(DayStateEnum dayState, int ticks) {
         SetSceneDarkness(ticks);
 
-        if (dayState == OldDayState) {
-            return;
-        }
+        if (dayState == OldDayState) return;
 
         switch (dayState) {
             case DayStateEnum.Night:
@@ -53,11 +51,10 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     }
 
     public void PauseToggle(bool isPaused) {
-        if (isPaused) {
+        if (isPaused)
             GameController.SetSceneDarkness(1.0f);
-        } else {
+        else
             GameController.SetSceneDarkness(OldSceneDarkness);
-        }
     }
 
 
@@ -73,17 +70,14 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
 
         float timeOfDay = 0f;
 
-        if (ticks < midDay) {
+        if (ticks < midDay)
             timeOfDay = Utilities.MapRange(0, midDay, 0.5f, 1f, ticks);
-        } else {
+        else
             timeOfDay = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 1f, 0.5f, ticks);
-        }
 
         timeOfDay = Mathf.Round(timeOfDay * 1000) / 1000;
 
-        if (timeOfDay == OldSceneDarkness) {
-            return;
-        }
+        if (timeOfDay == OldSceneDarkness) return;
 
         OldSceneDarkness = timeOfDay;
 

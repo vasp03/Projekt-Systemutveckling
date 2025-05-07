@@ -10,9 +10,8 @@ public class FireEvent : GameEventBase {
     public override double Chance => 0.25d;
 
     public override void OnEvent(GameEventContext context) {
-        for (int i = 0; i < FIRE_CARD_SPAWN_COUNT; i++) {
+        for (int i = 0; i < FIRE_CARD_SPAWN_COUNT; i++)
             context.GameController.GetCardController().CreateCard(new MaterialFire(),
                 context.GameController.GetRandomPositionWithinScreen());
-        }
     }
 }

@@ -83,9 +83,7 @@ public partial class GameController : Node2D {
 
         if (numberList.Count >= 2) {
             StringBuilder numbers = new();
-            for (int i = 0; i < numberList.Count; i++) {
-                numbers.Append(numberList[i]);
-            }
+            for (int i = 0; i < numberList.Count; i++) numbers.Append(numberList[i]);
 
             // Create a new card with the numbers in the list
             cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
@@ -93,30 +91,6 @@ public partial class GameController : Node2D {
             numberList.Clear();
         }
     }
-
-    #region Getters
-
-    public CardController GetCardController() {
-        return cardController;
-    }
-
-    public MenuController GetMenuController() {
-        return menuController;
-    }
-
-    public MouseController GetMouseController() {
-        return mouseController;
-    }
-
-    public SoundController GetSoundController() {
-        return soundController;
-    }
-
-    public DayTimeController GetDayTimeController() {
-        return DayTimeController;
-    }
-
-    #endregion Getters
 
     // Set the scene darknes
     public void SetSceneDarkness(float darkness) {
@@ -161,4 +135,28 @@ public partial class GameController : Node2D {
 
         return new Vector2(x, y);
     }
+
+    #region Getters
+
+    public CardController GetCardController() {
+        return cardController;
+    }
+
+    public MenuController GetMenuController() {
+        return menuController;
+    }
+
+    public MouseController GetMouseController() {
+        return mouseController;
+    }
+
+    public SoundController GetSoundController() {
+        return soundController;
+    }
+
+    public DayTimeController GetDayTimeController() {
+        return DayTimeController;
+    }
+
+    #endregion Getters
 }

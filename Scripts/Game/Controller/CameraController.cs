@@ -6,7 +6,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CameraController : ITickable {
     private const float xFrequency = 200f;
     private const float yFrequency = 290f;
-    private readonly static Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
+    private static readonly Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
     private float intensity;
 
     private int remainingShakeTicks;

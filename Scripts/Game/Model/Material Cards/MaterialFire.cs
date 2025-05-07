@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
@@ -25,9 +24,7 @@ public class MaterialFire() : CardMaterial("Fire", 0), ITickable, ICardConsumer 
             LastFireDamageTick = 0;
 
             CardNode.CardController.AllCards.ToList().ForEach(e => {
-                if (e.CardType is CardLiving cardLiving) {
-                    cardLiving.Health -= FIRE_DAMAGE;
-                }
+                if (e.CardType is CardLiving cardLiving) cardLiving.Health -= FIRE_DAMAGE;
             });
         }
     }

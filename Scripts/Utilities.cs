@@ -9,7 +9,7 @@ public static class Utilities {
     ///     How many ticks is a single day.
     /// </summary>
     /// <remarks>
-    ///   5 minutes = 1 in-game day
+    ///     5 minutes = 1 in-game day
     public const int TICKS_PER_DAY = 18000;
 
     /// <summary>

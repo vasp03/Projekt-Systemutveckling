@@ -35,14 +35,10 @@ public class DayTimeController : ITickable {
     /// </summary>
     /// <param name="delta">How long time it has been between frames</param>
     public void PreTick(double delta) {
-        if (IsPaused) {
-            return;
-        }
+        if (IsPaused) return;
 
         TimeCountingToOneTick += delta;
-        if (TimeCountingToOneTick < 1 / TicksPerSecond) {
-            return;
-        }
+        if (TimeCountingToOneTick < 1 / TicksPerSecond) return;
 
         TimeCountingToOneTick -= 1 / TicksPerSecond;
 
@@ -50,18 +46,13 @@ public class DayTimeController : ITickable {
         CurrentTimeOfDay += 1;
 
         // Check if the current time of day has reached the end of the day
-        if (CurrentTimeOfDay > DayDuration) {
-            CurrentTimeOfDay = 0; // Reset to the start of the day
-        }
+        if (CurrentTimeOfDay > DayDuration) CurrentTimeOfDay = 0; // Reset to the start of the day
 
-        foreach (IDayTimeCallback callback in Callbacks) {
+        foreach (IDayTimeCallback callback in Callbacks)
             callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
-        }
 
 
-        if (HasWarnedAboutLabel) {
-            return;
-        }
+        if (HasWarnedAboutLabel) return;
 
         if (GameController != null && GameController.TimeLabel != null) {
             GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
@@ -84,17 +75,11 @@ public class DayTimeController : ITickable {
     }
 
     public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
-        if (callback == null) {
-            throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
-        }
+        if (callback == null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
 
-        if (Callbacks == null) {
-            Callbacks = [];
-        }
+        if (Callbacks == null) Callbacks = [];
 
-        if (Callbacks.Contains(callback)) {
-            return callback;
-        }
+        if (Callbacks.Contains(callback)) return callback;
 
         Callbacks.Add(callback);
 
@@ -119,30 +104,25 @@ public class DayTimeController : ITickable {
     ///     Night: 9/10 - 1 of the day
     /// </remarks>
     public static DayStateEnum GetCurrentDayState(int ticks) {
-        if (ticks >= 0 && ticks < DayDurationRatio(DayDuration)) {
+        if (ticks >= 0 && ticks < DayDurationRatio(DayDuration))
             // Night
             return DayStateEnum.Night;
-        }
 
-        if (ticks >= DayDurationRatio(DayDuration) && ticks < DayDurationRatio(DayDuration) * 3) {
+        if (ticks >= DayDurationRatio(DayDuration) && ticks < DayDurationRatio(DayDuration) * 3)
             // Morning
             return DayStateEnum.Morning;
-        }
 
-        if (ticks >= DayDurationRatio(DayDuration) * 3 && ticks < DayDurationRatio(DayDuration) * 7) {
+        if (ticks >= DayDurationRatio(DayDuration) * 3 && ticks < DayDurationRatio(DayDuration) * 7)
             // Day
             return DayStateEnum.Day;
-        }
 
-        if (ticks >= DayDurationRatio(DayDuration) * 7 && ticks < DayDurationRatio(DayDuration) * 9) {
+        if (ticks >= DayDurationRatio(DayDuration) * 7 && ticks < DayDurationRatio(DayDuration) * 9)
             // Evening
             return DayStateEnum.Evening;
-        }
 
-        if (ticks >= DayDurationRatio(DayDuration) * 9 && ticks <= DayDuration) {
+        if (ticks >= DayDurationRatio(DayDuration) * 9 && ticks <= DayDuration)
             // Night
             return DayStateEnum.Night;
-        }
 
         return DayStateEnum.Invalid; // Invalid state
     }
@@ -154,17 +134,16 @@ public class DayTimeController : ITickable {
     public void SetPaused(bool paused) {
         IsPaused = paused;
 
-        if (IsPaused) {
+        if (IsPaused)
             foreach (IDayTimeCallback callback in Callbacks) {
                 callback.DayTimeChanged(DayStateEnum.Paused, CurrentTimeOfDay);
                 GameController.TimeLabel.Visible = false;
             }
-        } else {
+        else
             foreach (IDayTimeCallback callback in Callbacks) {
                 callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
                 GameController.TimeLabel.Visible = true;
             }
-        }
     }
 
     public int GetTicks() {
