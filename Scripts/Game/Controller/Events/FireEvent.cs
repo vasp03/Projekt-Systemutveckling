@@ -11,7 +11,7 @@ public class FireEvent : GameEventBase {
 
     public override void OnEvent(GameEventContext context) {
         for (int i = 0; i < FIRE_CARD_SPAWN_COUNT; i++) {
-            context.GameController.GetCardController().CreateCard(new MaterialFireCard(),
+            context.GameController.GetCardController().CreateCard(new MaterialFire(),
                 context.GameController.GetRandomPositionWithinScreen());
         }
     }
