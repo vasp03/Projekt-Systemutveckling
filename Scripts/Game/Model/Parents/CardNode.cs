@@ -71,7 +71,6 @@ public partial class CardNode : Node2D {
     public void SetIsBeingDragged(bool isBeingDragged) {
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
-        bool consumedCard = false;
 
         if (!isBeingDragged)
             if (CheckForConsumingCards())
