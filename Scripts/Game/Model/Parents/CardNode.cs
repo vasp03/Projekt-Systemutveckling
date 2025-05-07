@@ -70,6 +70,10 @@ public partial class CardNode : Node2D {
     public void SetIsBeingDragged(bool isBeingDragged) {
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
+        
+        if (!isBeingDragged)
+            if (CheckForConsumingCards())
+                return;
 
         if (CardType is IStackable stackable) {
             CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
@@ -79,10 +83,10 @@ public partial class CardNode : Node2D {
                 neighbourAbove.SetIsBeingDragged(isBeingDragged);
         }
 
-        if (!isBeingDragged) CheckForConsumingCards();
+
     }
 
-    private void CheckForConsumingCards() {
+    private bool CheckForConsumingCards() {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
@@ -90,9 +94,12 @@ public partial class CardNode : Node2D {
             if (cardUnder.CardType is ICardConsumer cardConsumer) {
                 if (cardConsumer.ConsumeCard(CardType)) {
                     Destroy();
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     /// <summary>
