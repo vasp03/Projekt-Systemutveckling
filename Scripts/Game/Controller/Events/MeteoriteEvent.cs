@@ -10,7 +10,6 @@ public class MeteoriteEvent : GameEventBase {
 
     public override double Chance => 0.25d;
 
-
     public override void OnEvent(GameEventContext context) {
         context.GameController.GetCardController()
             .CreateCard(new MaterialMeteorite(), context.GameController.GetRandomPositionWithinScreen());

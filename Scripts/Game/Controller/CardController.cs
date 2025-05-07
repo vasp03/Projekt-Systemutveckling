@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -15,6 +16,7 @@ public class CardController {
     private readonly List<CardNode> HoveredCards = [];
     private readonly MouseController MouseController;
     private CardNode SelectedCard;
+    public const string CARD_GROUP_NAME = "CARDS";
 
     public CardController(GameController gameController, MouseController mouseController) {
         GameController = gameController;
@@ -27,13 +29,12 @@ public class CardController {
     public CraftingController CraftingController { get; }
     public int CardCount => AllCards.Count;
 
-    public IReadOnlyCollection<CardNode> AllCards =>
-        GameController.GetTree().GetNodesInGroup("CARDS").Cast<CardNode>().ToArray();
+    public IReadOnlyCollection<CardNode> AllCards => GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
-    private List<CardNode> Stacks =>
-        AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
+    private List<CardNode> Stacks => AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
+    #region CreateCard
 
     /// <summary>
     ///     Creates a new card and adds it to the scene, with a random underlying CardType
@@ -82,6 +83,18 @@ public class CardController {
         return cardInstance;
     }
 
+    #endregion CreateCard
+
+    /// <summary>
+    ///     Adds the card to the hovered cards list and sets its highlighted state to true.
+    /// </summary>
+    public void AddCardToHoveredCards(CardNode cardNode) {
+        HoveredCards.Add(cardNode);
+        CheckForHighLight();
+    }
+
+    #region Specific Card
+
     /// <summary>
     ///     Checks if the card is the top card on the scene.
     /// </summary>
@@ -93,14 +106,6 @@ public class CardController {
         }
 
         return true;
-    }
-
-    /// <summary>
-    ///     Adds the card to the hovered cards list and sets its highlighted state to true.
-    /// </summary>
-    public void AddCardToHoveredCards(CardNode cardNode) {
-        HoveredCards.Add(cardNode);
-        CheckForHighLight();
     }
 
     /// <summary>
@@ -165,17 +170,43 @@ public class CardController {
         return topUnderCard;
     }
 
-	/// <summary>
-	///     Sets the ZIndex of all cards based on the selected card.
-	/// </summary>
-	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
-	public void SetZIndexForAllCards(CardNode cardNode) {
-		int NumberOfCards = AllCards.Count;
-		List<IStackable> stackAboveSelectedCard =
-			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
-		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
-		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
-		int CounterForCardsBelow = 1;
+    /// <summary>
+    ///     Adds a craft button to the specified card node.
+    /// </summary>
+    /// <param name="cardNode">The card node to add the craft button to.</param>
+    private void AddCraftButton(CardNode cardNode) {
+        if (cardNode.CraftButton != null) {
+            return;
+        }
+
+        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
+        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
+
+        craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
+
+        cardNode.CraftButton = craftButtonInstance;
+
+        craftButtonInstance.CardNode = cardNode;
+
+        craftButtonInstance.CardController = this;
+
+        GameController.AddChild(craftButtonInstance);
+    }
+
+
+    #endregion Specific Card
+
+    /// <summary>
+    ///     Sets the ZIndex of all cards based on the selected card.
+    /// </summary>
+    /// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
+    public void SetZIndexForAllCards(CardNode cardNode) {
+        int NumberOfCards = AllCards.Count;
+        List<IStackable> stackAboveSelectedCard =
+            cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+        int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+        int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+        int CounterForCardsBelow = 1;
 
         foreach (CardNode card in AllCardsSorted) {
             if (card == cardNode) {
@@ -259,29 +290,6 @@ public class CardController {
     }
 
     /// <summary>
-    ///     Adds a craft button to the specified card node.
-    /// </summary>
-    /// <param name="cardNode">The card node to add the craft button to.</param>
-    private void AddCraftButton(CardNode cardNode) {
-        if (cardNode.CraftButton != null) {
-            return;
-        }
-
-        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
-        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
-
-        craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
-
-        cardNode.CraftButton = craftButtonInstance;
-
-        craftButtonInstance.CardNode = cardNode;
-
-        craftButtonInstance.CardController = this;
-
-        GameController.AddChild(craftButtonInstance);
-    }
-
-    /// <summary>
     ///     Crafts a card from the specified card node.
     /// </summary>
     /// <param name="cardNode">The card node to craft from.</param>
@@ -331,10 +339,10 @@ public class CardController {
             }
         }
 
-		foreach (string cardName in recipe) {
-			CardNode card = CreateCard(cardName, cardNode.Position);
-			card.ZIndex = cardNode.ZIndex + 1;
-			spawnPos += new Vector2(0, -15);
-		}
-	}
+        foreach (string cardName in recipe.StringList) {
+            CardNode card = CreateCard(cardName, cardNode.Position);
+            card.ZIndex = cardNode.ZIndex + 1;
+            spawnPos += new Vector2(0, -15);
+        }
+    }
 }

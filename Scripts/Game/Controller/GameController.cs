@@ -14,7 +14,7 @@ public partial class GameController : Node2D {
     private MenuController menuController;
     private MouseController mouseController;
     private SoundController soundController;
-    [Export] public Label TimeLabel { get; private set; }
+    public Label TimeLabel { get; private set; }
 
     public static GameController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
@@ -94,6 +94,8 @@ public partial class GameController : Node2D {
         }
     }
 
+    #region Getters
+
     public CardController GetCardController() {
         return cardController;
     }
@@ -113,6 +115,8 @@ public partial class GameController : Node2D {
     public DayTimeController GetDayTimeController() {
         return DayTimeController;
     }
+
+    #endregion Getters
 
     // Set the scene darknes
     public void SetSceneDarkness(float darkness) {

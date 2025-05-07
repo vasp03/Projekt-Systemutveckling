@@ -5,7 +5,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialFireCard() : CardMaterial("Fire"), ITickable, ICardConsumer {
+public class MaterialFireCard() : CardMaterial("Fire", 0), ITickable, ICardConsumer {
     private const int FIRE_DAMAGE = 1;
 
     private int LastFireDamageTick;

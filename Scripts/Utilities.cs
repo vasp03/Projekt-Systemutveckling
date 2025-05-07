@@ -8,7 +8,7 @@ public static class Utilities {
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public readonly static int TICKS_PER_DAY = TimeToTicks(minutes: 5);
+    public const int TICKS_PER_DAY = 1000;
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.
