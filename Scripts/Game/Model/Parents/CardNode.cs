@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -70,20 +71,19 @@ public partial class CardNode : Node2D {
     public void SetIsBeingDragged(bool isBeingDragged) {
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
-        
+        bool consumedCard = false;
+
         if (!isBeingDragged)
             if (CheckForConsumingCards())
                 return;
 
-        if (CardType is IStackable stackable) {
-            CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-            if (neighbourAbove == null)
-                ZIndex = CardController.CardCount;
-            else
-                neighbourAbove.SetIsBeingDragged(isBeingDragged);
-        }
+        if (CardType is not IStackable stackable) return;
 
-
+        CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
+        if (neighbourAbove == null)
+            ZIndex = CardController.CardCount;
+        else
+            neighbourAbove.SetIsBeingDragged(isBeingDragged);
     }
 
     private bool CheckForConsumingCards() {

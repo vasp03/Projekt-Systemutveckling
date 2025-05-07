@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
-
 using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
+
+namespace Goodot15.Scripts.Game.Controller;
 
 public class CardController {
     public readonly Vector2 CraftButtonOffset = new(0, -110);
@@ -268,7 +267,7 @@ public class CardController {
             // Checks for a card under the moved card and sets if it exists as a neighbour below. 
             CardNode underCard = GetCardUnderMovedCard();
 
-            if (underCard != null && !SelectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove) {
+            if (underCard != null && !SelectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove && !underCard.IsQueuedForDeletion() && !SelectedCard.IsQueuedForDeletion()) {
                 SelectedCard.SetOverLappedCardToStack(underCard);
             }
 
