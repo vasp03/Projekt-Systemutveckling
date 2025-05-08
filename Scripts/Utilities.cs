@@ -7,7 +7,7 @@ public static class Utilities {
     /// <summary>
     ///     How many ticks is a single day.
     /// </summary>
-    public const int TICKS_PER_DAY = 36000/10;
+    public const int TICKS_PER_DAY = 36000;
 
     public const double TICKS_PER_SECOND = 60;
 
