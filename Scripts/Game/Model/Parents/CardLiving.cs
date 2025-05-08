@@ -20,10 +20,11 @@ public abstract class CardLiving
         if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved)
             StarvationTickProgress = 0;
         // TODO: Death(?)
-        if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilFullyStarved) {
+        if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilSaturationDecrease) {
             HungerTickProgress = 0;
             Saturation -= SaturationLossPerCycle != -1 ? SaturationLossPerCycle : 0;
         }
+        
     }
 
     #region Health-related
@@ -78,7 +79,7 @@ public abstract class CardLiving
     ///     Current saturation points
     /// </summary>
     public int Saturation {
-        get => TicksUntilSaturationDecrease == -1 ? _saturation : -1;
+        get => TicksUntilSaturationDecrease != -1 ? _saturation : -1;
         set => _saturation = Math.Max(0, value);
     }
 
