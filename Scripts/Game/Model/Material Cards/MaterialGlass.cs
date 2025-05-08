@@ -1,4 +1,4 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialGlass() : CardMaterial("Glass") {
+public class MaterialGlass() : CardMaterial("Glass", 5) {
 }

@@ -1,4 +1,4 @@
 using Goodot15.Scripts.Game.Model.Living;
 
-public class PlayerBlacksmith() : LivingPlayer("Blacksmith") {
+public class PlayerBlacksmith() : LivingPlayer("Blacksmith", 20) {
 }
