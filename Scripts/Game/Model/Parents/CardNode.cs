@@ -31,7 +31,7 @@ public partial class CardNode : Node2D {
     public List<CardNode> HoveredCards { get; } = [];
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
-    public CraftButton CraftButton { get; set; }
+    public Goodot15.Scripts.Game.View.CraftButton CraftButton { get; set; }
     public string CARD_Group { get; private set; } = "CARDS";
 
     public Card CardType {
@@ -217,14 +217,6 @@ public partial class CardNode : Node2D {
     /// </returns>
     public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
         return area2D.GetParent<CardNode>();
-    }
-
-    public void SetCraftButton(CraftButton craftButton) {
-        _craftButton = craftButton;
-    }
-
-    public CraftButton GetCraftButton() {
-        return _craftButton;
     }
 
     #region Events(?)

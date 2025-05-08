@@ -5,14 +5,15 @@ using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model;
+using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 public class CardController {
 	public const string CARD_GROUP_NAME = "CARDS";
 
-	private readonly Goodot15.Scripts.Game.Controller.GameController _gameController;
-	private readonly MouseController _mouseController;
+	private readonly Goodot15.Scripts.Game.Controller.GameController gameController;
+	private readonly MouseController mouseController;
 	public CardCreationHelper CardCreationHelper { get; private set; }
 
 	public CraftingController CraftingController { get; private set; }
@@ -28,8 +29,8 @@ public class CardController {
 
 	// Constructor
 	public CardController(Goodot15.Scripts.Game.Controller.GameController gameController, MouseController mouseController) {
-		_gameController = gameController;
-		_mouseController = mouseController;
+		this.gameController = gameController;
+		this.mouseController = mouseController;
 		CardCreationHelper = new CardCreationHelper(gameController);
 		CraftingController = new CraftingController(CardCreationHelper);
 
@@ -39,7 +40,7 @@ public class CardController {
 	public int CardCount => AllCards.Count;
 
 	public IReadOnlyCollection<CardNode> AllCards =>
-		_gameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+		gameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted =>
 		AllCards.OrderBy(x => x.ZIndex).ToArray();
@@ -56,7 +57,7 @@ public class CardController {
 
 		cardInstance.Position = position;
 		if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
-		_gameController.AddChild(cardInstance);
+		gameController.AddChild(cardInstance);
 
 		return cardInstance;
 	}
@@ -79,7 +80,7 @@ public class CardController {
 		cardInstance.CardController = this;
 
 		cardInstance.ZIndex = CardCount + 1;
-		_gameController.AddChild(cardInstance);
+		gameController.AddChild(cardInstance);
 
 		return cardInstance;
 	}
@@ -340,7 +341,7 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		_mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
+		mouseController.SetMouseCursor(MouseCursorEnum.hand_close);
 		selectedCard = GetTopCardAtMousePosition();
 		// SetTopZIndexForCard(selectedCard);
 
@@ -402,7 +403,7 @@ public class CardController {
 	///     Called when the left mouse button is released.
 	/// </summary>
 	public void LeftMouseButtonReleased() {
-		_mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
+		mouseController.SetMouseCursor(MouseCursorEnum.point_small);
 		if (selectedCard != null) {
 			selectedCard.SetIsBeingDragged(false);
 
@@ -438,7 +439,7 @@ public class CardController {
 		}
 
 		PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
-		CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
+		Goodot15.Scripts.Game.View.CraftButton craftButtonInstance = craftButtonScene.Instantiate<Goodot15.Scripts.Game.View.CraftButton>();
 
 		craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
 
@@ -448,7 +449,7 @@ public class CardController {
 
 		craftButtonInstance.CardController = this;
 
-		_gameController.AddChild(craftButtonInstance);
+		gameController.AddChild(craftButtonInstance);
 	}
 
 	/// <summary>
@@ -468,7 +469,7 @@ public class CardController {
 		}
 
 		// Check for the recipe
-		List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+		StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
 		if (recipe == null) {
 			GD.Print("No recipe found for the selected card.");
 			return;
@@ -479,11 +480,11 @@ public class CardController {
 		// Remove the cards in the stack part of cardNode
 		foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
 			if (stackableCard is Card card) {
-				card.CardNode.QueueFree();
+				card.CardNode.Destroy();
 			}
 		}
 
-		foreach (string cardName in recipe) {
+		foreach (string cardName in recipe.StringsValue) {
 			CardNode card = CreateCard(cardName, cardNode.Position);
 			card.ZIndex = cardNode.ZIndex + 1;
 			spawnPos += new Vector2(0, -15);
