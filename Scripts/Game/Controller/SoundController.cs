@@ -77,9 +77,7 @@ public partial class SoundController : Node {
      * Necessary cause MP3 songs don't have built in looping through Godot
      */
     public bool ShouldCurrentSongLoop() {
-        if (string.IsNullOrEmpty(CurrentPlayingMusicPath)) {
-            return false;
-        }
+        if (string.IsNullOrEmpty(CurrentPlayingMusicPath)) return false;
 
         return CurrentPlayingMusicPath.Contains("DayTimeSongs/Day");
     }
@@ -122,9 +120,7 @@ public partial class SoundController : Node {
     }
 
     private AudioStream LoadMusic(string soundAssetName) {
-        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) {
-            return audioStream;
-        }
+        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) return audioStream;
 
         // Music not loaded, first time setup
         audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
@@ -148,7 +144,7 @@ public partial class SoundController : Node {
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
-        
+
         AddChild(player);
         player.Play();
     }
@@ -179,9 +175,7 @@ public partial class SoundController : Node {
     }
 
     private void UpdateMusicVolume() {
-        if (!MusicMuted) {
-            MusicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
-        }
+        if (!MusicMuted) MusicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
     }
 
     public bool ToggleMusicMuted() {

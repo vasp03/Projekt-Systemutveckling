@@ -31,11 +31,10 @@ public abstract class CardLiving
 
         if (Health <= 0) {
             deathTimer--;
-            if (deathTimer <= 0) {
+            if (deathTimer <= 0)
                 CardNode.Destroy();
-            } else {
+            else
                 CardNode.Modulate = new Color(1f, .5f, .5f);
-            }
             // CardNode.CardType = new ErrorCard();
         } else {
             if (remainingDamageEffectPulseTimer > 0) {
@@ -54,7 +53,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private readonly static int damageEffectPulseTimer = Utilities.TimeToTicks(1);
+    private static readonly int damageEffectPulseTimer = Utilities.TimeToTicks(1);
     private int remainingDamageEffectPulseTimer;
 
     /// <summary>
@@ -83,10 +82,9 @@ public abstract class CardLiving
     }
 
     private void HurtSound() {
-        if (_health > 0) {
+        if (_health > 0)
             GameController.Singleton.GetSoundController()
                 .PlaySound("General Sounds/Negative Sounds/sfx_sounds_damage1.wav");
-        }
     }
 
     /// <summary>

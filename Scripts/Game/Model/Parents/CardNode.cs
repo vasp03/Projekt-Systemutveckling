@@ -86,13 +86,10 @@ public partial class CardNode : Node2D {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
-        if (cardUnder is not null) {
-            if (cardUnder.CardType is ICardConsumer cardConsumer) {
-                if (cardConsumer.ConsumeCard(CardType)) {
+        if (cardUnder is not null)
+            if (cardUnder.CardType is ICardConsumer cardConsumer)
+                if (cardConsumer.ConsumeCard(CardType))
                     Destroy();
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -155,9 +152,8 @@ public partial class CardNode : Node2D {
 
                 SetPosition(underCard.Position - CardOverlappingOffset);
 
-                if (CardType is IStackable stackable && stackable.NeighbourAbove != null) {
+                if (CardType is IStackable stackable && stackable.NeighbourAbove != null)
                     ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-                }
             }
     }
 
@@ -169,9 +165,8 @@ public partial class CardNode : Node2D {
     public void SetPositionAsPartOfStack(CardNode underCard) {
         SetPosition(underCard.Position - new Vector2(0, -15));
 
-        if (CardType is IStackable { NeighbourAbove: not null } stackable) {
+        if (CardType is IStackable { NeighbourAbove: not null } stackable)
             ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
-        }
     }
 
     private void ClearReferences() {
@@ -198,9 +193,7 @@ public partial class CardNode : Node2D {
 
             Position += mousePosition - oldMousePosition;
 
-            if (CraftButton != null) {
-                CraftButton.Position = Position + CardController.CraftButtonOffset;
-            }
+            if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
 
             oldMousePosition = mousePosition;
         }

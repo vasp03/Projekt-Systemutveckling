@@ -12,9 +12,9 @@ public partial class MenuController : Node {
     private Control GuideMenu;
     private Control MainMenu;
     private Control OptionsMenu;
+    private List<IPauseCallback> PauseCallbacks;
     private Control PauseMenu;
     private Control PreviousMenu;
-    private List<IPauseCallback> PauseCallbacks;
 
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
@@ -111,11 +111,9 @@ public partial class MenuController : Node {
     ///     Closes all the menus and resumes the game.
     /// </summary>
     public void CloseMenus() {
-        foreach (Node menu in GetChildren()) {
-            if (menu is Control controlMenu && controlMenu.IsInsideTree()) {
+        foreach (Node menu in GetChildren())
+            if (menu is Control controlMenu && controlMenu.IsInsideTree())
                 controlMenu.Visible = false;
-            }
-        }
 
         GetTree().Paused = false;
         CallCallbacks(false);
@@ -159,22 +157,16 @@ public partial class MenuController : Node {
     private void CallCallbacks(bool isPaused) {
         if (PauseCallbacks == null) return;
 
-        foreach (IPauseCallback callback in PauseCallbacks) {
-            callback.PauseToggle(isPaused);
-        }
+        foreach (IPauseCallback callback in PauseCallbacks) callback.PauseToggle(isPaused);
     }
 
     public void AddPauseCallback(IPauseCallback callback) {
-        if (PauseCallbacks == null) {
-            PauseCallbacks = new List<IPauseCallback>();
-        }
+        if (PauseCallbacks == null) PauseCallbacks = new List<IPauseCallback>();
 
         PauseCallbacks.Add(callback);
     }
 
     public void RemovePauseCallback(IPauseCallback callback) {
-        if (PauseCallbacks != null) {
-            PauseCallbacks.Remove(callback);
-        }
+        if (PauseCallbacks != null) PauseCallbacks.Remove(callback);
     }
 }

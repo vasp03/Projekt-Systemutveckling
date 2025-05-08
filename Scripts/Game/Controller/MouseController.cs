@@ -7,8 +7,8 @@ namespace Goodot15.Scripts.Game.Controller;
 public class MouseController : GameManagerBase {
     private const string PATH = "res://Assets/MouseCursor/";
 
-    private readonly static Timer LoadingTimer = new();
-    private readonly static Vector2 Offset = new(12, 12);
+    private static readonly Timer LoadingTimer = new();
+    private static readonly Vector2 Offset = new(12, 12);
     private readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
     private readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
@@ -33,9 +33,7 @@ public class MouseController : GameManagerBase {
     }
 
     public bool SetMouseCursor(MouseCursorEnum cursor) {
-        if (cursor != MouseCursorEnum.loading && IsLoading) {
-            stopLoading();
-        }
+        if (cursor != MouseCursorEnum.loading && IsLoading) stopLoading();
 
         switch (cursor) {
             case MouseCursorEnum.point:
@@ -63,9 +61,7 @@ public class MouseController : GameManagerBase {
         IsLoading = true;
         LoadingIndex = 0;
 
-        if (LoadingTimer == null) {
-            return;
-        }
+        if (LoadingTimer == null) return;
 
         LoadingTimer.Timeout += LoadingThread;
         LoadingTimer.WaitTime = 0.200;

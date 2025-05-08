@@ -21,9 +21,7 @@ public class CraftingController {
             return;
         }
 
-        if (Recipes == null) {
-            Recipes = new List<CraftingRecipe>();
-        }
+        if (Recipes == null) Recipes = new List<CraftingRecipe>();
 
         Recipes.Add(recipe);
     }
@@ -39,11 +37,10 @@ public class CraftingController {
         foreach (Card card in Cards) {
             StringIntHolder cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
-            if (cardForCrafting != null) {
+            if (cardForCrafting != null)
                 cardForCrafting.IntValue++;
-            } else {
+            else
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
-            }
         }
 
         // Sort the list by the name of the card
@@ -54,11 +51,10 @@ public class CraftingController {
 
             foreach (string cardName in recipe.CardsForCrafting) {
                 StringIntHolder cardInRecipie = CardsInRecipeAndAmount.FirstOrDefault(x => x.StringValue == cardName);
-                if (cardInRecipie != null) {
+                if (cardInRecipie != null)
                     cardInRecipie.IntValue++;
-                } else {
+                else
                     CardsInRecipeAndAmount.Add(new StringIntHolder(cardName, 1));
-                }
             }
 
             // Sort the list by the name of the card
@@ -67,17 +63,14 @@ public class CraftingController {
             // Check if the recipe matches the cards in the stack
             bool recipeMatches = true;
 
-            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) {
-                continue;
-            }
+            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) continue;
 
-            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++) {
+            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
                 if (CardsInRecipeAndAmount[i].StringValue != CardForCraftingAmount[i].StringValue ||
                     CardsInRecipeAndAmount[i].IntValue != CardForCraftingAmount[i].IntValue) {
                     recipeMatches = false;
                     break;
                 }
-            }
 
 
             if (recipeMatches) {
@@ -101,11 +94,10 @@ public class CraftingController {
         foreach (IStackable card in Cards) {
             StringIntHolder cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
-            if (cardForCrafting != null) {
+            if (cardForCrafting != null)
                 cardForCrafting.IntValue++;
-            } else {
+            else
                 CardForCraftingAmount.Add(new StringIntHolder(card.TextureType, 1));
-            }
         }
 
         // Sort the list by the name of the card
@@ -128,17 +120,14 @@ public class CraftingController {
             // Check if the recipe matches the cards in the stack
             bool recipeMatches = true;
 
-            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) {
-                continue;
-            }
+            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) continue;
 
-            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++) {
+            for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
                 if (CardsInRecipeAndAmount[i].StringValue != CardForCraftingAmount[i].StringValue ||
                     CardsInRecipeAndAmount[i].IntValue != CardForCraftingAmount[i].IntValue) {
                     recipeMatches = false;
                     break;
                 }
-            }
 
             if (recipeMatches) {
                 List<string> craftedCards = recipe.CardsForCraftingResult;
