@@ -21,6 +21,7 @@ public class CardController {
 
 	private CardNode selectedCard;
     private CardLivingOverlay currentOverlay;
+    private Timer overlayUpdateTimer;
 
 	public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
     public Vector2 CardLivingOverlayOffset { get; private set; } = new Vector2(-67, 70);
@@ -270,9 +271,24 @@ public class CardController {
 
         // Add the overlay to the same parent as the card
         cardLiving.CardNode.GetParent().AddChild(currentOverlay);
+        
+        overlayUpdateTimer = new Timer();
+        overlayUpdateTimer.WaitTime = 0.2f;
+        overlayUpdateTimer.Autostart = true;
+        overlayUpdateTimer.OneShot = false;
+        cardLiving.CardNode.GetParent().AddChild(overlayUpdateTimer);
+        overlayUpdateTimer.Timeout += () => {
+            currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+            currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
+        };
+
     }
 
     public void HideHealthAndHunger() {
+        if (overlayUpdateTimer != null) {
+            overlayUpdateTimer.QueueFree();
+            overlayUpdateTimer = null;
+        }
         // Remove the existing overlay if it exists
         if (currentOverlay != null && currentOverlay.IsInsideTree()) {
             currentOverlay.QueueFree();

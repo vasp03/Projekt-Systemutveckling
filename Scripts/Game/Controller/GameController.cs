@@ -136,7 +136,7 @@ public partial class GameController : Node2D {
 	public override void _PhysicsProcess(double delta) {
 		DayTimeController.PreTick(delta);
 		GameEventManager.PostTick();
-	}
+    }
 
 	public bool IsPaused() {
 		return menuController.IsPaused();
