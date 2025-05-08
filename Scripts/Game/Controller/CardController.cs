@@ -23,8 +23,8 @@ public class CardController {
     private CardLivingOverlay currentOverlay;
     private Timer overlayUpdateTimer;
 
-	public Vector2 CraftButtonOffset { get; private set; } = new Vector2(0, -110);
-    public Vector2 CardLivingOverlayOffset { get; private set; } = new Vector2(-67, 70);
+	public static readonly Vector2 CRAFT_BUTTON_OFFSET = new Vector2(0, -110);
+    public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new Vector2(-67, 70);
 
 	// Constructor
 	public CardController(Goodot15.Scripts.Game.Controller.GameController gameController, MouseController mouseController) {
@@ -263,7 +263,7 @@ public class CardController {
         PackedScene cardLivingOverlay = GD.Load<PackedScene>("res://Scenes/ProgressBars/CardLivingOverlay.tscn");
         currentOverlay = cardLivingOverlay.Instantiate<CardLivingOverlay>();
         
-        currentOverlay.Position = cardLiving.CardNode.Position + CardLivingOverlayOffset;
+        currentOverlay.Position = cardLiving.CardNode.Position + CARD_LIVING_OVERLAY_OFFSET;
 
         
         currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
@@ -440,7 +440,7 @@ public class CardController {
 		PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
 		CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
 
-		craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
+		craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
 
 		cardNode.CraftButton = craftButtonInstance;
 

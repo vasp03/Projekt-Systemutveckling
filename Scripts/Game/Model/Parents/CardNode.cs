@@ -218,7 +218,7 @@ public partial class CardNode : Node2D {
 			Position += mousePosition - oldMousePosition;
 
 			if (CraftButton != null) {
-				CraftButton.Position = Position + CardController.CraftButtonOffset;
+				CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
 			}
 
 			oldMousePosition = mousePosition;
