@@ -71,9 +71,10 @@ public partial class CardNode : Node2D {
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
 
-        if (!isBeingDragged)
-            if (CheckForConsumingCards())
-                return;
+
+        if (!isBeingDragged) {
+            CheckForConsumingCards();
+        }
 
         if (CardType is not IStackable stackable) return;
 
@@ -94,9 +95,9 @@ public partial class CardNode : Node2D {
                     Destroy();
                     return true;
                 }
-    
+
         return true;
-}
+    }
 
     /// <summary>
     ///     Applies the texture to the sprite of the card node.
