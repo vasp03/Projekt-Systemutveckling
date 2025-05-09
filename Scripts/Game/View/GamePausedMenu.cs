@@ -62,7 +62,8 @@ public partial class GamePausedMenu : Control {
     private void OnExitButtonPressed() {
         // Await is required to synchronize scene change
         // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-        CallDeferred(nameof(ChangeSceneDeferred));
+        ChangeSceneDeferred();
+        // CallDeferred(nameof(ChangeSceneDeferred));
         soundController.ToggleMusicMuted();
         soundController.PlayMenuMusic();
     }

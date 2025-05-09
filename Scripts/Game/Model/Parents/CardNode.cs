@@ -98,7 +98,7 @@ public partial class CardNode : Node2D {
                     return true;
                 }
 
-        return true;
+        return false;
     }
 
     /// <summary>
