@@ -13,6 +13,8 @@ public class CraftingController {
         CreateStartingRecipes();
     }
 
+    
+    // TODO: Expose IReadOnlyCollection<CraftingRecipe> instead of directly exposing the property
     public List<CraftingRecipe> Recipes { get; private set; }
 
     public void AddRecipe(CraftingRecipe recipe) {
