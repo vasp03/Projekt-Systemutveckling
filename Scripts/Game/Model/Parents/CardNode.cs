@@ -85,12 +85,13 @@ public partial class CardNode : Node2D {
             ZIndex = CardController.CardCount;
         else
             neighbourAbove.SetIsBeingDragged(isBeingDragged);
-    }
-        
-        
+
+
+
         if (isBeingDragged && CardType is CardLiving cardLiving) {
             CardController.HideHealthAndHunger();
         }
+    }
 
     private bool CheckForConsumingCards() {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
