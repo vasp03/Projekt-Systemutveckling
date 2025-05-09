@@ -5,9 +5,8 @@ using Godot;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model;
-using Goodot15.Scripts.Game.Controller;
-using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 /// <summary>
 ///     Represents a card node in the game.
@@ -33,7 +32,7 @@ public partial class CardNode : Node2D {
     public List<CardNode> HoveredCards { get; } = [];
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
-    public Goodot15.Scripts.Game.View.CraftButton CraftButton { get; set; }
+    public CraftButton CraftButton { get; set; }
 
     public Card CardType {
         get => _cardType;
@@ -74,9 +73,7 @@ public partial class CardNode : Node2D {
         IsBeingDragged = isBeingDragged;
 
 
-        if (!isBeingDragged) {
-            CheckForConsumingCards();
-        }
+        if (!isBeingDragged) CheckForConsumingCards();
 
         if (CardType is not IStackable stackable) return;
 
@@ -87,10 +84,7 @@ public partial class CardNode : Node2D {
             neighbourAbove.SetIsBeingDragged(isBeingDragged);
 
 
-
-        if (isBeingDragged && CardType is CardLiving cardLiving) {
-            CardController.HideHealthAndHunger();
-        }
+        if (isBeingDragged && CardType is CardLiving cardLiving) CardController.HideHealthAndHunger();
     }
 
     private bool CheckForConsumingCards() {

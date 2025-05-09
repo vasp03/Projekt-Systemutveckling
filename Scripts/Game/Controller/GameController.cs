@@ -115,10 +115,10 @@ public partial class GameController : Node2D {
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
     }
 
-	public override void _PhysicsProcess(double delta) {
-		DayTimeController.PreTick(delta);
-		GameEventManager.PostTick();
-    CameraController.PostTick();
+    public override void _PhysicsProcess(double delta) {
+        DayTimeController.PreTick(delta);
+        GameEventManager.PostTick();
+        CameraController.PostTick();
     }
 
     public bool IsPaused() {
