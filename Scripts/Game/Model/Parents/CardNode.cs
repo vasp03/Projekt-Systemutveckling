@@ -94,9 +94,9 @@ public partial class CardNode : Node2D {
                     Destroy();
                     return true;
                 }
-
-        return false;
-    }
+    
+        return true;
+}
 
     /// <summary>
     ///     Applies the texture to the sprite of the card node.
