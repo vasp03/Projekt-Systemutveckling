@@ -13,6 +13,7 @@ public class CraftingController {
         CreateStartingRecipes();
     }
 
+    // TODO: Make exposed property as `IReadOnlyCollection<CraftingRecipe>` to prevent modifying Recipes array directly
     public List<CraftingRecipe> Recipes { get; private set; }
 
     public void AddRecipe(CraftingRecipe recipe) {
