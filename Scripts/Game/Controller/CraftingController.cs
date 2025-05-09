@@ -4,7 +4,9 @@ using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
+// TODO: Missing namespace
 public class CraftingController {
+    // TODO: camelCase for private instance variables
     private readonly CardCreationHelper CardCreationHelper;
 
     public CraftingController(CardCreationHelper cardCreationHelper) {
@@ -14,10 +16,13 @@ public class CraftingController {
     }
 
     // TODO: Make exposed property as `IReadOnlyCollection<CraftingRecipe>` to prevent modifying Recipes array directly
+    // TODO: camelCase
+    // TODO: Initialize list directly instead of "if null, initialize" (Recipes = [])
     public List<CraftingRecipe> Recipes { get; private set; }
 
     public void AddRecipe(CraftingRecipe recipe) {
         if (recipe == null) {
+            // TODO: ArgumentNullException.ThrowIfNull()
             GD.Print("Recipe is null");
             return;
         }
@@ -32,6 +37,8 @@ public class CraftingController {
     /// </summary>
     /// <returns> List of the cards that will be crafted from the recipie</returns>
     /// <param name="Cards">List of cards to check</param>
+   
+    // TODO: Unused
     public List<string> CheckForCrafting(List<Card> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
@@ -79,8 +86,8 @@ public class CraftingController {
                 return craftedCards;
             }
         }
-
-        return new List<string>();
+        
+        return new List<string>(); // TODO: Return [];
     }
 
     /// <summary>
