@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 
 /// <summary>
@@ -31,7 +32,6 @@ public partial class CardNode : Node2D {
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
-    public string CARD_Group { get; private set; } = "CARDS";
 
     public Card CardType {
         get => _cardType;
@@ -71,26 +71,32 @@ public partial class CardNode : Node2D {
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
 
-        if (CardType is IStackable stackable) {
-            CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-            if (neighbourAbove == null)
-                ZIndex = CardController.CardCount;
-            else
-                neighbourAbove.SetIsBeingDragged(isBeingDragged);
-        }
+        if (!isBeingDragged)
+            if (CheckForConsumingCards())
+                return;
 
-        if (!isBeingDragged) CheckForConsumingCards();
+        if (CardType is not IStackable stackable) return;
+
+        CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
+        if (neighbourAbove == null)
+            ZIndex = CardController.CardCount;
+        else
+            neighbourAbove.SetIsBeingDragged(isBeingDragged);
     }
 
-    private void CheckForConsumingCards() {
+    private bool CheckForConsumingCards() {
         CardNode cardUnder = area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).OrderBy(e => e.ZIndex)
             .LastOrDefault(e => e.ZIndex <= ZIndex);
 
         if (cardUnder is not null)
             if (cardUnder.CardType is ICardConsumer cardConsumer)
-                if (cardConsumer.ConsumeCard(CardType))
+                if (cardConsumer.ConsumeCard(CardType)) {
                     Destroy();
-    }
+                    return true;
+                }
+    
+        return true;
+}
 
     /// <summary>
     ///     Applies the texture to the sprite of the card node.
