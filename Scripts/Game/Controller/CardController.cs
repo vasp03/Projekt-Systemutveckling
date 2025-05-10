@@ -261,10 +261,7 @@ public class CardController {
         CheckForHighLight();
         cardNode.SetHighlighted(false);
         if (cardNode.CardType is CardLiving cardLiving) {
-            GD.Print("removed info");
             HideHealthAndHunger();
-        } else {
-            GD.Print("COULDNT REMOVE info");
         }
     }
 
