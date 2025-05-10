@@ -111,12 +111,15 @@ public class CardController {
 
             // Checks for a card under the moved card and sets if it exists as a neighbour below. 
             CardNode underCard = GetCardUnderMovedCard();
-
-            if (underCard != null && !SelectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove &&
-                !underCard.IsQueuedForDeletion() &&
-                !SelectedCard.IsQueuedForDeletion()) SelectedCard.SetOverLappedCardToStack(underCard);
-
-            SelectedCard = null;
+            if (underCard is not null) {
+                if (SelectedCard.IsQueuedForDeletion() || underCard.IsQueuedForDeletion())
+                    return;
+                if (!SelectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove &&
+                    !underCard.IsQueuedForDeletion() &&
+                    !SelectedCard.IsQueuedForDeletion()) {
+                    SelectedCard.SetOverLappedCardToStack(underCard);
+                }
+            }
         }
 
         // Checks if a card is supposed to have a craft button above it
@@ -167,12 +170,12 @@ public class CardController {
 
                     GD.Print("Ret: " + recipe.BoolValue + " " + ret);
 
-                    if (ret || recipe.BoolValue) card.CardNode.QueueFree();
+                    if (ret || recipe.BoolValue) card.CardNode.Destroy();
 
                     continue;
                 }
 
-                card.CardNode.QueueFree();
+                card.CardNode.Destroy();
             }
 
         foreach (string cardName in recipe.StringList) {
