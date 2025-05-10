@@ -257,11 +257,13 @@ public class CardController {
     ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
     /// </summary>
     public void CheckForHighLight() {
-        foreach (CardNode card in HoveredCards)
+        foreach (CardNode card in HoveredCards) {
+            if (!GodotObject.IsInstanceValid(card) || card.IsQueuedForDeletion()) continue;
             if (CardIsTopCard(card))
                 card.SetHighlighted(true);
             else
                 card.SetHighlighted(false);
+        }
     }
 
     /// <summary>
