@@ -181,7 +181,6 @@ public partial class CardNode : Node2D {
     private void ClearReferences() {
         if (CardType is IStackable stackable) {
             if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
-
             if (HasNeighbourAbove) stackable.NeighbourAbove.NeighbourBelow = null;
         }
 
