@@ -231,7 +231,7 @@ public partial class CardNode : Node2D {
 
     public void Destroy() {
         ClearReferences();
-        Destroy();
+        QueueFree();
     }
 
     public void _on_area_2d_mouse_entered() {
