@@ -287,6 +287,14 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
+		if (_gameController.SellModeActive) {
+			var cardToSell = GetTopCardAtMousePosition();
+			if (cardToSell != null) {
+				Global global = _gameController.GetNode<Global>("/root/Global");
+				cardToSell.DestroyAndReward(global);
+			}
+			return;
+		}
 		_mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
 		selectedCard = GetTopCardAtMousePosition();
 		// SetTopZIndexForCard(selectedCard);
@@ -367,6 +375,27 @@ public class CardController {
 		foreach (CardNode card in AllCards) {
 			if (Stacks.Contains(card) && card.CardType is IStackable stackable && CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
 				AddCraftButton(card);
+			} else {
+				if (card.CraftButton != null) {
+					card.CraftButton.QueueFree();
+					card.CraftButton = null;
+				}
+			}
+		}
+	}
+	
+	/// <summary>
+	/// Method for revalidating crafting buttons across the scene
+	/// Duplicate logic from LeftMouseButtonReleased() but without
+	/// handling drag finalization or mouse state.
+	/// </summary>
+	public void RefreshCraftButtons() {
+		foreach (CardNode card in AllCards) {
+			if (Stacks.Contains(card) && card.CardType is IStackable stackable &&
+				CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
+				if (card.CraftButton == null) {
+					AddCraftButton(card);
+				}
 			} else {
 				if (card.CraftButton != null) {
 					card.CraftButton.QueueFree();

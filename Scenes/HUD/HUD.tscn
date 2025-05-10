@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2wet7laxw8ea"]
+[gd_scene load_steps=5 format=3 uid="uid://c2wet7laxw8ea"]
 
 [ext_resource type="Script" uid="uid://bds65uc6mtdwy" path="res://Scripts/Game/View/HUD.cs" id="1_jg6e1"]
+[ext_resource type="Texture2D" uid="uid://dfg81e6sa5pb8" path="res://Assets/UI/Sell/sell_off.png" id="2_eqxii"]
 [ext_resource type="Script" uid="uid://d0t7r8f2iaqpa" path="res://Scripts/Game/Controller/SellModeButton.cs" id="2_mdu8u"]
+[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_etpdp"]
 
-[node name="Hud" type="CanvasLayer"]
+[node name="Hud" type="CanvasLayer" node_paths=PackedStringArray("GoldIcon", "MoneyLabel")]
 script = ExtResource("1_jg6e1")
+GoldIcon = NodePath("HUDRoot/GoldIcon")
+MoneyLabel = NodePath("HUDRoot/MoneyLabel")
 
 [node name="HUDRoot" type="Control" parent="."]
 layout_mode = 3
@@ -13,15 +17,38 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="SellModeButton" type="Button" parent="HUDRoot"]
+[node name="SellModeButton" type="TextureButton" parent="HUDRoot"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -48.0
+offset_top = -30.0
 offset_right = 28.0
-offset_bottom = -40.0
+offset_bottom = -22.0
 grow_vertical = 0
+tooltip_text = "Toggle Sell Mode
+"
+texture_normal = ExtResource("2_eqxii")
 script = ExtResource("2_mdu8u")
+
+[node name="MoneyLabel" type="Label" parent="HUDRoot"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 24.0
+offset_right = 121.0
+offset_bottom = 47.0
+theme_override_fonts/font = ExtResource("3_etpdp")
+text = "0"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="GoldIcon" type="TextureRect" parent="HUDRoot"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 42.0
+offset_bottom = 52.0
+stretch_mode = 5

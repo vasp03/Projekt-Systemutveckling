@@ -38,19 +38,18 @@ public partial class GameController : Node2D {
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
 
-        AddHUD();
-    }
+		AddHUD();
+	}
 
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventKey eventKey && eventKey.Pressed) {
 			switch (eventKey.Keycode) {
 				case Key.Escape:
-                    menuController.OpenPauseMenu();
-                    DayTimeController.SetPaused(true);
-                    soundController.MusicMuted = true;
-                    HideHUD();
-                    Visible = false;
-                    break;
+					menuController.OpenPauseMenu();
+					DayTimeController.SetPaused(true);
+					soundController.MusicMuted = true;
+					Visible = false;
+					break;
 				case Key.Space:
 					cardController.CreateCard("Random", Vector2.One * 100);
 					break;
@@ -156,28 +155,26 @@ public partial class GameController : Node2D {
 	}
 
 	private void AddHUD() {
-		if (HUDScene == null) {
-			GD.PrintErr("HUDScene is not assigned.");
-			return;
-		}
-
 		var hudInstance = HUDScene.Instantiate();
-		if (hudInstance is Goodot15.Scripts.Game.View.HUD castedHUD) {
-			hud = castedHUD;
+		if (hudInstance is Goodot15.Scripts.Game.View.HUD hud) {
 			hud.GameController = this;
 			AddChild(hud);
 		}
 	}
 	
-    public void ShowHUD() {
-        if (hud != null) {
-            hud.Show(); // Show the HUD when resumed
-        }
-    }
+	public void HideHUD() {
+		foreach (Node child in GetChildren()) {
+			if (child is Goodot15.Scripts.Game.View.HUD hud) {
+				hud.Visible = false;
+			}
+		}
+	}
 
-    private void HideHUD() {
-        if (hud != null) {
-            hud.Hide(); // Hide just the HUD part
-        }
-    }
+	public void ShowHUD() {
+		foreach (Node child in GetChildren()) {
+			if (child is Goodot15.Scripts.Game.View.HUD hud) {
+				hud.Visible = true;
+			}
+		}
+	}
 }

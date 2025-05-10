@@ -14,6 +14,10 @@ public class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
     public override int TicksUntilFullyStarved => STARVATION_TICK_DELAY;
     public override int TicksUntilSaturationDecrease => HUNGER_TICK_DELAY;
     public override int SaturationLossPerCycle => 30;
+    
+    protected override int SetValue() {
+        return 50;
+    }
 
     public override bool ConsumeCard(Card otherCard) {
         if (otherCard is not IEdible edibleCard) return false;

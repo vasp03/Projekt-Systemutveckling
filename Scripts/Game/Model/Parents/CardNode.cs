@@ -236,8 +236,43 @@ public partial class CardNode : Node2D {
 	#region Events(?)
 
 	public void Destroy() {
+		GD.Print("Destroying card:", CardType.TextureType);
+		if (_craftButton != null) {
+			_craftButton.QueueFree(); // remove the button visually
+			_craftButton.CardNode = null; // break the circular reference
+			_craftButton = null;
+		}
+		
 		ClearReferences();
 		QueueFree();
+	}
+	
+	public void DestroyAndReward(Global global) {
+		GD.Print($"Destroying card: {CardType.TextureType} for {CardType.Value} gold");
+
+		global.AddMoney(CardType.Value);
+		UnlinkFromStack();
+		Destroy();
+		
+		CardController.RefreshCraftButtons();
+	}
+	
+	private void UnlinkFromStack() {
+		if (CardType is not IStackable thisStackable)
+			return;
+
+		IStackable above = thisStackable.NeighbourAbove;
+		IStackable below = thisStackable.NeighbourBelow;
+
+		// Disconnect this node from the stack
+		if (below != null)
+			below.NeighbourAbove = above;
+
+		if (above != null)
+			above.NeighbourBelow = below;
+
+		thisStackable.NeighbourAbove = null;
+		thisStackable.NeighbourBelow = null;
 	}
 
 	public void _on_area_2d_mouse_entered() {

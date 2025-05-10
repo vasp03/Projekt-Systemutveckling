@@ -6,6 +6,7 @@ using System.Linq;
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
     private const string textureEnding = ".png";
+    public int Value { get; protected set; }
 
     /// <summary>
     ///     Constructor for the Card class
@@ -19,6 +20,7 @@ public abstract class Card {
         ID = Guid.NewGuid().ToString();
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
+        Value = SetValue();
     }
 
     public CardNode CardNode { get; set; }
@@ -27,6 +29,8 @@ public abstract class Card {
     public string TexturePath { get; }
 
     public bool Movable { get; set; }
+    
+    protected abstract int SetValue();
 
     public string TextureType {
         get {

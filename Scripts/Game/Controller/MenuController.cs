@@ -44,6 +44,8 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
+        
+        GameController.HideHUD();
 
         if (pauseMenu == null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -117,6 +119,7 @@ public partial class MenuController : Node {
         GameController.Visible = true;
         GameController.GetDayTimeController().SetPaused(false);
         GameController.GetSoundController().MusicMuted = true;
+        GameController.ShowHUD();
     }
 
     /// <summary>

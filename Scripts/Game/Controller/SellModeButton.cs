@@ -2,20 +2,29 @@ using Godot;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public partial class SellModeButton : Button {
+public partial class SellModeButton : TextureButton {
+	private Texture2D _iconOn;
+	private Texture2D _iconOff;
 	public GameController GameController { get; set; }
 
 	public override void _Ready() {
 		Pressed += OnButtonPressed;
-		UpdateText();
+		_iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
+		_iconOff = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
+
+		UpdateIcon();
 	}
 
 	private void OnButtonPressed() {
-		GameController.ToggleSellMode();
-		UpdateText();
+		if (GameController != null) {
+			GameController.ToggleSellMode();
+			UpdateIcon();
+		} else {
+			GD.PrintErr("GameController is null when pressing SellModeButton.");
+		}
 	}
 
-	private void UpdateText() {
-		Text = GameController.SellModeActive ? "Sell Mode: ON" : "Sell Mode: OFF";
+	public void UpdateIcon() {
+		TextureNormal = GameController.SellModeActive ? _iconOn : _iconOff;
 	}
 }

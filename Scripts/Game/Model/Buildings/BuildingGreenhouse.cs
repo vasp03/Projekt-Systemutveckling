@@ -4,4 +4,8 @@ public class BuildingGreenhouse() : CardBuilding("Greenhouse", true, 1) {
     public override string ProduceCard() {
         return "null";
     }
+    
+    protected override int SetValue() {
+        return 5;  // Wood is worth 5 coins
+    }
 }
