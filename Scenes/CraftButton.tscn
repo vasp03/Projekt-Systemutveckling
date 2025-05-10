@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c2n6rlk28fiyf"]
 
-[ext_resource type="Script" uid="uid://ba1wlbfcv5em6" path="res://Scripts/Game/Model/Div/CraftButton.cs" id="1_ns71j"]
+[ext_resource type="Script" uid="uid://bblf1b50to6ju" path="res://Scripts/Game/View/CraftButton.cs" id="1_ns71j"]
 [ext_resource type="Texture2D" uid="uid://brdfny50kb1te" path="res://Assets/Icons/64x64/fc39.png" id="2_f4d1d"]
 
 [node name="Control" type="Node2D"]

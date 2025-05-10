@@ -4,7 +4,9 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 /// <summary>
 ///     Represents a card node in the game.
@@ -13,7 +15,6 @@ using Goodot15.Scripts.Game.Model.Interface;
 public partial class CardNode : Node2D {
     private const float HighLightFactor = 1.3f;
     private Card _cardType;
-    private CraftButton _craftButton;
     private CardNode LastOverlappedCard;
     private bool oldIsHighlighted;
     private Vector2 oldMousePosition;
@@ -68,13 +69,13 @@ public partial class CardNode : Node2D {
     ///     Sets the position of the card node to the given position.
     /// </summary>
     public void SetIsBeingDragged(bool isBeingDragged) {
+        if (!GodotObject.IsInstanceValid(this) || this.IsQueuedForDeletion()) return;
+
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
 
 
-        if (!isBeingDragged) {
-            CheckForConsumingCards();
-        }
+        if (!isBeingDragged) CheckForConsumingCards();
 
         if (CardType is not IStackable stackable) return;
 
@@ -83,6 +84,9 @@ public partial class CardNode : Node2D {
             ZIndex = CardController.CardCount;
         else
             neighbourAbove.SetIsBeingDragged(isBeingDragged);
+
+
+        if (isBeingDragged && CardType is CardLiving cardLiving) CardController.HideHealthAndHunger();
     }
 
     private bool CheckForConsumingCards() {
@@ -96,7 +100,7 @@ public partial class CardNode : Node2D {
                     return true;
                 }
 
-        return true;
+        return false;
     }
 
     /// <summary>
@@ -199,7 +203,7 @@ public partial class CardNode : Node2D {
 
             Position += mousePosition - oldMousePosition;
 
-            if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
+            if (CraftButton != null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
 
             oldMousePosition = mousePosition;
         }
@@ -217,14 +221,6 @@ public partial class CardNode : Node2D {
     /// </returns>
     public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
         return area2D.GetParent<CardNode>();
-    }
-
-    public void SetCraftButton(CraftButton craftButton) {
-        _craftButton = craftButton;
-    }
-
-    public CraftButton GetCraftButton() {
-        return _craftButton;
     }
 
     #region Events(?)

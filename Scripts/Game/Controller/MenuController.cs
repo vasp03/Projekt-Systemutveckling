@@ -127,7 +127,7 @@ public partial class MenuController : Node {
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
-    public void SetNodeController(GameController gameController) {
+    public void SetGameController(GameController gameController) {
         GameController = gameController;
     }
 
@@ -140,7 +140,7 @@ public partial class MenuController : Node {
         CurrentMenu = menu;
 
         GetTree().Paused = false;
-        CallCallbacks(false);
+        // CallCallbacks(false);
     }
 
     /// <summary>

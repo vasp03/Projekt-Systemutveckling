@@ -31,7 +31,7 @@ public partial class GameController : Node2D {
         soundController.PlayGameMusic();
 
         menuController = GetNode<MenuController>("/root/MenuController");
-        menuController.SetNodeController(this);
+        menuController.SetGameController(this);
 
         CameraController = new CameraController();
 
