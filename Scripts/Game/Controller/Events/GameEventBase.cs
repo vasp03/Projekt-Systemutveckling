@@ -6,4 +6,5 @@ public abstract class GameEventBase : IGameEvent {
     public abstract int TicksUntilNextEvent { get; }
     public abstract double Chance { get; }
     public abstract void OnEvent(GameEventContext context);
+    public virtual void OnInit(GameEventManager eventManager) {}
 }

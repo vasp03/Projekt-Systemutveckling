@@ -14,4 +14,5 @@ public interface IGameEvent {
     public double Chance { get; }
 
     public void OnEvent(GameEventContext context);
+    public virtual void OnInit(GameEventManager eventManager) {}
 }

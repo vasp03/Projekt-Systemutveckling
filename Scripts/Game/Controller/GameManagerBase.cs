@@ -14,4 +14,6 @@ public class GameManagerBase {
     public GameController GameController { get; }
 
     public Node CurrentScene => GameController.GetTree().CurrentScene;
+
+    public virtual void Ready() {}
 }

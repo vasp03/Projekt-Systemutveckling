@@ -23,7 +23,7 @@ public partial class GameController : Node2D {
     public override void _Ready() {
         mouseController = new MouseController(this);
         cardController = new CardController(this, mouseController);
-        DayTimeController = new DayTimeController(this);
+        // DayTimeController = new DayTimeController(this);
         GameEventManager = new GameEventManager(this);
 
 
@@ -35,10 +35,12 @@ public partial class GameController : Node2D {
 
         CameraController = new CameraController();
 
-        DayTimeEvent = new DayTimeEvent(this);
-        DayTimeController.AddCallback(DayTimeEvent);
+        // DayTimeEvent = new DayTimeEvent(this);
+        // DayTimeController.AddCallback(DayTimeEvent);
 
         TimeLabel = GetNode<Label>("CanvasLayer/DayTimeLabel");
+
+        GameEventManager.Ready();
     }
 
     public override void _Input(InputEvent @event) {
@@ -116,7 +118,7 @@ public partial class GameController : Node2D {
     }
 
     public override void _PhysicsProcess(double delta) {
-        DayTimeController.PreTick(delta);
+        // DayTimeController.PreTick(delta);
         GameEventManager.PostTick();
         CameraController.PostTick();
     }

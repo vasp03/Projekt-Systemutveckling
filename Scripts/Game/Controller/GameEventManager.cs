@@ -11,6 +11,8 @@ public class GameEventManager : GameManagerBase, ITickable {
     private readonly IList<IGameEvent> registeredEvents = [];
     private readonly IList<IGameEventListener> registeredEventListeners = [];
 
+    private int globalTicks = 0;
+
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
@@ -23,18 +25,21 @@ public class GameEventManager : GameManagerBase, ITickable {
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
-                    GameEventContext gameEventContext = new(registeredEvent, GameController);
+                    GameEventContext gameEventContext = new(registeredEvent, GameController, globalTicks);
                     PostEvent(gameEventContext);
                 }
             } else {
                 eventTicks[registeredEvent]++;
             }
+        
+        globalTicks++;
     }
 
     public void RegisterDefaultEvents() {
         RegisterEvent(new MeteoriteEvent());
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
+        RegisterEvent(new TimeEvent());
     }
 
     public void RegisterEvent(IGameEvent gameEvent) {
@@ -46,7 +51,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         registeredEventListeners.Add(gameEventListener);
     }
     
-    private void PostEvent(GameEventContext gameEventContext) {
+    public void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         foreach (IGameEventListener registeredEventListener in registeredEventListeners)
         {
@@ -56,5 +61,12 @@ public class GameEventManager : GameManagerBase, ITickable {
         GameController.GetCardController().AllCards.ToList().ForEach(e => {
             if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
         });
+    }
+
+    public override void Ready() {
+        foreach (IGameEvent registeredEvent in registeredEvents)
+        {
+            registeredEvent.OnInit(this);
+        }
     }
 }
