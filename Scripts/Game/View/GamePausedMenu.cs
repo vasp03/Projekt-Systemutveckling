@@ -9,10 +9,12 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GamePausedMenu : Control {
 	private MenuController menuController;
 	private SoundController soundController;
+    private GameController gameController;
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
 		soundController = GetNode<SoundController>("/root/SoundController");
+        gameController = GetNode<GameController>("/root/GameController");
 
 		VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
 		buttonContainer.Show();
@@ -37,6 +39,7 @@ public partial class GamePausedMenu : Control {
 	private void OnResumeButtonPressed() {
 		menuController.CloseMenus();
 		soundController.ToggleMusicMuted();
+		gameController.ShowHUD();
 	}
 
 	/// <summary>

@@ -14,6 +14,13 @@ public partial class GameController : Node2D {
 	private DayTimeEvent DayTimeEvent;
 	private GameEventManager GameEventManager;
 	[Export] public Label TimeLabel { get; private set; }
+	[Export] public PackedScene HUDScene { get; private set; }
+	private Goodot15.Scripts.Game.View.HUD hud;
+	
+	/// <summary>
+	/// Whether sell mode is active. Can be toggled externally but not directly written to.
+	/// </summary>
+	public bool SellModeActive { get; private set; }
 
 	public override void _Ready() {
 		mouseController = new MouseController(this);
@@ -30,19 +37,20 @@ public partial class GameController : Node2D {
 
 		DayTimeEvent = new DayTimeEvent(this);
 		DayTimeController.AddCallback(DayTimeEvent);
-		
-		
-	}
+
+        AddHUD();
+    }
 
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventKey eventKey && eventKey.Pressed) {
 			switch (eventKey.Keycode) {
 				case Key.Escape:
-					menuController.OpenPauseMenu();
-					DayTimeController.SetPaused(true);
-					soundController.MusicMuted = true;
-					Visible = false;
-					break;
+                    menuController.OpenPauseMenu();
+                    DayTimeController.SetPaused(true);
+                    soundController.MusicMuted = true;
+                    HideHUD();
+                    Visible = false;
+                    break;
 				case Key.Space:
 					cardController.CreateCard("Random", Vector2.One * 100);
 					break;
@@ -65,6 +73,16 @@ public partial class GameController : Node2D {
 			else
 				cardController.LeftMouseButtonReleased();
 		}
+	}
+	
+	public void ToggleSellMode() {
+		SellModeActive = !SellModeActive;
+		GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
+	}
+
+	public void SetSellMode(bool isActive) {
+		SellModeActive = isActive;
+		GD.Print($"Sell mode is now {(isActive ? "ON" : "OFF")}");
 	}
 
 	public Vector2 GetMousePosition() {
@@ -90,19 +108,15 @@ public partial class GameController : Node2D {
 	public CardController GetCardController() {
 		return cardController;
 	}
-
 	public MenuController GetMenuController() {
 		return menuController;
 	}
-
 	public MouseController GetMouseController() {
 		return mouseController;
 	}
-
 	public SoundController GetSoundController() {
 		return soundController;
 	}
-
 	public DayTimeController GetDayTimeController() {
 		return DayTimeController;
 	}
@@ -140,4 +154,30 @@ public partial class GameController : Node2D {
 	public bool IsPaused() {
 		return menuController.IsPaused();
 	}
+
+	private void AddHUD() {
+		if (HUDScene == null) {
+			GD.PrintErr("HUDScene is not assigned.");
+			return;
+		}
+
+		var hudInstance = HUDScene.Instantiate();
+		if (hudInstance is Goodot15.Scripts.Game.View.HUD castedHUD) {
+			hud = castedHUD;
+			hud.GameController = this;
+			AddChild(hud);
+		}
+	}
+	
+    public void ShowHUD() {
+        if (hud != null) {
+            hud.Show(); // Show the HUD when resumed
+        }
+    }
+
+    private void HideHUD() {
+        if (hud != null) {
+            hud.Hide(); // Hide just the HUD part
+        }
+    }
 }

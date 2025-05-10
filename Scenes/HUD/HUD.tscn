@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2wet7laxw8ea"]
+
+[ext_resource type="Script" uid="uid://bds65uc6mtdwy" path="res://Scripts/Game/View/HUD.cs" id="1_jg6e1"]
+[ext_resource type="Script" uid="uid://d0t7r8f2iaqpa" path="res://Scripts/Game/Controller/SellModeButton.cs" id="2_mdu8u"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_jg6e1")
+
+[node name="HUDRoot" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SellModeButton" type="Button" parent="HUDRoot"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -40.0
+grow_vertical = 0
+script = ExtResource("2_mdu8u")
