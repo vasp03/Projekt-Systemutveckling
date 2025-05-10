@@ -5,6 +5,8 @@ using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Living;
+using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -34,8 +36,8 @@ public class CardController {
 
         CreateStartingRecipes();
     }
-    
-    private readonly CardCreationHelper CardCreationHelper;
+
+    public CardCreationHelper CardCreationHelper { get; private set; }
     private readonly CraftingController CraftingController;
     private readonly GameController GameController;
     private readonly MouseController MouseController;
@@ -360,7 +362,7 @@ public class CardController {
         MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
         selectedCard = GetTopCardAtMousePosition();
 
-        if (selectedCard != null) SetZIndexForAllCards(SelectedCard);
+        if (selectedCard != null) SetZIndexForAllCards(selectedCard);
 
         if (selectedCard != null) {
             selectedCard.SetIsBeingDragged(true);
@@ -525,7 +527,7 @@ public class CardController {
         PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
         CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
 
-        craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
+        craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
 
         cardNode.CraftButton = craftButtonInstance;
 
