@@ -219,8 +219,7 @@ public partial class CardNode : Node2D {
             while (cardAbove != null) {
                 cardAbove = cardAbove.CardType is IStackable stackableAbove ? (stackableAbove.NeighbourAbove as Card)?.CardNode : null;
                 if (cardAbove != null && cardAbove != this) {
-                    counter++;
-                    cardAbove.Position = bottomCard.Position - new Vector2(0, counter++ * 10 * -1);
+                    cardAbove.Position = bottomCard.Position - new Vector2(0, counter++ * 20 * -1);
                 }
             }
 
