@@ -35,6 +35,7 @@ public partial class CardNode : Node2D {
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
     public Vector2 CardSize => sprite?.Texture?.GetSize() ?? new Vector2(80, 128);
+    private bool MovedOneLastTime { get; set; } = false;
 
     public Card CardType {
         get => _cardType;
@@ -199,13 +200,29 @@ public partial class CardNode : Node2D {
         tickable?.PreTick();
 
         if (IsBeingDragged) {
+            if (this.HasNeighbourBelow) return;
+
+            MovedOneLastTime = false;
+
             Vector2 mousePosition = GetGlobalMousePosition();
             IStackable stackable = this.CardType is IStackable stack ? stack : null;
             CardNode bottomCard = (stackable?.CardAtBottom as Card)?.CardNode ?? this;
             int neighboursAbove = stackable?.StackAbove.Count ?? 0;
             Vector2 newPosition = mousePosition - oldMousePosition;
 
-            if (bottomCard.Position.Y <= 64 && newPosition.Y < 0) newPosition.Y = 0;
+            if (bottomCard.Position.Y <= 64 && newPosition.Y < 0) {
+                newPosition.Y = 0;
+            }
+
+            int counter = 1;
+            CardNode cardAbove = this;
+            while (cardAbove != null) {
+                cardAbove = cardAbove.CardType is IStackable stackableAbove ? (stackableAbove.NeighbourAbove as Card)?.CardNode : null;
+                if (cardAbove != null && cardAbove != this) {
+                    counter++;
+                    cardAbove.Position = bottomCard.Position - new Vector2(0, counter++ * 10 * -1);
+                }
+            }
 
             Position = new Vector2(
                 Math.Clamp(Position.X + newPosition.X, 0 + (CardSize.X / 2), 1280 - (CardSize.X / 2)),
@@ -215,6 +232,13 @@ public partial class CardNode : Node2D {
             if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
 
             oldMousePosition = mousePosition;
+        } else if (!MovedOneLastTime) {
+            CardNode cardAboveThis = this.CardType is IStackable stackable ? (stackable.NeighbourAbove as Card)?.CardNode : null;
+            if (cardAboveThis != null) {
+                this.Position = cardAboveThis.Position + CardOverlappingOffset;
+            }
+
+            MovedOneLastTime = true;
         }
 
         tickable?.PostTick();
