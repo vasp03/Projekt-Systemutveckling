@@ -69,6 +69,8 @@ public partial class CardNode : Node2D {
     ///     Sets the position of the card node to the given position.
     /// </summary>
     public void SetIsBeingDragged(bool isBeingDragged) {
+        if (!GodotObject.IsInstanceValid(this) || this.IsQueuedForDeletion()) return;
+
         oldMousePosition = GetGlobalMousePosition();
         IsBeingDragged = isBeingDragged;
 

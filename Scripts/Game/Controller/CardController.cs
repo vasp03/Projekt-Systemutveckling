@@ -41,7 +41,7 @@ public class CardController {
     private readonly CraftingController CraftingController;
     private readonly GameController GameController;
     private readonly MouseController MouseController;
-    
+
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
@@ -362,9 +362,13 @@ public class CardController {
         MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
         selectedCard = GetTopCardAtMousePosition();
 
-        if (selectedCard != null) SetZIndexForAllCards(selectedCard);
+        if (!GodotObject.IsInstanceValid(selectedCard) || selectedCard.IsQueuedForDeletion()) {
+            selectedCard = null;
+            return;
+        }
 
         if (selectedCard != null) {
+            SetZIndexForAllCards(selectedCard);
             selectedCard.SetIsBeingDragged(true);
 
             if (selectedCard.HasNeighbourAbove)
