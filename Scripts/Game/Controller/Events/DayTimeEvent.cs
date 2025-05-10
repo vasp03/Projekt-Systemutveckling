@@ -8,6 +8,8 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     private DayStateEnum OldDayState;
     private float OldSceneDarkness;
 
+    private bool IsPaused;
+
     /// <summary>
     ///     An event to handle when the day changes and its time.
     /// </summary>
@@ -25,7 +27,7 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     public void DayTimeChanged(DayStateEnum dayState, int ticks) {
         SetSceneDarkness(ticks);
 
-        if (dayState == OldDayState) return;
+        if (dayState == OldDayState || IsPaused) return;
 
         switch (dayState) {
             case DayStateEnum.Night:
@@ -43,7 +45,7 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
             case DayStateEnum.Invalid:
             case DayStateEnum.Paused:
             default:
-                GameController.GetSoundController().StopMusic();
+                GameController.GetSoundController().ToggleMusicMuted();
                 break;
         }
 
@@ -51,6 +53,8 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     }
 
     public void PauseToggle(bool isPaused) {
+        IsPaused = isPaused;
+
         if (isPaused)
             GameController.SetSceneDarkness(1.0f);
         else
