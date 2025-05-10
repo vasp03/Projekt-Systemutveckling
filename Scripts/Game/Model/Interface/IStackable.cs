@@ -77,7 +77,6 @@ public interface IStackable {
         }
     }
 
-
     public IStackable CardAtBottom {
         get {
             IStackable current = this;

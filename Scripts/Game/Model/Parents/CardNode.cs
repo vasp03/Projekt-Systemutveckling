@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Godot;
 using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Vector2 = Godot.Vector2;
 
 /// <summary>
 ///     Represents a card node in the game.
@@ -32,6 +34,7 @@ public partial class CardNode : Node2D {
     public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
+    public Vector2 CardSize => sprite?.Texture?.GetSize() ?? new Vector2(80, 128);
 
     public Card CardType {
         get => _cardType;
@@ -170,7 +173,7 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="underCard"></param>
     public void SetPositionAsPartOfStack(CardNode underCard) {
-        SetPosition(underCard.Position - new Vector2(0, -15));
+        SetPosition(underCard.Position - new Vector2(0, -20));
 
         if (CardType is IStackable { NeighbourAbove: not null } stackable)
             ((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
@@ -197,8 +200,17 @@ public partial class CardNode : Node2D {
 
         if (IsBeingDragged) {
             Vector2 mousePosition = GetGlobalMousePosition();
+            IStackable stackable = this.CardType is IStackable stack ? stack : null;
+            CardNode bottomCard = (stackable?.CardAtBottom as Card)?.CardNode ?? this;
+            int neighboursAbove = stackable?.StackAbove.Count ?? 0;
+            Vector2 newPosition = mousePosition - oldMousePosition;
 
-            Position += mousePosition - oldMousePosition;
+            if (bottomCard.Position.Y <= 64 && newPosition.Y < 0) newPosition.Y = 0;
+
+            Position = new Vector2(
+                Math.Clamp(Position.X + newPosition.X, 0 + (CardSize.X / 2), 1280 - (CardSize.X / 2)),
+                Math.Clamp(Position.Y + newPosition.Y, 0 + (CardSize.Y / 2), 720 - ((CardSize.Y + (neighboursAbove * 40)) / 2))
+            );
 
             if (CraftButton != null) CraftButton.Position = Position + CardController.CraftButtonOffset;
 
