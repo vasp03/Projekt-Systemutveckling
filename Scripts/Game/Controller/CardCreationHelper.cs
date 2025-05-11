@@ -127,7 +127,7 @@ public class CardCreationHelper : GameManagerBase {
                 return new MaterialBush();
 
 
-            case "Village" or "40":
+            case "Villager" or "40":
                 return new PlayerVillager();
             case "Hunter" or "41":
                 return new PlayerHunter();

@@ -78,17 +78,26 @@ public partial class PackController : HBoxContainer {
 
         _global.AddMoney(-pack.Cost);
 
-        List<string> cardsToSpawn = GeneratePackContents(pack);
+        List<string> cardsToSpawn;
+
+        if (pack.Name == "Starter Pack") {
+            cardsToSpawn = new List<string>();
+            cardsToSpawn.AddRange(pack.CommonCards);
+            cardsToSpawn.AddRange(pack.RareCards);
+        } else {
+            cardsToSpawn = GeneratePackContents(pack);
+        }
+
         foreach (string cardName in cardsToSpawn) {
             Vector2 randomPosition = new Vector2(
-                GD.RandRange(400, 600), // Random X near the center
-                GD.RandRange(300, 500)  // Random Y near the center
+                GD.RandRange(400, 600),
+                GD.RandRange(300, 500)
             );
             _cardController.CreateCard(cardName, randomPosition);
         }
-        
+
         if (pack.Name == "Starter Pack") {
-            _availablePacks.Remove(pack); // Remove starter pack
+            _availablePacks.Remove(pack);
             UnlockAdditionalPacks();
         }
     }

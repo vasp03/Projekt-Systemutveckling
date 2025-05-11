@@ -24,3 +24,6 @@ offset_bottom = 92.0
 theme_override_fonts/font = ExtResource("2_kj6lu")
 text = "Free"
 horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]
