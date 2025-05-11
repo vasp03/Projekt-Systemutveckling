@@ -186,7 +186,7 @@ public partial class CardNode : Node2D {
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
 		}
 	}
-    
+	
 	private void ClearReferences() {
 		if (CardType is IStackable stackable) {
 			if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
@@ -249,20 +249,20 @@ public partial class CardNode : Node2D {
 		
 		CardController.RefreshCraftButtons();
 	}
-    
-    private void ShowFloatingMoneyLabel(int amount)
-    {
-        var fxScene = GD.Load<PackedScene>("res://Scenes/floating_money_label.tscn");
-        var floatingFx = fxScene.Instantiate<FloatingMoneyLabel>();
+	
+	private void ShowFloatingMoneyLabel(int amount)
+	{
+		var fxScene = GD.Load<PackedScene>("res://Scenes/floating_money_label.tscn");
+		var floatingFx = fxScene.Instantiate<FloatingMoneyLabel>();
 
-        var label = floatingFx.GetNode<Label>("Label");
-        label.Text = "+" + amount;
+		var label = floatingFx.GetNode<Label>("Label");
+		label.Text = "+" + amount;
 
-        if (GetTree().CurrentScene is GameController gameController)
-            gameController.AddChild(floatingFx);
-        else
-            GD.PrintErr("GameController is null when trying to add Floating FX.");
-    }
+		if (GetTree().CurrentScene is GameController gameController)
+			gameController.AddChild(floatingFx);
+		else
+			GD.PrintErr("GameController is null when trying to add Floating FX.");
+	}
 	
 	private void UnlinkFromStack() {
 		if (CardType is not IStackable thisStackable)
