@@ -90,6 +90,7 @@ public class CraftingController {
         return new List<string>(); // TODO: Return [];
     }
 
+    // TODO: use generic interfaces instead of concrete classes (IReadOnlyCollection)
     /// <summary>
     ///     Check if the cards in the stack can be crafted into a new card
     ///     Returns a list of the cards that can be crafted
@@ -112,10 +113,12 @@ public class CraftingController {
         CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
         foreach (CraftingRecipe recipe in Recipes) {
+            // TODO: Split this logic in to its own method for more modularity and clarity 
             List<StringIntHolder> CardsInRecipeAndAmount = [];
 
             foreach (string cardName in recipe.CardsForCrafting) {
                 StringIntHolder cardInRecipie = CardsInRecipeAndAmount.FirstOrDefault(x => x.StringValue == cardName);
+                // TODO: Nitpick: spelling error
                 if (cardInRecipie != null)
                     cardInRecipie.IntValue++;
                 else
@@ -130,6 +133,7 @@ public class CraftingController {
 
             if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) continue;
 
+            // TODO: Make use of LINQ
             for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
                 if (CardsInRecipeAndAmount[i].StringValue != CardForCraftingAmount[i].StringValue ||
                     CardsInRecipeAndAmount[i].IntValue != CardForCraftingAmount[i].IntValue) {
@@ -150,6 +154,7 @@ public class CraftingController {
     ///     Creates the starting recipes for crafting.
     /// </summary>
     public void CreateStartingRecipes() {
+        // TODO: organiser recipes using regions? Such as "food-related recipes" or "basic materials"
         AddRecipe(new CraftingRecipe("Jam", ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "CookingPot"],
             ["Jam"]));
 

@@ -3,15 +3,20 @@ using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
 
+// TODO: Missing namespace
 /// <summary>
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
+    // TODO: Make use of regions to seperate variables
+    // TODO: camelCase
     private Control CurrentMenu;
     private GameController GameController;
     private Control GuideMenu;
     private Control MainMenu;
     private Control OptionsMenu;
+    // TODO: Make use of generic interface IList
+    // TODO: Initialize collection directly using ` = []`
     private List<IPauseCallback> PauseCallbacks;
     private Control PauseMenu;
     private Control PreviousMenu;
@@ -154,6 +159,7 @@ public partial class MenuController : Node {
         return GetTree().Paused;
     }
 
+    // TODO: Rename method (PostPauseCallback())
     private void CallCallbacks(bool isPaused) {
         if (PauseCallbacks == null) return;
 

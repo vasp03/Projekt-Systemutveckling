@@ -7,6 +7,8 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class GameEventManager : GameManagerBase, ITickable {
+    // TODO: camelCase
+    // TODO: Organise methods using #region
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
     private readonly IList<IGameEvent> RegisteredEvents = [];
 

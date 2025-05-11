@@ -10,8 +10,10 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CardController {
+    // TODO: Organise the different variables, seperate their purpose with #region
     public const string CARD_GROUP_NAME = "CARDS";
     public readonly Vector2 CraftButtonOffset = new(0, -110);
+    // TODO: camelCase
     private readonly GameController GameController;
     private readonly List<CardNode> HoveredCards = [];
     private readonly MouseController MouseController;
@@ -33,6 +35,7 @@ public class CardController {
 
     public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
+    // TODO: Make use of IReadOnlyCollection<CardNode> to specify that the list is readonly and should not be modified
     private List<CardNode> Stacks =>
         AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
 
@@ -44,6 +47,7 @@ public class CardController {
         CheckForHighLight();
     }
 
+    // TODO: Move to CardNode to let CardNode manage this behavior by itself
     /// <summary>
     ///     Sets the ZIndex of all cards based on the selected card.
     /// </summary>
@@ -73,6 +77,7 @@ public class CardController {
             }
     }
 
+    // TODO: Regions to specify event handling
     /// <summary>
     ///     Called when the left mouse button is pressed.
     /// </summary>
@@ -137,6 +142,7 @@ public class CardController {
     /// </summary>
     /// <param name="cardNode">The card node to craft from.</param>
     public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
+        // TODO: Nitpick, is null
         if (cardNode == null) return;
 
         if (cardNode.CraftButton != null) {
@@ -167,7 +173,7 @@ public class CardController {
 
                     GD.Print("Ret: " + recipe.BoolValue + " " + ret);
 
-                    if (ret || recipe.BoolValue) card.CardNode.QueueFree();
+                    if (ret || recipe.BoolValue) card.CardNode.QueueFree(); // TODO: Destroy()
 
                     continue;
                 }
@@ -233,6 +239,7 @@ public class CardController {
 
     #region Specific Card
 
+    // TODO: Move into CardNode?
     /// <summary>
     ///     Checks if the card is the top card on the scene.
     /// </summary>
@@ -244,6 +251,7 @@ public class CardController {
         return true;
     }
 
+    // TODO: addCardToHoveredCard is placed at top, consider moving it down to pair it
     /// <summary>
     ///     Removes the card from the hovered cards list and sets its highlighted state to false.
     /// </summary>
@@ -299,6 +307,7 @@ public class CardController {
         return topUnderCard;
     }
 
+    // TODO: Move to CraftingController?
     /// <summary>
     ///     Adds a craft button to the specified card node.
     /// </summary>

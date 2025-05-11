@@ -6,6 +6,8 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
+    // TODO: Organisera, sort and use regions to split each variable purpose
+    // TODO: camelCase
     private readonly List<int> numberList = new();
     private CardController cardController;
     private DayTimeController DayTimeController;
@@ -14,13 +16,17 @@ public partial class GameController : Node2D {
     private MenuController menuController;
     private MouseController mouseController;
     private SoundController soundController;
+    
+    // TODO: Move to DayTimeController?
     public Label TimeLabel { get; private set; }
 
+    // TODO: Annotate with `?` (GameController?)
     public static GameController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
     public CameraController CameraController { get; private set; }
 
     public override void _Ready() {
+        // TODO: Split constructors and initialization into 2 separate methods
         mouseController = new MouseController(this);
         cardController = new CardController(this, mouseController);
         DayTimeController = new DayTimeController(this);
@@ -116,11 +122,15 @@ public partial class GameController : Node2D {
     }
 
     public override void _PhysicsProcess(double delta) {
+        // TODO: Use polymorphism to remove the need of manually calling methods; Iterate through list and calling the interface instead
         DayTimeController.PreTick(delta);
         GameEventManager.PostTick();
         CameraController.PostTick();
     }
 
+    
+    // TODO: Confusing placement? Isn't the game controller the one that should hold if the game is paused
+    // TODO: convert to property instead of method
     public bool IsPaused() {
         return menuController.IsPaused();
     }
@@ -137,7 +147,8 @@ public partial class GameController : Node2D {
     }
 
     #region Getters
-
+    
+    // TODO: Make use of properties instead of methods
     public CardController GetCardController() {
         return cardController;
     }
