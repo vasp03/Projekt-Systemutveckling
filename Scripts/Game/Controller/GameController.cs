@@ -27,7 +27,7 @@ public partial class GameController : Node2D {
 		cardController = new CardController(this, mouseController);
 		DayTimeController = new DayTimeController(this);
 		GameEventManager = new GameEventManager(this);
-        
+		
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
 
