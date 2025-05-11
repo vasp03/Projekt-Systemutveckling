@@ -195,16 +195,20 @@ public class CardController {
 
 		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
 	}
+    
+    private static bool IsValid(CardNode card) =>
+        card != null && GodotObject.IsInstanceValid(card);
 
 	/// <summary>
 	///     Checks if the card is the top card on the scene.
 	/// </summary>
-	private bool CardIsTopCard(Node2D cardNode) {
-		foreach (CardNode node in hoveredCards)
-			if (node.ZIndex > cardNode.ZIndex)
-				return false;
-		return true;
-	}
+    private bool CardIsTopCard(Node2D cardNode) {
+        foreach (CardNode node in hoveredCards) {
+            if (!IsValid(node)) continue;
+            if (node.ZIndex > cardNode.ZIndex) return false;
+        }
+        return true;
+    }
 
 	/// <summary>
 	///     Generates a new UUID (Universally Unique Identifier) string.
@@ -233,15 +237,12 @@ public class CardController {
 	/// <summary>
 	///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
 	/// </summary>
-	public void CheckForHighLight() {
-		foreach (CardNode card in hoveredCards) {
-			if (CardIsTopCard(card)) {
-				card.SetHighlighted(true);
-			} else {
-				card.SetHighlighted(false);
-			}
-		}
-	}
+    public void CheckForHighLight() {
+        hoveredCards.RemoveAll(card => !IsValid(card));
+        foreach (CardNode card in hoveredCards) {
+            card.SetHighlighted(CardIsTopCard(card));
+        }
+    }
 
 	/// <summary>
 	///     Gets the top card at the mouse position.
@@ -432,43 +433,40 @@ public class CardController {
 	///     Crafts a card from the specified card node.
 	/// </summary>
 	/// <param name="cardNode">The card node to craft from.</param>
-	public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
-		if (cardNode == null) return;
+    public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
+        if (cardNode == null) return;
 
-		if (cardNode.CraftButton != null) {
-			cardNode.CraftButton.QueueFree();
-			cardNode.CraftButton = null;
-		}
+        if (cardNode.CraftButton != null) {
+            cardNode.CraftButton.QueueFree();
+            cardNode.CraftButton = null;
+        }
 
-		if (!(cardNode.CardType is IStackable stackable)) {
-			return;
-		}
+        if (!(cardNode.CardType is IStackable stackable)) return;
+        
+        Vector2 spawnPos = cardNode.Position;
+        int zIndex = cardNode.ZIndex;
 
-		// Check for the recipe
-		List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
-		if (recipe == null) {
-			GD.Print("No recipe found for the selected card.");
-			return;
-		}
+        List<string> recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+        if (recipe == null) {
+            GD.Print("No recipe found for the selected card.");
+            return;
+        }
 
-		Vector2 spawnPos = cardNode.Position;
+        foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
+            if (stackableCard is Card card) {
+                card.CardNode.QueueFree();
+            }
+        }
 
-		// Remove the cards in the stack part of cardNode
-		foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
-			if (stackableCard is Card card) {
-				card.CardNode.QueueFree();
-			}
-		}
+        foreach (string cardName in recipe) {
+            CardNode card = CreateCard(cardName, spawnPos);
+            card.ZIndex = ++zIndex;
+            spawnPos += new Vector2(0, -15);
 
-		foreach (string cardName in recipe) {
-			CardNode card = CreateCard(cardName, cardNode.Position);
-			card.ZIndex = cardNode.ZIndex + 1;
-			spawnPos += new Vector2(0, -15);
-            
             if (card.CardType is IStackable craftedStackable) {
                 craftedStackable.NeighbourAbove = null;
                 craftedStackable.NeighbourBelow = null;
             }
-		}
-	}
+        }
+    }
 }
