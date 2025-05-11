@@ -21,15 +21,21 @@ public partial class HUD : CanvasLayer {
 		sellModeButton.UpdateIcon();
 		
 		_defaultColor = MoneyLabel.Modulate;
-		Global global = GetNode<Global>("/root/Global");
-		global.MoneyChanged += OnMoneyChanged;
 		
-		OnMoneyChanged(global.Money);
+		_global = GetNode<Global>("/root/Global");
+		_global.MoneyChanged += OnMoneyChanged;
 		
 		for (int i = 0; i < _coinIcons.Length; i++) {
 			string path = $"res://Assets/UI/Coins/coin_stack_{i}_{GetStageSuffix(i)}.png";
 			_coinIcons[i] = GD.Load<Texture2D>(path);
 		}
+		
+		OnMoneyChanged(_global.Money);
+	}
+	
+	public override void _ExitTree() {
+		if (_global != null)
+			_global.MoneyChanged -= OnMoneyChanged;
 	}
 	
 	private void OnMoneyChanged(int newMoney) {
