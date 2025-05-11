@@ -464,6 +464,11 @@ public class CardController {
 			CardNode card = CreateCard(cardName, cardNode.Position);
 			card.ZIndex = cardNode.ZIndex + 1;
 			spawnPos += new Vector2(0, -15);
+            
+            if (card.CardType is IStackable craftedStackable) {
+                craftedStackable.NeighbourAbove = null;
+                craftedStackable.NeighbourBelow = null;
+            }
 		}
 	}
 }
