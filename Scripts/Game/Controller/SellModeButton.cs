@@ -12,7 +12,8 @@ public partial class SellModeButton : TextureButton {
 		_iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
 		_iconOff = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
 
-		UpdateIcon();
+		if (GameController != null)
+			UpdateIcon();
 	}
 
 	private void OnButtonPressed() {

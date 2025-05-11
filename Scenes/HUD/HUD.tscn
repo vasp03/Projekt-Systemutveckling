@@ -29,8 +29,6 @@ offset_top = -30.0
 offset_right = 28.0
 offset_bottom = -22.0
 grow_vertical = 0
-tooltip_text = "Toggle Sell Mode
-"
 texture_normal = ExtResource("2_eqxii")
 script = ExtResource("2_mdu8u")
 
