@@ -32,8 +32,8 @@ public partial class PackController : HBoxContainer {
         List<string> starterRares = new();
         CardPack starterPack = new("Starter Pack", 0, starterCommons, starterRares);
 
-        List<string> foodCommons = new() { "Berry", "Bush", "Stick" };
-        List<string> foodRares = new() { "Jam", "Fish" };
+        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat" };
+        List<string> foodRares = new() { "Jam", "CookedFish", "CookedMeat" };
         CardPack foodPack = new("Food Pack", 20, foodCommons, foodRares);
 
         _availablePacks.Add(starterPack);
@@ -66,7 +66,7 @@ public partial class PackController : HBoxContainer {
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f); // Grey out if not affordable
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
 
-            this.AddChild(button);
+            AddChild(button);
         }
     }
 
