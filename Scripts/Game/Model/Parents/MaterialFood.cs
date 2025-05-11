@@ -14,6 +14,6 @@ public class MaterialFood(string textureAddress, int startFood) : CardMaterial(t
     }
     
     protected override int SetValue() {
-        return 5;
+        return 10;
     }
 }

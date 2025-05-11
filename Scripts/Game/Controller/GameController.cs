@@ -27,8 +27,7 @@ public partial class GameController : Node2D {
 		cardController = new CardController(this, mouseController);
 		DayTimeController = new DayTimeController(this);
 		GameEventManager = new GameEventManager(this);
-		
-
+        
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.PlayGameMusic();
 
@@ -155,7 +154,7 @@ public partial class GameController : Node2D {
 	}
 
 	private void AddHUD() {
-		var hudInstance = HUDScene.Instantiate();
+		Node hudInstance = HUDScene.Instantiate();
 		if (hudInstance is Goodot15.Scripts.Game.View.HUD hud) {
 			hud.GameController = this;
 			AddChild(hud);

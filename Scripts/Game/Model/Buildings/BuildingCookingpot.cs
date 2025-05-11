@@ -6,6 +6,6 @@ public class BuildingCookingpot() : CardBuilding("Cookingpot", true, 1) {
     }
     
     protected override int SetValue() {
-        return 5;  // Wood is worth 5 coins
+        return 35;
     }
 }

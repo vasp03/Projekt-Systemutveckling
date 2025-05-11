@@ -6,6 +6,6 @@ public class BuildingTent() : CardBuilding("Tent", true, 1) {
     }
     
     protected override int SetValue() {
-        return 5;  // Wood is worth 5 coins
+        return 45;
     }
 }

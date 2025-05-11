@@ -16,7 +16,7 @@ public class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
     public override int SaturationLossPerCycle => 30;
     
     protected override int SetValue() {
-        return 50;
+        return 45;
     }
 
     public override bool ConsumeCard(Card otherCard) {

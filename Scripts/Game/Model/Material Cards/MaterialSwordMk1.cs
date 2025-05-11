@@ -3,6 +3,6 @@ namespace Goodot15.Scripts.Game.Model.Material_Cards;
 public class MaterialSwordMk1() : CardMaterial("Sword") {
     
     protected override int SetValue() {
-        return 5;
+        return 35;
     }
 }

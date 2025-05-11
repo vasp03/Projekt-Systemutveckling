@@ -186,7 +186,7 @@ public partial class CardNode : Node2D {
 			((Card)stackable.NeighbourAbove).CardNode.SetPositionAsPartOfStack(this);
 		}
 	}
-
+    
 	private void ClearReferences() {
 		if (CardType is IStackable stackable) {
 			if (HasNeighbourBelow) stackable.NeighbourBelow.NeighbourAbove = null;
@@ -237,35 +237,32 @@ public partial class CardNode : Node2D {
 
 	public void Destroy() {
 		GD.Print("Destroying card:", CardType.TextureType);
-		if (_craftButton != null) {
-			_craftButton.QueueFree(); // remove the button visually
-			_craftButton.CardNode = null; // break the circular reference
-			_craftButton = null;
-		}
-		
 		ClearReferences();
 		QueueFree();
 	}
 	
 	public void DestroyAndReward(Global global) {
-		var fxScene = GD.Load<PackedScene>("res://Scenes/floating_money_label.tscn");
-		var floatingFx = fxScene.Instantiate<FloatingMoneyLabel>();
-
-		var label = floatingFx.GetNode<Label>("Label");
-		label.Text = "+" + CardType.Value;
-		
-		var gameController = GetTree().CurrentScene as GameController;
-		if (gameController != null)
-			gameController.AddChild(floatingFx);
-		else
-			GD.PrintErr("GameController is null when trying to add Floating FX.");
-		
+		ShowFloatingMoneyLabel(CardType.Value);
 		global.AddMoney(CardType.Value);
 		UnlinkFromStack();
 		Destroy();
 		
 		CardController.RefreshCraftButtons();
 	}
+    
+    private void ShowFloatingMoneyLabel(int amount)
+    {
+        var fxScene = GD.Load<PackedScene>("res://Scenes/floating_money_label.tscn");
+        var floatingFx = fxScene.Instantiate<FloatingMoneyLabel>();
+
+        var label = floatingFx.GetNode<Label>("Label");
+        label.Text = "+" + amount;
+
+        if (GetTree().CurrentScene is GameController gameController)
+            gameController.AddChild(floatingFx);
+        else
+            GD.PrintErr("GameController is null when trying to add Floating FX.");
+    }
 	
 	private void UnlinkFromStack() {
 		if (CardType is not IStackable thisStackable)
