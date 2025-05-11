@@ -4,23 +4,23 @@
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_kj6lu"]
 
 [node name="PackButton" type="Button"]
-custom_minimum_size = Vector2(128, 192)
-offset_right = 40.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(54, 75)
+offset_right = 54.0
+offset_bottom = 75.0
 script = ExtResource("1_blyw3")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(128, 192)
+custom_minimum_size = Vector2(54, 75)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="CostLabel" type="Label" parent="."]
-custom_minimum_size = Vector2(128, 16)
+custom_minimum_size = Vector2(54, 16)
 layout_mode = 0
-offset_top = 194.0
-offset_right = 128.0
-offset_bottom = 210.0
+offset_top = 76.0
+offset_right = 54.0
+offset_bottom = 92.0
 theme_override_fonts/font = ExtResource("2_kj6lu")
 text = "Free"
 horizontal_alignment = 1

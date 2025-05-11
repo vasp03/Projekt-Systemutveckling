@@ -159,22 +159,22 @@ public partial class CardNode : Node2D {
 	///     Sets the position of the card node to the position of the underCard.
 	///     Makes sure that the card node is not null and that it is valid.
 	/// </summary>
-    public void SetOverLappedCardToStack(CardNode underCard) {
-        if (underCard == null || underCard == this || !GodotObject.IsInstanceValid(underCard)) return;
+	public void SetOverLappedCardToStack(CardNode underCard) {
+		if (underCard == null || underCard == this || !GodotObject.IsInstanceValid(underCard)) return;
 
-        if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
-            if (ZIndex > underCard.ZIndex) {
-                thisStackable.NeighbourBelow = otherStackable;
-                otherStackable.NeighbourAbove = thisStackable;
+		if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
+			if (ZIndex > underCard.ZIndex) {
+				thisStackable.NeighbourBelow = otherStackable;
+				otherStackable.NeighbourAbove = thisStackable;
 
-                SetPosition(underCard.Position - CardOverlappingOffset);
+				SetPosition(underCard.Position - CardOverlappingOffset);
 
-                if (thisStackable.NeighbourAbove is Card above &&
-                    GodotObject.IsInstanceValid(above.CardNode)) {
-                    above.CardNode.SetPositionAsPartOfStack(this);
-                }
-            }
-    }
+				if (thisStackable.NeighbourAbove is Card above &&
+					GodotObject.IsInstanceValid(above.CardNode)) {
+					above.CardNode.SetPositionAsPartOfStack(this);
+				}
+			}
+	}
 
 	/// <summary>
 	///     Sets the position of the card node as part of a stack.
@@ -182,18 +182,18 @@ public partial class CardNode : Node2D {
 	///     Makes sure that the card node is not null and that it is valid.
 	/// </summary>
 	/// <param name="underCard"></param>
-    public void SetPositionAsPartOfStack(CardNode underCard) {
-        if (underCard == null || !GodotObject.IsInstanceValid(underCard)) return;
+	public void SetPositionAsPartOfStack(CardNode underCard) {
+		if (underCard == null || !GodotObject.IsInstanceValid(underCard)) return;
 
-        SetPosition(underCard.Position - new Vector2(0, -15));
+		SetPosition(underCard.Position - new Vector2(0, -15));
 
-        if (CardType is IStackable { NeighbourAbove: not null } stackable) {
-            var aboveCard = ((Card)stackable.NeighbourAbove).CardNode;
+		if (CardType is IStackable { NeighbourAbove: not null } stackable) {
+			var aboveCard = ((Card)stackable.NeighbourAbove).CardNode;
 
-            if (aboveCard != null && GodotObject.IsInstanceValid(aboveCard))
-                aboveCard.SetPositionAsPartOfStack(this);
-        }
-    }
+			if (aboveCard != null && GodotObject.IsInstanceValid(aboveCard))
+				aboveCard.SetPositionAsPartOfStack(this);
+		}
+	}
 	
 	private void ClearReferences() {
 		if (CardType is IStackable stackable) {
