@@ -11,7 +11,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     private readonly IList<IGameEvent> registeredEvents = [];
     private readonly IList<IGameEventListener> registeredEventListeners = [];
 
-    private int globalTicks = 0;
+    public int GlobalTicks { get; private set; }
 
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
@@ -21,47 +21,51 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     public void PostTick() {
-        foreach (IGameEvent registeredEvent in registeredEvents)
+        foreach (IGameEvent registeredEvent in registeredEvents) {
+            ITickable? tickableGameEvent = registeredEvent as ITickable;
+            tickableGameEvent?.PreTick();
             if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
-                    GameEventContext gameEventContext = new(registeredEvent, GameController, globalTicks);
+                    GameEventContext gameEventContext = new(registeredEvent, GameController, GlobalTicks);
                     PostEvent(gameEventContext);
                 }
             } else {
                 eventTicks[registeredEvent]++;
             }
-        
-        globalTicks++;
+
+            GlobalTicks++;
+            tickableGameEvent?.PostTick();
+        }
     }
 
     public void RegisterDefaultEvents() {
-        RegisterEvent(new MeteoriteEvent());
-        RegisterEvent(new NatureResourceEvent());
-        RegisterEvent(new FireEvent());
-        RegisterEvent(new TimeEvent());
-    }
-
-    public void RegisterEvent(IGameEvent gameEvent) {
-        eventTicks.TryAdd(gameEvent, 0);
-        registeredEvents.Add(gameEvent);
-    }
-
-    public void RegisterGlobalEventListener(IGameEventListener gameEventListener) {
-        registeredEventListeners.Add(gameEventListener);
-    }
-    
-    public void PostEvent(GameEventContext gameEventContext) {
-        gameEventContext.GameEventFired.OnEvent(gameEventContext);
-        foreach (IGameEventListener registeredEventListener in registeredEventListeners)
-        {
-            registeredEventListener.GameEventFired(gameEventContext);
+            RegisterEvent(new MeteoriteEvent());
+            RegisterEvent(new NatureResourceEvent());
+            RegisterEvent(new FireEvent());
+            RegisterEvent(new TimeEvent());
         }
-        // Fires the event to all cards as well for those cards that are listening to any game events
-        GameController.GetCardController().AllCards.ToList().ForEach(e => {
-            if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
-        });
-    }
+
+        public void RegisterEvent(IGameEvent gameEvent) {
+            eventTicks.TryAdd(gameEvent, 0);
+            registeredEvents.Add(gameEvent);
+        }
+
+        public void RegisterGlobalEventListener(IGameEventListener gameEventListener) {
+            registeredEventListeners.Add(gameEventListener);
+        }
+    
+        public void PostEvent(GameEventContext gameEventContext) {
+            gameEventContext.GameEventFired.OnEvent(gameEventContext);
+            foreach (IGameEventListener registeredEventListener in registeredEventListeners)
+            {
+                registeredEventListener.GameEventFired(gameEventContext);
+            }
+            // Fires the event to all cards as well for those cards that are listening to any game events
+            GameController.GetCardController().AllCards.ToList().ForEach(e => {
+                if (e is IGameEventListener cardEventListener) cardEventListener.GameEventFired(gameEventContext);
+            });
+        }
 
     public override void Ready() {
         foreach (IGameEvent registeredEvent in registeredEvents)
