@@ -461,11 +461,16 @@ public class CardController {
 				card.CardNode.Destroy();
 			}
 
-		foreach (string cardName in recipe.StringsValue) {
-			CardNode card = CreateCard(cardName, cardNode.Position);
-			card.ZIndex = cardNode.ZIndex + 1;
-			spawnPos += new Vector2(0, -15);
-		}
+        foreach (string cardName in recipe.StringsValue) {
+            CardNode card = CreateCard(cardName, spawnPos);
+            card.ZIndex = cardNode.ZIndex + 1;
+            spawnPos += new Vector2(0, -15);
+            
+            if (card.CardType is IStackable craftedStackable) {
+                craftedStackable.NeighbourAbove = null;
+                craftedStackable.NeighbourBelow = null;
+            }
+        }
 	}
 
 	#region Create Card
