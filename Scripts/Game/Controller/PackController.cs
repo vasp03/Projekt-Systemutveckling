@@ -4,27 +4,28 @@ using Goodot15.Scripts.Game.Model.Div;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public partial class PackController : Node {
-    private GameController _gameController;
+public partial class PackController : HBoxContainer {
     private Global _global;
     private CardController _cardController;
 
-    private VBoxContainer _packContainer;
-
+    private HBoxContainer _packContainer;
+    public GameController GameController { get; set; }
+    
     [Export] public PackedScene PackButtonScene;
     [Export] public NodePath PackContainerPath = "HUDRoot/PackContainer";
 
     private List<CardPack> _availablePacks = new();
 
     public override void _Ready() {
-        _gameController = GetNode<GameController>("Scripts/Game/Controller/PackController.cs");
         _global = GetNode<Global>("/root/Global");
-        _cardController = _gameController.GetCardController();
-        _packContainer = GetNode<VBoxContainer>(PackContainerPath);
+    }
 
+    public void Init() {
+        _cardController = GameController.GetCardController();
         RegisterPacks();
         DisplayAvailablePacks();
     }
+
 
     private void RegisterPacks() {
         List<string> starterCommons = new() { "Villager", "Tree", "Bush", "Stone", "Stick", "Stick" };
@@ -40,7 +41,17 @@ public partial class PackController : Node {
     }
 
     private void DisplayAvailablePacks() {
-        foreach (Node child in _packContainer.GetChildren()) {
+        if (_global == null) {
+            GD.PrintErr("PackController: _global is null.");
+            return;
+        }
+
+        if (PackButtonScene == null) {
+            GD.PrintErr("PackController: PackButtonScene not assigned.");
+            return;
+        }
+
+        foreach (Node child in GetChildren()) {
             child.QueueFree();
         }
 
@@ -55,7 +66,7 @@ public partial class PackController : Node {
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f); // Grey out if not affordable
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
 
-            _packContainer.AddChild(button);
+            this.AddChild(button);
         }
     }
 
@@ -87,7 +98,10 @@ public partial class PackController : Node {
     }
     
     public void RefreshPackStates(int newMoney) {
-        foreach (PackButton button in _packContainer.GetChildren()) {
+        foreach (Node child in GetChildren()) {
+            if (child is not PackButton button) continue;
+            if (button.Pack == null) continue; // safety check
+
             bool isAffordable = _global.Money >= button.Pack.Cost;
             button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);

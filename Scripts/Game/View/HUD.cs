@@ -19,6 +19,10 @@ public partial class HUD : CanvasLayer {
 		var sellModeButton = GetNode<SellModeButton>("HUDRoot/SellModeButton");
 		sellModeButton.GameController = GameController;
 		sellModeButton.UpdateIcon();
+        
+        var packController = GetNode<PackController>("HUDRoot/PackContainer");
+        packController.GameController = GameController;
+        packController.Init();
 		
 		_defaultColor = MoneyLabel.Modulate;
 		
@@ -39,6 +43,9 @@ public partial class HUD : CanvasLayer {
 	}
 	
 	private void OnMoneyChanged(int newMoney) {
+        PackController packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
+        packController?.RefreshPackStates(newMoney);
+        
 		MoneyLabel.Text = newMoney.ToString();
 		MoneyLabel.Modulate = new Color(0.4f, 1f, 0.4f);
 		_flashTimer = _flashDuration;

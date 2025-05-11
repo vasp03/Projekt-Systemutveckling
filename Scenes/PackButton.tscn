@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://daclf6e2pyg7p"]
+
+[ext_resource type="Script" uid="uid://dut2sdsiwk3yq" path="res://Scripts/Game/Controller/PackButton.cs" id="1_blyw3"]
+[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_kj6lu"]
+
+[node name="PackButton" type="Button"]
+custom_minimum_size = Vector2(128, 192)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_blyw3")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(128, 192)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CostLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(128, 16)
+layout_mode = 0
+offset_top = 194.0
+offset_right = 128.0
+offset_bottom = 210.0
+theme_override_fonts/font = ExtResource("2_kj6lu")
+text = "Free"
+horizontal_alignment = 1
