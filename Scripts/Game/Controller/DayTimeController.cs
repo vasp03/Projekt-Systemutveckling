@@ -51,11 +51,11 @@ public class DayTimeController : ITickable {
 		foreach (IDayTimeCallback callback in Callbacks)
 			callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
 
+		if (GameController != null && GameController.TimeLabel != null) {
+			GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
 
 		if (HasWarnedAboutLabel) return;
 
-		if (GameController != null && GameController.TimeLabel != null) {
-			GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
 		} else {
 			GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
 			GD.PrintErr("Check Node2D if Time Label is set to a label");
