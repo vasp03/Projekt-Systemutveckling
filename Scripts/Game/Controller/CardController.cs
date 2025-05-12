@@ -238,7 +238,7 @@ public class CardController {
 	///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
 	/// </summary>
 	public void CheckForHighLight() {
-		hoveredCards.RemoveAll(card => !IsValid(card));
+        hoveredCards.RemoveAll(card => card == null || !GodotObject.IsInstanceValid(card) || !card.IsInsideTree());
 		foreach (CardNode card in hoveredCards) {
 			card.SetHighlighted(CardIsTopCard(card));
 		}
@@ -298,11 +298,15 @@ public class CardController {
 		}
 		_mouseController.SetMouseCursor(MouseController.MouseCursor.hand_close);
 		selectedCard = GetTopCardAtMousePosition();
-		// SetTopZIndexForCard(selectedCard);
+		
+        if (selectedCard == null || !GodotObject.IsInstanceValid(selectedCard)) {
+            selectedCard = null;
+            return;
+        }
 
 		if (selectedCard != null) SetZIndexForAllCards(selectedCard);
 
-		if (selectedCard != null) {
+		if (selectedCard != null && GodotObject.IsInstanceValid(selectedCard) && selectedCard.IsInsideTree()) {
 			selectedCard.SetIsBeingDragged(true);
 
 			if (selectedCard.HasNeighbourAbove) {
@@ -359,8 +363,13 @@ public class CardController {
 	/// </summary>
 	public void LeftMouseButtonReleased() {
 		_mouseController.SetMouseCursor(MouseController.MouseCursor.point_small);
-		if (selectedCard != null) {
+		if (selectedCard != null && GodotObject.IsInstanceValid(selectedCard)) {
 			selectedCard.SetIsBeingDragged(false);
+            
+            if (selectedCard == null || !GodotObject.IsInstanceValid(selectedCard)) {
+                selectedCard = null;
+                return;
+            }
 
 			// Checks for a card under the moved card and sets if it exists as a neighbour below. 
 			CardNode underCard = GetCardUnderMovedCard();
@@ -452,11 +461,15 @@ public class CardController {
 			return;
 		}
 
-		foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
-			if (stackableCard is Card card) {
-				card.CardNode.QueueFree();
-			}
-		}
+        foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
+            if (stackableCard is Card card) {
+                if (selectedCard == card.CardNode) selectedCard = null;
+                card.CardNode.UnlinkFromStack();
+                card.CardNode.QueueFree();
+            }
+        }
+        
+        hoveredCards.RemoveAll(card => card == null || !GodotObject.IsInstanceValid(card) || !card.IsInsideTree());
 
 		foreach (string cardName in recipe) {
 			CardNode card = CreateCard(cardName, spawnPos);
