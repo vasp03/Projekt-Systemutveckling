@@ -7,9 +7,9 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
-    private readonly CardCreationHelper CardCreationHelper;
+    public CardCreationHelper CardCreationHelper { get; private set; }
 
-    private readonly List<CraftingRecipe> recipes = [];
+
 
     public CraftingController(CardCreationHelper cardCreationHelper) {
         CardCreationHelper = cardCreationHelper;
@@ -17,6 +17,8 @@ public class CraftingController {
         CreateStartingRecipes();
     }
 
+    #region Recipe data
+    private readonly IList<CraftingRecipe> recipes = [];
     public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
 
     public void AddRecipe(CraftingRecipe recipe) {
@@ -24,6 +26,7 @@ public class CraftingController {
 
         recipes.Add(recipe);
     }
+    #endregion Recipe data
 
     /// <summary>
     ///     Check if the cards in the stack can be crafted into a new card
@@ -31,7 +34,7 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    public StringAndBoolRet CheckForCraftingWithStackable(List<IStackable> Cards) {
+    public StringAndBoolRet CheckForCraftingWithStackable(IReadOnlyList<IStackable> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
         foreach (IStackable card in Cards) {
