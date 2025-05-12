@@ -5,10 +5,10 @@ namespace Goodot15.Scripts.Game.Controller.Events;
 
 public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     private readonly GameController gameController;
-    private DayStateEnum oldDayState;
-    private float oldSceneDarkness;
 
     private bool isPaused;
+    private DayStateEnum oldDayState;
+    private float oldSceneDarkness;
 
     /// <summary>
     ///     An event to handle when the day changes and its time.
@@ -53,7 +53,8 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     }
 
     public void PauseToggle(bool isPaused) {
-        if (gameController == null || !Godot.GodotObject.IsInstanceValid(gameController) || !gameController.IsInsideTree()) return;
+        if (gameController == null || !GodotObject.IsInstanceValid(gameController) ||
+            !gameController.IsInsideTree()) return;
 
         this.isPaused = isPaused;
 

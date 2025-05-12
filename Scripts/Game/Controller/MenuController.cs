@@ -7,18 +7,8 @@ using Goodot15.Scripts.Game.View;
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
-    #region Control UI fields
-    private Control previousMenu;
-    private Control currentMenu;
-
-    private Control guideMenu;
-    private Control mainMenu;
-    private Control optionsMenu;
-
-    private Control pauseMenu;
-    #endregion Control UI fields
-    
     private GameController GameController;
+
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
         currentMenu = mainMenu;
@@ -28,7 +18,48 @@ public partial class MenuController : Node {
         // this.previousMenu = mainMenu;
     }
 
+    /// <summary>
+    ///     sets the GameController to a variable for the MenuController.
+    /// </summary>
+    /// <param name="gameController">the GameController to be set</param>
+    public void SetGameController(GameController gameController) {
+        GameController = gameController;
+    }
+
+    /// <summary>
+    ///     Configures the MenuController with a new instance of the MainMenu.
+    /// </summary>
+    /// <param name="menu">The new main menu instance to configure with</param>
+    public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
+        mainMenu = menu;
+        currentMenu = menu;
+
+        GetTree().Paused = false;
+        // CallCallbacks(false);
+    }
+
+    /// <summary>
+    ///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
+    /// </summary>
+    public override void _ExitTree() {
+        QueueFree();
+    }
+
+    #region Control UI fields
+
+    private Control previousMenu;
+    private Control currentMenu;
+
+    private Control guideMenu;
+    private Control mainMenu;
+    private Control optionsMenu;
+
+    private Control pauseMenu;
+
+    #endregion Control UI fields
+
     #region Menu opening methods
+
     /// <summary>
     ///     Loads and opens the main menu.
     /// </summary>
@@ -126,38 +157,13 @@ public partial class MenuController : Node {
         GameController.DayTimeController.SetPaused(false);
         GameController.SoundController.MusicMuted = true;
     }
-    
+
     #endregion Menu opening methods
 
-    /// <summary>
-    ///     sets the GameController to a variable for the MenuController.
-    /// </summary>
-    /// <param name="gameController">the GameController to be set</param>
-    public void SetGameController(GameController gameController) {
-        GameController = gameController;
-    }
-
-    /// <summary>
-    ///     Configures the MenuController with a new instance of the MainMenu.
-    /// </summary>
-    /// <param name="menu">The new main menu instance to configure with</param>
-    public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
-        mainMenu = menu;
-        currentMenu = menu;
-
-        GetTree().Paused = false;
-        // CallCallbacks(false);
-    }
-
-    /// <summary>
-    ///     Cleans up resources and frees the MenuController when it is removed from the scene tree.
-    /// </summary>
-    public override void _ExitTree() {
-        QueueFree();
-    }
-
     #region Callbacks related
-    private IList<IPauseCallback> pausedCallbacks = [];
+
+    private readonly IList<IPauseCallback> pausedCallbacks = [];
+
     private void CallPausedCallbacks(bool isPaused) {
         if (pausedCallbacks == null) return;
 
@@ -171,5 +177,6 @@ public partial class MenuController : Node {
     public void RemovePauseCallback(IPauseCallback callback) {
         if (pausedCallbacks is not null) pausedCallbacks.Remove(callback);
     }
+
     #endregion Callbacks related
 }

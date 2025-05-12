@@ -19,9 +19,8 @@ public abstract class CardLiving
     }
 
     protected virtual void ExecuteTickLogic() {
-        if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved) {
+        if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved)
             StarvationTickProgress = 0;
-        }
 
         if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilSaturationDecrease) {
             HungerTickProgress = 0;

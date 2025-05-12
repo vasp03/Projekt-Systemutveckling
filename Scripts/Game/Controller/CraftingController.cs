@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -9,17 +8,18 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CraftingController {
     private readonly CardCreationHelper CardCreationHelper;
 
+    private readonly List<CraftingRecipe> recipes = [];
+
     public CraftingController(CardCreationHelper cardCreationHelper) {
         CardCreationHelper = cardCreationHelper;
 
         CreateStartingRecipes();
     }
 
-    private List<CraftingRecipe> recipes = [];
     public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
 
     public void AddRecipe(CraftingRecipe recipe) {
-       ArgumentNullException.ThrowIfNull(recipe,nameof(recipe));
+        ArgumentNullException.ThrowIfNull(recipe, nameof(recipe));
 
         recipes.Add(recipe);
     }

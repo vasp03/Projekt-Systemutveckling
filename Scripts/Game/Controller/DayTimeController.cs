@@ -11,13 +11,13 @@ public class DayTimeController : ITickable {
 
     private readonly GameController GameController;
 
-    private IList<IDayTimeCallback> registeredPausedCallbacks = [];
-
     private int currentTimeOfDay;
 
     private bool hasWarnedAboutLabel;
 
     private bool isPaused;
+
+    private IList<IDayTimeCallback> registeredPausedCallbacks = [];
 
     private double timeCountingToOneTick;
 
@@ -37,7 +37,7 @@ public class DayTimeController : ITickable {
         if (isPaused) return;
 
         timeCountingToOneTick += delta;
-        if (timeCountingToOneTick < 1 / Utilities.TICKS_PER_SECOND) {return;}
+        if (timeCountingToOneTick < 1 / Utilities.TICKS_PER_SECOND) return;
 
         timeCountingToOneTick -= 1 / Utilities.TICKS_PER_SECOND;
 
@@ -47,15 +47,14 @@ public class DayTimeController : ITickable {
         // Check if the current time of day has reached the end of the day
         if (currentTimeOfDay > DAY_DURATION) currentTimeOfDay = 0; // Reset to the start of the day
 
-        foreach (IDayTimeCallback callback in registeredPausedCallbacks) {
+        foreach (IDayTimeCallback callback in registeredPausedCallbacks)
             callback.DayTimeChanged(GetCurrentDayState(currentTimeOfDay), currentTimeOfDay);
-        }
 
         if (GameController != null && GameController.TimeLabel != null) {
             GameController.TimeLabel.SetText(GetTimeOfDay(currentTimeOfDay));
 
-            if (hasWarnedAboutLabel) {return;}
-
+            if (hasWarnedAboutLabel) {
+            }
         } else {
             GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
             GD.PrintErr("Check Node2D if Time Label is set to a label");
