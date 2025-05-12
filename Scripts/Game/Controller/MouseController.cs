@@ -9,25 +9,7 @@ public class MouseController : GameManagerBase {
 
     private static readonly Timer LoadingTimer = new();
     private static readonly Vector2 Offset = new(12, 12);
-    #region Static resources
-    private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
-    private static readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
-    private static readonly Resource[] loadingResources = [
-        ResourceLoader.Load(PATH + "loading_1.png"),
-        ResourceLoader.Load(PATH + "loading_2.png"),
-        ResourceLoader.Load(PATH + "loading_3.png"),
-        ResourceLoader.Load(PATH + "loading_4.png"),
-        ResourceLoader.Load(PATH + "loading_5.png"),
-        ResourceLoader.Load(PATH + "loading_6.png"),
-        ResourceLoader.Load(PATH + "loading_7.png"),
-        ResourceLoader.Load(PATH + "loading_8.png")
-    ];
-
-    private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
-    private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
-    #endregion Static resources
-    
     private bool isLoading;
     private int loadingIndex;
 
@@ -80,4 +62,25 @@ public class MouseController : GameManagerBase {
         loadingIndex = (loadingIndex + 1) % 8;
         Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, Offset);
     }
+
+    #region Static resources
+
+    private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
+    private static readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
+
+    private static readonly Resource[] loadingResources = [
+        ResourceLoader.Load(PATH + "loading_1.png"),
+        ResourceLoader.Load(PATH + "loading_2.png"),
+        ResourceLoader.Load(PATH + "loading_3.png"),
+        ResourceLoader.Load(PATH + "loading_4.png"),
+        ResourceLoader.Load(PATH + "loading_5.png"),
+        ResourceLoader.Load(PATH + "loading_6.png"),
+        ResourceLoader.Load(PATH + "loading_7.png"),
+        ResourceLoader.Load(PATH + "loading_8.png")
+    ];
+
+    private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
+    private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
+
+    #endregion Static resources
 }

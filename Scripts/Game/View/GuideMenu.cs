@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -21,7 +22,7 @@ public partial class GuideMenu : Control {
     private VBoxContainer foodList;
     private Button goBackButton;
 
-    private Controller.MenuController menuController;
+    private MenuController menuController;
     private Button natureButton;
     private Button[] natureCardButtons;
     private VBoxContainer natureList;
@@ -39,7 +40,7 @@ public partial class GuideMenu : Control {
     private Button villagersButton;
 
     public override void _Ready() {
-        menuController = GetNode<Controller.MenuController>("/root/MenuController");
+        menuController = GetNode<MenuController>("/root/MenuController");
         cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
         descriptionLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
         cardInfoLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");

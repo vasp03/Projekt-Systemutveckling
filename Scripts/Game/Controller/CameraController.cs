@@ -4,15 +4,6 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CameraController : ITickable {
-    #region Static values
-    private const float X_SHAKE_FREQUENCY = 200f;
-    private const float Y_SHAKE_FREQUENCY = 290f;
-    private static readonly Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
-    #endregion Static values
-    #region Shaking properties
-    private float intensity;
-    private int remainingShakeTicks;
-    #endregion Shaking properties
     private Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("Camera2D");
 
     public void PostTick() {
@@ -31,4 +22,19 @@ public class CameraController : ITickable {
         remainingShakeTicks = ticks;
         this.intensity = intensity;
     }
+
+    #region Static values
+
+    private const float X_SHAKE_FREQUENCY = 200f;
+    private const float Y_SHAKE_FREQUENCY = 290f;
+    private static readonly Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
+
+    #endregion Static values
+
+    #region Shaking properties
+
+    private float intensity;
+    private int remainingShakeTicks;
+
+    #endregion Shaking properties
 }

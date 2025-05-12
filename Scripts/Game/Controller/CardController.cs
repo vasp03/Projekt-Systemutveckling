@@ -73,7 +73,8 @@ public class CardController {
                 } else {
                     card.ZIndex = NumberOfCards;
                 }
-            } else if (stackAboveSelectedCard is not null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
+            } else if (stackAboveSelectedCard is not null &&
+                       stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
                 card.ZIndex = counterForCardsAbove++;
             } else {
                 card.ZIndex = counterForCardsBelow++;
@@ -467,6 +468,31 @@ public class CardController {
         }
     }
 
+    #region Specific Card
+
+    /// <summary>
+    ///     Adds a craft button to the specified card node.
+    /// </summary>
+    /// <param name="cardNode">The card node to add the craft button to.</param>
+    private void AddCraftButton(CardNode cardNode) {
+        if (cardNode.CraftButton is not null) return;
+
+        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
+        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
+
+        craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
+
+        cardNode.CraftButton = craftButtonInstance;
+
+        craftButtonInstance.CardNode = cardNode;
+
+        craftButtonInstance.CardController = this;
+
+        GameController.AddChild(craftButtonInstance);
+    }
+
+    #endregion Specific Card
+
     #region Create Card
 
     /// <summary>
@@ -514,29 +540,4 @@ public class CardController {
     }
 
     #endregion Create Card
-
-    #region Specific Card
-
-    /// <summary>
-    ///     Adds a craft button to the specified card node.
-    /// </summary>
-    /// <param name="cardNode">The card node to add the craft button to.</param>
-    private void AddCraftButton(CardNode cardNode) {
-        if (cardNode.CraftButton is not null) return;
-
-        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
-        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
-
-        craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
-
-        cardNode.CraftButton = craftButtonInstance;
-
-        craftButtonInstance.CardNode = cardNode;
-
-        craftButtonInstance.CardController = this;
-
-        GameController.AddChild(craftButtonInstance);
-    }
-
-    #endregion Specific Card
 }

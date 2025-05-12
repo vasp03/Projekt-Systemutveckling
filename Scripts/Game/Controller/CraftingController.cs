@@ -7,26 +7,13 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
-    public CardCreationHelper CardCreationHelper { get; private set; }
-
-
-
     public CraftingController(CardCreationHelper cardCreationHelper) {
         CardCreationHelper = cardCreationHelper;
 
         CreateStartingRecipes();
     }
 
-    #region Recipe data
-    private readonly IList<CraftingRecipe> recipes = [];
-    public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
-
-    public void AddRecipe(CraftingRecipe recipe) {
-        ArgumentNullException.ThrowIfNull(recipe, nameof(recipe));
-
-        recipes.Add(recipe);
-    }
-    #endregion Recipe data
+    public CardCreationHelper CardCreationHelper { get; private set; }
 
     /// <summary>
     ///     Check if the cards in the stack can be crafted into a new card
@@ -211,4 +198,17 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], true));
     }
+
+    #region Recipe data
+
+    private readonly IList<CraftingRecipe> recipes = [];
+    public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
+
+    public void AddRecipe(CraftingRecipe recipe) {
+        ArgumentNullException.ThrowIfNull(recipe, nameof(recipe));
+
+        recipes.Add(recipe);
+    }
+
+    #endregion Recipe data
 }

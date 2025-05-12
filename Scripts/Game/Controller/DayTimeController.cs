@@ -9,7 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class DayTimeController : ITickable {
     private const int DAY_DURATION = Utilities.TICKS_PER_DAY;
 
-    public GameController GameController { get; private set; }
+    private readonly IList<IDayTimeCallback> registeredPausedCallbacks = [];
 
     private int currentTimeOfDay;
 
@@ -17,13 +17,13 @@ public class DayTimeController : ITickable {
 
     private bool isPaused;
 
-    private IList<IDayTimeCallback> registeredPausedCallbacks = [];
-
     private double timeCountingToOneTick;
 
     public DayTimeController(GameController gameController) {
         GameController = gameController;
     }
+
+    public GameController GameController { get; }
 
     public void PostTick() {
         // This method is not in use right now
