@@ -197,8 +197,6 @@ public class CardController {
 
 		CraftingController.AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"]));
 
-		CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"]));
-
 		CraftingController.AddRecipe(new CraftingRecipe("Field",
 			["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"]));
 
