@@ -289,8 +289,8 @@ public class CardController {
 	/// </summary>
 	public void LeftMouseButtonPressed() {
 		if (_gameController.SellModeActive) {
-			var cardToSell = GetTopCardAtMousePosition();
-			if (cardToSell != null) {
+			CardNode cardToSell = GetTopCardAtMousePosition();
+			if (cardToSell != null && cardToSell.CardType.Value >= 0) {
 				Global global = _gameController.GetNode<Global>("/root/Global");
 				cardToSell.DestroyAndReward(global);
 			}

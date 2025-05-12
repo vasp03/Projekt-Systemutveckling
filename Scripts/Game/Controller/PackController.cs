@@ -33,12 +33,16 @@ public partial class PackController : HBoxContainer {
         CardPack starterPack = new("Starter Pack", 0, starterCommons, starterRares);
         
         List<string> materialCommons = new() { "Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick" };
-        List<string> materialRares = new() { "Clay", "Glass", "Plank" };
+        List<string> materialRares = new() { "Clay", "Glass", "Planks" };
         CardPack materialPack = new("Material Pack", 80, materialCommons, materialRares);
 
         List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat", };
         List<string> foodRares = new() { "Jam", "CookedFish", "CookedMeat" };
         CardPack foodPack = new("Food Pack", 120, foodCommons, foodRares);
+        
+        List<string> buildingCommons = new() { "Field", "Campfire", "House" };
+        List<string> buildingRares = new() { "Greenhouse", };
+        CardPack buildingPack = new("Building Pack", 200, buildingCommons, buildingRares);
 
         _availablePacks.Add(starterPack);
         _availablePacks.Add(materialPack);
@@ -64,11 +68,10 @@ public partial class PackController : HBoxContainer {
             PackButton button = (PackButton)PackButtonScene.Instantiate();
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
-
-            // Check if the pack is affordable
+            
             bool isAffordable = _global.Money >= pack.Cost;
             button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f); // Grey out if not affordable
+            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
 
             AddChild(button);
@@ -95,8 +98,8 @@ public partial class PackController : HBoxContainer {
 
         foreach (string cardName in cardsToSpawn) {
             Vector2 randomPosition = new Vector2(
-                GD.RandRange(300, 800),
-                GD.RandRange(200, 700)
+                GD.RandRange(100, 1100),
+                GD.RandRange(100, 550)
             );
             _cardController.CreateCard(cardName, randomPosition);
         }
