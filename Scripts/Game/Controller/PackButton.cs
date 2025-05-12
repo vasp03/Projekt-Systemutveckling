@@ -5,9 +5,9 @@ using Goodot15.Scripts.Game.Model.Div;
 
 public partial class PackButton : Button {
 	public CardPack Pack { get; private set; }
-    
-    private Tween _tween;
-    private Vector2 _originalPosition;
+	
+	private Tween _tween;
+	private Vector2 _originalPosition;
 
 	public delegate void PackClickedHandler(CardPack pack);
 	public event PackClickedHandler PackClicked;
@@ -18,7 +18,7 @@ public partial class PackButton : Button {
 	public override void _Ready() {
 		_costLabel = GetNode<Label>("CostLabel");
 		_textureRect = GetNode<TextureRect>("TextureRect");
-        _originalPosition = Position;
+		_originalPosition = Position;
 	}
 
 	public void SetPack(CardPack pack) {
@@ -36,18 +36,18 @@ public partial class PackButton : Button {
 			GD.PrintErr($"Texture not found for pack: {pack.Name}");
 		}
 	}
-    
-    public void OnMouseEntered() {
-        _originalPosition = Position;
-        _tween = CreateTween();
-        _tween.TweenProperty(this, "scale", new Vector2(1.1f, 1.1f), 0.1f);
-    }
+	
+	public void OnMouseEntered() {
+		_originalPosition = Position;
+		_tween = CreateTween();
+		_tween.TweenProperty(this, "scale", new Vector2(1.1f, 1.1f), 0.1f);
+	}
 
-    public void OnMouseExited() {
-        _tween = CreateTween();
-        _tween.TweenProperty(this, "scale", Vector2.One, 0.1f);
-        _tween.TweenProperty(this, "position", _originalPosition, 0.1f);
-    }
+	public void OnMouseExited() {
+		_tween = CreateTween();
+		_tween.TweenProperty(this, "scale", Vector2.One, 0.1f);
+		_tween.TweenProperty(this, "position", _originalPosition, 0.1f);
+	}
 
 	public override void _Pressed() {
 		PackClicked?.Invoke(Pack);
