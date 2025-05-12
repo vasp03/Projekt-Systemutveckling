@@ -176,7 +176,7 @@ public partial class MenuController : Node {
     }
 
     public void RemovePauseCallback(IPauseCallback callback) {
-        if (pausedCallbacks is not null) pausedCallbacks.Remove(callback);
+        pausedCallbacks.Remove(callback);
     }
 
     #endregion Callbacks related
