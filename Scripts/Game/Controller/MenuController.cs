@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
+
+namespace Goodot15.Scripts.Game.Controller;
 
 /// <summary>
 ///     Class that controls the flow of the menus in the game.
@@ -64,7 +65,7 @@ public partial class MenuController : Node {
     ///     Loads and opens the main menu.
     /// </summary>
     public void OpenMainMenu() {
-        if (mainMenu == null) {
+        if (mainMenu is null) {
             PackedScene packedMainMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn");
             mainMenu = packedMainMenu.Instantiate() as Control;
             AddChild(mainMenu);
@@ -82,7 +83,7 @@ public partial class MenuController : Node {
         GetTree().Paused = true;
         CallPausedCallbacks(true);
 
-        if (pauseMenu == null) {
+        if (pauseMenu is null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
             pauseMenu = packedPauseMenu.Instantiate() as Control;
             AddChild(pauseMenu);
@@ -96,7 +97,7 @@ public partial class MenuController : Node {
     /// </summary>
     public void OpenOptionsMenu() {
         previousMenu = currentMenu;
-        if (optionsMenu == null) {
+        if (optionsMenu is null) {
             PackedScene packedOptionsMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn");
             optionsMenu = packedOptionsMenu.Instantiate() as Control;
             AddChild(optionsMenu);
@@ -110,7 +111,7 @@ public partial class MenuController : Node {
     /// </summary>
     public void OpenGuideMenu() {
         previousMenu = currentMenu;
-        if (guideMenu == null) {
+        if (guideMenu is null) {
             PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
             guideMenu = packedGuideMenu.Instantiate() as Control;
             AddChild(guideMenu);
@@ -127,7 +128,7 @@ public partial class MenuController : Node {
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
             newMenu.Visible = true;
-            if (previousMenu != null) previousMenu.Visible = false;
+            if (previousMenu is not null) previousMenu.Visible = false;
         }
     }
 
@@ -165,7 +166,7 @@ public partial class MenuController : Node {
     private readonly IList<IPauseCallback> pausedCallbacks = [];
 
     private void CallPausedCallbacks(bool isPaused) {
-        if (pausedCallbacks == null) return;
+        if (pausedCallbacks is null) return;
 
         foreach (IPauseCallback callback in pausedCallbacks) callback.PauseToggle(isPaused);
     }

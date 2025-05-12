@@ -53,7 +53,7 @@ public partial class CardNode : Node2D {
     /// </summary>
     public bool HasNeighbourAbove {
         get {
-            if (CardType is IStackable stackable) return stackable.NeighbourAbove != null;
+            if (CardType is IStackable stackable) return stackable.NeighbourAbove is not null;
             return false;
         }
     }
@@ -63,7 +63,7 @@ public partial class CardNode : Node2D {
     /// </summary>
     public bool HasNeighbourBelow {
         get {
-            if (CardType is IStackable stackable) return stackable.NeighbourBelow != null;
+            if (CardType is IStackable stackable) return stackable.NeighbourBelow is not null;
             return false;
         }
     }
@@ -83,7 +83,7 @@ public partial class CardNode : Node2D {
         if (CardType is not IStackable stackable) return;
 
         CardNode neighbourAbove = ((Card)stackable.NeighbourAbove)?.CardNode;
-        if (neighbourAbove == null)
+        if (neighbourAbove is null)
             ZIndex = CardController.CardCount;
         else
             neighbourAbove.SetIsBeingDragged(isBeingDragged);
@@ -157,7 +157,7 @@ public partial class CardNode : Node2D {
     ///     Sets the position of the card node to the position of the underCard.
     /// </summary>
     public void SetOverLappedCardToStack(CardNode underCard) {
-        if (underCard == null || underCard == this || !IsInstanceValid(underCard)) return;
+        if (underCard is null || underCard == this || !IsInstanceValid(underCard)) return;
 
         if (CardType is IStackable thisStackable && underCard.CardType is IStackable otherStackable)
             if (ZIndex > underCard.ZIndex) {
@@ -178,14 +178,14 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="underCard"></param>
     public void SetPositionAsPartOfStack(CardNode underCard) {
-        if (underCard == null || !IsInstanceValid(underCard)) return;
+        if (underCard is null || !IsInstanceValid(underCard)) return;
 
         SetPosition(underCard.Position - new Vector2(0, -20));
 
         if (CardType is IStackable { NeighbourAbove: not null } stackable) {
             CardNode aboveCard = ((Card)stackable.NeighbourAbove).CardNode;
 
-            if (aboveCard != null && IsInstanceValid(aboveCard))
+            if (aboveCard is not null && IsInstanceValid(aboveCard))
                 aboveCard.SetPositionAsPartOfStack(this);
         }
     }
@@ -223,11 +223,11 @@ public partial class CardNode : Node2D {
 
             int counter = 1;
             CardNode cardAbove = this;
-            while (cardAbove != null) {
+            while (cardAbove is not null) {
                 cardAbove = cardAbove.CardType is IStackable stackableAbove
                     ? (stackableAbove.NeighbourAbove as Card)?.CardNode
                     : null;
-                if (cardAbove != null && cardAbove != this)
+                if (cardAbove is not null && cardAbove != this)
                     cardAbove.Position = bottomCard.Position - new Vector2(0, counter++ * 20 * -1);
             }
 
@@ -237,13 +237,13 @@ public partial class CardNode : Node2D {
                     720 - (CardSize.Y + neighboursAbove * 40) / 2)
             );
 
-            if (CraftButton != null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
+            if (CraftButton is not null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
 
             oldMousePosition = mousePosition;
         } else if (!MovedOneLastTime) {
             CardNode cardAboveThis =
                 CardType is IStackable stackable ? (stackable.NeighbourAbove as Card)?.CardNode : null;
-            if (cardAboveThis != null) Position = cardAboveThis.Position + CardOverlappingOffset;
+            if (cardAboveThis is not null) Position = cardAboveThis.Position + CardOverlappingOffset;
 
             MovedOneLastTime = true;
         }

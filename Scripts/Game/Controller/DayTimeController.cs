@@ -50,7 +50,7 @@ public class DayTimeController : ITickable {
         foreach (IDayTimeCallback callback in registeredPausedCallbacks)
             callback.DayTimeChanged(GetCurrentDayState(currentTimeOfDay), currentTimeOfDay);
 
-        if (GameController != null && GameController.TimeLabel != null) {
+        if (GameController is not null && GameController.TimeLabel is not null) {
             GameController.TimeLabel.SetText(GetTimeOfDay(currentTimeOfDay));
 
             if (hasWarnedAboutLabel) {
@@ -74,9 +74,9 @@ public class DayTimeController : ITickable {
     }
 
     public IDayTimeCallback AddDayTimeCallback(IDayTimeCallback callback) {
-        if (callback == null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
+        if (callback is null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
 
-        if (registeredPausedCallbacks == null) registeredPausedCallbacks = [];
+        if (registeredPausedCallbacks is null) registeredPausedCallbacks = [];
 
         if (registeredPausedCallbacks.Contains(callback)) return callback;
 

@@ -11,14 +11,14 @@ public partial class MainMenu : Control {
     private Button continueButton;
     private Button exitButton;
     private Button guideButton;
-    private MenuController menuController;
+    private Controller.MenuController menuController;
     private Button optionsButton;
     private Button playButton;
 
     private SoundController soundController;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = GetNode<Controller.MenuController>("/root/MenuController");
         menuController.ConfigureWithNewMainMenuInstance(this);
         soundController = GetNode<SoundController>("/root/SoundController");
         soundController.PlayMenuMusic();

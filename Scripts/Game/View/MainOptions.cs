@@ -13,7 +13,7 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
-    private MenuController menuController;
+    private Controller.MenuController menuController;
     private Label musicVolumePercentageLabel;
 
     private HSlider musicVolumeSlider;
@@ -25,7 +25,7 @@ public partial class MainOptions : Control {
     private Button GoBackButton => GetNode<Button>("GoBackButton");
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = GetNode<Controller.MenuController>("/root/MenuController");
         settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
         soundController = GetNode<SoundController>("/root/SoundController");
 

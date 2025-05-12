@@ -61,7 +61,7 @@ public class MouseController : GameManagerBase {
         IsLoading = true;
         LoadingIndex = 0;
 
-        if (LoadingTimer == null) return;
+        if (LoadingTimer is null) return;
 
         LoadingTimer.Timeout += LoadingThread;
         LoadingTimer.WaitTime = 0.200;

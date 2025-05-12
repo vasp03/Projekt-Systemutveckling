@@ -21,7 +21,7 @@ public partial class GuideMenu : Control {
     private VBoxContainer foodList;
     private Button goBackButton;
 
-    private MenuController menuController;
+    private Controller.MenuController menuController;
     private Button natureButton;
     private Button[] natureCardButtons;
     private VBoxContainer natureList;
@@ -39,7 +39,7 @@ public partial class GuideMenu : Control {
     private Button villagersButton;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = GetNode<Controller.MenuController>("/root/MenuController");
         cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/CardImage");
         descriptionLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/DescriptionLabel");
         cardInfoLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/InfoLabel");

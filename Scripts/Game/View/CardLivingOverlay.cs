@@ -16,13 +16,13 @@ public partial class CardLivingOverlay : Node2D {
     }
 
     public void UpdateHealthBar(int currentHealth, int maxHealth) {
-        if (healthBar == null) healthBar = GetNode<TextureProgressBar>("HealthBar");
+        if (healthBar is null) healthBar = GetNode<TextureProgressBar>("HealthBar");
         healthBar.MaxValue = maxHealth;
         healthBar.Value = currentHealth;
     }
 
     public void UpdateSaturationBar(int currentSaturation, int maxSaturation) {
-        if (saturationBar == null) saturationBar = GetNode<TextureProgressBar>("SaturationBar");
+        if (saturationBar is null) saturationBar = GetNode<TextureProgressBar>("SaturationBar");
         saturationBar.MaxValue = maxSaturation;
         saturationBar.Value = currentSaturation;
     }

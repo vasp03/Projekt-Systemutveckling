@@ -53,7 +53,7 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     }
 
     public void PauseToggle(bool isPaused) {
-        if (gameController == null || !GodotObject.IsInstanceValid(gameController) ||
+        if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
             !gameController.IsInsideTree()) return;
 
         this.isPaused = isPaused;

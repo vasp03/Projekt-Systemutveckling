@@ -75,14 +75,14 @@ public partial class GameController : Node2D {
         // Get Canvaslayer and sprite2d child
         CanvasLayer canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
 
-        if (canvasLayer == null) {
+        if (canvasLayer is null) {
             GD.PrintErr("CanvasLayer not found.");
             return;
         }
 
         Sprite2D sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
 
-        if (sprite == null) {
+        if (sprite is null) {
             GD.PrintErr("Darkness sprite not found.");
             return;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model;
+using Goodot15.Scripts.Game.Model.Div;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Living;
@@ -65,14 +66,14 @@ public class CardController {
         foreach (CardNode card in AllCardsSorted)
             if (card == cardNode) {
                 if (card.CardType is IStackable stackable) {
-                    if (stackable.NeighbourAbove == null)
+                    if (stackable.NeighbourAbove is null)
                         card.ZIndex = NumberOfCards;
                     else
                         card.ZIndex = counterForCardsAbove++;
                 } else {
                     card.ZIndex = NumberOfCards;
                 }
-            } else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
+            } else if (stackAboveSelectedCard is not null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
                 card.ZIndex = counterForCardsAbove++;
             } else {
                 card.ZIndex = counterForCardsBelow++;
@@ -299,13 +300,13 @@ public class CardController {
     }
 
     public void HideHealthAndHunger() {
-        if (overlayUpdateTimer != null) {
+        if (overlayUpdateTimer is not null) {
             overlayUpdateTimer.QueueFree();
             overlayUpdateTimer = null;
         }
 
         // Remove the existing overlay if it exists
-        if (currentOverlay != null && currentOverlay.IsInsideTree()) {
+        if (currentOverlay is not null && currentOverlay.IsInsideTree()) {
             currentOverlay.QueueFree();
             currentOverlay = null;
         }
@@ -321,7 +322,7 @@ public class CardController {
         CardNode topCard = null;
 
         foreach (CardNode card in hoveredCards)
-            if (topCard == null)
+            if (topCard is null)
                 topCard = card;
             else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
 
@@ -340,7 +341,7 @@ public class CardController {
         CardNode topUnderCard = null;
 
         foreach (CardNode card in hoveredCardsSorted)
-            if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
+            if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
                 topUnderCard = card;
 
         return topUnderCard;
@@ -358,7 +359,7 @@ public class CardController {
             return;
         }
 
-        if (selectedCard != null) {
+        if (selectedCard is not null) {
             SetZIndexForAllCards(selectedCard);
             selectedCard.SetIsBeingDragged(true);
 
@@ -372,7 +373,7 @@ public class CardController {
             // And sets the card below if it exists to not have a neighbour above
             if (selectedCard.HasNeighbourBelow)
                 if (selectedCard.CardType is IStackable stackable) {
-                    if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
+                    if (stackable.NeighbourBelow is not null) stackable.NeighbourBelow.NeighbourAbove = null;
                     stackable.NeighbourBelow = null;
                 }
         }
@@ -383,7 +384,7 @@ public class CardController {
     /// </summary>
     public void LeftMouseButtonReleased() {
         MouseController.SetMouseCursor(MouseCursorEnum.point_small);
-        if (selectedCard != null) {
+        if (selectedCard is not null) {
             selectedCard.SetIsBeingDragged(false);
 
             // Checks for a card under the moved card and sets if it exists as a neighbour below. 
@@ -401,10 +402,10 @@ public class CardController {
         // Checks if a card is supposed to have a craft button above it
         foreach (CardNode card in AllCards)
             if (Stacks.Contains(card) && card.CardType is IStackable stackable &&
-                CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
+                CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) is not null) {
                 AddCraftButton(card);
             } else {
-                if (card.CraftButton != null) {
+                if (card.CraftButton is not null) {
                     card.CraftButton.QueueFree();
                     card.CraftButton = null;
                 }
@@ -416,9 +417,9 @@ public class CardController {
     /// </summary>
     /// <param name="cardNode">The card node to craft from.</param>
     public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
-        if (cardNode == null) return;
+        if (cardNode is null) return;
 
-        if (cardNode.CraftButton != null) {
+        if (cardNode.CraftButton is not null) {
             cardNode.CraftButton.QueueFree();
             cardNode.CraftButton = null;
         }
@@ -428,7 +429,7 @@ public class CardController {
         // Check for the recipe
         StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
 
-        if (recipe.StringsValue == null || recipe.StringsValue.Count == 0) {
+        if (recipe.StringsValue is null || recipe.StringsValue.Count == 0) {
             GD.Print("No recipe found for the selected card.");
             return;
         }
@@ -483,7 +484,7 @@ public class CardController {
         cardInstance.CardController = this;
 
         cardInstance.Position = position;
-        if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
+        if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
         GameController.AddChild(cardInstance);
 
         return cardInstance;
@@ -521,7 +522,7 @@ public class CardController {
     /// </summary>
     /// <param name="cardNode">The card node to add the craft button to.</param>
     private void AddCraftButton(CardNode cardNode) {
-        if (cardNode.CraftButton != null) return;
+        if (cardNode.CraftButton is not null) return;
 
         PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
         CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();

@@ -18,7 +18,7 @@ public interface IStackable {
             IStackable next;
 
             // Traverse backwards
-            while (current != null) {
+            while (current is not null) {
                 next = current.NeighbourBelow;
                 stackBackwards.Add(next);
                 current = next;
@@ -26,7 +26,7 @@ public interface IStackable {
 
             // Traverse forwards
             current = this;
-            while (current != null) {
+            while (current is not null) {
                 next = current.NeighbourAbove;
                 stackForwards.Add(next);
                 current = next;
@@ -46,10 +46,10 @@ public interface IStackable {
             List<IStackable> stackForwards = [];
 
             IStackable current = this;
-            while (current != null) {
+            while (current is not null) {
                 current = current.NeighbourAbove;
 
-                if (current == null) break;
+                if (current is null) break;
 
                 stackForwards.Add(current);
             }
@@ -65,10 +65,10 @@ public interface IStackable {
             stackForwards.Add(this);
 
             IStackable current = this;
-            while (current != null) {
+            while (current is not null) {
                 current = current.NeighbourAbove;
 
-                if (current == null) break;
+                if (current is null) break;
 
                 stackForwards.Add(current);
             }
@@ -80,8 +80,8 @@ public interface IStackable {
     public IStackable CardAtBottom {
         get {
             IStackable current = this;
-            while (current != null) {
-                if (current.NeighbourBelow == null) return current;
+            while (current is not null) {
+                if (current.NeighbourBelow is null) return current;
 
                 current = current.NeighbourBelow;
             }

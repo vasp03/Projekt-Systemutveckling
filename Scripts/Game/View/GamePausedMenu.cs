@@ -7,11 +7,11 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
-    private MenuController menuController;
+    private Controller.MenuController menuController;
     private SoundController soundController;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = GetNode<Controller.MenuController>("/root/MenuController");
         soundController = GetNode<SoundController>("/root/SoundController");
 
         VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
