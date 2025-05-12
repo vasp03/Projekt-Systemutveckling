@@ -2,320 +2,544 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
+using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CardController {
-    public const string CARD_GROUP_NAME = "CARDS";
-    public readonly Vector2 CraftButtonOffset = new(0, -110);
-    private readonly GameController GameController;
-    private readonly List<CardNode> HoveredCards = [];
-    private readonly MouseController MouseController;
-    private CardNode SelectedCard;
+	public const string CARD_GROUP_NAME = "CARDS";
 
-    public CardController(GameController gameController, MouseController mouseController) {
-        GameController = gameController;
-        MouseController = mouseController;
-        CardCreationHelper = new CardCreationHelper(gameController);
-        CraftingController = new CraftingController(CardCreationHelper);
-    }
+	public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
+	public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
 
-    public CardCreationHelper CardCreationHelper { get; }
-    public CraftingController CraftingController { get; }
-    public int CardCount => AllCards.Count;
+	private readonly List<CardNode> hoveredCards = [];
 
-    public IReadOnlyCollection<CardNode> AllCards =>
-        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
-    public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
+	private readonly List<CardNode> HoveredCards = [];
+	private CardLivingOverlay currentOverlay;
+	private Timer overlayUpdateTimer;
 
-    private List<CardNode> Stacks =>
-        AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
+	private CardNode selectedCard;
 
-    /// <summary>
-    ///     Adds the card to the hovered cards list and sets its highlighted state to true.
-    /// </summary>
-    public void AddCardToHoveredCards(CardNode cardNode) {
-        HoveredCards.Add(cardNode);
-        CheckForHighLight();
-    }
 
-    /// <summary>
-    ///     Sets the ZIndex of all cards based on the selected card.
-    /// </summary>
-    /// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
-    public void SetZIndexForAllCards(CardNode cardNode) {
-        int NumberOfCards = AllCards.Count;
-        List<IStackable> stackAboveSelectedCard =
-            cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
-        int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
-        int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
-        int CounterForCardsBelow = 1;
+	// Constructor
+	public CardController(GameController gameController, MouseController mouseController) {
+		GameController = gameController;
+		MouseController = mouseController;
+		CardCreationHelper = new CardCreationHelper(gameController);
+		CraftingController = new CraftingController(CardCreationHelper);
 
-        foreach (CardNode card in AllCardsSorted)
-            if (card == cardNode) {
-                if (card.CardType is IStackable stackable) {
-                    if (stackable.NeighbourAbove == null)
-                        card.ZIndex = NumberOfCards;
-                    else
-                        card.ZIndex = CounterForCardsAbove++;
-                } else {
-                    card.ZIndex = NumberOfCards;
-                }
-            } else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
-                card.ZIndex = CounterForCardsAbove++;
-            } else {
-                card.ZIndex = CounterForCardsBelow++;
-            }
-    }
+		CreateStartingRecipes();
+	}
 
-    /// <summary>
-    ///     Called when the left mouse button is pressed.
-    /// </summary>
-    public void LeftMouseButtonPressed() {
-        MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
-        SelectedCard = GetTopCardAtMousePosition();
+	public CardCreationHelper CardCreationHelper { get; private set; }
+	private readonly CraftingController CraftingController;
+	private readonly GameController GameController;
+	private readonly MouseController MouseController;
 
-        if (SelectedCard != null) SetZIndexForAllCards(SelectedCard);
+	public int CardCount => AllCards.Count;
 
-        if (SelectedCard != null) {
-            SelectedCard.SetIsBeingDragged(true);
+	public IReadOnlyCollection<CardNode> AllCards =>
+		GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
-            if (SelectedCard.HasNeighbourAbove)
-                SelectedCard.IsMovingOtherCards = true;
-            else
-                // Set the card that is being dragged to the top
-                SelectedCard.ZIndex = CardCount + 1;
+	public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
-            // Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
-            // And sets the card below if it exists to not have a neighbour above
-            if (SelectedCard.HasNeighbourBelow)
-                if (SelectedCard.CardType is IStackable stackable) {
-                    if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
-                    stackable.NeighbourBelow = null;
-                }
-        }
-    }
+	private List<CardNode> Stacks =>
+		AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
 
-    /// <summary>
-    ///     Called when the left mouse button is released.
-    /// </summary>
-    public void LeftMouseButtonReleased() {
-        MouseController.SetMouseCursor(MouseCursorEnum.point_small);
-        if (SelectedCard != null) {
-            SelectedCard.SetIsBeingDragged(false);
+	/// <summary>
+	///     Sets the ZIndex of all cards based on the selected card.
+	/// </summary>
+	/// <param name="cardNode">The card node to set the ZIndex from and its neighbours above.</param>
+	public void SetZIndexForAllCards(CardNode cardNode) {
+		int NumberOfCards = AllCards.Count;
+		List<IStackable> stackAboveSelectedCard =
+			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
+		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
+		int CounterForCardsBelow = 1;
 
-            // Checks for a card under the moved card and sets if it exists as a neighbour below. 
-            CardNode underCard = GetCardUnderMovedCard();
+		foreach (CardNode card in AllCardsSorted)
+			if (card == cardNode) {
+				if (card.CardType is IStackable stackable) {
+					if (stackable.NeighbourAbove == null)
+						card.ZIndex = NumberOfCards;
+					else
+						card.ZIndex = CounterForCardsAbove++;
+				} else {
+					card.ZIndex = NumberOfCards;
+				}
+			} else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
+				card.ZIndex = CounterForCardsAbove++;
+			} else {
+				card.ZIndex = CounterForCardsBelow++;
+			}
+	}
 
-            if (underCard != null && !SelectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove &&
-                !underCard.IsQueuedForDeletion() &&
-                !SelectedCard.IsQueuedForDeletion()) SelectedCard.SetOverLappedCardToStack(underCard);
+	/// <summary>
+	///     Creates the starting recipes for crafting.
+	/// </summary>
+	public void CreateStartingRecipes() {
+		CraftingController.AddRecipe(new CraftingRecipe("Jam",
+			["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "CookingPot"], ["Jam"]));
 
-            SelectedCard = null;
-        }
+		CraftingController.AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"]));
 
-        // Checks if a card is supposed to have a craft button above it
-        foreach (CardNode card in AllCards)
-            if (Stacks.Contains(card) && card.CardType is IStackable stackable &&
-                CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
-                AddCraftButton(card);
-            } else {
-                if (card.CraftButton != null) {
-                    card.CraftButton.QueueFree();
-                    card.CraftButton = null;
-                }
-            }
-    }
+		CraftingController.AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"]));
 
-    /// <summary>
-    ///     Crafts a card from the specified card node.
-    /// </summary>
-    /// <param name="cardNode">The card node to craft from.</param>
-    public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
-        if (cardNode == null) return;
+		CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"]));
 
-        if (cardNode.CraftButton != null) {
-            cardNode.CraftButton.QueueFree();
-            cardNode.CraftButton = null;
-        }
+		CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood"]));
 
-        if (cardNode.CardType is not IStackable stackable) return;
+		CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"]));
 
-        // Check for the recipe
-        StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+		CraftingController.AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"],
+			["Tent"]));
 
-        if (recipe.StringList == null || recipe.StringList.Count == 0) {
-            GD.Print("No recipe found for the selected card.");
-            return;
-        }
+		CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry"]));
 
-        Vector2 spawnPos = cardNode.Position;
 
-        // Remove the cards in the stack part of cardNode
-        foreach (IStackable stackableCard in stackable.StackAboveWithItself)
-            if (stackableCard is Card card) {
-                stackableCard.ClearNeighbours();
-                if (stackableCard is CardBuilding || (stackableCard is LivingPlayer && !recipe.BoolValue)) continue;
+		CraftingController.AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"]));
 
-                if (stackableCard is IDurability durability) {
-                    bool ret = durability.DecrementDurability();
+		CraftingController.AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"]));
 
-                    GD.Print("Ret: " + recipe.BoolValue + " " + ret);
+		CraftingController.AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"]));
 
-                    if (ret || recipe.BoolValue) card.CardNode.QueueFree();
+		CraftingController.AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"]));
 
-                    continue;
-                }
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"],
+			["Villager", "Villager", "Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"],
+			["Villager", "Villager", "Villager"]));
 
-                card.CardNode.QueueFree();
-            }
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"],
+			["Villager", "Hunter", "Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"],
+			["Villager", "Hunter", "Villager"]));
 
-        foreach (string cardName in recipe.StringList) {
-            CardNode card = CreateCard(cardName, cardNode.Position);
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"],
+			["Villager", "Blacksmith", "Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"],
+			["Villager", "Blacksmith", "Villager"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"],
+			["Villager", "Farmer", "Villager"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"],
+			["Villager", "Farmer", "Villager"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "House"],
+			["Hunter", "Hunter", "Hunter"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "Tent"],
+			["Hunter", "Hunter", "Hunter"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "House"],
+			["Hunter", "Blacksmith", "Hunter"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "Tent"],
+			["Hunter", "Blacksmith", "Hunter"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"],
+			["Hunter", "Farmer", "Hunter"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"],
+			["Hunter", "Farmer", "Hunter"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"],
+			["Blacksmith", "Blacksmith", "Blacksmith"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"],
+			["Blacksmith", "Blacksmith", "Blacksmith"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"],
+			["Blacksmith", "Farmer", "Blacksmith"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"],
+			["Blacksmith", "Farmer", "Blacksmith"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"],
+			["Farmer", "Farmer", "Farmer"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"],
+			["Farmer", "Farmer", "Farmer"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("House",
+			["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Greenhouse",
+			["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"], ["Greenhouse"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Blacksmith"], ["Sand", "Sand", "Sand"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Sand", ["Stone", "Farmer"], ["Sand"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"]));
+
+		CraftingController.AddRecipe(
+			new CraftingRecipe("FishingPole", ["Wood", "Wood", "FishingPole"], ["FishingPole"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Field",
+			["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Campfire",
+			["Wood", "Wood", "Wood", "Sticks", "Sticks", "Leaves"], ["Campfire"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("CookingPot", ["Clay", "Clay", "Stick"], ["CookingPot"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Bush",
+			["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"], ["Bush"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"],
+			["Meat", "Meat", "Meat"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"]));
+		CraftingController.AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Mine",
+			["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"]));
+
+		CraftingController.AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"]));
+	}
+
+	/// <summary>
+	///     Checks if the card is the top card on the scene.
+	/// </summary>
+	private bool CardIsTopCard(Node2D cardNode) {
+		foreach (CardNode node in hoveredCards)
+			if (node.ZIndex > cardNode.ZIndex)
+				return false;
+		return true;
+	}
+
+	/// <summary>
+	///     Generates a new UUID (Universally Unique Identifier) string.
+	/// </summary>
+	public static string GenerateUUID() {
+		return Guid.NewGuid().ToString();
+	}
+
+	/// <summary>
+	///     Adds the card to the hovered cards list and sets its highlighted state to true.
+	/// </summary>
+	public void AddCardToHoveredCards(CardNode cardNode) {
+		hoveredCards.Add(cardNode);
+		CheckForHighLight();
+	}
+
+	/// <summary>
+	///     Removes the card from the hovered cards list and sets its highlighted state to false.
+	/// </summary>
+	public void RemoveCardFromHoveredCards(CardNode cardNode) {
+		hoveredCards.Remove(cardNode);
+		CheckForHighLight();
+		cardNode.SetHighlighted(false);
+		if (cardNode.CardType is CardLiving cardLiving) {
+			HideHealthAndHunger();
+		}
+	}
+
+	/// <summary>
+	///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
+	/// </summary>
+	public void CheckForHighLight() {
+		foreach (CardNode card in hoveredCards)
+			if (CardIsTopCard(card)) {
+				card.SetHighlighted(true);
+				if (!card.IsBeingDragged && card.CardType is CardLiving cardLiving) ShowHealthAndHunger(cardLiving);
+			} else {
+				card.SetHighlighted(false);
+			}
+	}
+
+	private void ShowHealthAndHunger(CardLiving cardLiving) {
+		HideHealthAndHunger();
+
+		PackedScene cardLivingOverlay = GD.Load<PackedScene>("res://Scenes/ProgressBars/CardLivingOverlay.tscn");
+		currentOverlay = cardLivingOverlay.Instantiate<CardLivingOverlay>();
+
+		currentOverlay.Position = cardLiving.CardNode.Position + CARD_LIVING_OVERLAY_OFFSET;
+
+
+		currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+		currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
+
+		// Add the overlay to the same parent as the card
+		cardLiving.CardNode.GetParent().AddChild(currentOverlay);
+
+		overlayUpdateTimer = new Timer();
+		overlayUpdateTimer.WaitTime = 0.2f;
+		overlayUpdateTimer.Autostart = true;
+		overlayUpdateTimer.OneShot = false;
+		cardLiving.CardNode.GetParent().AddChild(overlayUpdateTimer);
+		overlayUpdateTimer.Timeout += () => {
+			currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+			currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
+		};
+	}
+
+	public void HideHealthAndHunger() {
+		if (overlayUpdateTimer != null) {
+			overlayUpdateTimer.QueueFree();
+			overlayUpdateTimer = null;
+		}
+
+		// Remove the existing overlay if it exists
+		if (currentOverlay != null && currentOverlay.IsInsideTree()) {
+			currentOverlay.QueueFree();
+			currentOverlay = null;
+		}
+	}
+
+	/// <summary>
+	///     Gets the top card at the mouse position.
+	/// </summary>
+	/// <returns>
+	///     The top card at the mouse position or null if no card is hovered.
+	/// </returns>
+	public CardNode GetTopCardAtMousePosition() {
+		CardNode topCard = null;
+
+		foreach (CardNode card in hoveredCards)
+			if (topCard == null)
+				topCard = card;
+			else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
+
+		return topCard;
+	}
+
+	/// <summary>
+	///     Gets the card under the moved card.
+	/// </summary>
+	/// <returns>
+	///     The card under the moved card or null if no card is found.
+	/// </returns>
+	private CardNode GetCardUnderMovedCard() {
+		IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
+
+		CardNode topUnderCard = null;
+
+		foreach (CardNode card in hoveredCardsSorted)
+			if (card.ZIndex < selectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
+				topUnderCard = card;
+
+		return topUnderCard;
+	}
+
+	/// <summary>
+	///     Called when the left mouse button is pressed.
+	/// </summary>
+	public void LeftMouseButtonPressed() {
+		MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
+		selectedCard = GetTopCardAtMousePosition();
+
+		if (!GodotObject.IsInstanceValid(selectedCard) || selectedCard.IsQueuedForDeletion()) {
+			selectedCard = null;
+			return;
+		}
+
+		if (selectedCard != null) {
+			SetZIndexForAllCards(selectedCard);
+			selectedCard.SetIsBeingDragged(true);
+
+			if (selectedCard.HasNeighbourAbove)
+				selectedCard.IsMovingOtherCards = true;
+			else
+				// Set the card that is being dragged to the top
+				selectedCard.ZIndex = CardCount + 1;
+
+			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
+			// And sets the card below if it exists to not have a neighbour above
+			if (selectedCard.HasNeighbourBelow)
+				if (selectedCard.CardType is IStackable stackable) {
+					if (stackable.NeighbourBelow != null) stackable.NeighbourBelow.NeighbourAbove = null;
+					stackable.NeighbourBelow = null;
+				}
+		}
+	}
+
+	/// <summary>
+	///     Called when the left mouse button is released.
+	/// </summary>
+	public void LeftMouseButtonReleased() {
+		MouseController.SetMouseCursor(MouseCursorEnum.point_small);
+		if (selectedCard != null) {
+			selectedCard.SetIsBeingDragged(false);
+
+			// Checks for a card under the moved card and sets if it exists as a neighbour below. 
+			CardNode underCard = GetCardUnderMovedCard();
+			if (underCard is not null) {
+				if (selectedCard.IsQueuedForDeletion() || underCard.IsQueuedForDeletion())
+					return;
+				if (!selectedCard.HasNeighbourBelow && !underCard.HasNeighbourAbove &&
+					!underCard.IsQueuedForDeletion() &&
+					!selectedCard.IsQueuedForDeletion()) {
+					selectedCard.SetOverLappedCardToStack(underCard);
+				}
+			}
+		}
+
+		// Checks if a card is supposed to have a craft button above it
+		foreach (CardNode card in AllCards)
+			if (Stacks.Contains(card) && card.CardType is IStackable stackable &&
+				CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself) != null) {
+				AddCraftButton(card);
+			} else {
+				if (card.CraftButton != null) {
+					card.CraftButton.QueueFree();
+					card.CraftButton = null;
+				}
+			}
+	}
+
+	/// <summary>
+	///     Crafts a card from the specified card node.
+	/// </summary>
+	/// <param name="cardNode">The card node to craft from.</param>
+	public void CraftCardFromSpecifiedCardNode(CardNode cardNode) {
+		if (cardNode == null) return;
+
+		if (cardNode.CraftButton != null) {
+			cardNode.CraftButton.QueueFree();
+			cardNode.CraftButton = null;
+		}
+
+		if (cardNode.CardType is not IStackable stackable) return;
+
+		// Check for the recipe
+		StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(stackable.StackAboveWithItself);
+
+		if (recipe.StringsValue == null || recipe.StringsValue.Count == 0) {
+			GD.Print("No recipe found for the selected card.");
+			return;
+		}
+
+		Vector2 spawnPos = cardNode.Position;
+
+		// Remove the cards in the stack part of cardNode
+		foreach (IStackable stackableCard in stackable.StackAboveWithItself)
+			if (stackableCard is Card card) {
+				stackableCard.ClearNeighbours();
+				if (stackableCard is CardBuilding || (stackableCard is LivingPlayer && !recipe.BoolValue)) continue;
+
+				if (stackableCard is IDurability durability) {
+					bool ret = durability.DecrementDurability();
+
+					GD.Print("Ret: " + recipe.BoolValue + " " + ret);
+
+					if (ret || recipe.BoolValue) card.CardNode.Destroy();
+
+					continue;
+				}
+
+				card.CardNode.Destroy();
+			}
+
+        foreach (string cardName in recipe.StringsValue) {
+            CardNode card = CreateCard(cardName, spawnPos);
             card.ZIndex = cardNode.ZIndex + 1;
             spawnPos += new Vector2(0, -15);
+            
+            if (card.CardType is IStackable craftedStackable) {
+                craftedStackable.NeighbourAbove = null;
+                craftedStackable.NeighbourBelow = null;
+            }
         }
-    }
+	}
 
-    #region CreateCard
+	#region Create Card
 
-    /// <summary>
-    ///     Creates a new card and adds it to the scene, with a random underlying CardType
-    /// </summary>
-    /// <returns>
-    ///     The created card instance.
-    /// </returns>
-    public CardNode CreateCard(Card card, Vector2 position = default) {
-        ArgumentNullException.ThrowIfNull(card);
+	/// <summary>
+	///     Creates a new card and adds it to the scene, with a random underlying CardType
+	/// </summary>
+	/// <returns>
+	///     The created card instance.
+	/// </returns>
+	public CardNode CreateCard(Card card, Vector2 position = default) {
+		ArgumentNullException.ThrowIfNull(card);
 
-        CardNode cardInstance = CreateCard();
+		CardNode cardInstance = CreateCard();
 
-        cardInstance.CardType = card;
-        cardInstance.CardController = this;
+		cardInstance.CardType = card;
+		cardInstance.CardController = this;
 
-        cardInstance.Position = position;
-        if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
+		cardInstance.Position = position;
+		if (cardInstance.GetParent() != null) cardInstance.GetParent().RemoveChild(cardInstance);
+		GameController.AddChild(cardInstance);
 
-        GameController.AddChild(cardInstance);
+		return cardInstance;
+	}
 
-        return cardInstance;
-    }
+	public CardNode CreateCard(string cardType, Vector2 position = default) {
+		return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
+	}
 
-    public CardNode CreateCard(string cardType, Vector2 position = default) {
-        return CreateCard(CardCreationHelper.GetCreatedInstanceOfCard(cardType), position);
-    }
+	/// <summary>
+	///     Creates a new card and adds it to the scene, with a random underlying CardType
+	/// </summary>
+	/// <returns>
+	///     The created card instance.
+	/// </returns>
+	private CardNode CreateCard() {
+		// Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
+		PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
+		CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-    /// <summary>
-    ///     Creates a new card and adds it to the scene, with a random underlying CardType
-    /// </summary>
-    /// <returns>
-    ///     The created card instance.
-    /// </returns>
-    private CardNode CreateCard() {
-        // Create a new card by copying the card from Card scene and adding a instance of CardMaterial to it
-        PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
-        CardNode cardInstance = cardScene.Instantiate<CardNode>();
+		cardInstance.CardController = this;
 
-        cardInstance.CardController = this;
+		cardInstance.ZIndex = CardCount + 1;
+		GameController.AddChild(cardInstance);
 
-        cardInstance.ZIndex = CardCount + 1;
-        GameController.AddChild(cardInstance);
+		return cardInstance;
+	}
 
-        return cardInstance;
-    }
+	#endregion Create Card
 
-    #endregion CreateCard
+	#region Specific Card
 
-    #region Specific Card
+	/// <summary>
+	///     Adds a craft button to the specified card node.
+	/// </summary>
+	/// <param name="cardNode">The card node to add the craft button to.</param>
+	private void AddCraftButton(CardNode cardNode) {
+		if (cardNode.CraftButton != null) return;
 
-    /// <summary>
-    ///     Checks if the card is the top card on the scene.
-    /// </summary>
-    private bool CardIsTopCard(Node2D cardNode) {
-        foreach (CardNode node in HoveredCards)
-            if (node.ZIndex > cardNode.ZIndex)
-                return false;
+		PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
+		CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
 
-        return true;
-    }
+		craftButtonInstance.Position = cardNode.Position + CRAFT_BUTTON_OFFSET;
 
-    /// <summary>
-    ///     Removes the card from the hovered cards list and sets its highlighted state to false.
-    /// </summary>
-    public void RemoveCardFromHoveredCards(CardNode cardNode) {
-        HoveredCards.Remove(cardNode);
-        CheckForHighLight();
-        cardNode.SetHighlighted(false);
-    }
+		cardNode.CraftButton = craftButtonInstance;
 
-    /// <summary>
-    ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
-    /// </summary>
-    public void CheckForHighLight() {
-        foreach (CardNode card in HoveredCards)
-            if (CardIsTopCard(card))
-                card.SetHighlighted(true);
-            else
-                card.SetHighlighted(false);
-    }
+		craftButtonInstance.CardNode = cardNode;
 
-    /// <summary>
-    ///     Gets the top card at the mouse position.
-    /// </summary>
-    /// <returns>
-    ///     The top card at the mouse position or null if no card is hovered.
-    /// </returns>
-    public CardNode GetTopCardAtMousePosition() {
-        CardNode topCard = null;
-
-        foreach (CardNode card in HoveredCards)
-            if (topCard == null)
-                topCard = card;
-            else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
-
-        return topCard;
-    }
-
-    /// <summary>
-    ///     Gets the card under the moved card.
-    /// </summary>
-    /// <returns>
-    ///     The card under the moved card or null if no card is found.
-    /// </returns>
-    private CardNode GetCardUnderMovedCard() {
-        IReadOnlyCollection<CardNode> hoveredCardsSorted = SelectedCard.HoveredCardsSorted;
-
-        CardNode topUnderCard = null;
-
-        foreach (CardNode card in hoveredCardsSorted)
-            if (card.ZIndex < SelectedCard.ZIndex && (topUnderCard == null || card.ZIndex > topUnderCard.ZIndex))
-                topUnderCard = card;
-
-        return topUnderCard;
-    }
-
-    /// <summary>
-    ///     Adds a craft button to the specified card node.
-    /// </summary>
-    /// <param name="cardNode">The card node to add the craft button to.</param>
-    private void AddCraftButton(CardNode cardNode) {
-        if (cardNode.CraftButton != null) return;
-
-        PackedScene craftButtonScene = GD.Load<PackedScene>("res://Scenes/CraftButton.tscn");
-        CraftButton craftButtonInstance = craftButtonScene.Instantiate<CraftButton>();
-
-        craftButtonInstance.Position = cardNode.Position + CraftButtonOffset;
-
-        cardNode.CraftButton = craftButtonInstance;
-
-        craftButtonInstance.CardNode = cardNode;
-
-        craftButtonInstance.CardController = this;
+		craftButtonInstance.CardController = this;
 
         GameController.AddChild(craftButtonInstance);
     }
@@ -324,5 +548,5 @@ public class CardController {
         return GameController;
     }
 
-    #endregion Specific Card
+	#endregion Specific Card
 }
