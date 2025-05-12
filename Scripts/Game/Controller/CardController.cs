@@ -538,9 +538,5 @@ public class CardController {
         GameController.AddChild(craftButtonInstance);
     }
 
-    public GameController GetGameController() {
-        return GameController;
-    }
-
     #endregion Specific Card
 }

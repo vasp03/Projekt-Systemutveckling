@@ -7,7 +7,7 @@ namespace Goodot15.Scripts.Game.Controller;
 /// </summary>
 public partial class SettingsManager : Node {
     private const string CONFIG_FILE = "user://settings.cfg";
-    private SoundController SoundController;
+    public SoundController SoundController { get; private set; }
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;

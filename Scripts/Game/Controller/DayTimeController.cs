@@ -9,7 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class DayTimeController : ITickable {
     private const int DAY_DURATION = Utilities.TICKS_PER_DAY;
 
-    private readonly GameController GameController;
+    public GameController GameController { get; private set; }
 
     private int currentTimeOfDay;
 
@@ -75,8 +75,6 @@ public class DayTimeController : ITickable {
 
     public IDayTimeCallback AddDayTimeCallback(IDayTimeCallback callback) {
         if (callback is null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
-
-        if (registeredPausedCallbacks is null) registeredPausedCallbacks = [];
 
         if (registeredPausedCallbacks.Contains(callback)) return callback;
 

@@ -10,8 +10,6 @@ public class CardCreationHelper : GameManagerBase {
     public CardCreationHelper(GameController gameController) : base(gameController) {
     }
 
-    private CardController CardController => GameController.CardController;
-
     public string GetRandomCardType() {
         Random random = new();
         Array values = Enum.GetValues(typeof(CardTypeEnum));

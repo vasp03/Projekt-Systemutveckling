@@ -9,10 +9,11 @@ public class MouseController : GameManagerBase {
 
     private static readonly Timer LoadingTimer = new();
     private static readonly Vector2 Offset = new(12, 12);
-    private readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
-    private readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
+    #region Static resources
+    private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
+    private static readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
-    private readonly Resource[] loadingResources = [
+    private static readonly Resource[] loadingResources = [
         ResourceLoader.Load(PATH + "loading_1.png"),
         ResourceLoader.Load(PATH + "loading_2.png"),
         ResourceLoader.Load(PATH + "loading_3.png"),
@@ -25,15 +26,17 @@ public class MouseController : GameManagerBase {
 
     private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
     private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
-    private bool IsLoading;
-    private int LoadingIndex;
+    #endregion Static resources
+    
+    private bool isLoading;
+    private int loadingIndex;
 
     public MouseController(GameController gameController) : base(gameController) {
         SetMouseCursor(MouseCursorEnum.point_small);
     }
 
     public bool SetMouseCursor(MouseCursorEnum cursor) {
-        if (cursor != MouseCursorEnum.loading && IsLoading) stopLoading();
+        if (cursor != MouseCursorEnum.loading && isLoading) StopLoading();
 
         switch (cursor) {
             case MouseCursorEnum.point:
@@ -49,7 +52,7 @@ public class MouseController : GameManagerBase {
                 Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
                 return true;
             case MouseCursorEnum.loading:
-                if (!IsLoading) startLoading();
+                if (!isLoading) StartLoading();
                 return true;
             default:
                 Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
@@ -57,26 +60,24 @@ public class MouseController : GameManagerBase {
         }
     }
 
-    private void startLoading() {
-        IsLoading = true;
-        LoadingIndex = 0;
-
-        if (LoadingTimer is null) return;
+    private void StartLoading() {
+        isLoading = true;
+        loadingIndex = 0;
 
         LoadingTimer.Timeout += LoadingThread;
         LoadingTimer.WaitTime = 0.200;
         LoadingTimer.Start();
     }
 
-    private void stopLoading() {
-        IsLoading = false;
-        LoadingIndex = 0;
+    private void StopLoading() {
+        isLoading = false;
+        loadingIndex = 0;
         LoadingTimer.Stop();
         SetMouseCursor(MouseCursorEnum.point);
     }
 
     private void LoadingThread() {
-        LoadingIndex = (LoadingIndex + 1) % 8;
-        Input.SetCustomMouseCursor(loadingResources[LoadingIndex], Input.CursorShape.Arrow, Offset);
+        loadingIndex = (loadingIndex + 1) % 8;
+        Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, Offset);
     }
 }
