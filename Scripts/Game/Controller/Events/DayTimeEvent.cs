@@ -1,22 +1,22 @@
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
-using Utilities = Goodot15.Scripts.Utilities;
+
+namespace Goodot15.Scripts.Game.Controller.Events;
 
 public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
-    private readonly GameController GameController;
-    private DayStateEnum OldDayState;
-    private float OldSceneDarkness;
+    private readonly GameController gameController;
+    private DayStateEnum oldDayState;
+    private float oldSceneDarkness;
 
-    private bool IsPaused;
+    private bool isPaused;
 
     /// <summary>
     ///     An event to handle when the day changes and its time.
     /// </summary>
     public DayTimeEvent(GameController gameController) {
-        OldDayState = DayStateEnum.Invalid;
-        GameController = gameController;
-        GameController.GetMenuController().AddPauseCallback(this);
+        oldDayState = DayStateEnum.Invalid;
+        this.gameController = gameController;
+        this.gameController.MenuController.AddPauseCallback(this);
     }
 
     /// <summary>
@@ -27,40 +27,40 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
     public void DayTimeChanged(DayStateEnum dayState, int ticks) {
         SetSceneDarkness(ticks);
 
-        if (dayState == OldDayState || IsPaused) return;
+        if (dayState == oldDayState || isPaused) return;
 
         switch (dayState) {
             case DayStateEnum.Night:
-                GameController.GetSoundController().PlayDayTimeSong("Night");
+                gameController.SoundController.PlayDayTimeSong("Night");
                 break;
             case DayStateEnum.Morning:
-                GameController.GetSoundController().PlayDayTimeSong("Morning");
+                gameController.SoundController.PlayDayTimeSong("Morning");
                 break;
             case DayStateEnum.Day:
-                GameController.GetSoundController().PlayDayTimeSong("Day");
+                gameController.SoundController.PlayDayTimeSong("Day");
                 break;
             case DayStateEnum.Evening:
-                GameController.GetSoundController().PlayDayTimeSong("Evening");
+                gameController.SoundController.PlayDayTimeSong("Evening");
                 break;
             case DayStateEnum.Invalid:
             case DayStateEnum.Paused:
             default:
-                GameController.GetSoundController().ToggleMusicMuted();
+                gameController.SoundController.ToggleMusicMuted();
                 break;
         }
 
-        OldDayState = dayState;
+        oldDayState = dayState;
     }
 
     public void PauseToggle(bool isPaused) {
-        if (GameController == null || !Godot.GodotObject.IsInstanceValid(GameController) || !GameController.IsInsideTree()) return;
+        if (gameController == null || !Godot.GodotObject.IsInstanceValid(gameController) || !gameController.IsInsideTree()) return;
 
-        IsPaused = isPaused;
+        this.isPaused = isPaused;
 
         if (isPaused)
-            GameController.SetSceneDarkness(1.0f);
+            gameController.SetSceneDarkness(1.0f);
         else
-            GameController.SetSceneDarkness(OldSceneDarkness);
+            gameController.SetSceneDarkness(oldSceneDarkness);
     }
 
 
@@ -83,10 +83,10 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
 
         timeOfDay = Mathf.Round(timeOfDay * 1000) / 1000;
 
-        if (timeOfDay == OldSceneDarkness) return;
+        if (timeOfDay == oldSceneDarkness) return;
 
-        OldSceneDarkness = timeOfDay;
+        oldSceneDarkness = timeOfDay;
 
-        GameController.SetSceneDarkness(timeOfDay);
+        gameController.SetSceneDarkness(timeOfDay);
     }
 }

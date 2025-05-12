@@ -10,7 +10,7 @@ public class CardCreationHelper : GameManagerBase {
     public CardCreationHelper(GameController gameController) : base(gameController) {
     }
 
-    private CardController CardController => GameController.GetCardController();
+    private CardController CardController => GameController.CardController;
 
     public string GetRandomCardType() {
         Random random = new();

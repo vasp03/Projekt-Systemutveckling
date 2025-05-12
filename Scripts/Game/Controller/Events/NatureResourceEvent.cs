@@ -12,7 +12,7 @@ public class NatureResourceEvent : IGameEvent {
 
     public void OnEvent(GameEventContext context) {
         GameController gameController = context.GameController;
-        CardController cardController = gameController.GetCardController();
+        CardController cardController = gameController.CardController;
         CardCreationHelper cardCreationHelper = cardController.CardCreationHelper;
 
         List<string> pack = cardCreationHelper.GetCardTypePacks(CardPackEnum.Nature);

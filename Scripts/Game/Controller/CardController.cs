@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model;
@@ -36,9 +37,9 @@ public class CardController {
 	}
 
 	public CardCreationHelper CardCreationHelper { get; private set; }
-	private readonly CraftingController CraftingController;
-	private readonly GameController GameController;
-	private readonly MouseController MouseController;
+	public CraftingController CraftingController { get; private set; }
+	public GameController GameController { get; private set; }
+	public MouseController MouseController { get; private set; }
 
 	public int CardCount => AllCards.Count;
 
@@ -47,8 +48,8 @@ public class CardController {
 
 	public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
-	private List<CardNode> Stacks =>
-		AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToList();
+    private IReadOnlyCollection<CardNode> Stacks =>
+        AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToArray();
 
 	/// <summary>
 	///     Sets the ZIndex of all cards based on the selected card.
@@ -58,9 +59,9 @@ public class CardController {
 		int NumberOfCards = AllCards.Count;
 		List<IStackable> stackAboveSelectedCard =
 			cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
-		int NumberOfCardsAbove = stackAboveSelectedCard != null ? stackAboveSelectedCard.Count : 0;
-		int CounterForCardsAbove = NumberOfCards - NumberOfCardsAbove;
-		int CounterForCardsBelow = 1;
+		int numberOfCardsAbove = stackAboveSelectedCard?.Count ?? 0;
+		int counterForCardsAbove = NumberOfCards - numberOfCardsAbove;
+		int counterForCardsBelow = 1;
 
 		foreach (CardNode card in AllCardsSorted)
 			if (card == cardNode) {
@@ -68,14 +69,14 @@ public class CardController {
 					if (stackable.NeighbourAbove == null)
 						card.ZIndex = NumberOfCards;
 					else
-						card.ZIndex = CounterForCardsAbove++;
+						card.ZIndex = counterForCardsAbove++;
 				} else {
 					card.ZIndex = NumberOfCards;
 				}
 			} else if (stackAboveSelectedCard != null && stackAboveSelectedCard.Contains(card.CardType as IStackable)) {
-				card.ZIndex = CounterForCardsAbove++;
+				card.ZIndex = counterForCardsAbove++;
 			} else {
-				card.ZIndex = CounterForCardsBelow++;
+				card.ZIndex = counterForCardsBelow++;
 			}
 	}
 

@@ -1,152 +1,148 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using Goodot15.Scripts;
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 
+namespace Goodot15.Scripts.Game.Controller;
+
 public class DayTimeController : ITickable {
-	private const int DayDuration = Utilities.TICKS_PER_DAY;
-	private const double TicksPerSecond = Utilities.TICKS_PER_SECOND;
+    private const int DAY_DURATION = Utilities.TICKS_PER_DAY;
 
-	private readonly GameController GameController;
+    private readonly GameController GameController;
 
-	private List<IDayTimeCallback> Callbacks = [];
+    private IList<IDayTimeCallback> registeredPausedCallbacks = [];
 
-	private int CurrentTimeOfDay;
+    private int currentTimeOfDay;
 
-	private bool HasWarnedAboutLabel;
+    private bool hasWarnedAboutLabel;
 
-	private bool IsPaused;
+    private bool isPaused;
 
-	private double TimeCountingToOneTick;
+    private double timeCountingToOneTick;
 
-	public DayTimeController(GameController gameController) {
-		GameController = gameController;
-	}
+    public DayTimeController(GameController gameController) {
+        GameController = gameController;
+    }
 
-	public void PostTick() {
-		// This method is not in use right now
-	}
+    public void PostTick() {
+        // This method is not in use right now
+    }
 
-	/// <summary>
-	///     Ticks the day time controller
-	/// </summary>
-	/// <param name="delta">How long time it has been between frames</param>
-	public void PreTick(double delta) {
-		if (IsPaused) return;
+    /// <summary>
+    ///     Ticks the day time controller
+    /// </summary>
+    /// <param name="delta">How long time it has been between frames</param>
+    public void PreTick(double delta) {
+        if (isPaused) return;
 
-		TimeCountingToOneTick += delta;
-		if (TimeCountingToOneTick < 1 / TicksPerSecond) return;
+        timeCountingToOneTick += delta;
+        if (timeCountingToOneTick < 1 / Utilities.TICKS_PER_SECOND) {return;}
 
-		TimeCountingToOneTick -= 1 / TicksPerSecond;
+        timeCountingToOneTick -= 1 / Utilities.TICKS_PER_SECOND;
 
-		// Update the current time of day
-		CurrentTimeOfDay += 1;
+        // Update the current time of day
+        currentTimeOfDay += 1;
 
-		// Check if the current time of day has reached the end of the day
-		if (CurrentTimeOfDay > DayDuration) CurrentTimeOfDay = 0; // Reset to the start of the day
+        // Check if the current time of day has reached the end of the day
+        if (currentTimeOfDay > DAY_DURATION) currentTimeOfDay = 0; // Reset to the start of the day
 
-		foreach (IDayTimeCallback callback in Callbacks)
-			callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
+        foreach (IDayTimeCallback callback in registeredPausedCallbacks) {
+            callback.DayTimeChanged(GetCurrentDayState(currentTimeOfDay), currentTimeOfDay);
+        }
 
-		if (GameController != null && GameController.TimeLabel != null) {
-			GameController.TimeLabel.SetText(GetTimeOfDay(CurrentTimeOfDay));
+        if (GameController != null && GameController.TimeLabel != null) {
+            GameController.TimeLabel.SetText(GetTimeOfDay(currentTimeOfDay));
 
-		if (HasWarnedAboutLabel) return;
+            if (hasWarnedAboutLabel) {return;}
 
-		} else {
-			GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
-			GD.PrintErr("Check Node2D if Time Label is set to a label");
-			HasWarnedAboutLabel = true;
-		}
-	}
+        } else {
+            GD.PrintErr("GameController or TimeLabel is null. Cannot update time label.");
+            GD.PrintErr("Check Node2D if Time Label is set to a label");
+            hasWarnedAboutLabel = true;
+        }
+    }
 
-	// Method that converts a range of 0 to DayDuration to normal clock time
-	public string GetTimeOfDay(int ticks) {
-		int hours = ticks / (DayDuration / 24);
-		int minutes = ticks % (DayDuration / 24) * 60 / (DayDuration / 24);
+    // Method that converts a range of 0 to DayDuration to normal clock time
+    public string GetTimeOfDay(int ticks) {
+        int hours = ticks / (DAY_DURATION / 24);
+        int minutes = ticks % (DAY_DURATION / 24) * 60 / (DAY_DURATION / 24);
 
-		// Round minutes to the nearest 10 minutes
-		minutes = (int)Math.Round(minutes / 10.0) * 10;
+        // Round minutes to the nearest 10 minutes
+        minutes = (int)Math.Round(minutes / 10.0) * 10;
 
-		return $"{hours:D2}:{minutes:D2}";
-	}
+        return $"{hours:D2}:{minutes:D2}";
+    }
 
-	public IDayTimeCallback AddCallback(IDayTimeCallback callback) {
-		if (callback == null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
+    public IDayTimeCallback AddDayTimeCallback(IDayTimeCallback callback) {
+        if (callback == null) throw new ArgumentNullException(nameof(callback), "Callback cannot be null.");
 
-		if (Callbacks == null) Callbacks = [];
+        if (registeredPausedCallbacks == null) registeredPausedCallbacks = [];
 
-		if (Callbacks.Contains(callback)) return callback;
+        if (registeredPausedCallbacks.Contains(callback)) return callback;
 
-		Callbacks.Add(callback);
+        registeredPausedCallbacks.Add(callback);
 
-		return callback;
-	}
+        return callback;
+    }
 
-	public IDayTimeCallback RemoveCallback(IDayTimeCallback callback) {
-		Callbacks.Remove(callback);
-		return callback;
-	}
+    public IDayTimeCallback RemoveDayTimeCallback(IDayTimeCallback callback) {
+        registeredPausedCallbacks.Remove(callback);
+        return callback;
+    }
 
-	/// <summary>
-	///     Get the current day state based on the current time of day.
-	/// </summary>
-	/// <param name="ticks">Current time of day in ticks.</param>
-	/// <returns>Current day state.</returns>
-	/// <remarks>
-	///     Night: 0 - 1/10 of the day
-	///     Morning: 1/10 - 3/10 of the day
-	///     Day: 3/10 - 7/10 of the day
-	///     Evening: 7/10 - 9/10 of the day
-	///     Night: 9/10 - 1 of the day
-	/// </remarks>
-	public static DayStateEnum GetCurrentDayState(int ticks) {
-		if (ticks >= 0 && ticks < DayDurationRatio(DayDuration))
-			// Night
-			return DayStateEnum.Night;
+    /// <summary>
+    ///     Get the current day state based on the current time of day.
+    /// </summary>
+    /// <param name="ticks">Current time of day in ticks.</param>
+    /// <returns>Current day state.</returns>
+    /// <remarks>
+    ///     Night: 0 - 1/10 of the day
+    ///     Morning: 1/10 - 3/10 of the day
+    ///     Day: 3/10 - 7/10 of the day
+    ///     Evening: 7/10 - 9/10 of the day
+    ///     Night: 9/10 - 1 of the day
+    /// </remarks>
+    public static DayStateEnum GetCurrentDayState(int ticks) {
+        if (ticks >= 0 && ticks < DayDurationRatio(DAY_DURATION))
+            // Night
+            return DayStateEnum.Night;
 
-		if (ticks >= DayDurationRatio(DayDuration) && ticks < DayDurationRatio(DayDuration) * 3)
-			// Morning
-			return DayStateEnum.Morning;
+        if (ticks >= DayDurationRatio(DAY_DURATION) && ticks < DayDurationRatio(DAY_DURATION) * 3)
+            // Morning
+            return DayStateEnum.Morning;
 
-		if (ticks >= DayDurationRatio(DayDuration) * 3 && ticks < DayDurationRatio(DayDuration) * 7)
-			// Day
-			return DayStateEnum.Day;
+        if (ticks >= DayDurationRatio(DAY_DURATION) * 3 && ticks < DayDurationRatio(DAY_DURATION) * 7)
+            // Day
+            return DayStateEnum.Day;
 
-		if (ticks >= DayDurationRatio(DayDuration) * 7 && ticks < DayDurationRatio(DayDuration) * 9)
-			// Evening
-			return DayStateEnum.Evening;
+        if (ticks >= DayDurationRatio(DAY_DURATION) * 7 && ticks < DayDurationRatio(DAY_DURATION) * 9)
+            // Evening
+            return DayStateEnum.Evening;
 
-		if (ticks >= DayDurationRatio(DayDuration) * 9 && ticks <= DayDuration)
-			// Night
-			return DayStateEnum.Night;
+        if (ticks >= DayDurationRatio(DAY_DURATION) * 9 && ticks <= DAY_DURATION)
+            // Night
+            return DayStateEnum.Night;
 
-		return DayStateEnum.Invalid; // Invalid state
-	}
+        return DayStateEnum.Invalid; // Invalid state
+    }
 
-	private static int DayDurationRatio(int ticks) {
-		return ticks / 10;
-	}
+    private static int DayDurationRatio(int ticks) {
+        return ticks / 10;
+    }
 
-	public void SetPaused(bool paused) {
-		IsPaused = paused;
+    public void SetPaused(bool paused) {
+        isPaused = paused;
 
-		if (IsPaused)
-			foreach (IDayTimeCallback callback in Callbacks) {
-				callback.DayTimeChanged(DayStateEnum.Paused, CurrentTimeOfDay);
-				GameController.TimeLabel.Visible = false;
-			}
-		else
-			foreach (IDayTimeCallback callback in Callbacks) {
-				callback.DayTimeChanged(GetCurrentDayState(CurrentTimeOfDay), CurrentTimeOfDay);
-				GameController.TimeLabel.Visible = true;
-			}
-	}
-
-	public int GetTicks() {
-		return CurrentTimeOfDay;
-	}
+        if (isPaused)
+            foreach (IDayTimeCallback callback in registeredPausedCallbacks) {
+                callback.DayTimeChanged(DayStateEnum.Paused, currentTimeOfDay);
+                GameController.TimeLabel.Visible = false;
+            }
+        else
+            foreach (IDayTimeCallback callback in registeredPausedCallbacks) {
+                callback.DayTimeChanged(GetCurrentDayState(currentTimeOfDay), currentTimeOfDay);
+                GameController.TimeLabel.Visible = true;
+            }
+    }
 }

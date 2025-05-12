@@ -19,9 +19,10 @@ public abstract class CardLiving
     }
 
     protected virtual void ExecuteTickLogic() {
-        if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved)
+        if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved) {
             StarvationTickProgress = 0;
-        // TODO: Death(?)
+        }
+
         if (TicksUntilSaturationDecrease != -1 && HungerTickProgress >= TicksUntilSaturationDecrease) {
             HungerTickProgress = 0;
             Saturation -= SaturationLossPerCycle != -1
@@ -37,15 +38,14 @@ public abstract class CardLiving
                 CardNode.Modulate = new Color(1f, .5f, .5f);
             // CardNode.CardType = new ErrorCard();
         } else {
-            if (remainingDamageEffectPulseTimer > 0) {
-                remainingDamageEffectPulseTimer--;
+            if (remainingDamageEffectPulseTimer <= 0) return;
+            remainingDamageEffectPulseTimer--;
 
-                CardNode.Modulate = new Color(
-                    1f,
-                    1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f,
-                    1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f
-                );
-            }
+            CardNode.Modulate = new Color(
+                1f,
+                1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f,
+                1f - remainingDamageEffectPulseTimer / (float)damageEffectPulseTimer / 2f
+            );
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class CardLiving
 
     private void HurtSound() {
         if (_health > 0)
-            GameController.Singleton.GetSoundController()
+            GameController.Singleton.SoundController
                 .PlaySound("General Sounds/Negative Sounds/sfx_sounds_damage1.wav");
     }
 

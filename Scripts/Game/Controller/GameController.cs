@@ -1,57 +1,71 @@
 using System.Collections.Generic;
 using System.Text;
 using Godot;
+using Goodot15.Scripts.Game.Controller.Events;
 using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
 	private readonly List<int> numberList = new();
-	private CardController cardController;
-	private DayTimeController DayTimeController;
-	private DayTimeEvent DayTimeEvent;
-	private GameEventManager GameEventManager;
-	private MenuController menuController;
-	private MouseController mouseController;
-	private SoundController soundController;
+    #region Controller references
+	public CardController CardController { get; private set; }
+	public DayTimeController DayTimeController { get; private set; }
+	public DayTimeEvent DayTimeEvent { get; private set; }
+	public GameEventManager GameEventManager { get; private set; }
+	public MenuController MenuController { get; private set; }
+	public MouseController MouseController { get; private set; }
+	public SoundController SoundController { get; private set; }
+    public CameraController CameraController { get; private set; }
+    #endregion
 	public Label TimeLabel { get; private set; }
 
-	public static GameController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
+    /// <summary>
+    /// Gets the single GameController of the game (if the correct scene is loaded); Null if the game has no GameController at the given point of execution
+    /// </summary>
+	public static GameController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
-	public CameraController CameraController { get; private set; }
-
+    #region Initialization
 	public override void _Ready() {
-		mouseController = new MouseController(this);
-		cardController = new CardController(this, mouseController);
-		DayTimeController = new DayTimeController(this);
-		GameEventManager = new GameEventManager(this);
-
-
-		soundController = GetNode<SoundController>("/root/SoundController");
-		soundController.PlayGameMusic();
-
-		menuController = GetNode<MenuController>("/root/MenuController");
-		menuController.SetGameController(this);
-
-		CameraController = new CameraController();
-
-		DayTimeEvent = new DayTimeEvent(this);
-		DayTimeController.AddCallback(DayTimeEvent);
-
+		SetupControllers();
+        ConfigureControllers();
+        
 		TimeLabel = GetNode<Label>("CanvasLayer/DayTimeLabel");
 	}
+
+    private void SetupControllers() {
+        MouseController = new MouseController(this);
+        CardController = new CardController(this, MouseController);
+        DayTimeController = new DayTimeController(this);
+        GameEventManager = new GameEventManager(this);
+        CameraController = new CameraController();
+    }
+
+    private void ConfigureControllers() {
+        SoundController = GetNode<SoundController>("/root/SoundController");
+        SoundController.PlayGameMusic();
+
+        MenuController = GetNode<MenuController>("/root/MenuController");
+        MenuController.SetGameController(this);
+
+
+
+        DayTimeEvent = new DayTimeEvent(this);
+        DayTimeController.AddDayTimeCallback(DayTimeEvent);
+    }
+    #endregion Initialization
 
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventKey eventKey && eventKey.Pressed) {
 			switch (eventKey.Keycode) {
 				case Key.Escape:
-					menuController.OpenPauseMenu();
+					MenuController.OpenPauseMenu();
 					DayTimeController.SetPaused(true);
-					soundController.MusicMuted = true;
+					SoundController.MusicMuted = true;
 					Visible = false;
 					break;
 				case Key.Space:
-					cardController.CreateCard("Random", Vector2.One * 100);
+					CardController.CreateCard("Random", Vector2.One * 100);
 					break;
 				case Key.Key0:
 				case Key.Key1:
@@ -68,9 +82,9 @@ public partial class GameController : Node2D {
 			}
 		} else if (@event is InputEventMouseButton mouseButton) {
 			if (mouseButton.Pressed)
-				cardController.LeftMouseButtonPressed();
+				CardController.LeftMouseButtonPressed();
 			else
-				cardController.LeftMouseButtonReleased();
+				CardController.LeftMouseButtonReleased();
 		}
 	}
 
@@ -86,7 +100,7 @@ public partial class GameController : Node2D {
 			for (int i = 0; i < numberList.Count; i++) numbers.Append(numberList[i]);
 
 			// Create a new card with the numbers in the list
-			cardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
+			CardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
 			numberList.Clear();
 		}
@@ -122,7 +136,7 @@ public partial class GameController : Node2D {
 	}
 
 	public bool IsPaused() {
-		return menuController.IsPaused();
+		return GetTree().Paused;
 	}
 
 	internal Vector2 GetRandomPositionWithinScreen() {
@@ -135,28 +149,4 @@ public partial class GameController : Node2D {
 
 		return new Vector2(x, y);
 	}
-
-	#region Getters
-
-	public CardController GetCardController() {
-		return cardController;
-	}
-
-	public MenuController GetMenuController() {
-		return menuController;
-	}
-
-	public MouseController GetMouseController() {
-		return mouseController;
-	}
-
-	public SoundController GetSoundController() {
-		return soundController;
-	}
-
-	public DayTimeController GetDayTimeController() {
-		return DayTimeController;
-	}
-
-	#endregion Getters
 }

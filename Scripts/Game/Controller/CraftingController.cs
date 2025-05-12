@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+
+namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
     private readonly CardCreationHelper CardCreationHelper;
@@ -13,17 +15,13 @@ public class CraftingController {
         CreateStartingRecipes();
     }
 
-    public List<CraftingRecipe> Recipes { get; private set; }
+    private List<CraftingRecipe> recipes = [];
+    public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
 
     public void AddRecipe(CraftingRecipe recipe) {
-        if (recipe == null) {
-            GD.Print("Recipe is null");
-            return;
-        }
+       ArgumentNullException.ThrowIfNull(recipe,nameof(recipe));
 
-        if (Recipes == null) Recipes = new List<CraftingRecipe>();
-
-        Recipes.Add(recipe);
+        recipes.Add(recipe);
     }
 
     /// <summary>
@@ -46,7 +44,7 @@ public class CraftingController {
         // Sort the list by the name of the card
         CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
-        foreach (CraftingRecipe recipe in Recipes) {
+        foreach (CraftingRecipe recipe in recipes) {
             List<StringIntHolder> CardsInRecipeAndAmount = [];
 
             foreach (string cardName in recipe.CardsForCrafting) {
@@ -79,7 +77,7 @@ public class CraftingController {
             }
         }
 
-        return new List<string>();
+        return [];
     }
 
     /// <summary>
@@ -103,7 +101,7 @@ public class CraftingController {
         // Sort the list by the name of the card
         CardForCraftingAmount.Sort((x, y) => x.StringValue.CompareTo(y.StringValue));
 
-        foreach (CraftingRecipe recipe in Recipes) {
+        foreach (CraftingRecipe recipe in recipes) {
             List<StringIntHolder> CardsInRecipeAndAmount = [];
 
             foreach (string cardName in recipe.CardsForCrafting) {

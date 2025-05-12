@@ -1,7 +1,6 @@
 ﻿namespace Goodot15.Scripts.Game.Controller.Events;
 
 public abstract class GameEventBase : IGameEvent {
-    private int CurrentTickUntilNextEvent { get; set; }
     public abstract string EventName { get; }
     public abstract int TicksUntilNextEvent { get; }
     public abstract double Chance { get; }

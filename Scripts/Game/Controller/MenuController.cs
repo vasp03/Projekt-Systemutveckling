@@ -7,32 +7,36 @@ using Goodot15.Scripts.Game.View;
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
-    private Control CurrentMenu;
-    private GameController GameController;
-    private Control GuideMenu;
-    private Control MainMenu;
-    private Control OptionsMenu;
-    private List<IPauseCallback> PauseCallbacks;
-    private Control PauseMenu;
-    private Control PreviousMenu;
+    #region Control UI fields
+    private Control previousMenu;
+    private Control currentMenu;
 
+    private Control guideMenu;
+    private Control mainMenu;
+    private Control optionsMenu;
+
+    private Control pauseMenu;
+    #endregion Control UI fields
+    
+    private GameController GameController;
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
-        CurrentMenu = MainMenu;
-        PauseMenu = null;
-        OptionsMenu = null;
-        GuideMenu = null;
+        currentMenu = mainMenu;
+        pauseMenu = null;
+        optionsMenu = null;
+        guideMenu = null;
         // this.previousMenu = mainMenu;
     }
 
+    #region Menu opening methods
     /// <summary>
     ///     Loads and opens the main menu.
     /// </summary>
     public void OpenMainMenu() {
-        if (MainMenu == null) {
+        if (mainMenu == null) {
             PackedScene packedMainMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/MainMenu.tscn");
-            MainMenu = packedMainMenu.Instantiate() as Control;
-            AddChild(MainMenu);
+            mainMenu = packedMainMenu.Instantiate() as Control;
+            AddChild(mainMenu);
         }
 
         GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
@@ -45,43 +49,43 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        CallCallbacks(true);
+        CallPausedCallbacks(true);
 
-        if (PauseMenu == null) {
+        if (pauseMenu == null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
-            PauseMenu = packedPauseMenu.Instantiate() as Control;
-            AddChild(PauseMenu);
+            pauseMenu = packedPauseMenu.Instantiate() as Control;
+            AddChild(pauseMenu);
         }
 
-        SwitchMenu(PauseMenu);
+        SwitchMenu(pauseMenu);
     }
 
     /// <summary>
     ///     Loads and opens the options menu.
     /// </summary>
     public void OpenOptionsMenu() {
-        PreviousMenu = CurrentMenu;
-        if (OptionsMenu == null) {
+        previousMenu = currentMenu;
+        if (optionsMenu == null) {
             PackedScene packedOptionsMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/OptionsMenu.tscn");
-            OptionsMenu = packedOptionsMenu.Instantiate() as Control;
-            AddChild(OptionsMenu);
+            optionsMenu = packedOptionsMenu.Instantiate() as Control;
+            AddChild(optionsMenu);
         }
 
-        SwitchMenu(OptionsMenu);
+        SwitchMenu(optionsMenu);
     }
 
     /// <summary>
     ///     Loads and opens the guide menu.
     /// </summary>
     public void OpenGuideMenu() {
-        PreviousMenu = CurrentMenu;
-        if (GuideMenu == null) {
+        previousMenu = currentMenu;
+        if (guideMenu == null) {
             PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
-            GuideMenu = packedGuideMenu.Instantiate() as Control;
-            AddChild(GuideMenu);
+            guideMenu = packedGuideMenu.Instantiate() as Control;
+            AddChild(guideMenu);
         }
 
-        SwitchMenu(GuideMenu);
+        SwitchMenu(guideMenu);
     }
 
     /// <summary>
@@ -90,9 +94,9 @@ public partial class MenuController : Node {
     /// <param name="newMenu">The new menu that should be shown</param>
     private void SwitchMenu(Control newMenu) {
         if (newMenu is not null && newMenu.IsInsideTree()) {
-            CurrentMenu = newMenu;
+            currentMenu = newMenu;
             newMenu.Visible = true;
-            if (PreviousMenu != null) PreviousMenu.Visible = false;
+            if (previousMenu != null) previousMenu.Visible = false;
         }
     }
 
@@ -100,9 +104,9 @@ public partial class MenuController : Node {
     ///     Goes back to the previous menu.
     /// </summary>
     public void GoBackToPreviousMenu() {
-        if (PreviousMenu is not null && PreviousMenu.IsInsideTree()) {
-            Control menuToSwitchTo = PreviousMenu;
-            PreviousMenu = CurrentMenu;
+        if (previousMenu is not null && previousMenu.IsInsideTree()) {
+            Control menuToSwitchTo = previousMenu;
+            previousMenu = currentMenu;
             SwitchMenu(menuToSwitchTo);
         }
     }
@@ -116,12 +120,14 @@ public partial class MenuController : Node {
                 controlMenu.Visible = false;
 
         GetTree().Paused = false;
-        CallCallbacks(false);
+        CallPausedCallbacks(false);
 
         GameController.Visible = true;
-        GameController.GetDayTimeController().SetPaused(false);
-        GameController.GetSoundController().MusicMuted = true;
+        GameController.DayTimeController.SetPaused(false);
+        GameController.SoundController.MusicMuted = true;
     }
+    
+    #endregion Menu opening methods
 
     /// <summary>
     ///     sets the GameController to a variable for the MenuController.
@@ -136,8 +142,8 @@ public partial class MenuController : Node {
     /// </summary>
     /// <param name="menu">The new main menu instance to configure with</param>
     public void ConfigureWithNewMainMenuInstance(MainMenu menu) {
-        MainMenu = menu;
-        CurrentMenu = menu;
+        mainMenu = menu;
+        currentMenu = menu;
 
         GetTree().Paused = false;
         // CallCallbacks(false);
@@ -150,23 +156,20 @@ public partial class MenuController : Node {
         QueueFree();
     }
 
-    public bool IsPaused() {
-        return GetTree().Paused;
-    }
+    #region Callbacks related
+    private IList<IPauseCallback> pausedCallbacks = [];
+    private void CallPausedCallbacks(bool isPaused) {
+        if (pausedCallbacks == null) return;
 
-    private void CallCallbacks(bool isPaused) {
-        if (PauseCallbacks == null) return;
-
-        foreach (IPauseCallback callback in PauseCallbacks) callback.PauseToggle(isPaused);
+        foreach (IPauseCallback callback in pausedCallbacks) callback.PauseToggle(isPaused);
     }
 
     public void AddPauseCallback(IPauseCallback callback) {
-        if (PauseCallbacks == null) PauseCallbacks = new List<IPauseCallback>();
-
-        PauseCallbacks.Add(callback);
+        pausedCallbacks.Add(callback);
     }
 
     public void RemovePauseCallback(IPauseCallback callback) {
-        if (PauseCallbacks != null) PauseCallbacks.Remove(callback);
+        if (pausedCallbacks is not null) pausedCallbacks.Remove(callback);
     }
+    #endregion Callbacks related
 }

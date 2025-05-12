@@ -6,7 +6,7 @@ public class GameManagerBase {
     /// <summary>
     ///     Constructs a GameManager with a GameController
     /// </summary>
-    /// <param name="coreGameController"></param>
+    /// <param name="gameController"></param>
     protected GameManagerBase(GameController gameController) {
         GameController = gameController;
     }

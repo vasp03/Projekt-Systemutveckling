@@ -11,9 +11,9 @@ public class MeteoriteEvent : GameEventBase {
     public override double Chance => 0.25d;
 
     public override void OnEvent(GameEventContext context) {
-        context.GameController.GetCardController()
+        context.GameController.CardController
             .CreateCard(new MaterialMeteorite(), context.GameController.GetRandomPositionWithinScreen());
-        context.GameController.GetSoundController().PlaySound("Explosions/Short/meteoriteHit.wav");
+        context.GameController.SoundController.PlaySound("Explosions/Short/meteoriteHit.wav");
         context.GameController.CameraController.Shake(5f, Utilities.TimeToTicks(1d));
     }
 }

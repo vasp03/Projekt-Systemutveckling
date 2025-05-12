@@ -30,7 +30,7 @@ public class MaterialFire() : CardMaterial("Fire", 0), ITickable, ICardConsumer 
     }
 
     public void Extinguish() {
-        GameController.Singleton.GetSoundController()
+        GameController.Singleton.SoundController
             .PlaySound("General Sounds/Interactions/sfx_sounds_interaction5.wav");
         CardNode.Destroy();
     }
