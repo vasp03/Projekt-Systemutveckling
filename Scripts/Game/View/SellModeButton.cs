@@ -11,12 +11,8 @@ public partial class SellModeButton : TextureButton {
     }
 
     private void OnButtonPressed() {
-        if (GameController != null) {
-            GameController.Singleton.ToggleSellMode();
-            UpdateIcon();
-        } else {
-            GD.PrintErr("GameController is null when pressing SellModeButton.");
-        }
+        GameController.Singleton.ToggleSellMode();
+        UpdateIcon();
     }
 
     public void UpdateIcon() {

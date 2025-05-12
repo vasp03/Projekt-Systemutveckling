@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
@@ -148,8 +149,23 @@ public partial class MenuController : Node {
     public override void _ExitTree() {
         QueueFree();
     }
+    #region Callbacks related
 
-    public bool IsPaused() {
-        return GetTree().Paused;
+    private readonly IList<IPauseCallback> pausedCallbacks = [];
+
+    private void CallPausedCallbacks(bool isPaused) {
+        if (pausedCallbacks is null) return;
+
+        foreach (IPauseCallback callback in pausedCallbacks) callback.PauseToggle(isPaused);
     }
+
+    public void AddPauseCallback(IPauseCallback callback) {
+        pausedCallbacks.Add(callback);
+    }
+
+    public void RemovePauseCallback(IPauseCallback callback) {
+        pausedCallbacks.Remove(callback);
+    }
+
+    #endregion Callbacks related
 }
