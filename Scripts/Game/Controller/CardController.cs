@@ -18,9 +18,7 @@ public class CardController {
 	public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
 
 	private readonly List<CardNode> hoveredCards = [];
-
-
-	private readonly List<CardNode> HoveredCards = [];
+    
 	private CardLivingOverlay currentOverlay;
 	private Timer overlayUpdateTimer;
 
