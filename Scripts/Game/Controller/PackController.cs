@@ -31,12 +31,17 @@ public partial class PackController : HBoxContainer {
         List<string> starterCommons = new() { "Villager", "Tree", "Bush", "Stone", "Stick", "Stick" };
         List<string> starterRares = new();
         CardPack starterPack = new("Starter Pack", 0, starterCommons, starterRares);
+        
+        List<string> materialCommons = new() { "Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick" };
+        List<string> materialRares = new() { "Clay", "Glass", "Plank" };
+        CardPack materialPack = new("Material Pack", 80, materialCommons, materialRares);
 
-        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat" };
+        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat", };
         List<string> foodRares = new() { "Jam", "CookedFish", "CookedMeat" };
-        CardPack foodPack = new("Food Pack", 20, foodCommons, foodRares);
+        CardPack foodPack = new("Food Pack", 120, foodCommons, foodRares);
 
         _availablePacks.Add(starterPack);
+        _availablePacks.Add(materialPack);
         _availablePacks.Add(foodPack);
     }
 
@@ -90,8 +95,8 @@ public partial class PackController : HBoxContainer {
 
         foreach (string cardName in cardsToSpawn) {
             Vector2 randomPosition = new Vector2(
-                GD.RandRange(400, 600),
-                GD.RandRange(300, 500)
+                GD.RandRange(300, 800),
+                GD.RandRange(200, 700)
             );
             _cardController.CreateCard(cardName, randomPosition);
         }
@@ -125,7 +130,7 @@ public partial class PackController : HBoxContainer {
 
         int cardCount = rng.RandiRange(3, 5);
         for (int i = 0; i < cardCount; i++) {
-            bool isRare = rng.Randf() < 0.5f && pack.RareCards.Count > 0;
+            bool isRare = rng.Randf() < 0.1f && pack.RareCards.Count > 0;
 
             if (isRare) {
                 int index = rng.RandiRange(0, pack.RareCards.Count - 1);

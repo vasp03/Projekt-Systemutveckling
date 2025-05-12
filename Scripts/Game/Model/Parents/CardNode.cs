@@ -84,8 +84,8 @@ public partial class CardNode : Node2D {
 	///     Sets the position of the card node to the given position.
 	/// </summary>
 	public void SetIsBeingDragged(bool isBeingDragged) {
-        if (!IsInstanceValid(this) || !IsInsideTree()) return;
-        
+		if (!IsInstanceValid(this) || !IsInsideTree()) return;
+		
 		oldMousePosition = GetGlobalMousePosition();
 		IsBeingDragged = isBeingDragged;
 
