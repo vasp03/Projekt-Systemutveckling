@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://cbm0e65p06r5y" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://o1wb55vmxiv3" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_m8nr8"]

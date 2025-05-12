@@ -155,7 +155,7 @@ public partial class MenuController : Node {
         CallPausedCallbacks(false);
 
         GameController.Visible = true;
-        GameController.DayTimeController.SetPaused(false);
+
         GameController.SoundController.MusicMuted = true;
     }
 
@@ -163,19 +163,21 @@ public partial class MenuController : Node {
 
     #region Callbacks related
 
-    private readonly IList<IPauseCallback> pausedCallbacks = [];
+    private readonly IList<IPausable> pausedCallbacks = [];
 
     private void CallPausedCallbacks(bool isPaused) {
         if (pausedCallbacks is null) return;
 
-        foreach (IPauseCallback callback in pausedCallbacks) callback.PauseToggle(isPaused);
+        foreach (IPausable callback in pausedCallbacks) {
+            callback.SetPaused(isPaused);
+        }
     }
 
-    public void AddPauseCallback(IPauseCallback callback) {
+    public void AddPauseCallback(IPausable callback) {
         pausedCallbacks.Add(callback);
     }
 
-    public void RemovePauseCallback(IPauseCallback callback) {
+    public void RemovePauseCallback(IPausable callback) {
         pausedCallbacks.Remove(callback);
     }
 

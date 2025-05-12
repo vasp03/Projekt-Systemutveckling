@@ -1,4 +1,5 @@
 ﻿using System;
+using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
 
@@ -71,5 +72,60 @@ public static class Utilities {
         float newValue = (OldValue - OldMin) * newRange / oldRange + NewMin;
 
         return newValue;
+    }
+
+    /// <summary>
+    ///    Converts the specified ticks to a time of day string.
+    /// </summary>
+    /// <param name="ticks">Ticks to convert</param>
+    public static string GetTimeOfDay(int ticks) {
+        int hours = ticks / (TICKS_PER_DAY / 24);
+        int minutes = ticks % (TICKS_PER_DAY / 24) * 60 / (TICKS_PER_DAY / 24);
+
+        // Round minutes to the nearest 10 minutes
+        minutes = (int)Math.Round(minutes / 10.0) * 10;
+
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+
+        return $"{hours:D2}:{minutes:D2}";
+    }
+
+    /// <summary>
+    ///     Get the current day state based on the current time of day.
+    /// </summary>
+    /// <param name="ticks">Current time of day in ticks.</param>
+    /// <returns>Current day state.</returns>
+    /// <remarks>
+    ///     Night: 0 - 1/10 of the day
+    ///     Morning: 1/10 - 3/10 of the day
+    ///     Day: 3/10 - 7/10 of the day
+    ///     Evening: 7/10 - 9/10 of the day
+    ///     Night: 9/10 - 1 of the day
+    /// </remarks>
+    public static DayStateEnum GetCurrentDayState(int ticks) {
+        if (ticks >= 0 && ticks < TICKS_PER_DAY / 10)
+            // Night
+            return DayStateEnum.Night;
+
+        if (ticks >= TICKS_PER_DAY / 10 && ticks < TICKS_PER_DAY / 10 * 3)
+            // Morning
+            return DayStateEnum.Morning;
+
+        if (ticks >= TICKS_PER_DAY / 10 * 3 && ticks < TICKS_PER_DAY / 10 * 7)
+            // Day
+            return DayStateEnum.Day;
+
+        if (ticks >= TICKS_PER_DAY / 10 * 7 && ticks < TICKS_PER_DAY / 10 * 9)
+            // Evening
+            return DayStateEnum.Evening;
+
+        if (ticks >= TICKS_PER_DAY / 10 * 9 && ticks <= TICKS_PER_DAY)
+            // Night
+            return DayStateEnum.Night;
+
+        return DayStateEnum.Invalid; // Invalid state
     }
 }
