@@ -3,31 +3,58 @@ using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
-public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
-    private readonly GameController gameController;
-
-    private bool isPaused;
-    private DayStateEnum oldDayState;
-    private float oldSceneDarkness;
-
+public class DayTimeEvent : GameEventBase, IPausable {
     /// <summary>
-    ///     An event to handle when the day changes and its time.
+    ///     An event to handle when the day changes and it's time.
     /// </summary>
     public DayTimeEvent(GameController gameController) {
         oldDayState = DayStateEnum.Invalid;
-        this.gameController = gameController;
-        this.gameController.MenuController.AddPauseCallback(this);
+        canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
+        timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
+        sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
     }
 
-    /// <summary>
-    ///     Called each tick with the current time of day and the current day state
-    /// </summary>
-    /// <param name="dayState"></param>
-    /// <param name="ticks"></param>
-    public void DayTimeChanged(DayStateEnum dayState, int ticks) {
-        SetSceneDarkness(ticks);
+    public override string EventName => "Day Time Event";
+    public override int TicksUntilNextEvent => 1;
+    public override double Chance => 1.0d;
 
-        if (dayState == oldDayState || isPaused) return;
+    /// <summary>
+    ///     Sets the paused state of the event.
+    /// </summary>
+    /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
+    public void SetPaused(bool isPaused) {
+        GameController gameController = GameController.Singleton;
+
+        if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
+            !gameController.IsInsideTree()) {
+            return;
+        }
+
+        this.isPaused = isPaused;
+
+        if (isPaused) {
+            SetSceneDarkness(1.0f);
+        } else {
+            SetSceneDarkness(oldSceneDarkness);
+        }
+    }
+
+    public override void OnEvent(GameEventContext context) {
+        if (isPaused) return;
+
+        GameController gameController = GameController.Singleton;
+
+        dayTicks++;
+
+        if (dayTicks > Utilities.TICKS_PER_DAY) {
+            dayTicks = 0;
+        }
+
+        SetSceneDarkness(dayTicks);
+        timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
+        dayState = Utilities.GetCurrentDayState(dayTicks);
+
+        if (dayState == oldDayState) return;
 
         switch (dayState) {
             case DayStateEnum.Night:
@@ -52,16 +79,17 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
         oldDayState = dayState;
     }
 
-    public void PauseToggle(bool isPaused) {
-        if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
-            !gameController.IsInsideTree()) return;
+    /// <summary>
+    ///     Sets the darkness of the scene.
+    /// </summary>
+    private void SetSceneDarkness(float darkness) {
+        darkness = Mathf.Clamp(darkness, 0, 1);
 
-        this.isPaused = isPaused;
+        if (canvasLayer is null || sprite is null) {
+            return;
+        }
 
-        if (isPaused)
-            gameController.SetSceneDarkness(1.0f);
-        else
-            gameController.SetSceneDarkness(oldSceneDarkness);
+        sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
 
 
@@ -73,9 +101,9 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
         // Turn ticks per day into a float between 0.5 and 1.0 with 1 being when ticks per day is half way
         // through the day and 0.5 being when ticks per day is at the start and end of the day
 
-        int midDay = Utilities.TICKS_PER_DAY / 2;
+        const int midDay = Utilities.TICKS_PER_DAY / 2;
 
-        float timeOfDay = 0f;
+        float timeOfDay;
 
         if (ticks < midDay)
             timeOfDay = Utilities.MapRange(0, midDay, 0.5f, 1f, ticks);
@@ -88,6 +116,24 @@ public class DayTimeEvent : IDayTimeCallback, IPauseCallback {
 
         oldSceneDarkness = timeOfDay;
 
-        gameController.SetSceneDarkness(timeOfDay);
+        SetSceneDarkness(timeOfDay);
     }
+
+    #region Game object references
+
+    private readonly CanvasLayer canvasLayer;
+    private readonly Sprite2D sprite;
+    private readonly Label timeLabel;
+
+    #endregion
+
+    #region Event state data
+
+    private DayStateEnum dayState;
+    private bool isPaused;
+    private DayStateEnum oldDayState;
+    private float oldSceneDarkness;
+    private int dayTicks;
+
+    #endregion
 }

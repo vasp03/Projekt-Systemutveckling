@@ -8,7 +8,6 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
     private readonly List<int> numberList = new();
-    public Label TimeLabel { get; private set; }
 
     /// <summary>
     ///     Gets the single GameController of the game (if the correct scene is loaded); Null if the game has no GameController
@@ -21,7 +20,11 @@ public partial class GameController : Node2D {
             switch (eventKey.Keycode) {
                 case Key.Escape:
                     MenuController.OpenPauseMenu();
-                    DayTimeController.SetPaused(true);
+
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) {
+                        pausable.SetPaused(true);
+                    }
+
                     SoundController.MusicMuted = true;
                     Visible = false;
                     break;
@@ -67,31 +70,8 @@ public partial class GameController : Node2D {
         }
     }
 
-    // Set the scene darknes
-    public void SetSceneDarkness(float darkness) {
-        // Clamp darkness between 0 (bright) and 1 (completely dark)
-        darkness = Mathf.Clamp(darkness, 0, 1);
-
-        // Get Canvaslayer and sprite2d child
-        CanvasLayer canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
-
-        if (canvasLayer is null) {
-            GD.PrintErr("CanvasLayer not found.");
-            return;
-        }
-
-        Sprite2D sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-
-        if (sprite is null) {
-            GD.PrintErr("Darkness sprite not found.");
-            return;
-        }
-
-        sprite.Modulate = new Color(0, 0, 0, 1 - darkness); // Set the color to black with the specified alpha value
-    }
 
     public override void _PhysicsProcess(double delta) {
-        DayTimeController.PreTick(delta);
         GameEventManager.PostTick();
         CameraController.PostTick();
     }
@@ -114,8 +94,6 @@ public partial class GameController : Node2D {
     #region Controller references
 
     public CardController CardController { get; private set; }
-    public DayTimeController DayTimeController { get; private set; }
-    public DayTimeEvent DayTimeEvent { get; private set; }
     public GameEventManager GameEventManager { get; private set; }
     public MenuController MenuController { get; private set; }
     public MouseController MouseController { get; private set; }
@@ -129,14 +107,11 @@ public partial class GameController : Node2D {
     public override void _Ready() {
         SetupControllers();
         ConfigureControllers();
-
-        TimeLabel = GetNode<Label>("CanvasLayer/DayTimeLabel");
     }
 
     private void SetupControllers() {
         MouseController = new MouseController(this);
         CardController = new CardController(this, MouseController);
-        DayTimeController = new DayTimeController(this);
         GameEventManager = new GameEventManager(this);
         CameraController = new CameraController();
     }
@@ -147,10 +122,6 @@ public partial class GameController : Node2D {
 
         MenuController = GetNode<MenuController>("/root/MenuController");
         MenuController.SetGameController(this);
-
-
-        DayTimeEvent = new DayTimeEvent(this);
-        DayTimeController.AddDayTimeCallback(DayTimeEvent);
     }
 
     #endregion Initialization

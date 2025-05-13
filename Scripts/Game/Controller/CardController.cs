@@ -15,8 +15,8 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
 
-    public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
-    public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
+    public readonly static Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
+    public readonly static Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
 
     private readonly List<CardNode> hoveredCards = [];
 
@@ -58,7 +58,9 @@ public class CardController {
     public void SetZIndexForAllCards(CardNode cardNode) {
         int NumberOfCards = AllCards.Count;
         List<IStackable> stackAboveSelectedCard =
-            cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+            cardNode.CardType is IStackable stackableCard
+                ? stackableCard.StackAbove
+                : null;
         int numberOfCardsAbove = stackAboveSelectedCard?.Count ?? 0;
         int counterForCardsAbove = NumberOfCards - numberOfCardsAbove;
         int counterForCardsBelow = 1;
@@ -441,7 +443,7 @@ public class CardController {
         foreach (IStackable stackableCard in stackable.StackAboveWithItself)
             if (stackableCard is Card card) {
                 stackableCard.ClearNeighbours();
-                if (stackableCard is CardBuilding || (stackableCard is LivingPlayer && !recipe.BoolValue)) continue;
+                if (stackableCard is CardBuilding || stackableCard is LivingPlayer && !recipe.BoolValue) continue;
 
                 if (stackableCard is IDurability durability) {
                     bool ret = durability.DecrementDurability();
