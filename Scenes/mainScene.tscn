@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://vpn6axvy6c6u"]
+[gd_scene load_steps=13 format=4 uid="uid://vpn6axvy6c6u"]
 
 [ext_resource type="Script" uid="uid://dqbg03jh8sso1" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bds65uc6mtdwy" path="res://Scripts/Game/View/HUD.cs" id="5_0vbqt"]
 [ext_resource type="Script" uid="uid://ldkhakx4rusn" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
 [ext_resource type="Script" uid="uid://dwq57jkp8h6td" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
+[ext_resource type="PackedScene" uid="uid://crfa75uxwe6fa" path="res://Scenes/PackButton.tscn" id="8_w1dup"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
 
@@ -107,6 +108,7 @@ offset_bottom = -29.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("7_uvydw")
+PackButtonScene = ExtResource("8_w1dup")
 
 [node name="FloatingMoneyRoot" type="Control" parent="HUD/HUDRoot"]
 anchors_preset = 0
