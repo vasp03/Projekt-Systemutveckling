@@ -5,9 +5,8 @@ namespace Goodot15.Scripts.Game.Model.Parents;
 public abstract class CardBuilding : Card, ITickable {
     private int currentProduceTick;
 
-    protected CardBuilding(string textureAddress, bool movable, int produceTimeInSeconds) : base(textureAddress,
+    protected CardBuilding(string textureAddress, bool movable) : base(textureAddress,
         movable) {
-        ProduceTimeInSeconds = produceTimeInSeconds;
     }
 
     /// <summary>
@@ -30,11 +29,4 @@ public abstract class CardBuilding : Card, ITickable {
     public virtual void PostTick() {
         currentProduceTick = (currentProduceTick + 1) % ProduceTimeInTicks;
     }
-
-    /// <summary>
-    ///     Invoked when a new card is going to be produced. Meant to be overriden
-    ///     To supply a new Card Instance.
-    /// </summary>
-    /// <returns>New Card Instance</returns>
-    public abstract string ProduceCard();
 }

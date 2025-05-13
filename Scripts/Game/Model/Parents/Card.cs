@@ -17,10 +17,9 @@ public abstract class Card {
         ID = Guid.NewGuid().ToString();
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
-        Value = SetValue();
     }
 
-    public int Value { get; protected set; }
+    public abstract int Value { get; }
 
     public CardNode CardNode { get; set; }
 
@@ -37,6 +36,4 @@ public abstract class Card {
             return textureType;
         }
     }
-
-    protected abstract int SetValue();
 }

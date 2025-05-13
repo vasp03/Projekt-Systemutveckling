@@ -1,10 +1,5 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class ErrorCard : Card {
-    public ErrorCard() : base("Error", true) {
-    }
-
-    protected override int SetValue() {
-        return -1;
-    }
+public class ErrorCard() : Card("Error", true) {
+    public override int Value => -1;
 }

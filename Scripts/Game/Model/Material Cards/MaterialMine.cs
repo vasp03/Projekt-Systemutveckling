@@ -1,7 +1,5 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class MaterialMine() : CardMaterial("Mine") {
-    protected override int SetValue() {
-        return 55;
-    }
+    public override int Value => 55;
 }

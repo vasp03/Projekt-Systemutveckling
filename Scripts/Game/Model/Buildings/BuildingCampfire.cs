@@ -1,11 +1,5 @@
 using Goodot15.Scripts.Game.Model.Parents;
 
-public class BuildingCampfire() : CardBuilding("Campfire", true, 1) {
-    public override string ProduceCard() {
-        return "null";
-    }
-
-    protected override int SetValue() {
-        return 35;
-    }
+public class BuildingCampfire() : CardBuilding("Campfire", true) {
+    public override int Value => 35;
 }

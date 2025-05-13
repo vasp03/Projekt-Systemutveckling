@@ -13,7 +13,6 @@ public class MaterialFood(string textureAddress, int startFood) : CardMaterial(t
         }
     }
 
-    protected override int SetValue() {
-        return 10;
-    }
+    public override int Value => 10;
+    
 }
