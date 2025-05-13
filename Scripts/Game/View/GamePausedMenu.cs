@@ -13,26 +13,25 @@ public partial class GamePausedMenu : Control {
     private CanvasLayer exitConfirmationBox;
     private VBoxContainer buttonContainer;
 
-    public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-        soundController = GetNode<SoundController>("/root/SoundController");
+	public override void _Ready() {
+		menuController = GetNode<MenuController>("/root/MenuController");
+		soundController = GetNode<SoundController>("/root/SoundController");
 
-        buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
-        buttonContainer.Show();
+		 buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
+		buttonContainer.Show();
 
-        Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
-        resumeButton.Pressed += OnResumeButtonPressed;
+		Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
+		resumeButton.Pressed += OnResumeButtonPressed;
 
-        Button guideButton = GetNode<Button>("ButtonContainer/GuideButton");
-        guideButton.Pressed += OnGuideButtonPressed;
+		Button guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+		guideButton.Pressed += OnGuideButtonPressed;
 
-        Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
-        optionsButton.Pressed += OnOptionsButtonPressed;
+		Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+		optionsButton.Pressed += OnOptionsButtonPressed;
 
-        Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
-        exitButton.Pressed += OnExitButtonPressed;
-        
-        exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");
+		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
+		exitButton.Pressed += OnExitButtonPressed;
+	exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");
         
         Button yesButton = exitConfirmationBox.GetNode<Button>("YesButton");
         yesButton.Pressed += () => OnConfirmationButtonPressed(1);
@@ -41,34 +40,36 @@ public partial class GamePausedMenu : Control {
         noButton.Pressed += () => OnConfirmationButtonPressed(0);
     }
 
-    /// <summary>
-    ///     Handles the button press event for the resume button.
-    ///     Closes all the menus and resumes the game.
-    /// </summary>
-    private void OnResumeButtonPressed() {
-        menuController.CloseMenus();
-        soundController.ToggleMusicMuted();
-    }
+	/// <summary>
+	///     Handles the button press event for the resume button.
+	///     Closes all the menus and resumes the game.
+	/// </summary>
+	private void OnResumeButtonPressed() {
+		menuController.CloseMenus();
+		soundController.ToggleMusicMuted();
+		GameController.Singleton.ShowHUD();
+		GameController.Singleton.Visible = true;
+	}
 
-    /// <summary>
-    ///     Handles the button press event for the guide button.
-    ///     Opens the guide menu.
-    /// </summary>
-    private void OnGuideButtonPressed() {
-        menuController.OpenGuideMenu();
-    }
+	/// <summary>
+	///     Handles the button press event for the guide button.
+	///     Opens the guide menu.
+	/// </summary>
+	private void OnGuideButtonPressed() {
+		menuController.OpenGuideMenu();
+	}
 
-    /// <summary>
-    ///     Handles the button press event for the options button.
-    ///     Opens the options menu.
-    /// </summary>
-    private void OnOptionsButtonPressed() {
-        menuController.OpenOptionsMenu();
-    }
+	/// <summary>
+	///     Handles the button press event for the options button.
+	///     Opens the options menu.
+	/// </summary>
+	private void OnOptionsButtonPressed() {
+		menuController.OpenOptionsMenu();
+	}
 
-    /// <summary>
-    ///     Handles the button press event for the exit button.
-    ///     Opens the exit confirmation box.
+	/// <summary>
+	///     Handles the button press event for the exit button.
+	///     Opens the exit confirmation box.
     /// </summary>
     private void OnExitButtonPressed() {
         buttonContainer.Visible = false;
@@ -77,8 +78,8 @@ public partial class GamePausedMenu : Control {
     
     /// <summary>
     /// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
-    /// </summary>
-    /// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
+	/// </summary>
+	/// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
     private void OnConfirmationButtonPressed(int choice) {
         switch (choice) {
             case 0:
@@ -88,23 +89,23 @@ public partial class GamePausedMenu : Control {
             case 1:
                 exitConfirmationBox.Visible = false;
                 buttonContainer.Visible = true;
-                // Await is required to synchronize scene change
-                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                ChangeSceneDeferred();
-                // CallDeferred(nameof(ChangeSceneDeferred));
-                soundController.ToggleMusicMuted();
-                soundController.PlayMenuMusic();
-                break;
+		// Await is required to synchronize scene change
+		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		ChangeSceneDeferred();
+		// CallDeferred(nameof(ChangeSceneDeferred));
+		soundController.ToggleMusicMuted();
+		soundController.PlayMenuMusic();
+	break;
             
         }
     }
 
-    /// <summary>
-    ///     Changes the scene through deferred action.
-    /// </summary>
-    private void ChangeSceneDeferred() {
-        GetTree().CurrentScene.Free();
-        Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
-        Visible = false;
-    }
+	/// <summary>
+	///     Changes the scene through deferred action.
+	/// </summary>
+	private void ChangeSceneDeferred() {
+		GetTree().CurrentScene.Free();
+		Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+		Visible = false;
+	}
 }
