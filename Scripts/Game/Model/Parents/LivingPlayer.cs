@@ -6,6 +6,7 @@ public class LivingPlayer(string texturePath, int cardValue) : CardLiving(textur
     public readonly static int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
     public readonly static int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
     public int AttackDamage { get; set; }
+    public override int Value => -1;
     public override int BaseHealth => 100;
     public override int MaximumSaturation => 100;
     public override int TicksUntilFullyStarved => STARVATION_TICK_DELAY;

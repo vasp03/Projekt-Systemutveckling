@@ -273,6 +273,33 @@ public partial class CardNode : Node2D {
 		ClearReferences();
 		QueueFree();
 	}
+	
+	public void UnlinkFromStack() {
+		if (CardType is not IStackable thisStackable)
+			return;
+
+		IStackable above = thisStackable.NeighbourAbove;
+		IStackable below = thisStackable.NeighbourBelow;
+
+		if (below is not null)
+			below.NeighbourAbove = above;
+
+		if (above is not null)
+			above.NeighbourBelow = below;
+
+		thisStackable.NeighbourAbove = null;
+		thisStackable.NeighbourBelow = null;
+	}
+	
+	public void Sell() {
+		if (CardType is null || CardType.Value < 0)
+			return;
+
+		Global.Singleton.AddMoney(CardType.Value);
+		GameController.Singleton.HUD.ShowFloatingMoneyLabel(CardType.Value);
+		UnlinkFromStack();
+		Destroy();
+	}
 
 	public void _on_area_2d_mouse_entered() {
 		MouseIsHovering = true;

@@ -10,7 +10,7 @@ public partial class HUD : CanvasLayer {
     private float flashTimer;
     private bool isFlashing;
 
-    private GlobalController globalController;
+    private Global Global;
     private PackController packController;
 
     [Export] public TextureRect GoldIcon { get; set; }
@@ -21,23 +21,26 @@ public partial class HUD : CanvasLayer {
     #region Setup
 
     public override void _Ready() {
-        globalController = GetNode<GlobalController>("/root/Global");
-        globalController.MoneyChanged += OnMoneyChanged;
+        Global = Global.Singleton;
+        Global.MoneyChanged += OnMoneyChanged;
 
         packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
-        packController?.Init();
+        if (packController is not null)
+            packController.Init();
+        else
+            GD.PrintErr("PackController not found in HUDRoot/PackContainer");
 
         SetupSellModeButton();
 
         defaultColor = MoneyLabel.Modulate;
         LoadCoinTextures();
 
-        OnMoneyChanged(globalController.Money);
+        OnMoneyChanged(Global.Money);
     }
 
     public override void _ExitTree() {
-        if (globalController is not null) {
-            globalController.MoneyChanged -= OnMoneyChanged;
+        if (Global is not null) {
+            Global.MoneyChanged -= OnMoneyChanged;
         }
     }
 

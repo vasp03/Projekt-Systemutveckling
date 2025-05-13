@@ -8,12 +8,12 @@ namespace Goodot15.Scripts.Game.View;
 
 public partial class PackController : HBoxContainer {
     private readonly List<CardPack> availablePacks = new();
-    private GlobalController globalController;
+    private Global global;
 
     [Export] public PackedScene PackButtonScene;
 
     public override void _Ready() {
-        globalController = GetNode<GlobalController>("/root/Global");
+        global = Global.Singleton;
         Init();
     }
 
@@ -41,7 +41,7 @@ public partial class PackController : HBoxContainer {
     }
 
     private void DisplayAvailablePacks() {
-        if (globalController is null || PackButtonScene is null) return;
+        if (global is null || PackButtonScene is null) return;
 
         foreach (Node child in GetChildren()) {
             child.QueueFree();
@@ -52,7 +52,7 @@ public partial class PackController : HBoxContainer {
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
 
-            bool isAffordable = globalController.Money >= pack.Cost;
+            bool isAffordable = global.Money >= pack.Cost;
             button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
@@ -62,12 +62,12 @@ public partial class PackController : HBoxContainer {
     }
 
     private void OnPackClicked(CardPack pack) {
-        if (globalController.Money < pack.Cost) {
+        if (global.Money < pack.Cost) {
             GD.Print("Not enough money.");
             return;
         }
 
-        globalController.AddMoney(-pack.Cost);
+        global.AddMoney(-pack.Cost);
         
         ShowFloatingMoneyLabel(-pack.Cost);
 
@@ -94,7 +94,7 @@ public partial class PackController : HBoxContainer {
         foreach (Node child in GetChildren()) {
             if (child is not PackButton button || button.Pack is null) continue;
 
-            bool isAffordable = globalController.Money >= button.Pack.Cost;
+            bool isAffordable = global.Money >= button.Pack.Cost;
             button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
