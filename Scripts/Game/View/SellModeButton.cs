@@ -3,22 +3,16 @@ using Godot;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SellModeButton : TextureButton {
-    private Texture2D _iconOff;
-    private Texture2D _iconOn;
-    public GameController GameController { get; set; }
+    private static readonly Texture2D ICON_OFF = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
+    private static readonly Texture2D _iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
 
     public override void _Ready() {
         Pressed += OnButtonPressed;
-        _iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
-        _iconOff = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
-
-        if (GameController != null)
-            UpdateIcon();
     }
 
     private void OnButtonPressed() {
         if (GameController != null) {
-            GameController.ToggleSellMode();
+            GameController.Singleton.ToggleSellMode();
             UpdateIcon();
         } else {
             GD.PrintErr("GameController is null when pressing SellModeButton.");
@@ -28,6 +22,6 @@ public partial class SellModeButton : TextureButton {
     public void UpdateIcon() {
         TextureNormal = GameController.SellModeActive
             ? _iconOn
-            : _iconOff;
+            : ICON_OFF;
     }
 }
