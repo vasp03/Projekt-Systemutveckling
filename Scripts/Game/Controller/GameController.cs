@@ -105,8 +105,8 @@ public partial class GameController : Node2D {
     #region Initialization
 
     public override void _Ready() {
-        SetupControllers();
         ConfigureControllers();
+        SetupControllers();
     }
 
     private void SetupControllers() {

@@ -12,6 +12,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
         canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+        gameController.MenuController.AddPauseCallback(this);
     }
 
     public override string EventName => "Day Time Event";
@@ -33,8 +34,10 @@ public class DayTimeEvent : GameEventBase, IPausable {
         this.isPaused = isPaused;
 
         if (isPaused) {
+            ShowAndHideTimeLabel(false);
             SetSceneDarkness(1.0f);
         } else {
+            ShowAndHideTimeLabel(true);
             SetSceneDarkness(oldSceneDarkness);
         }
     }
@@ -90,6 +93,17 @@ public class DayTimeEvent : GameEventBase, IPausable {
         }
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
+    }
+    
+    private void ShowAndHideTimeLabel(bool show) {
+        if (timeLabel is null) {
+            return;
+        }
+        if (show) {
+            timeLabel.Show();
+        } else {
+            timeLabel.Hide();
+        }
     }
 
 
