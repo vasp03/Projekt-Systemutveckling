@@ -23,7 +23,7 @@ public partial class PackController : HBoxContainer {
     }
 
     private void RegisterPacks() {
-        List<string> starterCommons = new() { "Villager", "Tree", "Bush", "Stone", "Stick", "Stick" };
+        List<string> starterCommons = new() { "Village", "Tree", "Bush", "Stone", "Stick", "Stick" };
         List<string> starterRares = new();
         availablePacks.Add(new CardPack("Starter Pack", 0, starterCommons, starterRares));
 
@@ -37,7 +37,7 @@ public partial class PackController : HBoxContainer {
 
         List<string> buildingCommons = new() { "Field", "Campfire", "House" };
         List<string> buildingRares = new() { "Greenhouse" };
-        availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
+        // availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
     }
 
     private void DisplayAvailablePacks() {
