@@ -149,23 +149,4 @@ public partial class MenuController : Node {
     public override void _ExitTree() {
         QueueFree();
     }
-    #region Callbacks related
-
-    private readonly IList<IPauseCallback> pausedCallbacks = [];
-
-    private void CallPausedCallbacks(bool isPaused) {
-        if (pausedCallbacks is null) return;
-
-        foreach (IPauseCallback callback in pausedCallbacks) callback.PauseToggle(isPaused);
-    }
-
-    public void AddPauseCallback(IPauseCallback callback) {
-        pausedCallbacks.Add(callback);
-    }
-
-    public void RemovePauseCallback(IPauseCallback callback) {
-        pausedCallbacks.Remove(callback);
-    }
-
-    #endregion Callbacks related
 }

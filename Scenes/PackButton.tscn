@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://daclf6e2pyg7p"]
 
-[ext_resource type="Script" uid="uid://dut2sdsiwk3yq" path="res://Scripts/Game/Controller/PackButton.cs" id="1_blyw3"]
+[ext_resource type="Script" uid="uid://bbganwgodhp13" path="res://Scripts/Game/View/PackButton.cs" id="1_blyw3"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_kj6lu"]
 
 [node name="PackButton" type="Button"]
