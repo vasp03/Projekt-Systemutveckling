@@ -1,14 +1,14 @@
 using System;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 public class DayTimeEvent : IDayTimeCallback {
+    private readonly GameController GameController;
+
+    private readonly DateTime LastTickTime = DateTime.Now;
     private DayTimeController.DAY_STATE OldDayState;
 
-    private Goodot15.Scripts.Game.Controller.GameController GameController;
-
-    private DateTime LastTickTime = DateTime.Now;
-
-    public DayTimeEvent(Goodot15.Scripts.Game.Controller.GameController gameController) {
+    public DayTimeEvent(GameController gameController) {
         OldDayState = DayTimeController.DAY_STATE.Invalid;
         GameController = gameController;
     }

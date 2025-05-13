@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using Goodot15.Scripts.Game.Model.Interface;
 using System.Linq;
 
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
     private const string textureEnding = ".png";
-    public int Value { get; protected set; }
 
     /// <summary>
     ///     Constructor for the Card class
@@ -23,14 +20,14 @@ public abstract class Card {
         Value = SetValue();
     }
 
+    public int Value { get; protected set; }
+
     public CardNode CardNode { get; set; }
 
     public string ID { get; private set; }
     public string TexturePath { get; }
 
     public bool Movable { get; set; }
-    
-    protected abstract int SetValue();
 
     public string TextureType {
         get {
@@ -40,4 +37,6 @@ public abstract class Card {
             return textureType;
         }
     }
+
+    protected abstract int SetValue();
 }

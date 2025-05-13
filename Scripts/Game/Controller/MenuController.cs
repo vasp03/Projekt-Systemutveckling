@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.View;
 
 /// <summary>
@@ -6,7 +7,7 @@ using Goodot15.Scripts.Game.View;
 /// </summary>
 public partial class MenuController : Node {
     private Control currentMenu;
-    private Goodot15.Scripts.Game.Controller.GameController GameController;
+    private GameController GameController;
     private Control guideMenu;
 
     private Control mainMenu;
@@ -44,7 +45,7 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        
+
         GameController.HideHUD();
 
         if (pauseMenu == null) {
@@ -126,7 +127,7 @@ public partial class MenuController : Node {
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
-    public void SetNodeController(Goodot15.Scripts.Game.Controller.GameController gameController) {
+    public void SetNodeController(GameController gameController) {
         GameController = gameController;
     }
 

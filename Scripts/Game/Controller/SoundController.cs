@@ -52,6 +52,26 @@ public partial class SoundController : Node {
         DebugLog("Sound Controller has unloaded sounds");
     }
 
+
+    #region SFX-related
+
+    public void PlaySound(string soundName) {
+        if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
+            GD.PushWarning($"Sound '{soundName}' not found or muted.");
+            return;
+        }
+
+        AudioStreamPlayer player = new();
+        player.Stream = sfxAudioStream;
+        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
+        AddChild(player);
+        // Queues the node to be deleted when player.Finished emits.
+        player.Finished += () => player.QueueFree();
+        player.Play();
+    }
+
+    #endregion SFX-related
+
     #region Music-related
 
     private const string BASE_MUSIC_PATH = "res://Assets/Music";
@@ -70,7 +90,7 @@ public partial class SoundController : Node {
             musicPlayer.Play();
         }
     }
-    
+
     /*
      * Helper method for OnMusicFinished class
      * Checks to see if a song should replay after .finished has emitted
@@ -80,7 +100,7 @@ public partial class SoundController : Node {
         if (string.IsNullOrEmpty(currentPlayingMusicPath)) {
             return false;
         }
-        
+
         return currentPlayingMusicPath.Contains("DayTimeSongs/Day");
     }
 
@@ -115,7 +135,9 @@ public partial class SoundController : Node {
 
         currentPlayingMusicPath = musicPath;
         musicPlayer.Stream = LoadMusic(musicPath);
-        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        musicPlayer.VolumeDb = MusicMuted
+            ? -80
+            : Mathf.LinearToDb(MusicVolume);
         musicPlayer.Play();
     }
 
@@ -139,26 +161,6 @@ public partial class SoundController : Node {
     }
 
     #endregion Music-related
-
-
-    #region SFX-related
-
-    public void PlaySound(string soundName) {
-        if (SfxMuted || !_cachedSounds.TryGetValue(soundName, out AudioStream sfxAudioStream)) {
-            GD.PushWarning($"Sound '{soundName}' not found or muted.");
-            return;
-        }
-
-        AudioStreamPlayer player = new();
-        player.Stream = sfxAudioStream;
-        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
-        AddChild(player);
-        // Queues the node to be deleted when player.Finished emits.
-        player.Finished += () => player.QueueFree();
-        player.Play();
-    }
-
-    #endregion SFX-related
 
     #region Settings & configurability related
 
@@ -193,7 +195,9 @@ public partial class SoundController : Node {
     }
 
     private void UpdateMusicMuted() {
-        musicPlayer.VolumeDb = MusicMuted ? -80 : Mathf.LinearToDb(MusicVolume);
+        musicPlayer.VolumeDb = MusicMuted
+            ? -80
+            : Mathf.LinearToDb(MusicVolume);
     }
 
     private float _sfxVolume;

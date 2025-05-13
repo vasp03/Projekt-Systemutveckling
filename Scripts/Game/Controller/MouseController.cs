@@ -12,7 +12,7 @@ public class MouseController : GameManagerBase {
         loading
     }
 
-    private static readonly string path = "res://Assets/MouseCursor/";
+    private readonly static string path = "res://Assets/MouseCursor/";
     private readonly Resource hand_close = ResourceLoader.Load(path + "hand_close.png");
     private readonly Resource hand_open = ResourceLoader.Load(path + "hand_open.png");
 

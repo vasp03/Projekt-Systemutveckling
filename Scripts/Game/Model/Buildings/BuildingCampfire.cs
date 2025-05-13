@@ -4,7 +4,7 @@ public class BuildingCampfire() : CardBuilding("Campfire", true, 1) {
     public override string ProduceCard() {
         return "null";
     }
-    
+
     protected override int SetValue() {
         return 35;
     }

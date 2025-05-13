@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata;
 
 namespace Goodot15.Scripts;
 
@@ -47,7 +46,7 @@ public static class Utilities {
     }
 
     /// <summary>
-    ///    Converts the specified ticks to time
+    ///     Converts the specified ticks to time
     /// </summary>
     /// <param name="ticks">Ticks to convert</param>
     /// <returns>Seconds (60 ticks = 1 second)</returns>

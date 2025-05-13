@@ -5,16 +5,15 @@ using Goodot15.Scripts.Game.Model.Div;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class PackController : HBoxContainer {
-    private Global _global;
+    private readonly List<CardPack> _availablePacks = new();
     private CardController _cardController;
+    private Global _global;
 
     private HBoxContainer _packContainer;
-    public GameController GameController { get; set; }
-    
+
     [Export] public PackedScene PackButtonScene;
     [Export] public NodePath PackContainerPath = "HUDRoot/PackContainer";
-
-    private List<CardPack> _availablePacks = new();
+    public GameController GameController { get; set; }
 
     public override void _Ready() {
         _global = GetNode<Global>("/root/Global");
@@ -31,17 +30,17 @@ public partial class PackController : HBoxContainer {
         List<string> starterCommons = new() { "Villager", "Tree", "Bush", "Stone", "Stick", "Stick" };
         List<string> starterRares = new();
         CardPack starterPack = new("Starter Pack", 0, starterCommons, starterRares);
-        
+
         List<string> materialCommons = new() { "Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick" };
         List<string> materialRares = new() { "Clay", "Glass", "Planks" };
         CardPack materialPack = new("Material Pack", 80, materialCommons, materialRares);
 
-        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat", };
+        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat" };
         List<string> foodRares = new() { "Jam", "CookedFish", "CookedMeat" };
         CardPack foodPack = new("Food Pack", 120, foodCommons, foodRares);
-        
+
         List<string> buildingCommons = new() { "Field", "Campfire", "House" };
-        List<string> buildingRares = new() { "Greenhouse", };
+        List<string> buildingRares = new() { "Greenhouse" };
         CardPack buildingPack = new("Building Pack", 200, buildingCommons, buildingRares);
 
         _availablePacks.Add(starterPack);
@@ -68,11 +67,15 @@ public partial class PackController : HBoxContainer {
             PackButton button = (PackButton)PackButtonScene.Instantiate();
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
-            
+
             bool isAffordable = _global.Money >= pack.Cost;
             button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-            button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
+            button.Modulate = isAffordable
+                ? Colors.White
+                : new Color(1, 1, 1, 0.5f);
+            button.SetPriceColor(isAffordable
+                ? Colors.White
+                : Colors.Red);
 
             AddChild(button);
         }
@@ -97,7 +100,7 @@ public partial class PackController : HBoxContainer {
         }
 
         foreach (string cardName in cardsToSpawn) {
-            Vector2 randomPosition = new Vector2(
+            Vector2 randomPosition = new(
                 GD.RandRange(100, 1100),
                 GD.RandRange(100, 550)
             );
@@ -113,7 +116,7 @@ public partial class PackController : HBoxContainer {
     private void UnlockAdditionalPacks() {
         DisplayAvailablePacks();
     }
-    
+
     public void RefreshPackStates(int newMoney) {
         foreach (Node child in GetChildren()) {
             if (child is not PackButton button) continue;
@@ -121,11 +124,15 @@ public partial class PackController : HBoxContainer {
 
             bool isAffordable = _global.Money >= button.Pack.Cost;
             button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-            button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
+            button.Modulate = isAffordable
+                ? Colors.White
+                : new Color(1, 1, 1, 0.5f);
+            button.SetPriceColor(isAffordable
+                ? Colors.White
+                : Colors.Red);
         }
     }
-    
+
     private List<string> GeneratePackContents(CardPack pack) {
         List<string> selectedCards = new();
         RandomNumberGenerator rng = new();
