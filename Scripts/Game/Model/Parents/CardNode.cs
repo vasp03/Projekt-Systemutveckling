@@ -214,7 +214,9 @@ public partial class CardNode : Node2D {
             MovedOneLastTime = false;
 
             Vector2 mousePosition = GetGlobalMousePosition();
-            IStackable stackable = CardType is IStackable stack ? stack : null;
+            IStackable stackable = CardType is IStackable stack
+                ? stack
+                : null;
             CardNode bottomCard = (stackable?.CardAtBottom as Card)?.CardNode ?? this;
             int neighboursAbove = stackable?.StackAbove.Count ?? 0;
             Vector2 newPosition = mousePosition - oldMousePosition;
@@ -242,7 +244,9 @@ public partial class CardNode : Node2D {
             oldMousePosition = mousePosition;
         } else if (!MovedOneLastTime) {
             CardNode cardAboveThis =
-                CardType is IStackable stackable ? (stackable.NeighbourAbove as Card)?.CardNode : null;
+                CardType is IStackable stackable
+                    ? (stackable.NeighbourAbove as Card)?.CardNode
+                    : null;
             if (cardAboveThis is not null) Position = cardAboveThis.Position + CardOverlappingOffset;
 
             MovedOneLastTime = true;

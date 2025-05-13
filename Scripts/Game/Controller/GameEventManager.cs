@@ -34,6 +34,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new MeteoriteEvent());
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
+        RegisterEvent(new DayTimeEvent(GameController));
     }
 
     public void RegisterEvent(IGameEvent gameEvent) {
@@ -41,7 +42,28 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisteredEvents.Add(gameEvent);
     }
 
-    private void PostEvent(GameEventContext gameEventContext) {
+    /// <summary>
+    ///     Gets a registered event instance from the Game Event Manager
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns>Event instance registered, null if not registered</returns>
+    public T? EventInstance<T>() where T : IGameEvent {
+        return (T)RegisteredEvents.FirstOrDefault(e => e.GetType() == typeof(T));
+    }
+
+    /// <summary>
+    ///     Posts an event to the game system
+    /// </summary>
+    /// <param name="gameEvent">Event instance to be posted</param>
+    public void PostEvent(IGameEvent gameEvent) {
+        PostEvent(new GameEventContext(gameEvent, GameController));
+    }
+
+    /// <summary>
+    ///     Posts an event to the game system
+    /// </summary>
+    /// <param name="gameEventContext">Game event context posted</param>
+    public void PostEvent(GameEventContext gameEventContext) {
         gameEventContext.GameEventFired.OnEvent(gameEventContext);
         // Fires the event to all cards as well for those cards that are listening to any game events
         GameController.CardController.AllCards.ToList().ForEach(e => {
