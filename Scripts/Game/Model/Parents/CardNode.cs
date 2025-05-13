@@ -17,6 +17,7 @@ public partial class CardNode : Node2D {
     private const float HighLightFactor = 1.3f;
     private Card _cardType;
     private CardNode lastOverlappedCard { get; set; }
+    private CardNode OverlappingCard => area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).Where(e=>e.ZIndex<ZIndex).OrderByDescending(e=>e.ZIndex).FirstOrDefault();
     private bool oldIsHighlighted;
     private Vector2 oldMousePosition;
 
@@ -198,11 +199,13 @@ public partial class CardNode : Node2D {
                 ZIndex = CardController.AllCards.Max(e => e.ZIndex) + 1;
             }
         } else {
-
+            if (OverlappingCard is null) {
+                this.ZIndex = 1;
+            }
         }
 
-        if (lastOverlappedCard is not null && !Dragged && !lastOverlappedCard.HasNeighbourAbove) {
-            NeighbourBelow = lastOverlappedCard;
+        if (OverlappingCard is not null && !Dragged && !OverlappingCard.HasNeighbourAbove) {
+            NeighbourBelow = OverlappingCard;
         }
     }
 
@@ -308,9 +311,6 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
-        ITickable tickable = CardType as ITickable;
-        tickable?.PreTick();
-
         if (Dragged) {
             // if (HasNeighbourBelow) return;
 
@@ -348,9 +348,12 @@ public partial class CardNode : Node2D {
         } else if (HasNeighbourBelow && !Dragged) {
             this.Position = NeighbourBelow.Position - CardOverlappingOffset;
         }
+    }
 
-        
-        tickable?.PostTick();
+    public override void _PhysicsProcess(double delta) {
+        ITickable tickableCardType = CardType as ITickable;
+        tickableCardType?.PreTick();
+        tickableCardType?.PostTick();
     }
 
     void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
@@ -390,19 +393,19 @@ public partial class CardNode : Node2D {
         CardController.RemoveCardFromHoveredCards(this);
     }
 
-    public void _on_area_2d_area_entered(Area2D area) {
-        CardNode lastOverlappedCardTemp = GetCardNodeFromArea2D(area);
-        if (lastOverlappedCardTemp.ZIndex > this.ZIndex)
-            return;
-        else
-            lastOverlappedCard = lastOverlappedCardTemp;
-        // HoveredCards.Add(GetCardNodeFromArea2D(area));
-    }
+    // public void _on_area_2d_area_entered(Area2D area) {
+    //     CardNode lastOverlappedCardTemp = GetCardNodeFromArea2D(area);
+    //     if (lastOverlappedCardTemp.ZIndex > this.ZIndex)
+    //         return;
+    //     else
+    //         lastOverlappedCard = lastOverlappedCardTemp;
+    //     // HoveredCards.Add(GetCardNodeFromArea2D(area));
+    // }
 
-    public void _on_area_2d_area_exited(Area2D area) {
-        lastOverlappedCard = null;
-        // HoveredCards.Remove(GetCardNodeFromArea2D(area));
-    }
+    // public void _on_area_2d_area_exited(Area2D area) {
+    //     lastOverlappedCard = null;
+    //     // HoveredCards.Remove(GetCardNodeFromArea2D(area));
+    // }
 
     #endregion Events(?)
 }
