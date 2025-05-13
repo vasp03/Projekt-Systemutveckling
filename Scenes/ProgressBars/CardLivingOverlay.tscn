@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://idtr25yxwinx"]
 
-[ext_resource type="Script" uid="uid://20fu3ycta0uw" path="res://Scripts/Game/View/CardLivingOverlay.cs" id="1_36pmb"]
+[ext_resource type="Script" uid="uid://bo6l66tpuhgjo" path="res://Scripts/Game/View/CardLivingOverlay.cs" id="1_36pmb"]
 [ext_resource type="Texture2D" uid="uid://c6nmnguycxfs" path="res://Assets/Icons/progressbarUnder.png" id="2_46rr5"]
 [ext_resource type="Texture2D" uid="uid://8xlv48bcjnv8" path="res://Assets/Icons/progressbarOver.png" id="3_yu1ui"]
 [ext_resource type="Texture2D" uid="uid://cdbrx30gh2f0n" path="res://Assets/Icons/healthbarProgress.png" id="4_qgsu4"]
