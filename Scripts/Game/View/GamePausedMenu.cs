@@ -68,13 +68,17 @@ public partial class GamePausedMenu : Control {
 
     /// <summary>
     ///     Handles the button press event for the exit button.
-    ///     Exits the game and returns to the main menu.
+    ///     Opens the exit confirmation box.
     /// </summary>
     private void OnExitButtonPressed() {
         buttonContainer.Visible = false;
         exitConfirmationBox.Visible = true;
     }
-
+    
+    /// <summary>
+    /// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
+    /// </summary>
+    /// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
     private void OnConfirmationButtonPressed(int choice) {
         switch (choice) {
             case 0:
