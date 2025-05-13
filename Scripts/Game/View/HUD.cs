@@ -1,125 +1,121 @@
-﻿using Godot;
+using Godot;
 using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
 public partial class HUD : CanvasLayer {
-    private Texture2D[] coinIcons = new Texture2D[9];
-    private Color defaultColor;
-    private float flashDuration = 0.25f;
-    private float flashTimer;
-    private bool isFlashing;
+	private Texture2D[] coinIcons = new Texture2D[9];
+	private Color defaultColor;
+	private float flashDuration = 0.25f;
+	private float flashTimer;
+	private bool isFlashing;
 
-    private Global Global;
-    private PackController packController;
+	private Global Global;
+	private PackController packController;
 
-    [Export] public TextureRect GoldIcon { get; set; }
-    [Export] public Label MoneyLabel { get; set; }
-    
-    [Export] public Control FloatingMoneyRoot { get; set; }
+	[Export] public TextureRect GoldIcon { get; set; }
+	[Export] public Label MoneyLabel { get; set; }
+	
+	[Export] public Control FloatingMoneyRoot { get; set; }
 
-    #region Setup
+	#region Setup
 
-    public override void _Ready() {
-        Global = Global.Singleton;
-        Global.MoneyChanged += OnMoneyChanged;
+	public override void _Ready() {
+		Global = Global.Singleton;
+		Global.MoneyChanged += OnMoneyChanged;
 
-        packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
-        if (packController is not null)
-            packController.Init();
-        else
-            GD.PrintErr("PackController not found in HUDRoot/PackContainer");
+		packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
 
-        SetupSellModeButton();
+		SetupSellModeButton();
 
-        defaultColor = MoneyLabel.Modulate;
-        LoadCoinTextures();
+		defaultColor = MoneyLabel.Modulate;
+		LoadCoinTextures();
 
-        OnMoneyChanged(Global.Money);
-    }
+		OnMoneyChanged(Global.Money);
+	}
 
-    public override void _ExitTree() {
-        if (Global is not null) {
-            Global.MoneyChanged -= OnMoneyChanged;
-        }
-    }
+	public override void _ExitTree() {
+		if (Global is not null) {
+			Global.MoneyChanged -= OnMoneyChanged;
+		}
+	}
 
-    private void SetupSellModeButton() {
-        SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
-        if (sellButton is not null) {
-            sellButton.GameController = GameController.Singleton;
-            sellButton.UpdateIcon();
-        }
-    }
-    
-    public void ShowFloatingMoneyLabel(int amount) {
-        var scene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
-        var label = scene.Instantiate<FloatingMoneyLabel>();
-        label.SetAmount(amount);
-        label.Position = GetViewport().GetMousePosition();
-        FloatingMoneyRoot.AddChild(label);
-    }
+	private void SetupSellModeButton() {
+		SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
+		if (sellButton is not null) {
+			sellButton.GameController = GameController.Singleton;
+			sellButton.UpdateIcon();
+		}
+	}
+	
+	public void ShowFloatingMoneyLabel(int amount) {
+		var scene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
+		var label = scene.Instantiate<FloatingMoneyLabel>();
+		label.SetAmount(amount);
+		label.Position = GetViewport().GetMousePosition();
+		FloatingMoneyRoot.AddChild(label);
+	}
 
-    private void LoadCoinTextures() {
-        for (int i = 0; i < coinIcons.Length; i++) {
-            string path = $"res://Assets/UI/Coins/coin_stack_{i}_{GetStageSuffix(i)}.png";
-            coinIcons[i] = GD.Load<Texture2D>(path);
-        }
-    }
+	private void LoadCoinTextures() {
+		for (int i = 0; i < coinIcons.Length; i++) {
+			string path = $"res://Assets/UI/Coins/coin_stack_{i}_{GetStageSuffix(i)}.png";
+			coinIcons[i] = GD.Load<Texture2D>(path);
+		}
+	}
 
-    #endregion
+	#endregion
 
-    #region Runtime UI
+	#region Runtime UI
 
-    public override void _Process(double delta) {
-        if (!isFlashing) return;
+	public override void _Process(double delta) {
+		if (!isFlashing) return;
 
-        flashTimer -= (float)delta;
-        if (flashTimer <= 0.0f) {
-            MoneyLabel.Modulate = defaultColor;
-            isFlashing = false;
-        }
-    }
+		flashTimer -= (float)delta;
+		if (flashTimer <= 0.0f) {
+			MoneyLabel.Modulate = defaultColor;
+			isFlashing = false;
+		}
+	}
 
-    private void OnMoneyChanged(int newMoney) {
-        packController?.RefreshPackStates(newMoney);
+	private void OnMoneyChanged(int newMoney) {
+		packController?.RefreshPackStates(newMoney);
 
-        MoneyLabel.Text = newMoney.ToString();
-        MoneyLabel.Modulate = new Color(0.4f, 1f, 0.4f);
-        flashTimer = flashDuration;
-        isFlashing = true;
+		MoneyLabel.Text = newMoney.ToString();
+		MoneyLabel.Modulate = new Color(0.4f, 1f, 0.4f);
+		flashTimer = flashDuration;
+		isFlashing = true;
 
-        UpdateGoldIcon(newMoney);
-    }
+		UpdateGoldIcon(newMoney);
+	}
 
-    private void UpdateGoldIcon(int money) {
-        int stage = 0;
-        if (money >= 25) stage = 1;
-        if (money >= 75) stage = 2;
-        if (money >= 150) stage = 3;
-        if (money >= 250) stage = 4;
-        if (money >= 400) stage = 5;
-        if (money >= 600) stage = 6;
-        if (money >= 800) stage = 7;
-        if (money >= 1000) stage = 8;
+	private void UpdateGoldIcon(int money) {
+		int stage = 0;
+		if (money >= 25) stage = 1;
+		if (money >= 75) stage = 2;
+		if (money >= 150) stage = 3;
+		if (money >= 250) stage = 4;
+		if (money >= 400) stage = 5;
+		if (money >= 600) stage = 6;
+		if (money >= 800) stage = 7;
+		if (money >= 1000) stage = 8;
 
-        GoldIcon.Texture = coinIcons[stage];
-    }
+		GoldIcon.Texture = coinIcons[stage];
+	}
 
-    private string GetStageSuffix(int index) {
-        return index switch {
-            0 => "bronze",
-            1 => "silver1",
-            2 => "silver2",
-            3 => "silver3",
-            4 => "silver4",
-            5 => "gold1",
-            6 => "gold2",
-            7 => "gold3",
-            8 => "gold4",
-            _ => "bronze"
-        };
-    }
+	private string GetStageSuffix(int index) {
+		return index switch {
+			0 => "bronze",
+			1 => "silver1",
+			2 => "silver2",
+			3 => "silver3",
+			4 => "silver4",
+			5 => "gold1",
+			6 => "gold2",
+			7 => "gold3",
+			8 => "gold4",
+			_ => "bronze"
+		};
+	}
 
-    #endregion
+	#endregion
 }
