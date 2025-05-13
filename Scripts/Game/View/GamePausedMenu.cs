@@ -7,8 +7,8 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
-    private MenuController menuController;
-    private SoundController soundController;
+	private MenuController menuController;
+	private SoundController soundController;
     
     private CanvasLayer exitConfirmationBox;
     private VBoxContainer buttonContainer;
