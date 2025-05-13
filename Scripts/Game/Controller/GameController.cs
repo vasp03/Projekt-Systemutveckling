@@ -8,6 +8,7 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
+
 	private readonly List<int> numberList = new();
 
 	/// <summary>
@@ -136,8 +137,8 @@ public partial class GameController : Node2D {
 	#region Initialization
 
 	public override void _Ready() {
-		SetupControllers();
 		ConfigureControllers();
+    SetupControllers();
 		SetupUI();
 	}
 
