@@ -2,7 +2,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Model.Living;
 
-public class LivingPlayer(string texturePath, int cardValue) : CardLiving(texturePath, true, cardValue), IStackable {
+public class LivingPlayer(string texturePath, int cardValue) : CardLiving(texturePath, true, cardValue) {
     public static readonly int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
     public static readonly int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
     public int AttackDamage { get; set; }
@@ -11,9 +11,6 @@ public class LivingPlayer(string texturePath, int cardValue) : CardLiving(textur
     public override int TicksUntilFullyStarved => STARVATION_TICK_DELAY;
     public override int TicksUntilSaturationDecrease => HUNGER_TICK_DELAY;
     public override int SaturationLossPerCycle => 30;
-
-    public IStackable NeighbourAbove { get; set; }
-    public IStackable NeighbourBelow { get; set; }
 
     public override bool ConsumeCard(Card otherCard) {
         if (otherCard is not IEdible edibleCard) return false;

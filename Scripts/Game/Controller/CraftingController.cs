@@ -21,10 +21,10 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    public StringAndBoolRet CheckForCraftingWithStackable(IReadOnlyList<IStackable> Cards) {
+    public StringAndBoolRet CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
         List<StringIntHolder> CardForCraftingAmount = [];
 
-        foreach (IStackable card in Cards) {
+        foreach (Card card in Cards) {
             StringIntHolder cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.StringValue == card.TextureType);
             if (cardForCrafting is not null)
