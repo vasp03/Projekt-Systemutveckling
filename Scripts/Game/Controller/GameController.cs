@@ -21,7 +21,7 @@ public partial class GameController : Node2D {
                 case Key.Escape:
                     MenuController.OpenPauseMenu();
 
-                    if (DayTimeEvent != null && DayTimeEvent is IPausable pausable) {
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) {
                         pausable.SetPaused(true);
                     }
 
@@ -71,7 +71,6 @@ public partial class GameController : Node2D {
     }
 
 
-
     public override void _PhysicsProcess(double delta) {
         GameEventManager.PostTick();
         CameraController.PostTick();
@@ -95,7 +94,6 @@ public partial class GameController : Node2D {
     #region Controller references
 
     public CardController CardController { get; private set; }
-    public DayTimeEvent DayTimeEvent { get; private set; }
     public GameEventManager GameEventManager { get; private set; }
     public MenuController MenuController { get; private set; }
     public MouseController MouseController { get; private set; }
@@ -109,7 +107,6 @@ public partial class GameController : Node2D {
     public override void _Ready() {
         SetupControllers();
         ConfigureControllers();
-        SetUpEvents();
     }
 
     private void SetupControllers() {
@@ -117,11 +114,6 @@ public partial class GameController : Node2D {
         CardController = new CardController(this, MouseController);
         GameEventManager = new GameEventManager(this);
         CameraController = new CameraController();
-    }
-
-    private void SetUpEvents() {
-        DayTimeEvent = new DayTimeEvent(this);
-        GameEventManager.RegisterEvent(DayTimeEvent);
     }
 
     private void ConfigureControllers() {

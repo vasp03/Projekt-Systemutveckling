@@ -75,7 +75,7 @@ public static class Utilities {
     }
 
     /// <summary>
-    ///    Converts the specified ticks to a time of day string.
+    ///     Converts the specified ticks to a time of day string.
     /// </summary>
     /// <param name="ticks">Ticks to convert</param>
     public static string GetTimeOfDay(int ticks) {
