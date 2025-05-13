@@ -138,7 +138,7 @@ public partial class GameController : Node2D {
 
 	public override void _Ready() {
 		ConfigureControllers();
-    SetupControllers();
+        SetupControllers();
 		SetupUI();
 	}
 
