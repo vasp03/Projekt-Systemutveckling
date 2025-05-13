@@ -354,6 +354,16 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
+		if (GameController.SellModeActive) {
+			CardNode cardToSell = GetTopCardAtMousePosition();
+
+			if (cardToSell is not null && cardToSell.CardType?.Value >= 0) {
+				cardToSell.Sell();
+			}
+
+			return;
+		}
+
 		MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
 		selectedCard = GetTopCardAtMousePosition();
 
@@ -362,23 +372,19 @@ public class CardController {
 			return;
 		}
 
-		if (selectedCard is not null) {
-			SetZIndexForAllCards(selectedCard);
-			selectedCard.SetIsBeingDragged(true);
+		SetZIndexForAllCards(selectedCard);
+		selectedCard.SetIsBeingDragged(true);
 
-			if (selectedCard.HasNeighbourAbove)
-				selectedCard.IsMovingOtherCards = true;
-			else
-				// Set the card that is being dragged to the top
-				selectedCard.ZIndex = CardCount + 1;
+		if (selectedCard.HasNeighbourAbove)
+			selectedCard.IsMovingOtherCards = true;
+		else
+			selectedCard.ZIndex = CardCount + 1;
 
-			// Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
-			// And sets the card below if it exists to not have a neighbour above
-			if (selectedCard.HasNeighbourBelow)
-				if (selectedCard.CardType is IStackable stackable) {
-					if (stackable.NeighbourBelow is not null) stackable.NeighbourBelow.NeighbourAbove = null;
-					stackable.NeighbourBelow = null;
-				}
+		if (selectedCard.HasNeighbourBelow && selectedCard.CardType is IStackable stackable) {
+			if (stackable.NeighbourBelow is not null)
+				stackable.NeighbourBelow.NeighbourAbove = null;
+
+			stackable.NeighbourBelow = null;
 		}
 	}
 

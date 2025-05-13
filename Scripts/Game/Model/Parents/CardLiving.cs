@@ -60,7 +60,7 @@ public abstract class CardLiving
     /// </summary>
     private int _health;
 
-    public CardLiving(string textureAddress, bool movable, int cardValue) : base(textureAddress, movable, cardValue) {
+    public CardLiving(string textureAddress, bool movable, int cardValue) : base(textureAddress, movable) {
         Health = BaseHealth;
         Saturation = MaximumSaturation;
     }
