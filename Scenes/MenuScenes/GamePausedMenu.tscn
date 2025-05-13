@@ -254,6 +254,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "EXIT TO MAIN MENU"
 
 [node name="ExitConfirmation" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Black" type="Sprite2D" parent="ExitConfirmation"]
 self_modulate = Color(1, 1, 1, 0.533333)

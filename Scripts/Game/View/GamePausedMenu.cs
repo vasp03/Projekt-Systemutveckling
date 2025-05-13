@@ -9,12 +9,15 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GamePausedMenu : Control {
     private MenuController menuController;
     private SoundController soundController;
+    
+    private CanvasLayer exitConfirmationBox;
+    private VBoxContainer buttonContainer;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
         soundController = GetNode<SoundController>("/root/SoundController");
 
-        VBoxContainer buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
+        buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
         buttonContainer.Show();
 
         Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
@@ -28,6 +31,14 @@ public partial class GamePausedMenu : Control {
 
         Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
         exitButton.Pressed += OnExitButtonPressed;
+        
+        exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");
+        
+        Button yesButton = exitConfirmationBox.GetNode<Button>("YesButton");
+        yesButton.Pressed += () => OnConfirmationButtonPressed(1);
+        
+        Button noButton = exitConfirmationBox.GetNode<Button>("NoButton");
+        noButton.Pressed += () => OnConfirmationButtonPressed(0);
     }
 
     /// <summary>
@@ -60,12 +71,28 @@ public partial class GamePausedMenu : Control {
     ///     Exits the game and returns to the main menu.
     /// </summary>
     private void OnExitButtonPressed() {
-        // Await is required to synchronize scene change
-        // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-        ChangeSceneDeferred();
-        // CallDeferred(nameof(ChangeSceneDeferred));
-        soundController.ToggleMusicMuted();
-        soundController.PlayMenuMusic();
+        buttonContainer.Visible = false;
+        exitConfirmationBox.Visible = true;
+    }
+
+    private void OnConfirmationButtonPressed(int choice) {
+        switch (choice) {
+            case 0:
+                exitConfirmationBox.Visible = false;
+                buttonContainer.Visible = true;
+                break;
+            case 1:
+                exitConfirmationBox.Visible = false;
+                buttonContainer.Visible = true;
+                // Await is required to synchronize scene change
+                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                ChangeSceneDeferred();
+                // CallDeferred(nameof(ChangeSceneDeferred));
+                soundController.ToggleMusicMuted();
+                soundController.PlayMenuMusic();
+                break;
+            
+        }
     }
 
     /// <summary>
