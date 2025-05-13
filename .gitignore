@@ -549,3 +549,4 @@ $RECYCLE.BIN/
 /addons/gdUnit4/*
 /gdunit4_testadapter/*
 export_presets.cfg
+*.import
