@@ -1,13 +1,16 @@
 ﻿using System.Linq;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialFire() : CardMaterial("Fire", 0), ITickable, ICardConsumer {
+public class MaterialFire() : CardMaterial("Fire"), ITickable, ICardConsumer {
     private const int FIRE_DAMAGE = 1;
 
     private int LastFireDamageTick;
+
+    public override int Value => -1;
 
     public bool ConsumeCard(Card otherCard) {
         if (otherCard is MaterialWater) {

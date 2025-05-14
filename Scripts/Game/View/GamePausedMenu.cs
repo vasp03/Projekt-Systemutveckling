@@ -7,11 +7,11 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
-    private MenuController menuController;
-    private SoundController soundController;
+    private VBoxContainer buttonContainer;
 
     private CanvasLayer exitConfirmationBox;
-    private VBoxContainer buttonContainer;
+    private MenuController menuController;
+    private SoundController soundController;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
@@ -48,6 +48,8 @@ public partial class GamePausedMenu : Control {
     private void OnResumeButtonPressed() {
         menuController.CloseMenus();
         soundController.ToggleMusicMuted();
+        GameController.Singleton.ShowHUD();
+        GameController.Singleton.Visible = true;
     }
 
     /// <summary>
@@ -76,7 +78,8 @@ public partial class GamePausedMenu : Control {
     }
 
     /// <summary>
-    /// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
+    ///     handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation
+    ///     box.
     /// </summary>
     /// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
     private void OnConfirmationButtonPressed(int choice) {
@@ -102,7 +105,7 @@ public partial class GamePausedMenu : Control {
     ///     Changes the scene through deferred action.
     /// </summary>
     private void ChangeSceneDeferred() {
-        // GetTree().CurrentScene.Free();
+        GetTree().CurrentScene.Free();
         Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
         Visible = false;
     }

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Text;
 using Godot;
 using Goodot15.Scripts.Game.Controller.Events;
+using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -25,11 +27,10 @@ public partial class GameController : Node2D {
                 case Key.Escape:
                     MenuController.OpenPauseMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) {
-                        pausable.SetPaused(true);
-                    }
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(true);
 
                     SoundController.MusicMuted = true;
+                    HideHUD();
                     Visible = false;
                     break;
                 case Key.O:
@@ -113,6 +114,35 @@ public partial class GameController : Node2D {
     public MouseController MouseController { get; private set; }
     public SoundController SoundController { get; private set; }
     public CameraController CameraController { get; private set; }
+    public HUD HUD { get; private set; }
+
+    #endregion
+
+    #region Sell Mode
+
+    public bool SellModeActive { get; private set; }
+
+    public void ToggleSellMode() {
+        SellModeActive = !SellModeActive;
+        GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
+    }
+
+    public void SetSellMode(bool active) {
+        SellModeActive = active;
+        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
+    }
+
+    #region HUD visibility
+
+    public void HideHUD() {
+        HUD.Visible = false;
+    }
+
+    public void ShowHUD() {
+        HUD.Visible = true;
+    }
+
+    #endregion
 
     #endregion
 
@@ -121,6 +151,7 @@ public partial class GameController : Node2D {
     public override void _Ready() {
         ConfigureControllers();
         SetupControllers();
+        SetupUI();
     }
 
     private void SetupControllers() {
@@ -128,6 +159,10 @@ public partial class GameController : Node2D {
         CardController = new CardController(this, MouseController, MenuController);
         GameEventManager = new GameEventManager(this);
         CameraController = new CameraController();
+    }
+
+    private void SetupUI() {
+        HUD = GetNode<HUD>("HUD");
     }
 
     private void ConfigureControllers() {
@@ -139,4 +174,23 @@ public partial class GameController : Node2D {
     }
 
     #endregion Initialization
+    #region Callbacks related
+
+    private readonly IList<IPausable> pausedCallbacks = [];
+
+    public void CallPausedCallbacks(bool isPaused) {
+        if (pausedCallbacks is null) return;
+
+        foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
+    }
+
+    public void AddPauseCallback(IPausable callback) {
+        pausedCallbacks.Add(callback);
+    }
+
+    public void RemovePauseCallback(IPausable callback) {
+        pausedCallbacks.Remove(callback);
+    }
+
+    #endregion Callbacks related
 }

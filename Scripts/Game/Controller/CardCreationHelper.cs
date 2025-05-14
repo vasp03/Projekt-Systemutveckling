@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Buildings;
 using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Living.Villagers;
 using Goodot15.Scripts.Game.Model.Material_Cards;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Controller;
 
@@ -90,7 +93,7 @@ public class CardCreationHelper : GameManagerBase {
                 return new MaterialBush();
 
 
-            case "Village" or "40":
+            case "Villager" or "40":
                 return new PlayerVillager();
             case "Hunter" or "41":
                 return new PlayerHunter();

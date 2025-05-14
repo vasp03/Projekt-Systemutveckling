@@ -1,5 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -12,7 +13,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
         canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-        gameController.MenuController.AddPauseCallback(this);
+        gameController.AddPauseCallback(this);
     }
 
     public override string EventName => "Day Time Event";
@@ -27,18 +28,14 @@ public class DayTimeEvent : GameEventBase, IPausable {
         GameController gameController = GameController.Singleton;
 
         if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
-            !gameController.IsInsideTree()) {
+            !gameController.IsInsideTree())
             return;
-        }
 
         if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer) ||
-            !canvasLayer.IsInsideTree()) {
+            !canvasLayer.IsInsideTree())
             canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
-        }
 
-        if (!GodotObject.IsInstanceValid(timeLabel)) {
-            timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
-        }
+        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
 
         this.isPaused = isPaused;
 
@@ -58,9 +55,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
 
         dayTicks++;
 
-        if (dayTicks > Utilities.TICKS_PER_DAY) {
-            dayTicks = 0;
-        }
+        if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
 
         SetSceneDarkness(dayTicks);
         timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
@@ -97,27 +92,19 @@ public class DayTimeEvent : GameEventBase, IPausable {
     private void SetSceneDarkness(float darkness) {
         darkness = Mathf.Clamp(darkness, 0, 1);
 
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) {
-            return;
-        }
+        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
 
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) {
-            sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-        }
+        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
 
     private void ShowAndHideTimeLabel(bool show) {
-        if (timeLabel is null || !GodotObject.IsInstanceValid(timeLabel)) {
-            return;
-        }
-
-        if (show) {
+        if (timeLabel is null || !GodotObject.IsInstanceValid(timeLabel)) return;
+        if (show)
             timeLabel.Show();
-        } else {
+        else
             timeLabel.Hide();
-        }
     }
 
 

@@ -116,6 +116,10 @@ layout_mode = 2
 max_value = 1.0
 step = 0.01
 
+[node name="Spacer" type="Control" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
 [node name="SFXVolumeLabel" type="Label" parent="ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -129,6 +133,10 @@ horizontal_alignment = 1
 layout_mode = 2
 max_value = 1.0
 step = 0.01
+
+[node name="Spacer2" type="Control" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
 
 [node name="DisplayModeLabel" type="Label" parent="ButtonContainer"]
 layout_mode = 2
@@ -149,9 +157,9 @@ alignment = 1
 [node name="MusicPercentageLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 771.0
-offset_top = 306.0
+offset_top = 283.0
 offset_right = 821.0
-offset_bottom = 332.0
+offset_bottom = 309.0
 theme_override_constants/outline_size = 3
 theme_override_fonts/font = ExtResource("2_7cv4p")
 theme_override_font_sizes/font_size = 25
@@ -160,9 +168,9 @@ text = "45%"
 [node name="SFXPercentageLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 771.0
-offset_top = 365.0
-offset_right = 821.0
-offset_bottom = 391.0
+offset_top = 366.0
+offset_right = 835.0
+offset_bottom = 392.0
 size_flags_horizontal = 8
 theme_override_constants/outline_size = 3
 theme_override_fonts/font = ExtResource("2_7cv4p")

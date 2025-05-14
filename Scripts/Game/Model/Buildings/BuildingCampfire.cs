@@ -1,4 +1,7 @@
 using Goodot15.Scripts.Game.Model.Parents;
 
-public class BuildingCampfire() : CardBuilding("Campfire", true, 8) {
+namespace Goodot15.Scripts.Game.Model.Buildings;
+
+public class BuildingCampfire() : CardBuilding("Campfire", true) {
+    public override int Value => 50;
 }

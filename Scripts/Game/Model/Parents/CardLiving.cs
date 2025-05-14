@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model;
 
@@ -53,7 +54,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private readonly static int damageEffectPulseTimer = Utilities.TimeToTicks(1);
+    private static readonly int damageEffectPulseTimer = Utilities.TimeToTicks(1);
     private int remainingDamageEffectPulseTimer;
 
     /// <summary>
@@ -61,7 +62,7 @@ public abstract class CardLiving
     /// </summary>
     private int _health;
 
-    public CardLiving(string textureAddress, bool movable, int cardValue) : base(textureAddress, movable, cardValue) {
+    public CardLiving(string textureAddress, bool movable) : base(textureAddress, movable) {
         Health = BaseHealth;
         Saturation = MaximumSaturation;
     }

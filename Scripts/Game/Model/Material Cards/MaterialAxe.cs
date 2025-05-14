@@ -1,6 +1,9 @@
+using Goodot15.Scripts.Game.Model.Interface;
+
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialAxe() : CardMaterial("Axe", 5), IDurability {
+public class MaterialAxe() : CardMaterial("Axe"), IDurability {
+    public override int Value => 45;
     public int Durability { get; private set; } = 10;
 
     public bool DecrementDurability() {

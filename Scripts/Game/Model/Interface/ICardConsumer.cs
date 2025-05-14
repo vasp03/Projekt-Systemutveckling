@@ -1,4 +1,6 @@
-﻿namespace Goodot15.Scripts.Game;
+﻿using Goodot15.Scripts.Game.Model.Parents;
+
+namespace Goodot15.Scripts.Game;
 
 public interface ICardConsumer {
     /// <summary>

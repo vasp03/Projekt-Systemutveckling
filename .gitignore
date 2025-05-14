@@ -550,3 +550,6 @@ $RECYCLE.BIN/
 /gdunit4_testadapter/*
 export_presets.cfg
 *.import
+
+# Do not include old CSPROJ
+*.csproj.old
