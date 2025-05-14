@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=4 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://c5wvenbxt4sek" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://c2fsjeslaeahy" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 [ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_7cv4p"]
 
