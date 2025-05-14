@@ -99,6 +99,11 @@ public class CardCreationHelper : GameManagerBase {
             case "Blacksmith" or "43":
                 return new PlayerBlacksmith();
 
+            case "Fire" or "45":
+                return new MaterialFire();
+            case "Metorite" or "46":
+                return new MaterialMeteorite();
+
             case "Random":
                 return GetCreatedInstanceOfCard(GetRandomCardType());
             default:

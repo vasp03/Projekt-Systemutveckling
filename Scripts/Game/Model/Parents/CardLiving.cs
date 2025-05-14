@@ -31,9 +31,10 @@ public abstract class CardLiving
 
         if (Health <= 0) {
             deathTimer--;
-            if (deathTimer <= 0)
+            if (deathTimer <= 0) {
                 CardNode.Destroy();
-            else
+                CardNode.CardController.CheckForGameOver(true);
+            } else
                 CardNode.Modulate = new Color(1f, .5f, .5f);
             // CardNode.CardType = new ErrorCard();
         } else {

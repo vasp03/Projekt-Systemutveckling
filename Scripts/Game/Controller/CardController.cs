@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Div;
 using Goodot15.Scripts.Game.Model.Enums;
@@ -457,12 +458,6 @@ public class CardController {
                     continue;
                 }
 
-                if (card is LivingPlayer) {
-                    if (NumberOfPlayerCards <= 0) {
-                        menuController.OpenGameOverMenu();
-                    }
-                }
-
                 card.CardNode.Destroy();
             }
         }
@@ -476,6 +471,25 @@ public class CardController {
                 craftedStackable.NeighbourAbove = null;
                 craftedStackable.NeighbourBelow = null;
             }
+        }
+    }
+
+    public void CheckForGameOver(bool livingHasJustDied = false) {
+        int livingCardsAmount = NumberOfPlayerCards;
+
+        if (livingHasJustDied) {
+            livingCardsAmount--;
+        }
+
+        if (livingCardsAmount <= 0) {
+            menuController.OpenGameOverMenu();
+
+            if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2) {
+                pausable2.SetPaused(true);
+            }
+
+            GameController.SoundController.MusicMuted = true;
+            GameController.Visible = false;
         }
     }
 

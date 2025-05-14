@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://uifg3ckdtxfd"]
+[gd_scene load_steps=5 format=3 uid="uid://vj32u46kx1al"]
 
-[ext_resource type="Script" uid="uid://oojs1fpmw1h" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
+[ext_resource type="Script" uid="uid://cbbe4ax2st1dy" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_83yi0"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_ancx5"]
 
