@@ -354,7 +354,7 @@ public class CardController {
 	///     Called when the left mouse button is pressed.
 	/// </summary>
 	public void LeftMouseButtonPressed() {
-		if (GameController.SellModeActive) {
+		if (GameController.Singleton.SellModeActive) {
 			CardNode cardToSell = GetTopCardAtMousePosition();
 
 			if (cardToSell is not null && cardToSell.CardType?.Value >= 0) {
