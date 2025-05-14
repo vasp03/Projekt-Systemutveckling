@@ -188,8 +188,7 @@ public class CardController {
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
-        switch (GameController.SellModeActive)
-        {
+        switch (GameController.SellModeActive) {
             case true when selectedCard.CardType.Value >= 0:
                 Global.Singleton.AddMoney(selectedCard.CardType.Value);
                 selectedCard.Destroy();

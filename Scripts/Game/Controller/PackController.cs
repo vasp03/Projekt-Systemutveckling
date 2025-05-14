@@ -7,37 +7,41 @@ using Goodot15.Scripts.Game.Model.Div;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class PackController : HBoxContainer {
-    private readonly List<CardPack> availablePacks = new();
+    private readonly IList<CardPack> availablePacks = [];
     private Global global;
 
     [Export] public PackedScene PackButtonScene;
 
     public override void _Ready() {
         global = Global.Singleton;
-        Init();
+        Initialize();
     }
 
-    public void Init() {
-        RegisterPacks();
+    public void Initialize() {
+        RegisterDefaultPacks();
         DisplayAvailablePacks();
     }
 
-    private void RegisterPacks() {
-        List<string> starterCommons = new() { "Villager", "Tree", "Bush", "Stone", "Stick", "Stick" };
-        List<string> starterRares = new();
-        availablePacks.Add(new CardPack("Starter Pack", 0, starterCommons, starterRares));
+    private void RegisterDefaultPacks() {
+        List<string> starterCommons = ["Villager", "Tree", "Bush", "Stone", "Stick", "Stick"];
+        List<string> starterRares = [];
+        RegisterPack(new CardPack("Starter Pack", 0, starterCommons, starterRares));
 
-        List<string> materialCommons = new() { "Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick" };
-        List<string> materialRares = new() { "Clay", "Glass", "Planks" };
-        availablePacks.Add(new CardPack("Material Pack", 80, materialCommons, materialRares));
+        List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];
+        List<string> materialRares = ["Clay", "Glass", "Planks"];
+        RegisterPack(new CardPack("Material Pack", 80, materialCommons, materialRares));
 
-        List<string> foodCommons = new() { "Berry", "Apple", "Fish", "Meat" };
-        List<string> foodRares = new() { "Jam", "CookedFish", "CookedMeat" };
-        availablePacks.Add(new CardPack("Food Pack", 120, foodCommons, foodRares));
+        List<string> foodCommons = ["Berry", "Apple", "Fish", "Meat"];
+        List<string> foodRares = ["Jam", "CookedFish", "CookedMeat"];
+        RegisterPack(new CardPack("Food Pack", 120, foodCommons, foodRares));
 
-        List<string> buildingCommons = new() { "Field", "Campfire", "House" };
-        List<string> buildingRares = new() { "Greenhouse" };
+        List<string> buildingCommons = ["Field", "Campfire", "House"];
+        List<string> buildingRares = ["Greenhouse"];
         // availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
+    }
+
+    public void RegisterPack(CardPack pack) {
+        availablePacks.Add(pack);
     }
 
     private void DisplayAvailablePacks() {
@@ -69,7 +73,7 @@ public partial class PackController : HBoxContainer {
 
         ShowFloatingMoneyLabel(-pack.Cost);
 
-        List<string> cardsToSpawn = pack.Name == "Starter Pack"
+        IReadOnlyCollection<string> cardsToSpawn = pack.Name == "Starter Pack"
             ? new List<string>(pack.CommonCards).Concat(pack.RareCards).ToList()
             : GeneratePackContents(pack);
 
@@ -99,8 +103,8 @@ public partial class PackController : HBoxContainer {
         }
     }
 
-    private List<string> GeneratePackContents(CardPack pack) {
-        List<string> selectedCards = new();
+    private static IReadOnlyCollection<string> GeneratePackContents(CardPack pack) {
+        IList<string> selectedCards = [];
         RandomNumberGenerator rng = new();
         rng.Randomize();
 
@@ -117,7 +121,7 @@ public partial class PackController : HBoxContainer {
             }
         }
 
-        return selectedCards;
+        return selectedCards.AsReadOnly();
     }
 
     private void ShowFloatingMoneyLabel(int amount) {
