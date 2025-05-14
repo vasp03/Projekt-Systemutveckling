@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://vj32u46kx1al"]
+[gd_scene load_steps=27 format=3 uid="uid://vj32u46kx1al"]
 
 [ext_resource type="Script" uid="uid://cbbe4ax2st1dy" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_83yi0"]
@@ -10,6 +10,50 @@ font_size = 150
 font_color = Color(1, 0, 0, 1)
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_usvyj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_83yi0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ancx5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gvw3c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kpwss"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ywhhc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pxp5b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xnxxn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rb7gs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ghw6e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6jcaj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qu05c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kjgxb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ciop"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ijvmr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_shch4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m34xi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_le3hl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y3lnk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmrr7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgp5u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x8gp4"]
 
 [node name="GameOverMenu" type="Control"]
 layout_mode = 3
@@ -53,6 +97,20 @@ offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.695, 3.695)
+theme_override_colors/font_hover_color = Color(0.976471, 0.529412, 0.478431, 1)
+theme_override_colors/font_pressed_color = Color(0.945098, 0.360784, 0.313726, 1)
+theme_override_fonts/font = ExtResource("3_ancx5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_usvyj")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_83yi0")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ancx5")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_gvw3c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_kpwss")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_ywhhc")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_pxp5b")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_xnxxn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_rb7gs")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ghw6e")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6jcaj")
 text = "Exit Game"
 
 [node name="BackToMenu" type="Button" parent="."]
@@ -68,4 +126,18 @@ offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.695, 3.695)
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_pressed_color = Color(0.65098, 0.607843, 0.929412, 1)
+theme_override_fonts/font = ExtResource("3_ancx5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qu05c")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_kjgxb")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8ciop")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_ijvmr")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_shch4")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_m34xi")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_le3hl")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_y3lnk")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mmrr7")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_vgp5u")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_x8gp4")
 text = "Back to Menu"
