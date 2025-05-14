@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://uifg3ckdtxfd"]
+
+[ext_resource type="Script" uid="uid://oojs1fpmw1h" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
+[ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_83yi0"]
+[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_ancx5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gvw3c"]
+font = ExtResource("3_ancx5")
+font_size = 150
+font_color = Color(1, 0, 0, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[node name="GameOverMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_usvyj")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(667.5, 346)
+scale = Vector2(3.67, 2.384)
+texture = ExtResource("2_83yi0")
+
+[node name="GameOver" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -379.5
+offset_top = 126.0
+offset_right = 379.5
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_gvw3c")
+
+[node name="ExitGame" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 717.0
+offset_top = -15.5
+offset_right = -463.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.695, 3.695)
+text = "Exit Game"
+
+[node name="BackToMenu" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 229.0
+offset_top = -15.5
+offset_right = -951.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.695, 3.695)
+text = "Back to Menu"
