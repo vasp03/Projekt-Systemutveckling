@@ -220,18 +220,8 @@ public class CardController {
     /// <summary>
     ///     Checks if the card is the top card on the scene.
     /// </summary>
-    private bool CardIsTopCard(Node2D cardNode) {
-        foreach (CardNode node in hoveredCards)
-            if (node.ZIndex > cardNode.ZIndex)
-                return false;
-        return true;
-    }
-
-    /// <summary>
-    ///     Generates a new UUID (Universally Unique Identifier) string.
-    /// </summary>
-    public static string GenerateUUID() {
-        return Guid.NewGuid().ToString();
+    private bool CardIsTopCard(CardNode cardNode) {
+        return hoveredCards.All(node => node.ZIndex <= cardNode.ZIndex);
     }
 
     /// <summary>
@@ -249,7 +239,7 @@ public class CardController {
         hoveredCards.Remove(cardNode);
         CheckForHighLight();
         cardNode.SetHighlighted(false);
-        if (cardNode.CardType is CardLiving cardLiving) HideHealthAndHunger();
+        if (cardNode.CardType is CardLiving) HideHealthAndHunger();
     }
 
     /// <summary>

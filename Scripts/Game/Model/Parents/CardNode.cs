@@ -53,16 +53,6 @@ public partial class CardNode : Node2D {
     /// <summary>
     ///     Sets the position of the card node to the given position.
     /// </summary>
-    public bool HasNeighbourAbove => NeighbourAbove is not null;
-
-    /// <summary>
-    ///     Checks if the card has a neighbour below.
-    /// </summary>
-    public bool HasNeighbourBelow => NeighbourBelow is not null;
-
-    /// <summary>
-    ///     Sets the position of the card node to the given position.
-    /// </summary>
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
 
@@ -92,26 +82,6 @@ public partial class CardNode : Node2D {
         return true;
     }
 
-    private void ExecuteStackingLogic() {
-        if (Dragged) {
-            NeighbourBelow = null;
-            UpdateZIndex();
-        } else {
-            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
-            BottomCardOfStack.ZIndex = 1;
-            BottomCardOfStack.UpdateZIndexForStack();
-        }
-    }
-
-    private void UpdateZIndex() {
-        ZIndex = CardController.AllCards.Max(c => c.ZIndex) + 1;
-        UpdateZIndexForStack();
-    }
-
-    private void UpdateZIndexForStack() {
-        int zIndexCounter = ZIndex;
-        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = ++zIndexCounter;
-    }
 
     /// <summary>
     ///     Applies the texture to the sprite of the card node.
@@ -223,33 +193,36 @@ public partial class CardNode : Node2D {
             Vector2 mousePositionDelta = mousePosition - oldMousePosition;
 
             if (bottomCard.Position.Y <= 64 && mousePositionDelta.Y < 0) mousePositionDelta.Y = 0;
-
-            // int counter = 1;
-            // CardNode currentCard = this;
-            // while (currentCard is not null) {
-            //     currentCard = currentCard.NeighbourAbove;//cardAbove.CardType is IStackable stackableAbove
-            //         // ? (stackableAbove.NeighbourAbove as Card)?.CardNode
-            //         // : null;
-            //     if (currentCard is not null && currentCard != this)
-            //         currentCard.Position = bottomCard.Position - new Vector2(0, counter++ * 20 * -1);
-            // }
             ClampPositionInGameSpace(mousePositionDelta);
 
 
             if (CraftButton is not null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
 
             oldMousePosition = mousePosition;
+            
+            UpdateCardPositions();
         } else if (HasNeighbourBelow && !Dragged) {
-            Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
 
+            Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
             //ZIndex = NeighbourBelow?.ZIndex + 1 ?? 0;
         }
     }
 
+    private void UpdateCardPositions() {
+        int i = 0;
+        foreach (CardNode cardNode in StackAbove) {
+            cardNode.Position += CARD_OVERLAP_OFFSET * ++i;
+        }
+    }
+    
     public override void _PhysicsProcess(double delta) {
         ITickable tickableCardType = CardType as ITickable;
         tickableCardType?.PreTick();
         tickableCardType?.PostTick();
+
+        if (!Dragged && HasNeighbourBelow) {
+            
+        }
     }
 
     private void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
@@ -274,15 +247,15 @@ public partial class CardNode : Node2D {
 
     #region Underlying Card Data
 
-    private Card _cardType;
+    private Card cardType;
 
     public Card CardType {
-        get => _cardType;
+        get => cardType;
         set {
-            if (_cardType is not null) _cardType.CardNode = null;
+            if (cardType is not null) cardType.CardNode = null;
 
             value.CardNode = this;
-            _cardType = value;
+            cardType = value;
             ApplyTexture();
         }
     }
@@ -294,6 +267,11 @@ public partial class CardNode : Node2D {
     private CardNode cardAbove;
     private CardNode cardBelow;
 
+    /// <summary>
+    ///     The Card reference above this <see cref="CardNode" /> instance. Null if no card or disposed/dead card.<br />
+    ///     Setting the value also updates the other card's <see cref="NeighbourBelow" /> value to this <see cref="CardNode" />
+    ///     reference
+    /// </summary>
     public CardNode NeighbourAbove {
         get => IsInstanceValid(cardAbove) ? cardAbove : null;
         set {
@@ -309,6 +287,11 @@ public partial class CardNode : Node2D {
         }
     }
 
+    /// <summary>
+    ///     The Card reference below this <see cref="CardNode" /> instance. Null if no card or disposed/dead card.<br />
+    ///     Setting the value also updates the other card's <see cref="NeighbourAbove" /> value to this <see cref="CardNode" />
+    ///     reference
+    /// </summary>
     public CardNode NeighbourBelow {
         get => IsInstanceValid(cardBelow) ? cardBelow : null;
         set {
@@ -323,6 +306,16 @@ public partial class CardNode : Node2D {
             cardBelow.cardAbove = this;
         }
     }
+
+    /// <summary>
+    ///     Sets the position of the card node to the given position.
+    /// </summary>
+    public bool HasNeighbourAbove => NeighbourAbove is not null;
+
+    /// <summary>
+    ///     Checks if the card has a neighbour below.
+    /// </summary>
+    public bool HasNeighbourBelow => NeighbourBelow is not null;
 
     #region Stack collection getters
 
@@ -396,6 +389,35 @@ public partial class CardNode : Node2D {
     public CardNode TopCardOfStack => StackAboveWithItself.LastOrDefault();
 
     #endregion Stack collection getters
+
+    #region Stack-related methods
+
+    private void ExecuteStackingLogic() {
+        if (Dragged) {
+            NeighbourBelow = null;
+            UpdateZIndex();
+        } else {
+            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
+            ResetZIndex();
+        }
+    }
+
+    private void ResetZIndex() {
+        BottomCardOfStack.ZIndex = 1;
+        BottomCardOfStack.UpdateZIndexForStack();
+    }
+
+    private void UpdateZIndex() {
+        ZIndex = CardController.AllCards.Max(c => c.ZIndex) + 1;
+        UpdateZIndexForStack();
+    }
+
+    private void UpdateZIndexForStack() {
+        int zIndexCounter = ZIndex;
+        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = ++zIndexCounter;
+    }
+
+    #endregion
 
     #endregion Stack-related properties
 
