@@ -94,11 +94,12 @@ public class DayTimeEvent : GameEventBase, IPausable {
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
-    
+
     private void ShowAndHideTimeLabel(bool show) {
-        if (timeLabel is null) {
+        if (timeLabel is null || !GodotObject.IsInstanceValid(timeLabel)) {
             return;
         }
+
         if (show) {
             timeLabel.Show();
         } else {
