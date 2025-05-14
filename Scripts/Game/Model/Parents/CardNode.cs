@@ -397,7 +397,8 @@ public partial class CardNode : Node2D {
             NeighbourBelow = null;
             UpdateZIndex();
         } else {
-            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
+            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove &&
+                (CardType?.CanStackWith(OverlappingCard.CardType) ?? false)) NeighbourBelow = OverlappingCard;
             ResetZIndex();
 
             if (HasNeighbourBelow) NeighbourBelow.UpdateCardPositions();

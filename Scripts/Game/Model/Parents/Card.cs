@@ -35,4 +35,8 @@ public abstract class Card {
             return textureType;
         }
     }
+
+    public virtual bool CanStackWith(Card otherCard) {
+        return true;
+    }
 }
