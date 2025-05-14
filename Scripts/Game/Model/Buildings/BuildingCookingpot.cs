@@ -1,5 +1,7 @@
 using Goodot15.Scripts.Game.Model.Parents;
 
-public class BuildingCookingpot() : CardBuilding("Cookingpot", true, 10) {
+namespace Goodot15.Scripts.Game.Model.Buildings;
+
+public class BuildingCookingpot() : CardBuilding("Cookingpot", true) {
     public override int Value => 60;
 }

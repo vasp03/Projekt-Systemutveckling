@@ -1,4 +1,4 @@
-using Goodot15.Scripts.Game.Model.Living;
+namespace Goodot15.Scripts.Game.Model.Living.Villagers;
 
-public class PlayerFarmer() : LivingPlayer("Farmer", 20) {
+public class PlayerFarmer() : LivingPlayer("Farmer") {
 }

@@ -1,16 +1,11 @@
-using Godot;
 using System;
+using Godot;
 
 namespace Goodot15.Scripts.Game;
 
 public partial class Global : Node {
-    public static Global Singleton { get; private set; }
-
-    public override void _Ready() {
-        Singleton = this;
-    }
-
     private int money;
+    public static Global Singleton { get; private set; }
 
     public int Money {
         get => money;
@@ -18,6 +13,10 @@ public partial class Global : Node {
             money = value;
             MoneyChanged?.Invoke(money);
         }
+    }
+
+    public override void _Ready() {
+        Singleton = this;
     }
 
     public void AddMoney(int amount) {

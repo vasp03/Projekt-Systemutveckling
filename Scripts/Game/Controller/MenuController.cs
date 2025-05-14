@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -81,7 +82,7 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        CallPausedCallbacks(true);
+        GameController.CallPausedCallbacks(true);
 
         if (pauseMenu is null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -152,7 +153,7 @@ public partial class MenuController : Node {
                 controlMenu.Visible = false;
 
         GetTree().Paused = false;
-        CallPausedCallbacks(false);
+        GameController.CallPausedCallbacks(false);
 
         GameController.Visible = true;
 
@@ -160,26 +161,5 @@ public partial class MenuController : Node {
     }
 
     #endregion Menu opening methods
-
-    #region Callbacks related
-
-    private readonly IList<IPausable> pausedCallbacks = [];
-
-    private void CallPausedCallbacks(bool isPaused) {
-        if (pausedCallbacks is null) return;
-
-        foreach (IPausable callback in pausedCallbacks) {
-            callback.SetPaused(isPaused);
-        }
-    }
-
-    public void AddPauseCallback(IPausable callback) {
-        pausedCallbacks.Add(callback);
-    }
-
-    public void RemovePauseCallback(IPausable callback) {
-        pausedCallbacks.Remove(callback);
-    }
-
-    #endregion Callbacks related
+    
 }

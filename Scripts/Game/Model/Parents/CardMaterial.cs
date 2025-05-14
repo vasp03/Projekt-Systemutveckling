@@ -1,9 +1,7 @@
-using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model;
 
-public abstract class CardMaterial(string textureAddress, int cardValue)
-    : Card(textureAddress, true), IStackable {
-    public IStackable NeighbourAbove { get; set; }
-    public IStackable NeighbourBelow { get; set; }
+public abstract class CardMaterial(string textureAddress)
+    : Card(textureAddress, true) {
 }

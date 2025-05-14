@@ -27,7 +27,7 @@ public class CameraController : ITickable {
 
     private const float X_SHAKE_FREQUENCY = 200f;
     private const float Y_SHAKE_FREQUENCY = 290f;
-    private readonly static Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
+    private static readonly Vector2 CAMERA_ORIGIN = new(1280 / 2, 720 / 2);
 
     #endregion Static values
 
