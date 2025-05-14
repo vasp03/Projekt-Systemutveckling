@@ -98,9 +98,8 @@ public partial class CardNode : Node2D {
             UpdateZIndex();
         } else {
             if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
-            if (OverlappingCard is null) ZIndex = 1;
-
-            UpdateZIndexForStack();
+            BottomCardOfStack.ZIndex = 1;
+            BottomCardOfStack.UpdateZIndexForStack();
         }
     }
 
@@ -111,7 +110,7 @@ public partial class CardNode : Node2D {
 
     private void UpdateZIndexForStack() {
         int zIndexCounter = ZIndex;
-        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = zIndexCounter++;
+        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = ++zIndexCounter;
     }
 
     /// <summary>
