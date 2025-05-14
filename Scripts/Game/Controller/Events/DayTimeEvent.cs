@@ -13,7 +13,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
         canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-        gameController.MenuController.AddPauseCallback(this);
+        gameController.AddPauseCallback(this);
     }
 
     public override string EventName => "Day Time Event";

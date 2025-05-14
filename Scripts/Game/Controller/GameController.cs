@@ -160,4 +160,23 @@ public partial class GameController : Node2D {
     }
 
     #endregion Initialization
+    #region Callbacks related
+
+    private readonly IList<IPausable> pausedCallbacks = [];
+
+    public void CallPausedCallbacks(bool isPaused) {
+        if (pausedCallbacks is null) return;
+
+        foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
+    }
+
+    public void AddPauseCallback(IPausable callback) {
+        pausedCallbacks.Add(callback);
+    }
+
+    public void RemovePauseCallback(IPausable callback) {
+        pausedCallbacks.Remove(callback);
+    }
+
+    #endregion Callbacks related
 }
