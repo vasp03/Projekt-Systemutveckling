@@ -193,30 +193,6 @@ public class CardController {
         } else {
             selectedCard.Sell();
         }
-
-        // if (!GodotObject.IsInstanceValid(selectedCard) || selectedCard.IsQueuedForDeletion()) {
-        //     selectedCard = null;
-        //     return;
-        // }
-// 
-        // if (selectedCard is not null) {
-        //     SetZIndexForAllCards(selectedCard);
-        //     selectedCard.Dragged = true;
-// 
-        //     if (selectedCard.HasNeighbourAbove)
-        //         selectedCard.IsMovingOtherCards = true;
-        //     else
-        //         // Set the card that is being dragged to the top
-        //         selectedCard.ZIndex = CardCount + 1;
-
-        // Set the neighbour below to null if the card is moved to make the moved card able to get new neighbours
-        // And sets the card below if it exists to not have a neighbour above
-        // TODO: ?
-        // if (selectedCard.HasNeighbourBelow)
-        //     if (selectedCard.CardType is IStackable stackable) {
-        //         if (stackable.NeighbourBelow is not null) stackable.NeighbourBelow.NeighbourAbove = null;
-        //         stackable.NeighbourBelow = null;
-        //     }
     }
 
     /// <summary>
@@ -225,13 +201,7 @@ public class CardController {
     public void LeftMouseButtonReleased() {
         MouseController.SetMouseCursor(MouseCursorEnum.point_small);
         if (selectedCard is not null) selectedCard.Dragged = false;
-        // // Checks for a card under the moved card and sets if it exists as a neighbour below. 
-        // CardNode underCard = GetCardUnderMovedCard();
-        // if (underCard is not null && !selectedCard.HasNeighbourBelow) {
-        //     selectedCard.SetOverLappedCardToStack(underCard);
-        // } else {
-        //     selectedCard.NeighbourBelow = null;
-        // }
+
         // Checks if a card is supposed to have a craft button above it
         foreach (CardNode card in AllCards)
             if (Stacks.Contains(card) &&
@@ -239,10 +209,9 @@ public class CardController {
                     .ToArray()) is not null) {
                 AddCraftButton(card);
             } else {
-                if (card.CraftButton is not null) {
-                    card.CraftButton.QueueFree();
-                    card.CraftButton = null;
-                }
+                if (card.CraftButton is null) continue;
+                card.CraftButton.QueueFree();
+                card.CraftButton = null;
             }
     }
 
