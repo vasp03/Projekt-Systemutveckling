@@ -432,6 +432,16 @@ public partial class CardNode : Node2D {
         QueueFree();
     }
 
+    public bool Sell() {
+        if ((CardType?.Value ?? -1) < 0) return false;
+        int cardValue = CardType.Value;
+        Global.Singleton.AddMoney(cardValue);
+        GameController.Singleton.HUD.ShowFloatingMoneyLabel(cardValue);
+            
+        Destroy();
+        return true;
+    }
+
     public void _on_area_2d_mouse_entered() {
         MouseIsHovering = true;
         CardController.AddCardToHoveredCards(this);
