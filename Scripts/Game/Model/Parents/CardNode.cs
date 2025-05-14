@@ -243,7 +243,7 @@ public partial class CardNode : Node2D {
         } else if (HasNeighbourBelow && !Dragged) {
             Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
 
-            ZIndex = NeighbourBelow?.ZIndex + 1 ?? 0;
+            //ZIndex = NeighbourBelow?.ZIndex + 1 ?? 0;
         }
     }
 
