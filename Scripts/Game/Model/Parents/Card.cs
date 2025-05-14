@@ -37,16 +37,16 @@ public abstract class Card {
     }
 
     /// <summary>
-    /// Determines if this Card may stack with the <see cref="cardBelow"/> that is below this card
+    ///     Determines if this Card may stack with the <see cref="cardBelow" /> that is below this card
     /// </summary>
     /// <param name="cardBelow">CX</param>
     /// <returns>True will allow stacking, false will deny it</returns>
     public virtual bool CanStackBelow(Card cardBelow) {
         return true;
     }
-    
+
     /// <summary>
-    /// Determines if this Card may stack with the <see cref="cardAbove"/> that is above this card
+    ///     Determines if this Card may stack with the <see cref="cardAbove" /> that is above this card
     /// </summary>
     /// <param name="cardAbove"></param>
     /// <returns></returns>
