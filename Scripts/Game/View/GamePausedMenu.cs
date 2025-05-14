@@ -9,9 +9,9 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GamePausedMenu : Control {
 	private MenuController menuController;
 	private SoundController soundController;
-    
-    private CanvasLayer exitConfirmationBox;
-    private VBoxContainer buttonContainer;
+	
+	private CanvasLayer exitConfirmationBox;
+	private VBoxContainer buttonContainer;
 
 	public override void _Ready() {
 		menuController = GetNode<MenuController>("/root/MenuController");
@@ -32,13 +32,13 @@ public partial class GamePausedMenu : Control {
 		Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
 		exitButton.Pressed += OnExitButtonPressed;
 	exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");
-        
-        Button yesButton = exitConfirmationBox.GetNode<Button>("YesButton");
-        yesButton.Pressed += () => OnConfirmationButtonPressed(1);
-        
-        Button noButton = exitConfirmationBox.GetNode<Button>("NoButton");
-        noButton.Pressed += () => OnConfirmationButtonPressed(0);
-    }
+		
+		Button yesButton = exitConfirmationBox.GetNode<Button>("YesButton");
+		yesButton.Pressed += () => OnConfirmationButtonPressed(1);
+		
+		Button noButton = exitConfirmationBox.GetNode<Button>("NoButton");
+		noButton.Pressed += () => OnConfirmationButtonPressed(0);
+	}
 
 	/// <summary>
 	///     Handles the button press event for the resume button.
@@ -70,25 +70,25 @@ public partial class GamePausedMenu : Control {
 	/// <summary>
 	///     Handles the button press event for the exit button.
 	///     Opens the exit confirmation box.
-    /// </summary>
-    private void OnExitButtonPressed() {
-        buttonContainer.Visible = false;
-        exitConfirmationBox.Visible = true;
-    }
-    
-    /// <summary>
-    /// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
+	/// </summary>
+	private void OnExitButtonPressed() {
+		buttonContainer.Visible = false;
+		exitConfirmationBox.Visible = true;
+	}
+	
+	/// <summary>
+	/// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
 	/// </summary>
 	/// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
-    private void OnConfirmationButtonPressed(int choice) {
-        switch (choice) {
-            case 0:
-                exitConfirmationBox.Visible = false;
-                buttonContainer.Visible = true;
-                break;
-            case 1:
-                exitConfirmationBox.Visible = false;
-                buttonContainer.Visible = true;
+	private void OnConfirmationButtonPressed(int choice) {
+		switch (choice) {
+			case 0:
+				exitConfirmationBox.Visible = false;
+				buttonContainer.Visible = true;
+				break;
+			case 1:
+				exitConfirmationBox.Visible = false;
+				buttonContainer.Visible = true;
 		// Await is required to synchronize scene change
 		// await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 		ChangeSceneDeferred();
@@ -96,9 +96,9 @@ public partial class GamePausedMenu : Control {
 		soundController.ToggleMusicMuted();
 		soundController.PlayMenuMusic();
 	break;
-            
-        }
-    }
+			
+		}
+	}
 
 	/// <summary>
 	///     Changes the scene through deferred action.

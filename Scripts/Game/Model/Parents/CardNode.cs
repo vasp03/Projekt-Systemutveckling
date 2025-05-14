@@ -271,12 +271,12 @@ public partial class CardNode : Node2D {
 
 	public void Destroy() {
 		ClearReferences();
-        
-        if (CraftButton is not null) {
-            CraftButton.QueueFree();
-            CraftButton = null;
-        }
-        
+		
+		if (CraftButton is not null) {
+			CraftButton.QueueFree();
+			CraftButton = null;
+		}
+		
 		QueueFree();
 	}
 	

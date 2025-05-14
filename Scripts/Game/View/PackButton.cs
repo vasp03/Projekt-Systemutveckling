@@ -14,25 +14,25 @@ public partial class PackButton : TextureButton {
 	public CardPack Pack { get; private set; }
 	public event PackClickedHandler PackClicked;
 
-    public override void _Ready() {
-        _costLabel = GetNode<Label>("PriceLabel");
-        _originalPosition = Position;
-    }
+	public override void _Ready() {
+		_costLabel = GetNode<Label>("PriceLabel");
+		_originalPosition = Position;
+	}
 
-    public void SetPack(CardPack pack) {
-        Pack = pack;
+	public void SetPack(CardPack pack) {
+		Pack = pack;
 
-        _costLabel ??= GetNode<Label>("PriceLabel");
+		_costLabel ??= GetNode<Label>("PriceLabel");
 
-        _costLabel.Text = pack.Cost == 0 ? "Free" : $"{pack.Cost}g";
+		_costLabel.Text = pack.Cost == 0 ? "Free" : $"{pack.Cost}g";
 
-        string texturePath = $"res://Assets/Packs/{pack.Name.Replace(" ", "_")}.png";
-        if (ResourceLoader.Exists(texturePath)) {
-            TextureNormal = GD.Load<Texture2D>(texturePath);
-        } else {
-            GD.PrintErr($"Texture not found for pack: {pack.Name}");
-        }
-    }
+		string texturePath = $"res://Assets/Packs/{pack.Name.Replace(" ", "_")}.png";
+		if (ResourceLoader.Exists(texturePath)) {
+			TextureNormal = GD.Load<Texture2D>(texturePath);
+		} else {
+			GD.PrintErr($"Texture not found for pack: {pack.Name}");
+		}
+	}
 
 	public void OnMouseEntered() {
 		_originalPosition = Position;
