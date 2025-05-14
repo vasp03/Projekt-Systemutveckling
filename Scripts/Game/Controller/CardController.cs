@@ -275,8 +275,6 @@ public class CardController {
         foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
             if (cardInStackAbove.CardType is Card card) {
                 // cardInStackAbove.ClearNeighbours();
-                if (cardInStackAbove is CardBuilding ||
-                    (cardInStackAbove is LivingPlayer && !recipe.Right)) continue;
 
                 if (cardInStackAbove is IDurability durability) {
                     bool ret = durability.DecrementDurability();

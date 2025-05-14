@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 
+namespace Goodot15.Scripts.Game.Model.Parents;
+
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
     private const string textureEnding = ".png";

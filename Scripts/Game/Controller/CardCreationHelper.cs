@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Material_Cards;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Controller;
 

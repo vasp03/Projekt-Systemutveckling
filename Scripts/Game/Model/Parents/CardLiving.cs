@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model;
 

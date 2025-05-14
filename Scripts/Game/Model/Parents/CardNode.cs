@@ -6,6 +6,7 @@ using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
 

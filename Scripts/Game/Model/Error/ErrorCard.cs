@@ -1,3 +1,5 @@
+using Goodot15.Scripts.Game.Model.Parents;
+
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class ErrorCard() : Card("Error", true) {
