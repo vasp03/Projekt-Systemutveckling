@@ -1,19 +1,27 @@
 ﻿namespace Goodot15.Scripts.Game.Model;
 
 /// <summary>
-///     A simple construct, holds 2 values being <see cref="T" /> and <see cref="K" />.<br />
-///     Values are accessed through <see cref="Left" /> and <see cref="Right" /> for <see cref="T" /> and <see cref="K" />
+///     A simple construct, holds 2 values being <see cref="L" /> and <see cref="R" />.<br />
+///     Values are accessed through <see cref="Left" /> and <see cref="Right" /> for <see cref="L" /> and <see cref="R" />
 ///     respectively.
 /// </summary>
 /// <param name="Left"></param>
 /// <param name="Right"></param>
-/// <typeparam name="T"></typeparam>
-/// <typeparam name="K"></typeparam>
-public record Pair<T, K>(T Left, K Right) {
-    public T Left { get; set; } = Left;
-    public K Right { get; set; } = Right;
+/// <typeparam name="L"></typeparam>
+/// <typeparam name="R"></typeparam>
+public record Pair<L, R> {
+    public Pair() {
+        Left = default;
+        Right = default;
+    }
+    public Pair(L left, R right) {
+        Left = left;
+        Right = right;
+    }
+    public L Left { get; set; }
+    public R Right { get; set; }
 
-    public virtual bool Equals(Pair<T, K> other) {
+    public virtual bool Equals(Pair<L, R> other) {
         return Left.Equals(other is null ? default : other.Left) && Right.Equals(other is null ? default : other.Right);
     }
 
