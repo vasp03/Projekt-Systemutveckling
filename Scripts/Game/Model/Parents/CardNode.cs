@@ -15,14 +15,19 @@ using Vector2 = Godot.Vector2;
 /// </summary>
 public partial class CardNode : Node2D {
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
-    public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, -20);
+    public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, 20);
     private bool dragged;
     private bool oldIsHighlighted;
     private Vector2 oldMousePosition;
 
 
+    private static int startingZIndex = 0;
     public CardNode() {
         AddToGroup(CardController.CARD_GROUP_NAME);
+        
+        this.ZIndex = startingZIndex;
+        startingZIndex = ++startingZIndex % 1024;
+
     }
 
 
@@ -184,34 +189,34 @@ public partial class CardNode : Node2D {
     /// <param name="delta"></param>
     public override void _Process(double delta) {
         if (Dragged) {
-            // if (HasNeighbourBelow) return;
-
             Vector2 mousePosition = GetGlobalMousePosition();
-            // IStackable stackable = CardType is IStackable stack ? stack : null;
-            CardNode bottomCard = BottomCardOfStack;
-            int neighboursAbove = StackAbove.Count;
             Vector2 mousePositionDelta = mousePosition - oldMousePosition;
 
-            if (bottomCard.Position.Y <= 64 && mousePositionDelta.Y < 0) mousePositionDelta.Y = 0;
+            if (BottomCardOfStack.Position.Y <= 64 && mousePositionDelta.Y < 0) mousePositionDelta.Y = 0;
             ClampPositionInGameSpace(mousePositionDelta);
-
-
-            if (CraftButton is not null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
-
-            oldMousePosition = mousePosition;
             
+            UpdateCraftButtonPosition();
             UpdateCardPositions();
+            
+            oldMousePosition = mousePosition;
         } else if (HasNeighbourBelow && !Dragged) {
-
-            Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
+            // UpdateCardPositions();
+            // Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
             //ZIndex = NeighbourBelow?.ZIndex + 1 ?? 0;
         }
     }
 
+    private void UpdateCraftButtonPosition() {
+        if (CraftButton is not null) CraftButton.Position = Position + CardController.CRAFT_BUTTON_OFFSET;
+    }
+
+    /// <summary>
+    /// "Recursively" updates each card position to account for their stack position
+    /// </summary>
     private void UpdateCardPositions() {
-        int i = 0;
+        int indexInStack = 0;
         foreach (CardNode cardNode in StackAbove) {
-            cardNode.Position += CARD_OVERLAP_OFFSET * ++i;
+            cardNode.Position = this.Position + CARD_OVERLAP_OFFSET * ++indexInStack;
         }
     }
     
@@ -219,10 +224,6 @@ public partial class CardNode : Node2D {
         ITickable tickableCardType = CardType as ITickable;
         tickableCardType?.PreTick();
         tickableCardType?.PostTick();
-
-        if (!Dragged && HasNeighbourBelow) {
-            
-        }
     }
 
     private void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
@@ -399,6 +400,10 @@ public partial class CardNode : Node2D {
         } else {
             if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
             ResetZIndex();
+
+            if (HasNeighbourBelow) {
+                NeighbourBelow.UpdateCardPositions();
+            }
         }
     }
 
