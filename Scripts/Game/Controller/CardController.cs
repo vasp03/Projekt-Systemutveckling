@@ -324,23 +324,23 @@ public class CardController {
         return topCard;
     }
 
-    /// <summary>
-    ///     Gets the card under the moved card.
-    /// </summary>
-    /// <returns>
-    ///     The card under the moved card or null if no card is found.
-    /// </returns>
-    private CardNode GetCardUnderMovedCard() {
-        IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
-
-        CardNode topUnderCard = null;
-
-        foreach (CardNode card in hoveredCardsSorted)
-            if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
-                topUnderCard = card;
-
-        return topUnderCard;
-    }
+    ///// <summary>
+    /////     Gets the card under the moved card.
+    ///// </summary>
+    ///// <returns>
+    /////     The card under the moved card or null if no card is found.
+    ///// </returns>
+    //private CardNode GetCardUnderMovedCard() {
+    //    IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
+//
+    //    CardNode topUnderCard = null;
+//
+    //    foreach (CardNode card in hoveredCardsSorted)
+    //        if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
+    //            topUnderCard = card;
+//
+    //    return topUnderCard;
+    //}
 
     /// <summary>
     ///     Called when the left mouse button is pressed.
@@ -506,7 +506,7 @@ public class CardController {
         CardNode cardInstance = CreateCard();
 
         cardInstance.CardType = card;
-        cardInstance.CardController = this;
+        // CardNode.CardController = this;
 
         cardInstance.Position = position;
         if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
@@ -530,7 +530,7 @@ public class CardController {
         PackedScene cardScene = GD.Load<PackedScene>("res://Scenes/Card.tscn");
         CardNode cardInstance = cardScene.Instantiate<CardNode>();
 
-        cardInstance.CardController = this;
+        // CardNode.CardController = this;
 
         cardInstance.ZIndex = CardCount + 1;
         GameController.AddChild(cardInstance);
