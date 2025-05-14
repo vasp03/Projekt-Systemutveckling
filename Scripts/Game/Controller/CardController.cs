@@ -248,9 +248,6 @@ public class CardController {
             }
     }
 
-    private void CheckForStacking() {
-    }
-
     /// <summary>
     ///     Crafts a card from the specified card node.
     /// </summary>
