@@ -14,10 +14,12 @@ public record Pair<L, R> {
         Left = default;
         Right = default;
     }
+
     public Pair(L left, R right) {
         Left = left;
         Right = right;
     }
+
     public L Left { get; set; }
     public R Right { get; set; }
 

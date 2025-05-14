@@ -188,13 +188,16 @@ public class CardController {
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
-        if (GameController.SellModeActive) {
-            Global.Singleton.AddMoney(selectedCard.CardType.Value);
-            selectedCard.Destroy();
-            return;
+        switch (GameController.SellModeActive)
+        {
+            case true when selectedCard.CardType.Value >= 0:
+                Global.Singleton.AddMoney(selectedCard.CardType.Value);
+                selectedCard.Destroy();
+                return;
+            case false:
+                selectedCard.Dragged = true;
+                break;
         }
-
-        selectedCard.Dragged = true;
 
         // if (!GodotObject.IsInstanceValid(selectedCard) || selectedCard.IsQueuedForDeletion()) {
         //     selectedCard = null;
