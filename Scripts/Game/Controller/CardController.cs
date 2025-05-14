@@ -243,7 +243,7 @@ public class CardController {
 
         // Remove the cards in the stack part of cardNode
         foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
-            if (cardInStackAbove.CardType is Card card) {
+            if (cardInStackAbove.CardType is not null) {
                 // cardInStackAbove.ClearNeighbours();
 
                 if (cardInStackAbove.CardType is IDurability durability) {
@@ -251,12 +251,12 @@ public class CardController {
 
                     GD.Print("Ret: " + recipe.Right + " " + ret);
 
-                    if (ret || recipe.Right) card.CardNode.Destroy();
+                    if (ret || recipe.Right) cardInStackAbove.Destroy();
 
                     continue;
                 }
 
-                card.CardNode.Destroy();
+                cardInStackAbove.Destroy();
             }
 
         foreach (string cardName in recipe.Left) {
