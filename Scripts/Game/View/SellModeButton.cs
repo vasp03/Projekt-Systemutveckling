@@ -15,7 +15,7 @@ public partial class SellModeButton : TextureButton {
         iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
         iconOff = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
 
-        CallDeferred(nameof(Setup));
+        Setup();
     }
 
     private void Setup() {

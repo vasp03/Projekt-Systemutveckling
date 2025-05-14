@@ -186,8 +186,15 @@ public class CardController {
     public void LeftMouseButtonPressed() {
         MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
         selectedCard = GetTopCardAtMousePosition();
-        if (selectedCard is not null)
-            selectedCard.Dragged = true;
+        if (selectedCard is null) return;
+        
+        if (GameController.SellModeActive) {
+            Global.Singleton.AddMoney(selectedCard.CardType.Value);
+            selectedCard.Destroy();
+            return;
+        }
+
+        selectedCard.Dragged = true;
 
         // if (!GodotObject.IsInstanceValid(selectedCard) || selectedCard.IsQueuedForDeletion()) {
         //     selectedCard = null;
