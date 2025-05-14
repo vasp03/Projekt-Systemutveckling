@@ -20,7 +20,7 @@ public abstract class Card {
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
     }
-    
+
     public abstract int Value { get; }
     public string ID { get; private set; }
     public string TexturePath { get; }

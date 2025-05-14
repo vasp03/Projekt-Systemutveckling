@@ -31,13 +31,10 @@ public class DayTimeEvent : GameEventBase, IPausable {
             return;
 
         if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer) ||
-            !canvasLayer.IsInsideTree()) {
+            !canvasLayer.IsInsideTree())
             canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
-        }
 
-        if (!GodotObject.IsInstanceValid(timeLabel)) {
-            timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
-        }
+        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
 
         this.isPaused = isPaused;
 
@@ -94,13 +91,9 @@ public class DayTimeEvent : GameEventBase, IPausable {
     private void SetSceneDarkness(float darkness) {
         darkness = Mathf.Clamp(darkness, 0, 1);
 
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) {
-            return;
-        }
+        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
 
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) {
-            sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-        }
+        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }

@@ -4,7 +4,6 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
-using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 
@@ -276,7 +275,7 @@ public class CardController {
             if (cardInStackAbove.CardType is Card card) {
                 // cardInStackAbove.ClearNeighbours();
 
-                if (cardInStackAbove is IDurability durability) {
+                if (cardInStackAbove.CardType is IDurability durability) {
                     bool ret = durability.DecrementDurability();
 
                     GD.Print("Ret: " + recipe.Right + " " + ret);

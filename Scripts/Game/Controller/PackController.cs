@@ -43,9 +43,7 @@ public partial class PackController : HBoxContainer {
     private void DisplayAvailablePacks() {
         if (global is null || PackButtonScene is null) return;
 
-        foreach (Node child in GetChildren()) {
-            child.QueueFree();
-        }
+        foreach (Node child in GetChildren()) child.QueueFree();
 
         foreach (CardPack pack in availablePacks) {
             PackButton button = PackButtonScene.Instantiate<PackButton>();
@@ -68,7 +66,7 @@ public partial class PackController : HBoxContainer {
         }
 
         global.AddMoney(-pack.Cost);
-        
+
         ShowFloatingMoneyLabel(-pack.Cost);
 
         List<string> cardsToSpawn = pack.Name == "Starter Pack"
@@ -121,10 +119,10 @@ public partial class PackController : HBoxContainer {
 
         return selectedCards;
     }
-    
+
     private void ShowFloatingMoneyLabel(int amount) {
-        var labelScene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
-        var floatingLabel = labelScene.Instantiate<FloatingMoneyLabel>();
+        PackedScene labelScene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
+        FloatingMoneyLabel floatingLabel = labelScene.Instantiate<FloatingMoneyLabel>();
         floatingLabel.SetAmount(amount);
 
         floatingLabel.Position = GameController.Singleton.GetMousePosition();

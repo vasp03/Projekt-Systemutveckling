@@ -1,8 +1,8 @@
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class MaterialSwordMk1() : CardMaterial("Sword"), IDurability {
-    public int Durability { get; private set; } = 10;
     public override int Value => 45;
+    public int Durability { get; private set; } = 10;
 
     public bool DecrementDurability() {
         Durability--;
