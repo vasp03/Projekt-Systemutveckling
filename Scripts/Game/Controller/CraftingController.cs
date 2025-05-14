@@ -22,7 +22,7 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    public Pair<IReadOnlyList<string>, bool> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
+    public Pair<IReadOnlyCollection<string>, bool> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
         List<Pair<string, int>> CardForCraftingAmount = [];
 
         foreach (Card card in Cards) {
@@ -40,7 +40,7 @@ public class CraftingController {
         foreach (CraftingRecipe recipe in recipes) {
             List<Pair<string, int>> CardsInRecipeAndAmount = [];
 
-            foreach (string cardName in recipe.CardsForCrafting) {
+            foreach (string cardName in recipe.CraftingIngredients) {
                 Pair<string, int> cardInRecipe = CardsInRecipeAndAmount.FirstOrDefault(x => x.Left == cardName);
                 if (cardInRecipe is not null)
                     cardInRecipe.Right++;
@@ -64,8 +64,8 @@ public class CraftingController {
                 }
 
             if (recipeMatches) {
-                List<string> craftedCards = recipe.CardsForCraftingResult;
-                return new Pair<IReadOnlyList<string>, bool>(craftedCards.AsReadOnly(), recipe.ConsumeTool);
+                IReadOnlyCollection<string> craftedCards = recipe.CraftingResult;
+                return new Pair<IReadOnlyCollection<string>, bool>(craftedCards.ToList(), recipe.ConsumeTool);
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 
@@ -188,11 +189,10 @@ public class CardController {
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
-        if (!GameController.SellModeActive) {
+        if (!GameController.SellModeActive)
             selectedCard.Dragged = true;
-        } else {
+        else
             selectedCard.Sell();
-        }
     }
 
     /// <summary>
@@ -230,7 +230,7 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyList<string>, bool> recipe =
+        Pair<IReadOnlyCollection<string>, bool> recipe =
             CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
                 .ToArray());
 

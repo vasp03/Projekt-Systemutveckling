@@ -1,5 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 

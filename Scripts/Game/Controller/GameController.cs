@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Godot;
 using Goodot15.Scripts.Game.Controller.Events;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
 
@@ -135,7 +136,7 @@ public partial class GameController : Node2D {
 
     public override void _Ready() {
         ConfigureControllers();
-		SetupControllers();
+        SetupControllers();
         SetupUI();
     }
 

@@ -2,17 +2,13 @@ using System.Collections.Generic;
 
 namespace Goodot15.Scripts.Game.Model.Div;
 
-public class CraftingRecipe {
-    public CraftingRecipe(string name, List<string> cardsForCrafting, List<string> cardsForCraftingResult,
-        bool consumeTool = false) {
-        Name = name;
-        CardsForCrafting = cardsForCrafting;
-        CardsForCraftingResult = cardsForCraftingResult;
-        ConsumeTool = consumeTool;
-    }
-
-    public string Name { get; private set; }
-    public List<string> CardsForCrafting { get; private set; }
-    public List<string> CardsForCraftingResult { get; private set; }
-    public bool ConsumeTool { get; private set; }
+public class CraftingRecipe(
+    string name,
+    IReadOnlyCollection<string> craftingIngredients,
+    IReadOnlyCollection<string> craftingResult,
+    bool consumeTool = false) {
+    public string Name { get; private set; } = name;
+    public IReadOnlyCollection<string> CraftingIngredients { get; private set; } = craftingIngredients;
+    public IReadOnlyCollection<string> CraftingResult { get; private set; } = craftingResult;
+    public bool ConsumeTool { get; private set; } = consumeTool;
 }

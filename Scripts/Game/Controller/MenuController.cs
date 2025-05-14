@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;

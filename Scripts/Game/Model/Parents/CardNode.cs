@@ -437,7 +437,7 @@ public partial class CardNode : Node2D {
         int cardValue = CardType.Value;
         Global.Singleton.AddMoney(cardValue);
         GameController.Singleton.HUD.ShowFloatingMoneyLabel(cardValue);
-            
+
         Destroy();
         return true;
     }

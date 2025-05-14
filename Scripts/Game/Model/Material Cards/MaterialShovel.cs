@@ -1,3 +1,5 @@
+using Goodot15.Scripts.Game.Model.Interface;
+
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class MaterialShovel() : CardMaterial("Shovel"), IDurability {
