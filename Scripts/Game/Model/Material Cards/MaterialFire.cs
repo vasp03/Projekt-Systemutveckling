@@ -9,6 +9,8 @@ public class MaterialFire() : CardMaterial("Fire", 0), ITickable, ICardConsumer 
 
     private int LastFireDamageTick;
 
+    public override int Value => -1;
+
     public bool ConsumeCard(Card otherCard) {
         if (otherCard is MaterialWater) {
             Extinguish();

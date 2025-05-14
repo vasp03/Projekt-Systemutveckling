@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 
 public abstract class Card {
-    private const string BaseTexturePath = "res://Assets/Cards/Ready To Use/";
-    private const string TextureEnding = ".png";
-    public readonly int CardValue;
+    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
+    private const string textureEnding = ".png";
 
     /// <summary>
     ///     Constructor for the Card class
@@ -13,14 +12,14 @@ public abstract class Card {
     /// <param name="textureAddress"></param>
     /// <param name="movable"></param>
     /// <param name="name"></param>
-    public Card(string textureAddress, bool movable, int cardValue) {
+    public Card(string textureAddress, bool movable) {
         // Generate a unique uuid as name
         ID = Guid.NewGuid().ToString();
-        TexturePath = BaseTexturePath + textureAddress + TextureEnding;
+        TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
-        CardValue = cardValue;
     }
-
+    
+    public abstract int Value { get; }
     public string ID { get; private set; }
     public string TexturePath { get; }
     public CardNode CardNode { get; set; }
