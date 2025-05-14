@@ -52,7 +52,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private readonly static int damageEffectPulseTimer = Utilities.TimeToTicks(1);
+    private static readonly int damageEffectPulseTimer = Utilities.TimeToTicks(1);
     private int remainingDamageEffectPulseTimer;
 
     /// <summary>

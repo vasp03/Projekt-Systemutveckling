@@ -7,11 +7,11 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the pause menu.
 /// </summary>
 public partial class GamePausedMenu : Control {
+    private VBoxContainer buttonContainer;
+
+    private CanvasLayer exitConfirmationBox;
     private MenuController menuController;
     private SoundController soundController;
-    
-    private CanvasLayer exitConfirmationBox;
-    private VBoxContainer buttonContainer;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
@@ -31,12 +31,12 @@ public partial class GamePausedMenu : Control {
 
         Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
         exitButton.Pressed += OnExitButtonPressed;
-        
+
         exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");
-        
+
         Button yesButton = exitConfirmationBox.GetNode<Button>("YesButton");
         yesButton.Pressed += () => OnConfirmationButtonPressed(1);
-        
+
         Button noButton = exitConfirmationBox.GetNode<Button>("NoButton");
         noButton.Pressed += () => OnConfirmationButtonPressed(0);
     }
@@ -74,9 +74,10 @@ public partial class GamePausedMenu : Control {
         buttonContainer.Visible = false;
         exitConfirmationBox.Visible = true;
     }
-    
+
     /// <summary>
-    /// handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation box.
+    ///     handles the button press event for the confirmation buttons. Either exits to main menu or closes the confirmation
+    ///     box.
     /// </summary>
     /// <param name="choice">0 = No, cancel the exit. 1 = Yes, exit to main menu</param>
     private void OnConfirmationButtonPressed(int choice) {
@@ -95,7 +96,6 @@ public partial class GamePausedMenu : Control {
                 soundController.ToggleMusicMuted();
                 soundController.PlayMenuMusic();
                 break;
-            
         }
     }
 

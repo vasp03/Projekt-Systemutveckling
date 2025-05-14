@@ -16,10 +16,7 @@ using Vector2 = Godot.Vector2;
 public partial class CardNode : Node2D {
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
     public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, -20);
-    
-
-    private CardNode lastOverlappedCard { get; set; }
-    private CardNode OverlappingCard => area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).Where(e=>e.ZIndex<ZIndex).OrderByDescending(e=>e.ZIndex).FirstOrDefault();
+    private bool dragged;
     private bool oldIsHighlighted;
     private Vector2 oldMousePosition;
 
@@ -28,153 +25,40 @@ public partial class CardNode : Node2D {
         AddToGroup(CardController.CARD_GROUP_NAME);
     }
 
+
+    private CardNode lastOverlappedCard { get; set; }
+
+    private CardNode OverlappingCard => area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D)
+        .Where(e => e.ZIndex < ZIndex).OrderByDescending(e => e.ZIndex).FirstOrDefault();
+
     public static CardController CardController => GameController.Singleton.CardController;
     private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
     private Area2D area2D => GetNode<Area2D>("Area2D");
     public bool MouseIsHovering { get; private set; }
-    private bool dragged;
-    public bool Dragged { 
+
+    public bool Dragged {
         get => dragged;
         set {
             dragged = value;
             OnDragChanged(value);
         }
     }
+
     //public List<CardNode> HoveredCards { get; } = [];
     //public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
     public Vector2 CardSize => sprite?.Texture?.GetSize() ?? new Vector2(80, 128);
 
-    #region Underlying Card Data
-    private Card _cardType;
-    public Card CardType {
-        get => _cardType;
-        set {
-            if (_cardType is not null) _cardType.CardNode = null;
-
-            value.CardNode = this;
-            _cardType = value;
-            ApplyTexture();
-        }
-    }
-    #endregion
-    
-    #region Stack-related properties
-
-    private CardNode cardAbove;
-    private CardNode cardBelow;
-    
-    public CardNode NeighbourAbove {
-        get => IsInstanceValid(cardAbove) ? cardAbove : null;
-        set {
-            // Setting it to null means clearing the reference as well
-            if (value is null) {
-                if (HasNeighbourAbove) {
-                    cardAbove.cardBelow = null;
-                }
-                cardAbove = null;
-                return;
-            }
-            cardAbove = value;
-            cardAbove.cardBelow = this;
-        }
-    }
-
-    public CardNode NeighbourBelow {
-        get => IsInstanceValid(cardBelow) ? cardBelow : null;
-        set {
-            // Setting it to null means clearing the reference as well
-            if (value is null) {
-                if (HasNeighbourBelow) {
-                    cardBelow.cardAbove = null;
-                }
-                cardBelow = null;
-                return;
-            }
-            cardBelow = value;
-            cardBelow.cardAbove = this;
-        }
-    }
-    
-    #region Stack collection getters
-    /// <summary>
-    ///     Traverse the stack from this <see cref="CardNode"/> instance, both forward and backwards.<br/>
-    ///     Gets the current entire stack collection
-    /// </summary>
-    public IReadOnlyCollection<CardNode> Stack => new List<CardNode>(this.StackBelow).Append(this).Union(StackAbove).ToArray();
-
-    /// <summary>
-    /// Traverse the stack from this <see cref="CardNode"/> instance, forwards only.<br/>
-    /// Gets the current stack collection above
-    /// </summary>
-    public IReadOnlyList<CardNode> StackBelow {
-        get {
-            IList<CardNode> stackBackwards = [];
-            
-            CardNode current = this;
-            // Traverse backwards
-            while (current is not null && current.HasNeighbourBelow) {
-                CardNode next = current.NeighbourBelow;
-                stackBackwards.Add(next);
-                current = next;
-            }
-            
-            return stackBackwards.Reverse().ToArray();
-        }
-    }
-    
-    /// <summary>
-    /// Traverse the stack from this <see cref="CardNode"/> instance, backwards only.<br/>
-    /// Gets the current stack collection below
-    /// </summary>
-    public IReadOnlyList<CardNode> StackAbove {
-        get {
-            IList<CardNode> stackForwards = [];
-
-            CardNode current = this;
-            // Traverse forwards
-            while (current is not null && current.HasNeighbourAbove) {
-                CardNode next = current.NeighbourAbove;
-                stackForwards.Add(next);
-                current = next;
-            }
-
-            return stackForwards.ToArray();
-        }
-    }
-
-    /// <summary>
-    /// Similar to <see cref="StackAbove"/>; But also includes this instance in the collection, positioned first in the collection.
-    /// </summary>
-    public IReadOnlyList<CardNode> StackAboveWithItself => new List<CardNode>([this]).Union(StackAbove).ToArray();
-
-    /// <summary>
-    /// Similar to <see cref="StackBelow"/>; But also includes this instance in the collection, positioned last in the collection.
-    /// </summary>
-    public IReadOnlyList<CardNode> StackBelowWithItself => new List<CardNode>(StackBelow).Append(this).ToArray();
-    
-    /// <summary>
-    /// Gets the <see cref="CardNode"/> at the bottom of the stack.
-    /// </summary>
-    public CardNode BottomCardOfStack => this.StackBelowWithItself.FirstOrDefault();
-    
-    /// <summary>
-    /// Gets the <see cref="CardNode"/> at the top the stack.
-    /// </summary>
-    public CardNode TopCardOfStack => this.StackAboveWithItself.LastOrDefault();
-    #endregion Stack collection getters
-    
-    #endregion Stack-related properties
     /// <summary>
     ///     Sets the position of the card node to the given position.
     /// </summary>
-    public bool HasNeighbourAbove => this.NeighbourAbove is not null;
+    public bool HasNeighbourAbove => NeighbourAbove is not null;
 
     /// <summary>
     ///     Checks if the card has a neighbour below.
     /// </summary>
-    public bool HasNeighbourBelow => this.NeighbourBelow is not null;
+    public bool HasNeighbourBelow => NeighbourBelow is not null;
 
     /// <summary>
     ///     Sets the position of the card node to the given position.
@@ -183,7 +67,7 @@ public partial class CardNode : Node2D {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
 
         oldMousePosition = GetGlobalMousePosition();
-        
+
         // Executed once a card is dropped (no longer being dragged)
         if (!newDragValue) ExecuteCardConsumptionLogic();
 
@@ -191,7 +75,7 @@ public partial class CardNode : Node2D {
         //     ZIndex = CardController.CardCount;
         // else
         //     NeighbourAbove.Dragged = newDragValue;
-        
+
         ExecuteStackingLogic();
 
 
@@ -203,7 +87,7 @@ public partial class CardNode : Node2D {
 
         if (cardUnder?.CardType is not ICardConsumer cardConsumer) return false;
         if (!cardConsumer.ConsumeCard(CardType)) return false;
-        
+
         Destroy();
         return true;
     }
@@ -213,27 +97,21 @@ public partial class CardNode : Node2D {
             NeighbourBelow = null;
             UpdateZIndex();
         } else {
-            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) {
-                NeighbourBelow = OverlappingCard;
-            }
-            if (OverlappingCard is null) {
-                this.ZIndex = 1;
-            }
-            
+            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
+            if (OverlappingCard is null) ZIndex = 1;
+
             UpdateZIndexForStack();
         }
-
-
     }
+
     private void UpdateZIndex() {
         ZIndex = CardController.AllCards.Max(c => c.ZIndex) + 1;
         UpdateZIndexForStack();
     }
+
     private void UpdateZIndexForStack() {
         int zIndexCounter = ZIndex;
-        foreach (CardNode cardNode in this.StackAbove) {
-            cardNode.ZIndex = zIndexCounter++;
-        }
+        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = zIndexCounter++;
     }
 
     /// <summary>
@@ -313,9 +191,7 @@ public partial class CardNode : Node2D {
 
         SetPosition(underCard.Position - new Vector2(0, -20));
 
-        if (HasNeighbourAbove) {
-            NeighbourAbove.SetPositionAsPartOfStack(this);
-        }
+        if (HasNeighbourAbove) NeighbourAbove.SetPositionAsPartOfStack(this);
 
         // if (CardType is IStackable { NeighbourAbove: not null } stackable) {
         //     CardNode aboveCard = ((Card)stackable.NeighbourAbove).CardNode;
@@ -343,8 +219,8 @@ public partial class CardNode : Node2D {
 
             Vector2 mousePosition = GetGlobalMousePosition();
             // IStackable stackable = CardType is IStackable stack ? stack : null;
-            CardNode bottomCard = this.BottomCardOfStack;
-            int neighboursAbove = this.StackAbove.Count;
+            CardNode bottomCard = BottomCardOfStack;
+            int neighboursAbove = StackAbove.Count;
             Vector2 mousePositionDelta = mousePosition - oldMousePosition;
 
             if (bottomCard.Position.Y <= 64 && mousePositionDelta.Y < 0) mousePositionDelta.Y = 0;
@@ -365,9 +241,9 @@ public partial class CardNode : Node2D {
 
             oldMousePosition = mousePosition;
         } else if (HasNeighbourBelow && !Dragged) {
-            this.Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
-            
-            this.ZIndex = this.NeighbourBelow?.ZIndex + 1 ?? 0;
+            Position = NeighbourBelow.Position - CARD_OVERLAP_OFFSET;
+
+            ZIndex = NeighbourBelow?.ZIndex + 1 ?? 0;
         }
     }
 
@@ -377,7 +253,7 @@ public partial class CardNode : Node2D {
         tickableCardType?.PostTick();
     }
 
-    void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
+    private void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
         Position = new Vector2(
             Math.Clamp(Position.X + mousePositionDelta.X, 0 + CardSize.X / 2, 1280 - CardSize.X / 2),
             Math.Clamp(Position.Y + mousePositionDelta.Y, 0 + CardSize.Y / 2,
@@ -396,6 +272,133 @@ public partial class CardNode : Node2D {
     public static CardNode GetCardNodeFromArea2D(Area2D area2D) {
         return area2D.GetParent<CardNode>();
     }
+
+    #region Underlying Card Data
+
+    private Card _cardType;
+
+    public Card CardType {
+        get => _cardType;
+        set {
+            if (_cardType is not null) _cardType.CardNode = null;
+
+            value.CardNode = this;
+            _cardType = value;
+            ApplyTexture();
+        }
+    }
+
+    #endregion
+
+    #region Stack-related properties
+
+    private CardNode cardAbove;
+    private CardNode cardBelow;
+
+    public CardNode NeighbourAbove {
+        get => IsInstanceValid(cardAbove) ? cardAbove : null;
+        set {
+            // Setting it to null means clearing the reference as well
+            if (value is null) {
+                if (HasNeighbourAbove) cardAbove.cardBelow = null;
+                cardAbove = null;
+                return;
+            }
+
+            cardAbove = value;
+            cardAbove.cardBelow = this;
+        }
+    }
+
+    public CardNode NeighbourBelow {
+        get => IsInstanceValid(cardBelow) ? cardBelow : null;
+        set {
+            // Setting it to null means clearing the reference as well
+            if (value is null) {
+                if (HasNeighbourBelow) cardBelow.cardAbove = null;
+                cardBelow = null;
+                return;
+            }
+
+            cardBelow = value;
+            cardBelow.cardAbove = this;
+        }
+    }
+
+    #region Stack collection getters
+
+    /// <summary>
+    ///     Traverse the stack from this <see cref="CardNode" /> instance, both forward and backwards.<br />
+    ///     Gets the current entire stack collection
+    /// </summary>
+    public IReadOnlyCollection<CardNode> Stack =>
+        new List<CardNode>(StackBelow).Append(this).Union(StackAbove).ToArray();
+
+    /// <summary>
+    ///     Traverse the stack from this <see cref="CardNode" /> instance, forwards only.<br />
+    ///     Gets the current stack collection above
+    /// </summary>
+    public IReadOnlyList<CardNode> StackBelow {
+        get {
+            IList<CardNode> stackBackwards = [];
+
+            CardNode current = this;
+            // Traverse backwards
+            while (current is not null && current.HasNeighbourBelow) {
+                CardNode next = current.NeighbourBelow;
+                stackBackwards.Add(next);
+                current = next;
+            }
+
+            return stackBackwards.Reverse().ToArray();
+        }
+    }
+
+    /// <summary>
+    ///     Traverse the stack from this <see cref="CardNode" /> instance, backwards only.<br />
+    ///     Gets the current stack collection below
+    /// </summary>
+    public IReadOnlyList<CardNode> StackAbove {
+        get {
+            IList<CardNode> stackForwards = [];
+
+            CardNode current = this;
+            // Traverse forwards
+            while (current is not null && current.HasNeighbourAbove) {
+                CardNode next = current.NeighbourAbove;
+                stackForwards.Add(next);
+                current = next;
+            }
+
+            return stackForwards.ToArray();
+        }
+    }
+
+    /// <summary>
+    ///     Similar to <see cref="StackAbove" />; But also includes this instance in the collection, positioned first in the
+    ///     collection.
+    /// </summary>
+    public IReadOnlyList<CardNode> StackAboveWithItself => new List<CardNode>([this]).Union(StackAbove).ToArray();
+
+    /// <summary>
+    ///     Similar to <see cref="StackBelow" />; But also includes this instance in the collection, positioned last in the
+    ///     collection.
+    /// </summary>
+    public IReadOnlyList<CardNode> StackBelowWithItself => new List<CardNode>(StackBelow).Append(this).ToArray();
+
+    /// <summary>
+    ///     Gets the <see cref="CardNode" /> at the bottom of the stack.
+    /// </summary>
+    public CardNode BottomCardOfStack => StackBelowWithItself.FirstOrDefault();
+
+    /// <summary>
+    ///     Gets the <see cref="CardNode" /> at the top the stack.
+    /// </summary>
+    public CardNode TopCardOfStack => StackAboveWithItself.LastOrDefault();
+
+    #endregion Stack collection getters
+
+    #endregion Stack-related properties
 
     #region Events(?)
 

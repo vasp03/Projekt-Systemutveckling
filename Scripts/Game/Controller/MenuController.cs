@@ -168,9 +168,7 @@ public partial class MenuController : Node {
     private void CallPausedCallbacks(bool isPaused) {
         if (pausedCallbacks is null) return;
 
-        foreach (IPausable callback in pausedCallbacks) {
-            callback.SetPaused(isPaused);
-        }
+        foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
     }
 
     public void AddPauseCallback(IPausable callback) {

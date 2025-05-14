@@ -5,7 +5,6 @@ using Godot;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Div;
 using Goodot15.Scripts.Game.Model.Enums;
-using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
@@ -15,8 +14,8 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
 
-    public readonly static Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
-    public readonly static Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
+    public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
+    public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
 
     private readonly List<CardNode> hoveredCards = [];
 
@@ -58,21 +57,19 @@ public class CardController {
     public void SetZIndexForAllCards(CardNode cardNode) {
         int NumberOfCards = AllCards.Count;
         IEnumerable<CardNode> stackAboveSelectedCard = cardNode.StackAbove;
-            //cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
+        //cardNode.CardType is IStackable stackableCard ? stackableCard.StackAbove : null;
         int numberOfCardsAbove = stackAboveSelectedCard?.Count() ?? 0;
         int counterForCardsAbove = NumberOfCards - numberOfCardsAbove;
         int counterForCardsBelow = 1;
 
-        foreach (CardNode card in AllCardsSorted) {
-            if (card == cardNode) {
+        foreach (CardNode card in AllCardsSorted)
+            if (card == cardNode)
                 card.ZIndex = !card.HasNeighbourAbove ? NumberOfCards : counterForCardsAbove++;
-            } else if (stackAboveSelectedCard is not null &&
-                       stackAboveSelectedCard.Contains(card)) {
+            else if (stackAboveSelectedCard is not null &&
+                     stackAboveSelectedCard.Contains(card))
                 card.ZIndex = counterForCardsAbove++;
-            } else {
+            else
                 card.ZIndex = counterForCardsBelow++;
-            }
-        }
     }
 
     /// <summary>
@@ -381,22 +378,19 @@ public class CardController {
     /// </summary>
     public void LeftMouseButtonReleased() {
         MouseController.SetMouseCursor(MouseCursorEnum.point_small);
-        if (selectedCard is not null) {
-            selectedCard.Dragged = false;
-
-            // // Checks for a card under the moved card and sets if it exists as a neighbour below. 
-            // CardNode underCard = GetCardUnderMovedCard();
-            // if (underCard is not null && !selectedCard.HasNeighbourBelow) {
-            //     selectedCard.SetOverLappedCardToStack(underCard);
-            // } else {
-            //     selectedCard.NeighbourBelow = null;
-            // }
-        }
-
+        if (selectedCard is not null) selectedCard.Dragged = false;
+        // // Checks for a card under the moved card and sets if it exists as a neighbour below. 
+        // CardNode underCard = GetCardUnderMovedCard();
+        // if (underCard is not null && !selectedCard.HasNeighbourBelow) {
+        //     selectedCard.SetOverLappedCardToStack(underCard);
+        // } else {
+        //     selectedCard.NeighbourBelow = null;
+        // }
         // Checks if a card is supposed to have a craft button above it
         foreach (CardNode card in AllCards)
             if (Stacks.Contains(card) &&
-                CraftingController.CheckForCraftingWithStackable(card.StackAboveWithItself.Select(e=>e.CardType).ToArray()) is not null) {
+                CraftingController.CheckForCraftingWithStackable(card.StackAboveWithItself.Select(e => e.CardType)
+                    .ToArray()) is not null) {
                 AddCraftButton(card);
             } else {
                 if (card.CraftButton is not null) {
@@ -407,7 +401,6 @@ public class CardController {
     }
 
     private void CheckForStacking() {
-        
     }
 
     /// <summary>
@@ -425,7 +418,9 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        StringAndBoolRet recipe = CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e=>e.CardType).ToArray());
+        StringAndBoolRet recipe =
+            CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
+                .ToArray());
 
         if (recipe.StringsValue is null || recipe.StringsValue.Count == 0) {
             GD.Print("No recipe found for the selected card.");
@@ -438,7 +433,8 @@ public class CardController {
         foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
             if (cardInStackAbove.CardType is Card card) {
                 // cardInStackAbove.ClearNeighbours();
-                if (cardInStackAbove is CardBuilding || (cardInStackAbove is LivingPlayer && !recipe.BoolValue)) continue;
+                if (cardInStackAbove is CardBuilding ||
+                    (cardInStackAbove is LivingPlayer && !recipe.BoolValue)) continue;
 
                 if (cardInStackAbove is IDurability durability) {
                     bool ret = durability.DecrementDurability();

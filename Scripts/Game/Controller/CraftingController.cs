@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Goodot15.Scripts.Game.Model.Div;
-using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller;
 

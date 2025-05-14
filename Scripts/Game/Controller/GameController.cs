@@ -21,9 +21,7 @@ public partial class GameController : Node2D {
                 case Key.Escape:
                     MenuController.OpenPauseMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) {
-                        pausable.SetPaused(true);
-                    }
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(true);
 
                     SoundController.MusicMuted = true;
                     Visible = false;
