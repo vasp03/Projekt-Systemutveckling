@@ -125,7 +125,7 @@ public partial class GameController : Node2D {
 
     private void SetupControllers() {
         MouseController = new MouseController(this);
-        CardController = new CardController(this, MouseController);
+        CardController = new CardController(this, MouseController, MenuController);
         GameEventManager = new GameEventManager(this);
         CameraController = new CameraController();
     }

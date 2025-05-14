@@ -27,11 +27,12 @@ public class CardController {
 
 
     // Constructor
-    public CardController(GameController gameController, MouseController mouseController) {
+    public CardController(GameController gameController, MouseController mouseController, MenuController menuController) {
         GameController = gameController;
         MouseController = mouseController;
         CardCreationHelper = new CardCreationHelper(gameController);
         CraftingController = new CraftingController(CardCreationHelper);
+        this.menuController = menuController;
 
         CreateStartingRecipes();
     }
@@ -40,16 +41,17 @@ public class CardController {
     public CraftingController CraftingController { get; }
     public GameController GameController { get; }
     public MouseController MouseController { get; }
+    private MenuController menuController { get; set; }
 
     public int CardCount => AllCards.Count;
 
-    public IReadOnlyCollection<CardNode> AllCards =>
-        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+    public IReadOnlyCollection<CardNode> AllCards => GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
-    private IReadOnlyCollection<CardNode> Stacks =>
-        AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToArray();
+    private IReadOnlyCollection<CardNode> Stacks => AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow && x.CardType is IStackable).ToArray();
+
+    private int NumberOfPlayerCards => AllCards.Count(x => x.CardType is LivingPlayer);
 
     /// <summary>
     ///     Sets the ZIndex of all cards based on the selected card.
@@ -440,7 +442,7 @@ public class CardController {
         Vector2 spawnPos = cardNode.Position;
 
         // Remove the cards in the stack part of cardNode
-        foreach (IStackable stackableCard in stackable.StackAboveWithItself)
+        foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
             if (stackableCard is Card card) {
                 stackableCard.ClearNeighbours();
                 if (stackableCard is CardBuilding || stackableCard is LivingPlayer && !recipe.BoolValue) continue;
@@ -455,8 +457,15 @@ public class CardController {
                     continue;
                 }
 
+                if (card is LivingPlayer) {
+                    if (NumberOfPlayerCards <= 0) {
+                        menuController.OpenGameOverMenu();
+                    }
+                }
+
                 card.CardNode.Destroy();
             }
+        }
 
         foreach (string cardName in recipe.StringsValue) {
             CardNode card = CreateCard(cardName, spawnPos);
