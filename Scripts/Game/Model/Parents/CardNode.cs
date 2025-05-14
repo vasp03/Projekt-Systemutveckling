@@ -16,18 +16,18 @@ using Vector2 = Godot.Vector2;
 public partial class CardNode : Node2D {
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
     public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, 20);
+
+
+    private static int startingZIndex;
     private bool dragged;
     private bool oldIsHighlighted;
     private Vector2 oldMousePosition;
 
-
-    private static int startingZIndex = 0;
     public CardNode() {
         AddToGroup(CardController.CARD_GROUP_NAME);
-        
-        this.ZIndex = startingZIndex;
-        startingZIndex = ++startingZIndex % 1024;
 
+        ZIndex = startingZIndex;
+        startingZIndex = ++startingZIndex % 1024;
     }
 
 
@@ -194,10 +194,10 @@ public partial class CardNode : Node2D {
 
             if (BottomCardOfStack.Position.Y <= 64 && mousePositionDelta.Y < 0) mousePositionDelta.Y = 0;
             ClampPositionInGameSpace(mousePositionDelta);
-            
+
             UpdateCraftButtonPosition();
             UpdateCardPositions();
-            
+
             oldMousePosition = mousePosition;
         } else if (HasNeighbourBelow && !Dragged) {
             // UpdateCardPositions();
@@ -211,15 +211,13 @@ public partial class CardNode : Node2D {
     }
 
     /// <summary>
-    /// "Recursively" updates each card position to account for their stack position
+    ///     "Recursively" updates each card position to account for their stack position
     /// </summary>
     private void UpdateCardPositions() {
         int indexInStack = 0;
-        foreach (CardNode cardNode in StackAbove) {
-            cardNode.Position = this.Position + CARD_OVERLAP_OFFSET * ++indexInStack;
-        }
+        foreach (CardNode cardNode in StackAbove) cardNode.Position = Position + CARD_OVERLAP_OFFSET * ++indexInStack;
     }
-    
+
     public override void _PhysicsProcess(double delta) {
         ITickable tickableCardType = CardType as ITickable;
         tickableCardType?.PreTick();
@@ -401,9 +399,7 @@ public partial class CardNode : Node2D {
             if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove) NeighbourBelow = OverlappingCard;
             ResetZIndex();
 
-            if (HasNeighbourBelow) {
-                NeighbourBelow.UpdateCardPositions();
-            }
+            if (HasNeighbourBelow) NeighbourBelow.UpdateCardPositions();
         }
     }
 

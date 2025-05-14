@@ -21,11 +21,11 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    public Pair<IReadOnlyList<string>,bool> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
-        List<Pair<string,int>> CardForCraftingAmount = [];
+    public Pair<IReadOnlyList<string>, bool> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
+        List<Pair<string, int>> CardForCraftingAmount = [];
 
         foreach (Card card in Cards) {
-            Pair<string,int> cardForCrafting =
+            Pair<string, int> cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.Left == card.TextureType);
             if (cardForCrafting is not null)
                 cardForCrafting.Right++;
@@ -37,10 +37,10 @@ public class CraftingController {
         CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
 
         foreach (CraftingRecipe recipe in recipes) {
-            List<Pair<string,int>> CardsInRecipeAndAmount = [];
+            List<Pair<string, int>> CardsInRecipeAndAmount = [];
 
             foreach (string cardName in recipe.CardsForCrafting) {
-                Pair<string,int> cardInRecipe = CardsInRecipeAndAmount.FirstOrDefault(x => x.Left == cardName);
+                Pair<string, int> cardInRecipe = CardsInRecipeAndAmount.FirstOrDefault(x => x.Left == cardName);
                 if (cardInRecipe is not null)
                     cardInRecipe.Right++;
                 else

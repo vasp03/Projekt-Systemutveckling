@@ -260,7 +260,7 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyList<string>,bool> recipe =
+        Pair<IReadOnlyList<string>, bool> recipe =
             CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
                 .ToArray());
 
