@@ -176,13 +176,13 @@ public class CardController {
     ///// </returns>
     //private CardNode GetCardUnderMovedCard() {
     //    IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
-//
+    //
     //    CardNode topUnderCard = null;
-//
+    //
     //    foreach (CardNode card in hoveredCardsSorted)
     //        if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
     //            topUnderCard = card;
-//
+    //
     //    return topUnderCard;
     //}
 
@@ -235,9 +235,7 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyCollection<string>, bool> recipe =
-            CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
-                .ToArray());
+        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> recipe = CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType).ToArray());
 
         if (recipe.Left is null || recipe.Left.Count == 0) {
             GD.Print("No recipe found for the selected card.");
@@ -247,22 +245,17 @@ public class CardController {
         Vector2 spawnPos = cardNode.Position;
 
         // Remove the cards in the stack part of cardNode
-        foreach (IStackable stackableCard in stackable.StackAboveWithItself) {
-            if (stackableCard is Card card) {
-                stackableCard.ClearNeighbours();
-                if (stackableCard is CardBuilding || stackableCard is LivingPlayer && !recipe.BoolValue) continue;
-
-                if (cardInStackAbove.CardType is IDurability durability) {
+        foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself) {
+            if (cardInStackAbove.CardType is not null) {
+                if (recipe.Right.Contains(cardInStackAbove.CardType.TextureType)) {
+                    cardInStackAbove.Destroy();
+                } else if (cardInStackAbove.CardType is IDurability durability) {
                     bool ret = durability.DecrementDurability();
 
-                    GD.Print("Ret: " + recipe.Right + " " + ret);
-
-                    if (ret || recipe.Right) cardInStackAbove.Destroy();
+                    if (ret) cardInStackAbove.Destroy();
 
                     continue;
                 }
-
-                cardInStackAbove.Destroy();
             }
         }
 
@@ -273,10 +266,6 @@ public class CardController {
 
             card.NeighbourAbove = null;
             card.NeighbourBelow = null;
-            // if (card.CardType is IStackable craftedStackable) {
-            //     craftedStackable.NeighbourAbove = null;
-            //     craftedStackable.NeighbourBelow = null;
-            // }
         }
     }
 

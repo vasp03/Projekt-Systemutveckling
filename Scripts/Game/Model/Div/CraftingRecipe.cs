@@ -6,9 +6,9 @@ public class CraftingRecipe(
     string name,
     IReadOnlyCollection<string> craftingIngredients,
     IReadOnlyCollection<string> craftingResult,
-    bool consumeTool = false) {
+    IReadOnlyCollection<string> itemsToRemove) {
     public string Name { get; private set; } = name;
     public IReadOnlyCollection<string> CraftingIngredients { get; private set; } = craftingIngredients;
     public IReadOnlyCollection<string> CraftingResult { get; private set; } = craftingResult;
-    public bool ConsumeTool { get; private set; } = consumeTool;
+    public IReadOnlyCollection<string> ItemsToRemove { get; private set; } = itemsToRemove;
 }
