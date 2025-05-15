@@ -6,6 +6,7 @@ using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 
@@ -32,8 +33,6 @@ public class CardController {
         CardCreationHelper = new CardCreationHelper(gameController);
         CraftingController = new CraftingController(CardCreationHelper);
         this.menuController = menuController;
-
-        CreateStartingRecipes();
     }
 
     public CardCreationHelper CardCreationHelper { get; }
@@ -50,6 +49,9 @@ public class CardController {
 
     private IReadOnlyCollection<CardNode> Stacks =>
         AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow).ToArray();
+
+    private int NumberOfPlayerCards =>
+        AllCards.Count(x => x.CardType is LivingPlayer);
 
 
     /// <summary>
@@ -285,6 +287,10 @@ public class CardController {
 
             GameController.SoundController.MusicMuted = true;
             GameController.Visible = false;
+            var hud = GameController.GetNodeOrNull<HUD>("HUD");
+            if (hud is not null) {
+                hud.Visible = false;
+            }
         }
     }
 
