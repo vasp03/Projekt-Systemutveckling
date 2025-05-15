@@ -22,7 +22,7 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
-    public Pair<IReadOnlyCollection<string>, bool> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
+    public Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> CheckForCraftingWithStackable(IReadOnlyList<Card> Cards) {
         List<Pair<string, int>> CardForCraftingAmount = [];
 
         foreach (Card card in Cards) {
@@ -65,7 +65,7 @@ public class CraftingController {
 
             if (recipeMatches) {
                 IReadOnlyCollection<string> craftedCards = recipe.CraftingResult;
-                return new Pair<IReadOnlyCollection<string>, bool>(craftedCards.ToList(), recipe.ConsumeTool);
+                return new Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>>(craftedCards.ToList(), recipe.ItemsToRemove);
             }
         }
 
@@ -96,10 +96,10 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"], ["Tent"], ["Leaves", "Wood"]));
 
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry"], ["Bush"]));
+        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry", "Berry", "Berry", "Berry"], ["Bush"]));
 
         AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
         AddRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
@@ -167,29 +167,26 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"], ["Stick", "Stone"]));
 
-        AddRecipe(new CraftingRecipe("Axe", ["Stick", "Stick", "Stone", "Stone", "Stone"], ["Axe"], ["Stick", "Stone"]));
+        AddRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"], ["Sand", "Stone", "Water"]));
 
-        AddRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"]));
+        AddRecipe(new CraftingRecipe("Campfire", ["Wood", "Wood", "Wood", "Sticks", "Sticks", "Leaves"], ["Campfire"], ["Wood", "Sticks", "Leaves"]));
 
-        AddRecipe(new CraftingRecipe("Campfire", ["Wood", "Wood", "Wood", "Sticks", "Sticks", "Leaves"], ["Campfire"]));
+        AddRecipe(new CraftingRecipe("CookingPot", ["Clay", "Clay", "Stick"], ["CookingPot"], ["Clay", "Stick"]));
 
-        AddRecipe(new CraftingRecipe("CookingPot", ["Clay", "Clay", "Stick"], ["CookingPot"]));
+        AddRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"], ["Bush"], ["Leaves"]));
 
-        AddRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"], ["Bush"]));
+        AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"], []));
+        AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"], ["Meat", "Meat", "Meat"], []));
+        AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"], []));
+        AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"], []));
 
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"]));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"], ["Meat", "Meat", "Meat"]));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"]));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"]));
+        AddRecipe(new CraftingRecipe("Mine", ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"], ["Stone"]));
 
-        AddRecipe(new CraftingRecipe("Mine",
-            ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"]));
+        AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], ["Sword", "Villager"]));
 
-        AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], true));
+        AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"], ["Shovel", "Villager"]));
 
-        AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"], true));
-
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], true));
+        AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], ["Axe", "Villager"]));
     }
 
     #region Recipe data
