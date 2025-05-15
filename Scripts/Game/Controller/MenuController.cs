@@ -55,7 +55,7 @@ public partial class MenuController : Node {
     private Control guideMenu;
     private Control mainMenu;
     private Control optionsMenu;
-
+    private Control gameOverMenu;
     private Control pauseMenu;
 
     #endregion Control UI fields
@@ -121,6 +121,17 @@ public partial class MenuController : Node {
         SwitchMenu(guideMenu);
     }
 
+    public void OpenGameOverMenu() {
+        previousMenu = currentMenu;
+        if (gameOverMenu is null) {
+            PackedScene packedGameOverMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GameOverMenu.tscn");
+            gameOverMenu = packedGameOverMenu.Instantiate() as Control;
+            AddChild(gameOverMenu);
+        }
+
+        SwitchMenu(gameOverMenu);
+    }
+
     /// <summary>
     ///     Switches the current menu to the new menu and hides the previous menu.
     /// </summary>
@@ -129,7 +140,9 @@ public partial class MenuController : Node {
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
             newMenu.Visible = true;
-            if (previousMenu is not null) previousMenu.Visible = false;
+            if (previousMenu is not null && IsInstanceValid(previousMenu)) {
+                previousMenu.Visible = false;
+            }
         }
     }
 
