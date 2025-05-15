@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -25,27 +26,31 @@ public class CardController {
 
 
     // Constructor
-    public CardController(GameController gameController, MouseController mouseController) {
+    public CardController(GameController gameController, MouseController mouseController, MenuController menuController) {
         GameController = gameController;
         MouseController = mouseController;
         CardCreationHelper = new CardCreationHelper(gameController);
         CraftingController = new CraftingController(CardCreationHelper);
+        this.menuController = menuController;
+
+        CreateStartingRecipes();
     }
 
     public CardCreationHelper CardCreationHelper { get; }
     public CraftingController CraftingController { get; }
     public GameController GameController { get; }
     public MouseController MouseController { get; }
+    private MenuController menuController { get; set; }
 
     public int CardCount => AllCards.Count;
 
-    public IReadOnlyCollection<CardNode> AllCards =>
-        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+    public IReadOnlyCollection<CardNode> AllCards => GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
     private IReadOnlyCollection<CardNode> Stacks =>
         AllCards.Where(x => x.HasNeighbourAbove && !x.HasNeighbourBelow).ToArray();
+
 
     /// <summary>
     ///     Sets the ZIndex of all cards based on the selected card.
@@ -261,6 +266,25 @@ public class CardController {
 
             card.NeighbourAbove = null;
             card.NeighbourBelow = null;
+        }
+    }
+
+    public void CheckForGameOver(bool livingHasJustDied = false) {
+        int livingCardsAmount = NumberOfPlayerCards;
+
+        if (livingHasJustDied) {
+            livingCardsAmount--;
+        }
+
+        if (livingCardsAmount <= 0) {
+            menuController.OpenGameOverMenu();
+
+            if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2) {
+                pausable2.SetPaused(true);
+            }
+
+            GameController.SoundController.MusicMuted = true;
+            GameController.Visible = false;
         }
     }
 
