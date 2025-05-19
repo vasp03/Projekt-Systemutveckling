@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwytk0l8w873k"
-path="res://.godot/imported/Cookingpot.png-ba8d2c98302092ad4252e6f534b5ac98.ctex"
+path="res://.godot/imported/CookingPot.png-bb83bf0d37b6048399c8b4d6dcc25a5e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Cards/Ready To Use/Cookingpot.png"
-dest_files=["res://.godot/imported/Cookingpot.png-ba8d2c98302092ad4252e6f534b5ac98.ctex"]
+source_file="res://Assets/Cards/Ready To Use/CookingPot.png"
+dest_files=["res://.godot/imported/CookingPot.png-bb83bf0d37b6048399c8b4d6dcc25a5e.ctex"]
 
 [params]
 
