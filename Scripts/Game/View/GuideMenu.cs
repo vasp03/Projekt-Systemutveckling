@@ -38,6 +38,12 @@ public partial class GuideMenu : Control {
     private Button[] villagerCardButtons;
     private VBoxContainer villagerList;
     private Button villagersButton;
+    private Button randomEventsButton;
+    private VBoxContainer eventsList;
+    private Button[] eventCardButtons;
+    private Button packsButton;
+    private VBoxContainer packsList;
+    private Button[] packsButtons;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
@@ -58,6 +64,8 @@ public partial class GuideMenu : Control {
         InitializeFoodCardButtons();
         InitializeNatureCardButtons();
         InitializeVillagerCardButtons();
+        InitializeRandomEventButtons();
+        InitializePacksButtons();
     }
 
     /// <summary>
@@ -76,10 +84,10 @@ public partial class GuideMenu : Control {
     /// <summary>
     ///     Loads the card image from the specified path.
     /// </summary>
-    /// <param name="CardName">The name of the card to load the image for</param>
+    /// <param name="cardName">The name of the card to load the image for</param>
     /// <returns>The card image or a default image if no image is found</returns>
-    private Texture2D LoadCardTexture(string CardName) {
-        string cardImagePath = "res://Assets/Cards/Ready To Use/" + CardName + ".png";
+    private Texture2D LoadCardTexture(string cardName) {
+        string cardImagePath = "res://Assets/Cards/Ready To Use/" + cardName + ".png";
         string defaultPath = "res://Assets/Cards/Ready To Use/Error.png";
         if (!FileAccess.FileExists(cardImagePath)) {
             GD.PrintErr($"Card image not found: {cardImagePath}");
@@ -89,6 +97,17 @@ public partial class GuideMenu : Control {
         Texture2D cardTexture = GD.Load<Texture2D>(cardImagePath);
 
         return cardTexture;
+    }
+
+    private Texture2D LoadPackTexture(string cardName) {
+        string packImagePath = "res://Assets/Packs/" + cardName + ".png";
+        string defaultPath = "res://Assets/Packs/Error.png";
+        if (!FileAccess.FileExists(packImagePath)) {
+            GD.PrintErr($"Pack image not found: {packImagePath}");
+            return GD.Load<Texture2D>(defaultPath);
+        }
+        Texture2D packTexture = GD.Load<Texture2D>(packImagePath);
+        return packTexture;
     }
 
     /// <summary>
@@ -122,6 +141,8 @@ public partial class GuideMenu : Control {
         natureButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/NatureButton");
         villagersButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/VillagersButton");
         resourcesButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer//ButtonContainer/ResourcesButton");
+        randomEventsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/RandomEventsButton");
+        packsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/PacksButton");
 
         toolsButton.Pressed += () => OnMainButtonPressed(toolsButton);
         foodButton.Pressed += () => OnMainButtonPressed(foodButton);
@@ -129,6 +150,8 @@ public partial class GuideMenu : Control {
         natureButton.Pressed += () => OnMainButtonPressed(natureButton);
         villagersButton.Pressed += () => OnMainButtonPressed(villagersButton);
         resourcesButton.Pressed += () => OnMainButtonPressed(resourcesButton);
+        randomEventsButton.Pressed += () => OnMainButtonPressed(randomEventsButton);
+        packsButton.Pressed += () => OnMainButtonPressed(packsButton);
 
         goBackButton = GetNode<Button>("GoBackButton");
         goBackButton.Pressed += OnGoBackButtonPressed;
@@ -145,13 +168,19 @@ public partial class GuideMenu : Control {
         natureList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList");
         villagerList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList");
         resourceList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList");
-
+        eventsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList");
+        packsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList");
+        
+        
         buttons[toolsButton] = toolList;
         buttons[foodButton] = foodList;
         buttons[buildingsButton] = buildingList;
         buttons[natureButton] = natureList;
         buttons[villagersButton] = villagerList;
         buttons[resourcesButton] = resourceList;
+        buttons[randomEventsButton] = eventsList;
+        buttons[packsButton] = packsList;
+        
 
         toolList.Visible = false;
         foodList.Visible = false;
@@ -159,6 +188,8 @@ public partial class GuideMenu : Control {
         natureList.Visible = false;
         villagerList.Visible = false;
         resourceList.Visible = false;
+        eventsList.Visible = false;
+        packsList.Visible = false;
     }
 
     /// <summary>
@@ -282,6 +313,32 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private void InitializeRandomEventButtons() {
+        eventCardButtons = new[] {
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/MeteoriteButton"),
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/FireButton"),
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/ResourceEventButton")
+        };
+
+        foreach (Button button in eventCardButtons) {
+            string buttonName = button.Name;
+            button.Pressed += () => OnSubButtonPressed(buttonName);
+        }
+    }
+
+    private void InitializePacksButtons() {
+        packsButtons = new[] {
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/MaterialPackButton"),
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/StarterPackButton"),
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/FoodPackButton")
+        };
+
+        foreach (Button button in packsButtons) {
+            string buttonName = button.Name;
+            button.Pressed += () => OnSubButtonPressed(buttonName);
+        }
+    }
+
     /// <summary>
     ///     Sets up the texture and description for each card button in all categories
     /// </summary>
@@ -360,11 +417,27 @@ public partial class GuideMenu : Control {
         cardData["VillagerButton"] = (LoadCardTexture("Villager"),
             "A villager used for crafting and building. \nRECIPE: \n2x Villager \n1x Tent or 1x House");
         cardData["HunterButton"] = (LoadCardTexture("Hunter"),
-            "A hunter used for hunting. Hunts food faster than other villagers. \nRECIPE \n1x Villager \n1x Sword");
+            "A hunter used for hunting. Hunts food faster than other villagers. \nRECIPE: \n1x Villager \n1x Sword");
         cardData["FarmerButton"] = (LoadCardTexture("Farmer"),
-            "A farmer used for farming. Farms food faster than other villagers. \nRECIPE \n1x Villager \n1x Shovel");
+            "A farmer used for farming. Farms food faster than other villagers. \nRECIPE: \n1x Villager \n1x Shovel");
         cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"),
-            "A blacksmith used for crafting. Crafts items faster than other villagers. \nRECIPE \n1x Villager \n1x Axe");
+            "A blacksmith used for crafting. Crafts items faster than other villagers. \nRECIPE: \n1x Villager \n1x Axe");
+        
+        //Random Event cards
+        cardData["MeteoriteButton"] = (LoadCardTexture("Meteorite"),
+            "As days go by there is a chance for a meteorite strike. \nThis cannot kill your villagers but can instead be mined with an axe to receive 10 stone.");
+        cardData["FireButton"] = (LoadCardTexture("Fire"),
+            "As days go by there is a chance for a fire to start. \nThis can kill your villagers if they are not put out in time. Stack a water card on the fire to put out the fire.");
+        cardData["ResourceEventButton"] = (LoadCardTexture("Stone"),
+            "As days go by there is a chance for a random resource event to happen. \nThis event randomly grants you any kind of resource card.");
+        
+        //packs
+        cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
+            "A pack you can open up once at the start of a new game. \n CONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
+        cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
+            "A pack containing 3-5 random material cards. There is a 10% chance for each of the cards in the pack to be a rare. \nCOMMON CARDS: \nWood, Stone, Leaf, Sand, Stick, Water, Brick \nRARE CARDS: \nPlanks, Clay, Glass ");
+        cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"), 
+            "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
     }
 
     #endregion
