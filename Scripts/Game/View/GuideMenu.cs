@@ -425,19 +425,19 @@ public partial class GuideMenu : Control {
         
         //Random Event cards
         cardData["MeteoriteButton"] = (LoadCardTexture("Meteorite"),
-            "As days go by there is a chance for a meteorite strike. \nThis cannot kill your villagers but can instead be mined with an axe to receive 10 stone.");
+            "As days go by there is a chance for a meteorite strike. \n\nThis cannot kill your villagers but can instead be mined with an axe to receive 10 stone.");
         cardData["FireButton"] = (LoadCardTexture("Fire"),
-            "As days go by there is a chance for a fire to start. \nThis can kill your villagers if they are not put out in time. Stack a water card on the fire to put out the fire.");
-        cardData["ResourceEventButton"] = (LoadCardTexture("Stone"),
-            "As days go by there is a chance for a random resource event to happen. \nThis event randomly grants you any kind of resource card.");
+            "As days go by there is a chance for a fire to start. \n\nThis can kill your villagers if they are not put out in time. Stack a water card on the fire to put it out.");
+        cardData["ResourceEventButton"] = (LoadCardTexture("ResourceEvent"),
+            "As days go by there is a chance for a random resource event to happen. \n\nThis event randomly grants you any kind of resource card.");
         
         //packs
         cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
-            "A pack you can open up once at the start of a new game. \n CONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
+            "A pack you can open up once at the start of a new game. \n\nCONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
         cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
-            "A pack containing 3-5 random material cards. There is a 10% chance for each of the cards in the pack to be a rare. \nCOMMON CARDS: \nWood, Stone, Leaf, Sand, Stick, Water, Brick \nRARE CARDS: \nPlanks, Clay, Glass ");
+            "A pack containing 3-5 random material cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nWood, Stone, Leaf, Sand, Stick, Water, Brick \nRARE CARDS: \nPlanks, Clay, Glass ");
         cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"), 
-            "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
+            "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
     }
 
     #endregion
