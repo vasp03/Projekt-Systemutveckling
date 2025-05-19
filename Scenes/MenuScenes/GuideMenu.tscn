@@ -1298,6 +1298,24 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
 text = "Fire Event"
 
+[node name="ResourceEventButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Resource Event"
+
 [node name="PacksList" type="VBoxContainer" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container"]
 visible = false
 layout_mode = 2
@@ -1307,7 +1325,7 @@ offset_right = 180.0
 offset_bottom = 310.0
 theme_override_constants/separation = 27
 
-[node name="MeteoriteButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList"]
+[node name="StarterPackButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -1323,9 +1341,9 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Meteorite Event"
+text = "Starter Pack"
 
-[node name="FireButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList"]
+[node name="MaterialPackButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -1341,7 +1359,25 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
-text = "Fire Event"
+text = "Material Pack"
+
+[node name="FoodPackButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_hover_color = Color(0.760784, 0.737255, 0.956863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.652424, 0.60819, 0.929988, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_jwvxl")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hvfyd")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_l0v1c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_jgbjf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rfk7m")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_w0vm6")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eynnh")
+text = "Food Pack"
 
 [node name="CardImage" type="TextureRect" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container"]
 layout_mode = 1
