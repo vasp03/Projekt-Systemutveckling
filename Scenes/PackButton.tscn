@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://crfa75uxwe6fa"]
 
-[ext_resource type="Texture2D" uid="uid://dvotg87cqrdpk" path="res://Assets/Packs/PLACEHOLDER_Pack.png" id="1_tdo50"]
-[ext_resource type="Script" uid="uid://bbganwgodhp13" path="res://Scripts/Game/View/PackButton.cs" id="2_d8myd"]
+[ext_resource type="Texture2D" uid="uid://ckxpydcfw3i67" path="res://Assets/Packs/PLACEHOLDER_Pack.png" id="1_tdo50"]
+[ext_resource type="Script" uid="uid://ddmnqkgbux0jg" path="res://Scripts/Game/View/PackButton.cs" id="2_d8myd"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_lu030"]
 
 [node name="PackButton" type="TextureButton"]
@@ -24,6 +24,3 @@ grow_vertical = 0
 theme_override_fonts/font = ExtResource("3_lu030")
 text = "Free"
 horizontal_alignment = 1
-
-[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
-[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]

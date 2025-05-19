@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cv0sftc5g7uci"]
+[gd_scene load_steps=16 format=3 uid="uid://cv0sftc5g7uci"]
 
-[ext_resource type="Script" uid="uid://djitty32mt4x5" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
+[ext_resource type="Script" uid="uid://begxhcf3ftwu3" path="res://Scripts/Game/View/MainMenu.cs" id="1_wjwqx"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_qdb5i"]
 [ext_resource type="Texture2D" uid="uid://b1jnxa627yfhj" path="res://Assets/Background/MainMenuBackground1280x720.png" id="3_qdb5i"]
+[ext_resource type="Script" uid="uid://wx2t5afhopx5" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="3_qg3u4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tt5f1"]
 
@@ -92,6 +93,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_lqnmx")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "CONTINUE"
+script = ExtResource("3_qg3u4")
 
 [node name="PlayButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -111,6 +113,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "PLAY"
+script = ExtResource("3_qg3u4")
 
 [node name="GuideButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -130,6 +133,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "GUIDE"
+script = ExtResource("3_qg3u4")
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -148,6 +152,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "OPTIONS"
+script = ExtResource("3_qg3u4")
 
 [node name="ExitButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -166,6 +171,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ghw46")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_df05h")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8um5k")
 text = "EXIT"
+script = ExtResource("3_qg3u4")
 
 [node name="MainMenuBackground1280x720" type="Sprite2D" parent="."]
 show_behind_parent = true

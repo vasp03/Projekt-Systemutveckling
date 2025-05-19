@@ -40,10 +40,7 @@ public partial class HUD : CanvasLayer {
 
     private void SetupSellModeButton() {
         SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
-        if (sellButton is not null) {
-            sellButton.GameController = GameController.Singleton;
-            sellButton.UpdateIcon();
-        }
+        sellButton?.UpdateIcon();
     }
 
     public void ShowFloatingMoneyLabel(int amount) {

@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=4 uid="uid://dhv30067wc2yy"]
+[gd_scene load_steps=27 format=4 uid="uid://dhv30067wc2yy"]
 
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_i04w5"]
-[ext_resource type="Script" uid="uid://bxs4neupfuddj" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Script" uid="uid://750vmdndtp46" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Script" uid="uid://wx2t5afhopx5" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="3_5vdl0"]
 [ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_pqm6c"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="4_67e3d"]
 
@@ -198,6 +199,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "RESUME GAME"
+script = ExtResource("3_5vdl0")
 
 [node name="GuideButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -216,6 +218,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "GUIDE"
+script = ExtResource("3_5vdl0")
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -234,6 +237,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "OPTIONS"
+script = ExtResource("3_5vdl0")
 
 [node name="ExitToMainMenuButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
@@ -252,6 +256,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_67e3d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_5vdl0")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6nxmm")
 text = "EXIT TO MAIN MENU"
+script = ExtResource("3_5vdl0")
 
 [node name="ExitConfirmation" type="CanvasLayer" parent="."]
 visible = false
@@ -318,6 +323,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_o6wu8")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_cxmjm")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_n1vw2")
 text = "YES..."
+script = ExtResource("3_5vdl0")
 
 [node name="NoButton" type="Button" parent="ExitConfirmation"]
 offset_left = 745.0
@@ -341,6 +347,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_o6wu8")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_cxmjm")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_n1vw2")
 text = "NO!"
+script = ExtResource("3_5vdl0")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 show_behind_parent = true

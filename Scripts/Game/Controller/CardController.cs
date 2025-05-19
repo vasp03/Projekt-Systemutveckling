@@ -312,7 +312,7 @@ public class CardController {
 
         craftButtonInstance.CardNode = cardNode;
 
-        craftButtonInstance.CardController = this;
+        // craftButtonInstance.CardController = this;
 
         GameController.AddChild(craftButtonInstance);
     }

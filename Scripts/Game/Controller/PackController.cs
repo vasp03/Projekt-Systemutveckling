@@ -7,6 +7,9 @@ using Goodot15.Scripts.Game.Model.Div;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class PackController : HBoxContainer {
+    private const string PACK_OPEN_SFX = "General Sounds/Interactions/sfx_sounds_interaction17.wav";
+    private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
+    
     private readonly IList<CardPack> availablePacks = [];
     private Global global;
 
@@ -55,7 +58,7 @@ public partial class PackController : HBoxContainer {
             button.PackClicked += OnPackClicked;
 
             bool isAffordable = global.Money >= pack.Cost;
-            button.Disabled = !isAffordable;
+            // button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
 
@@ -65,7 +68,7 @@ public partial class PackController : HBoxContainer {
 
     private void OnPackClicked(CardPack pack) {
         if (global.Money < pack.Cost) {
-            GD.Print("Not enough money.");
+            SoundController.Singleton.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
             return;
         }
 
@@ -86,6 +89,8 @@ public partial class PackController : HBoxContainer {
             availablePacks.Remove(pack);
             UnlockAdditionalPacks();
         }
+        
+        SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
     }
 
     private void UnlockAdditionalPacks() {
@@ -97,7 +102,7 @@ public partial class PackController : HBoxContainer {
             if (child is not PackButton button || button.Pack is null) continue;
 
             bool isAffordable = global.Money >= button.Pack.Cost;
-            button.Disabled = !isAffordable;
+            // button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
         }

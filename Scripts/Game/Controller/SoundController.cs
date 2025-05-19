@@ -13,6 +13,8 @@ public partial class SoundController : Node {
     private float _sfxVolume;
     private string CurrentPlayingMusicPath;
     private AudioStreamPlayer MusicPlayer;
+    
+    public static SoundController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode("/root/SoundController") as SoundController;
     /// <summary>
     /// Settings manager instance reference
     /// </summary>
@@ -161,7 +163,7 @@ public partial class SoundController : Node {
     /// <summary>
     /// Plays a sound effect with for the specified <see cref="dayTime"/> DayTime value. Automatically loads and caches the sound asset after
     /// </summary>
-    /// <param name="dayTime">Relevant Day-time</param>
+    /// <param name="soundName">Path and name of sound (excluding <b>res://Assets/Sounds/</b>)</param>
     public void PlaySound(string soundName) {
         AudioStreamPlayer player = new();
         player.Stream = LoadSound(soundName);

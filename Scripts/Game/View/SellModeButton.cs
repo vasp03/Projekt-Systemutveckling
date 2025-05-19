@@ -7,8 +7,6 @@ public partial class SellModeButton : TextureButton {
     private Texture2D iconOff;
     private Texture2D iconOn;
 
-    public GameController GameController { get; set; }
-
     public override void _Ready() {
         Pressed += OnButtonPressed;
 
@@ -19,29 +17,18 @@ public partial class SellModeButton : TextureButton {
     }
 
     private void Setup() {
-        GameController = GameController.Singleton;
-
-        if (GameController is null) {
-            GD.PrintErr("SellModeButton: GameController.Singleton is still null.");
-            return;
-        }
-
         UpdateIcon();
     }
 
     private void OnButtonPressed() {
         GD.Print($"[DEBUG] CurrentScene: {GetTree().CurrentScene?.Name}");
         GD.Print($"[DEBUG] GameController.Singleton: {GameController.Singleton}");
-        if (GameController is null) {
-            GD.PrintErr("SellModeButton: GameController is null.");
-            return;
-        }
 
-        GameController.ToggleSellMode();
+        GameController.Singleton.ToggleSellMode();
         UpdateIcon();
     }
 
     public void UpdateIcon() {
-        TextureNormal = GameController.SellModeActive ? iconOn : iconOff;
+        TextureNormal = GameController.Singleton.SellModeActive ? iconOn : iconOff;
     }
 }

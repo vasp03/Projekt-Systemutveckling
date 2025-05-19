@@ -15,6 +15,8 @@ using Vector2 = Godot.Vector2;
 ///     It inherits from Node2D and is used to represent a card in the game.
 /// </summary>
 public partial class CardNode : Node2D {
+    private const string SELL_SFX = "General Sounds/Coins/sfx_coin_double2.wav";
+    
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
     public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, 20);
 
@@ -438,6 +440,8 @@ public partial class CardNode : Node2D {
         Global.Singleton.AddMoney(cardValue);
         GameController.Singleton.HUD.ShowFloatingMoneyLabel(cardValue);
 
+        SoundController.Singleton.PlaySound(SELL_SFX);
+        
         Destroy();
         return true;
     }
