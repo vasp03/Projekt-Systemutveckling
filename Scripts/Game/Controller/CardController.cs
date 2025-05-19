@@ -110,7 +110,7 @@ public class CardController {
         foreach (CardNode card in hoveredCards)
             if (CardIsTopCard(card)) {
                 card.SetHighlighted(true);
-                if (!card.Dragged && !card.HasNeighbourAbove && card.CardType is CardLiving cardLiving) ShowHealthAndHunger(cardLiving);
+                if (!card.Dragged && card.CardType is CardLiving cardLiving) ShowHealthAndHunger(cardLiving);
             } else {
                 card.SetHighlighted(false);
             }
