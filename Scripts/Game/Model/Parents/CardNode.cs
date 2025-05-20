@@ -31,6 +31,11 @@ public partial class CardNode : Node2D {
         startingZIndex = ++startingZIndex % 1024;
     }
 
+    public override void _Ready() {
+        if (CardType?.AlwaysOnTop ?? false) {
+            ZIndex = 4096;
+        }
+    }
 
     private CardNode lastOverlappedCard { get; set; }
 
@@ -411,7 +416,7 @@ public partial class CardNode : Node2D {
     }
 
     private void ResetZIndex() {
-        BottomCardOfStack.ZIndex = 1;
+        BottomCardOfStack.ZIndex = (BottomCardOfStack?.CardType?.AlwaysOnTop ?? false) ? 4096 : 1;
         BottomCardOfStack.UpdateZIndexForStack();
     }
 
