@@ -27,7 +27,8 @@ public class CardController {
 
 
     // Constructor
-    public CardController(GameController gameController, MouseController mouseController, MenuController menuController) {
+    public CardController(GameController gameController, MouseController mouseController,
+        MenuController menuController) {
         GameController = gameController;
         MouseController = mouseController;
         CardCreationHelper = new CardCreationHelper(gameController);
@@ -39,11 +40,12 @@ public class CardController {
     public CraftingController CraftingController { get; }
     public GameController GameController { get; }
     public MouseController MouseController { get; }
-    private MenuController menuController { get; set; }
+    private MenuController menuController { get; }
 
     public int CardCount => AllCards.Count;
 
-    public IReadOnlyCollection<CardNode> AllCards => GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
+    public IReadOnlyCollection<CardNode> AllCards =>
+        GameController.GetTree().GetNodesInGroup(CARD_GROUP_NAME).Cast<CardNode>().ToArray();
 
     public IReadOnlyCollection<CardNode> AllCardsSorted => AllCards.OrderBy(x => x.ZIndex).ToArray();
 
@@ -237,7 +239,9 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> recipe = CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType).ToArray());
+        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> recipe =
+            CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
+                .ToArray());
 
         if (recipe.Left is null || recipe.Left.Count == 0) {
             GD.Print("No recipe found for the selected card.");
@@ -247,7 +251,7 @@ public class CardController {
         Vector2 spawnPos = cardNode.Position;
 
         // Remove the cards in the stack part of cardNode
-        foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself) {
+        foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
             if (cardInStackAbove.CardType is not null) {
                 if (recipe.Right.Contains(cardInStackAbove.CardType.TextureType)) {
                     cardInStackAbove.Destroy();
@@ -255,11 +259,8 @@ public class CardController {
                     bool ret = durability.DecrementDurability();
 
                     if (ret) cardInStackAbove.Destroy();
-
-                    continue;
                 }
             }
-        }
 
         foreach (string cardName in recipe.Left) {
             CardNode card = CreateCard(cardName, spawnPos);
@@ -274,23 +275,18 @@ public class CardController {
     public void CheckForGameOver(bool livingHasJustDied = false) {
         int livingCardsAmount = NumberOfPlayerCards;
 
-        if (livingHasJustDied) {
-            livingCardsAmount--;
-        }
+        if (livingHasJustDied) livingCardsAmount--;
 
         if (livingCardsAmount <= 0) {
             menuController.OpenGameOverMenu();
 
-            if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2) {
+            if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
                 pausable2.SetPaused(true);
-            }
 
             GameController.SoundController.MusicMuted = true;
             GameController.Visible = false;
-            var hud = GameController.GetNodeOrNull<HUD>("HUD");
-            if (hud is not null) {
-                hud.Visible = false;
-            }
+            HUD hud = GameController.GetNodeOrNull<HUD>("HUD");
+            if (hud is not null) hud.Visible = false;
         }
     }
 

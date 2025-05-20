@@ -15,7 +15,7 @@ using Vector2 = Godot.Vector2;
 ///     It inherits from Node2D and is used to represent a card in the game.
 /// </summary>
 public partial class CardNode : Node2D {
-    private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
+    public const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
     public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, 20);
 
 
@@ -31,25 +31,23 @@ public partial class CardNode : Node2D {
         startingZIndex = ++startingZIndex % 1024;
     }
 
-    public override void _Ready() {
-        if (CardType?.AlwaysOnTop ?? false) {
-            ZIndex = 4096;
-        }
-    }
+    public CardNode OverlappingCardUnder => OverlappingCardsUnder.OrderByDescending(e => e.ZIndex).FirstOrDefault();
 
-    private CardNode lastOverlappedCard { get; set; }
+    public IReadOnlyCollection<CardNode> OverlappingCardsUnder =>
+        OverlappingCards.Where(e => e.ZIndex > ZIndex).ToArray();
 
-    private CardNode OverlappingCard => area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D)
-        .Where(e => e.ZIndex < ZIndex).OrderByDescending(e => e.ZIndex).FirstOrDefault();
+    public IReadOnlyCollection<CardNode> OverlappingCards =>
+        area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).ToArray();
 
     public static CardController CardController => GameController.Singleton.CardController;
-    private Sprite2D sprite => GetNode<Sprite2D>("Sprite2D");
+    public Sprite2D Sprite => GetNode<Sprite2D>("Sprite2D");
     private Area2D area2D => GetNode<Area2D>("Area2D");
     public bool MouseIsHovering { get; private set; }
 
     public bool Dragged {
         get => dragged;
         set {
+            if (!(CardType?.Movable ?? true)) return;
             dragged = value;
             OnDragChanged(value);
         }
@@ -59,7 +57,12 @@ public partial class CardNode : Node2D {
     //public IReadOnlyList<CardNode> HoveredCardsSorted => HoveredCards.OrderBy(x => x.ZIndex).ToList();
     public bool IsMovingOtherCards { get; set; } = false;
     public CraftButton CraftButton { get; set; }
-    public Vector2 CardSize => sprite?.Texture?.GetSize() ?? new Vector2(80, 128);
+    public Vector2 CardSize => Sprite?.Texture?.GetSize() ?? new Vector2(80, 128);
+    private bool AlwaysOnTop => CardType?.AlwaysOnTop ?? false;
+
+    public override void _Ready() {
+        if (AlwaysOnTop) ZIndex = 4096;
+    }
 
     /// <summary>
     ///     Sets the position of the card node to the given position.
@@ -84,7 +87,7 @@ public partial class CardNode : Node2D {
     }
 
     private bool ExecuteCardConsumptionLogic() {
-        CardNode cardUnder = OverlappingCard;
+        CardNode cardUnder = OverlappingCardUnder;
 
         if (cardUnder?.CardType is not ICardConsumer cardConsumer) return false;
         if (!cardConsumer.ConsumeCard(CardType)) return false;
@@ -108,7 +111,7 @@ public partial class CardNode : Node2D {
                         string.IsNullOrEmpty(CardType.TexturePath) + " " + FileAccess.FileExists(CardType.TexturePath));
             GD.PrintErr("Expected Texture path: " + CardType.TexturePath);
             texture = GD.Load<Texture2D>("res://Assets/Cards/Ready To Use/Error.png");
-            sprite.Texture = texture;
+            Sprite.Texture = texture;
             return;
         }
 
@@ -121,7 +124,7 @@ public partial class CardNode : Node2D {
             GD.PrintErr("Texture not found for card: " + CardType.TexturePath);
         }
 
-        sprite.Texture = texture;
+        Sprite.Texture = texture;
     }
 
     /// <summary>
@@ -131,12 +134,12 @@ public partial class CardNode : Node2D {
     public void SetHighlighted(bool isHighlighted) {
         switch (isHighlighted) {
             case true when !oldIsHighlighted:
-                sprite.SetModulate(sprite.Modulate * HIGHTLIGHT_MODULATE_FACTOR);
+                Sprite.SetModulate(Sprite.Modulate * HIGHTLIGHT_MODULATE_FACTOR);
                 oldIsHighlighted = true;
                 break;
             case false when oldIsHighlighted:
                 oldIsHighlighted = false;
-                sprite.SetModulate(sprite.Modulate / HIGHTLIGHT_MODULATE_FACTOR);
+                Sprite.SetModulate(Sprite.Modulate / HIGHTLIGHT_MODULATE_FACTOR);
                 break;
         }
     }
@@ -194,10 +197,8 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
-        if (CardType is ICardAnimateable animateableCard) {
-            animateableCard.Render(sprite, delta);
-        }
-        
+        if (CardType is ICardAnimateable animateableCard) animateableCard.Render(Sprite, delta);
+
         if (Dragged) {
             Vector2 mousePosition = GetGlobalMousePosition();
             Vector2 mousePositionDelta = mousePosition - oldMousePosition;
@@ -406,9 +407,10 @@ public partial class CardNode : Node2D {
             NeighbourBelow = null;
             UpdateZIndex();
         } else {
-            if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove &&
-                (CardType?.CanStackBelow(OverlappingCard.CardType) ?? false) &&
-                (OverlappingCard.CardType?.CanStackAbove(CardType) ?? false)) NeighbourBelow = OverlappingCard;
+            if (OverlappingCardUnder is not null && !OverlappingCardUnder.HasNeighbourAbove &&
+                (CardType?.CanStackBelow(OverlappingCardUnder.CardType) ?? false) &&
+                (OverlappingCardUnder.CardType?.CanStackAbove(CardType) ?? false))
+                NeighbourBelow = OverlappingCardUnder;
             ResetZIndex();
 
             if (HasNeighbourBelow) NeighbourBelow.UpdateCardPositions();
@@ -416,18 +418,18 @@ public partial class CardNode : Node2D {
     }
 
     private void ResetZIndex() {
-        BottomCardOfStack.ZIndex = (BottomCardOfStack?.CardType?.AlwaysOnTop ?? false) ? 4096 : 1;
+        BottomCardOfStack.ZIndex = AlwaysOnTop ? 4096 : 1;
         BottomCardOfStack.UpdateZIndexForStack();
     }
 
     private void UpdateZIndex() {
-        ZIndex = CardController.AllCards.Max(c => c.ZIndex) + 1;
+        ZIndex = CardController.AllCards.Where(e => !e.AlwaysOnTop).Max(c => c.ZIndex) + 1;
         UpdateZIndexForStack();
     }
 
     private void UpdateZIndexForStack() {
         int zIndexCounter = ZIndex;
-        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = ++zIndexCounter;
+        foreach (CardNode cardNode in StackAbove) cardNode.ZIndex = AlwaysOnTop ? 4096 : ++zIndexCounter;
     }
 
     #endregion

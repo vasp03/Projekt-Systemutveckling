@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Godot;
-using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -140,9 +138,7 @@ public partial class MenuController : Node {
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
             newMenu.Visible = true;
-            if (previousMenu is not null && IsInstanceValid(previousMenu)) {
-                previousMenu.Visible = false;
-            }
+            if (previousMenu is not null && IsInstanceValid(previousMenu)) previousMenu.Visible = false;
         }
     }
 
@@ -174,5 +170,4 @@ public partial class MenuController : Node {
     }
 
     #endregion Menu opening methods
-    
 }
