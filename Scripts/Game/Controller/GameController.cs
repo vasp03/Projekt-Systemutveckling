@@ -84,8 +84,8 @@ public partial class GameController : Node2D {
 
 
     public override void _PhysicsProcess(double delta) {
-        GameEventManager.PostTick();
-        CameraController.PostTick();
+        GameEventManager.PostTick(delta);
+        CameraController.PostTick(delta);
     }
 
     public bool IsPaused() {

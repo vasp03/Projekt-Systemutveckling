@@ -21,10 +21,10 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterDefaultEvents();
     }
 
-    public void PreTick() {
+    public void PreTick(double delta) {
     }
 
-    public void PostTick() {
+    public void PostTick(double delta) {
         foreach (IGameEvent registeredEvent in registeredEvents)
             if (registeredEvent.TicksUntilNextEvent >= 0 &&
                 registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
@@ -43,6 +43,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
         RegisterEvent(new DayTimeEvent(GameController));
+        RegisterEvent(new BoulderEvent());
     }
 
     /// <summary>

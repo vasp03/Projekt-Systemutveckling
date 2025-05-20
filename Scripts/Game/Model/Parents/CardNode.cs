@@ -225,8 +225,8 @@ public partial class CardNode : Node2D {
 
     public override void _PhysicsProcess(double delta) {
         ITickable tickableCardType = CardType as ITickable;
-        tickableCardType?.PreTick();
-        tickableCardType?.PostTick();
+        tickableCardType?.PreTick(delta);
+        tickableCardType?.PostTick(delta);
     }
 
     private void ClampPositionInGameSpace(Vector2 mousePositionDelta) {

@@ -5,9 +5,10 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class Boulder(Vector2 travelDirection) : Card("",false), ICardAnimateable, ITickable {
-    private const double ROTATION_RATE = 360;
+    private const float MOVEMENT_RATE = 100;
+    private const float ROTATION_RATE = 360;
     
-    public Vector2 TravelDirection { get; private set; } = travelDirection;
+    public Vector2 TravelDirection { get; set; } = travelDirection;
     public override int Value => -1;
     public override bool CanStackBelow(Card cardBelow) {
         return false;
@@ -18,10 +19,10 @@ public class Boulder(Vector2 travelDirection) : Card("",false), ICardAnimateable
     }
 
     public void Render(Sprite2D cardSprite, double delta) {
-        cardSprite.RotationDegrees += (float)ROTATION_RATE * (float)delta;
+        cardSprite.RotationDegrees += ROTATION_RATE * (float)delta;
     }
 
-    public void PostTick() {
-        throw new System.NotImplementedException();
+    public void PostTick(double delta) {
+        CardNode.Position += TravelDirection * MOVEMENT_RATE * (float)delta;
     }
 }
