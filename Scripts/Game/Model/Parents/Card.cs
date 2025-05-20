@@ -22,6 +22,10 @@ public abstract class Card {
     }
 
     public abstract int Value { get; }
+    /// <summary>
+    ///  Determines if the card should always be on top
+    /// </summary>
+    public bool AlwaysOnTop => false;
     public string ID { get; private set; }
     public string TexturePath { get; }
     public CardNode CardNode { get; set; }
