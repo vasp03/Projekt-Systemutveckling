@@ -13,6 +13,10 @@ public partial class GamePausedMenu : Control {
     private MenuController menuController;
     private SoundController soundController;
 
+    private Button Button(NodePath path) {
+        return GetNode<Button>(path);
+    }
+
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
         soundController = GetNode<SoundController>("/root/SoundController");
@@ -20,16 +24,16 @@ public partial class GamePausedMenu : Control {
         buttonContainer = GetNode<VBoxContainer>("ButtonContainer");
         buttonContainer.Show();
 
-        Button resumeButton = GetNode<Button>("ButtonContainer/ResumeButton");
+        Button resumeButton = Button("ButtonContainer/ResumeButton");
         resumeButton.Pressed += OnResumeButtonPressed;
 
-        Button guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+        Button guideButton = Button("ButtonContainer/GuideButton");
         guideButton.Pressed += OnGuideButtonPressed;
 
-        Button optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+        Button optionsButton = Button("ButtonContainer/OptionsButton");
         optionsButton.Pressed += OnOptionsButtonPressed;
 
-        Button exitButton = GetNode<Button>("ButtonContainer/ExitToMainMenuButton");
+        Button exitButton = Button("ButtonContainer/ExitToMainMenuButton");
         exitButton.Pressed += OnExitButtonPressed;
 
         exitConfirmationBox = GetNode<CanvasLayer>("ExitConfirmation");

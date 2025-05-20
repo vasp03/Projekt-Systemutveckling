@@ -9,6 +9,9 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class MenuController : Node {
     private GameController GameController;
 
+    public static MenuController Singleton =>
+        (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<MenuController>("/root/MenuController");
+
     public override void _Ready() {
         // mainMenu = GetParent().GetNode<Control>("MainMenu");
         currentMenu = mainMenu;
