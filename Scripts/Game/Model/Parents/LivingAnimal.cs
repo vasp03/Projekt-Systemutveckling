@@ -20,8 +20,8 @@ public abstract class LivingAnimal(string textureAddress, bool movable)
 
     public abstract Card ProduceCard();
 
-    public override void PostTick() {
-        base.PostTick();
+    public override void PostTick(double delta) {
+        base.PostTick(0);
         if (TicksUntilProducedCard is not null && Saturation > 0) ProduceTickProgress++;
     }
 

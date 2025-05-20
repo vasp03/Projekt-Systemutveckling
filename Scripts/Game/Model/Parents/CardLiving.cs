@@ -10,7 +10,7 @@ public abstract class CardLiving
     : Card, ITickable, ICardConsumer {
     public abstract bool ConsumeCard(Card otherCard);
 
-    public virtual void PostTick() {
+    public virtual void PostTick(double delta) {
         if (Saturation <= 0)
             StarvationTickProgress++;
         else
