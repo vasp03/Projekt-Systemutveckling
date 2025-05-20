@@ -17,25 +17,29 @@ public partial class MainMenu : Control {
 
     private SoundController soundController;
 
+    private Button Button(NodePath path) {
+        return GetNode<Button>(path);
+    }
+
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
         menuController.ConfigureWithNewMainMenuInstance(this);
         soundController = GetNode<SoundController>("/root/SoundController");
         soundController.PlayMenuMusic();
 
-        continueButton = GetNode<Button>("ButtonContainer/ContinueButton");
+        continueButton = Button("ButtonContainer/ContinueButton");
         continueButton.Pressed += OnContinueButtonPressed;
 
-        playButton = GetNode<Button>("ButtonContainer/PlayButton");
+        playButton = Button("ButtonContainer/PlayButton");
         playButton.Pressed += OnPlayButtonPressed;
 
-        optionsButton = GetNode<Button>("ButtonContainer/OptionsButton");
+        optionsButton = Button("ButtonContainer/OptionsButton");
         optionsButton.Pressed += OnOptionsButtonPressed;
 
-        guideButton = GetNode<Button>("ButtonContainer/GuideButton");
+        guideButton = Button("ButtonContainer/GuideButton");
         guideButton.Pressed += OnGuideButtonPressed;
 
-        exitButton = GetNode<Button>("ButtonContainer/ExitButton");
+        exitButton = Button("ButtonContainer/ExitButton");
         exitButton.Pressed += OnExitButtonPressed;
 
         if (!canContinue)
