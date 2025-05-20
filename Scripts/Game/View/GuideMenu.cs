@@ -17,6 +17,8 @@ public partial class GuideMenu : Control {
     private TextureRect cardImage;
     private Label cardInfoLabel;
     private Label descriptionLabel;
+    private Button[] eventCardButtons;
+    private VBoxContainer eventsList;
     private Button foodButton;
     private Button[] foodCardButtons;
     private VBoxContainer foodList;
@@ -26,6 +28,10 @@ public partial class GuideMenu : Control {
     private Button natureButton;
     private Button[] natureCardButtons;
     private VBoxContainer natureList;
+    private Button packsButton;
+    private Button[] packsButtons;
+    private VBoxContainer packsList;
+    private Button randomEventsButton;
 
     private Button[] resourceCardButtons;
 
@@ -38,17 +44,12 @@ public partial class GuideMenu : Control {
     private Button[] villagerCardButtons;
     private VBoxContainer villagerList;
     private Button villagersButton;
-    private Button randomEventsButton;
-    private VBoxContainer eventsList;
-    private Button[] eventCardButtons;
-    private Button packsButton;
-    private VBoxContainer packsList;
-    private Button[] packsButtons;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
         cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/CardImage");
-        descriptionLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/DescriptionLabel");
+        descriptionLabel =
+            GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/DescriptionLabel");
         cardInfoLabel = GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/InfoLabel");
 
         descriptionLabel.Visible = false;
@@ -106,6 +107,7 @@ public partial class GuideMenu : Control {
             GD.PrintErr($"Pack image not found: {packImagePath}");
             return GD.Load<Texture2D>(defaultPath);
         }
+
         Texture2D packTexture = GD.Load<Texture2D>(packImagePath);
         return packTexture;
     }
@@ -141,7 +143,8 @@ public partial class GuideMenu : Control {
         natureButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/NatureButton");
         villagersButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/VillagersButton");
         resourcesButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer//ButtonContainer/ResourcesButton");
-        randomEventsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/RandomEventsButton");
+        randomEventsButton =
+            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/RandomEventsButton");
         packsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/PacksButton");
 
         toolsButton.Pressed += () => OnMainButtonPressed(toolsButton);
@@ -164,14 +167,17 @@ public partial class GuideMenu : Control {
     private void InitializeLists() {
         toolList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList");
         foodList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList");
-        buildingList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList");
+        buildingList =
+            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList");
         natureList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList");
-        villagerList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList");
-        resourceList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList");
+        villagerList =
+            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList");
+        resourceList =
+            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList");
         eventsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList");
         packsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList");
-        
-        
+
+
         buttons[toolsButton] = toolList;
         buttons[foodButton] = foodList;
         buttons[buildingsButton] = buildingList;
@@ -180,7 +186,7 @@ public partial class GuideMenu : Control {
         buttons[resourcesButton] = resourceList;
         buttons[randomEventsButton] = eventsList;
         buttons[packsButton] = packsList;
-        
+
 
         toolList.Visible = false;
         foodList.Visible = false;
@@ -347,36 +353,33 @@ public partial class GuideMenu : Control {
         cardData["WoodButton"] = (LoadCardTexture("Wood"),
             "Wood is a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Axe \n1x Villager");
         cardData["PlanksButton"] = (LoadCardTexture("Planks"),
-            "Planks are crafted from wood and are used for crafting and building. \nRECIPE: \n2x Tree");
+            "Planks are crafted from wood and are used for crafting and building. \nRECIPE: \n2x Wood");
         cardData["StickButton"] = (LoadCardTexture("Stick"),
             "Sticks are small pieces of wood used for crafting and building. \nRECIPE: \n1x Wood \n1x Axe \n1x Villager");
-        cardData["StoneButton"] =
-            (LoadCardTexture("Stone"),
-                "Stone is a basic resource used for crafting and building. \nRECIPE: \n1x Mine \n1x Villager");
-        cardData["WaterButton"] =
-            (LoadCardTexture("Water"),
-                "Water is a basic resource used for crafting and building. \nRECIPE: \n 2x Water \nRandomly appears during events");
+        cardData["StoneButton"] = (LoadCardTexture("Stone"),
+            "Stone is a basic resource used for crafting and building. \nRECIPE: \n1x Mine \n1x Villager \nOR: \n1x Meteorite \n1x Axe \n1x Villager");
+        cardData["WaterButton"] = (LoadCardTexture("Water"),
+            "Water is a basic resource used for crafting and building. \nRECIPE: \n 2x Water \nRandomly appears during events");
         cardData["BrickButton"] = (LoadCardTexture("Brick"),
             "Bricks are crafted from clay and are used for crafting and building. \nRECIPE: \n1x Clay \n1x Campfire");
         cardData["SandButton"] = (LoadCardTexture("Sand"),
             "Sand is a basic resource used for crafting and building. \nRECIPE: \n1x Stone \n1x Villager");
         cardData["GlassButton"] = (LoadCardTexture("Glass"),
             "Glass is crafted from sand and is used for crafting and building. \nRECIPE: \n1x Sand \n1x Campfire");
-        cardData["LeafButton"] =
-            (LoadCardTexture("Leaves"),
-                "Leaves are a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Villager");
-        cardData["ClayButton"] =
-            (LoadCardTexture("Clay"),
-                "Clay is a basic resource used for crafting and building. \nRECIPE: \n1x Sand \n1x Water");
+        cardData["LeafButton"] = (LoadCardTexture("Leaves"),
+            "Leaves are a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Villager");
+        cardData["ClayButton"] = (LoadCardTexture("Clay"),
+            "Clay is a basic resource used for crafting and building. \nRECIPE: \n1x Sand \n1x Water");
 
         //tool cards
         cardData["SwordButton"] = (LoadCardTexture("Sword"),
             "A basic sword used for combat. \nRECIPE: \n2x Wood \n1x Stone");
         cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"),
-            "A basic fishing pole used for fishing. \nRECIPE: \n2x Stick \n1x Stone");
-        cardData["ShovelButton"] =
-            (LoadCardTexture("Shovel"), "A basic shovel used for digging. \nRECIPE: \n2x Stick \n2x Stone");
-        cardData["AxeButton"] = (LoadCardTexture("Axe"), "A basic axe used for chopping wood. \nRECIPE: \n3x Stone");
+            "A basic fishing pole used for fishing. \nRECIPE: \n1x Stick \n1x Stone");
+        cardData["ShovelButton"] = (LoadCardTexture("Shovel"),
+            "A basic shovel used for digging. \nRECIPE: \n2x Stick \n2x Stone");
+        cardData["AxeButton"] = (LoadCardTexture("Axe"),
+            "A basic axe used for chopping wood. \nRECIPE: \n1x Stone \n2x Stick");
 
         //building cards
         cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"),
@@ -422,7 +425,7 @@ public partial class GuideMenu : Control {
             "A farmer used for farming. Farms food faster than other villagers. \nRECIPE: \n1x Villager \n1x Shovel");
         cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"),
             "A blacksmith used for crafting. Crafts items faster than other villagers. \nRECIPE: \n1x Villager \n1x Axe");
-        
+
         //Random Event cards
         cardData["MeteoriteButton"] = (LoadCardTexture("Meteorite"),
             "As days go by there is a chance for a meteorite strike. \n\nThis cannot kill your villagers but can instead be mined with an axe to receive 10 stone.");
@@ -430,13 +433,13 @@ public partial class GuideMenu : Control {
             "As days go by there is a chance for a fire to start. \n\nThis can kill your villagers if they are not put out in time. Stack a water card on the fire to put it out.");
         cardData["ResourceEventButton"] = (LoadCardTexture("ResourceEvent"),
             "As days go by there is a chance for a random resource event to happen. \n\nThis event randomly grants you any kind of resource card.");
-        
+
         //packs
         cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
             "A pack you can open up once at the start of a new game. \n\nCONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
         cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
             "A pack containing 3-5 random material cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nWood, Stone, Leaf, Sand, Stick, Water, Brick \nRARE CARDS: \nPlanks, Clay, Glass ");
-        cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"), 
+        cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"),
             "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
     }
 
@@ -453,7 +456,6 @@ public partial class GuideMenu : Control {
         if (cardData.TryGetValue(buttonName, out (Texture2D, string) data)) {
             cardImage.Texture = data.Item1;
             cardInfoLabel.Text = data.Item2;
-            
         }
 
         descriptionLabel.Visible = true;

@@ -103,6 +103,14 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"], []));
         AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"], []));
         AddRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"], []));
+        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Villager", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Hunter", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Blacksmith", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Farmer", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
 
         AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"], ["Tent"],
             ["Leaves", "Wood"]));
@@ -177,8 +185,6 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"], ["Water"]));
 
         AddRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"], ["Sand"]));
-
-        AddRecipe(new CraftingRecipe("FishingPole", ["Wood", "Wood", "Stick"], ["FishingPole"], ["Wood", "Stick"]));
 
         AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"], ["Stick", "Stone"]));
 
