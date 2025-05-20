@@ -18,9 +18,7 @@ public partial class GameController : Node2D {
     public static GameController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
     public override void _Input(InputEvent @event) {
-        if (!IsInstanceValid(MenuController)) {
-            MenuController = GetNode<MenuController>("/root/MenuController");
-        }
+        if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
         if (@event is InputEventKey eventKey && eventKey.Pressed) {
             switch (eventKey.Keycode) {
@@ -36,9 +34,8 @@ public partial class GameController : Node2D {
                 case Key.O:
                     MenuController.OpenGameOverMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2) {
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
                         pausable2.SetPaused(true);
-                    }
 
                     SoundController.MusicMuted = true;
                     Visible = false;
@@ -174,6 +171,7 @@ public partial class GameController : Node2D {
     }
 
     #endregion Initialization
+
     #region Callbacks related
 
     private readonly IList<IPausable> pausedCallbacks = [];

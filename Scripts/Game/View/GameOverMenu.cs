@@ -1,13 +1,12 @@
 using Godot;
 using Goodot15.Scripts.Game.Controller;
-using System;
 
 public partial class GameOverMenu : Control {
-    Sprite2D background;
-    Button exitGameButton;
-    Button backToMenuButton;
-    MenuController menuController;
-    SoundController soundController;
+    private Sprite2D background;
+    private Button backToMenuButton;
+    private Button exitGameButton;
+    private MenuController menuController;
+    private SoundController soundController;
 
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");
