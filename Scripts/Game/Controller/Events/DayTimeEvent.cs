@@ -3,8 +3,11 @@ using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
-
+/// <summary>
+/// Class that handles the time of day and the temperature
+/// </summary>
 public class DayTimeEvent : GameEventBase, IPausable {
+
     /// <summary>
     ///     An event to handle when the day changes and it's time.
     /// </summary>
@@ -17,6 +20,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
     }
 
     public override string EventName => "Day Time Event";
+    public float CurrentTemperature { get; set; }
     public override int TicksUntilNextEvent => 1;
     public override double Chance => 1.0d;
 
@@ -57,6 +61,8 @@ public class DayTimeEvent : GameEventBase, IPausable {
 
         if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
 
+        UpdateTemperature(dayTicks);
+        GD.Print("Temperature is: " + CurrentTemperature + "C");
         SetSceneDarkness(dayTicks);
         timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
         dayState = Utilities.GetCurrentDayState(dayTicks);
@@ -107,6 +113,16 @@ public class DayTimeEvent : GameEventBase, IPausable {
             timeLabel.Hide();
     }
 
+    private void UpdateTemperature(int ticks) {
+        const int midDay = Utilities.TICKS_PER_DAY / 2;
+
+        if (ticks < midDay) {
+            CurrentTemperature = Utilities.MapRange(0, midDay, 10f, 30f, ticks);
+        } else {
+            CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 30f, 10f, ticks);
+        }
+    }
+
 
     /// <summary>
     ///     Sets the darkness of the scene based on the time of day
@@ -148,7 +164,7 @@ public class DayTimeEvent : GameEventBase, IPausable {
     private bool isPaused;
     private DayStateEnum oldDayState;
     private float oldSceneDarkness;
-    private int dayTicks;
+    public int dayTicks { get; set; }
 
     #endregion
 }
