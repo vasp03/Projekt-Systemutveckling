@@ -26,7 +26,8 @@ public class GameEventManager : GameManagerBase, ITickable {
 
     public void PostTick() {
         foreach (IGameEvent registeredEvent in registeredEvents)
-            if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
+            if (registeredEvent.TicksUntilNextEvent >= 0 &&
+                registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) {
                     PostEvent(registeredEvent);
@@ -51,7 +52,10 @@ public class GameEventManager : GameManagerBase, ITickable {
     /// </summary>
     /// <param name="gameEvent">Game Event Instance to be registered</param>
     public void RegisterEvent(IGameEvent gameEvent) {
-        eventTicks.TryAdd(gameEvent, 0);
+        if (gameEvent.TicksUntilNextEvent >= 0) {
+            eventTicks.TryAdd(gameEvent, 0);
+        }
+
         registeredEvents.Add(gameEvent);
     }
 
