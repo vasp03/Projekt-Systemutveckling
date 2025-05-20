@@ -1,5 +1,8 @@
 ﻿namespace Goodot15.Scripts.Game.Controller.Events;
 
+/// <summary>
+///     <inheritdoc cref="IGameEvent" /><br />
+/// </summary>
 public abstract class GameEventBase : IGameEvent {
     public abstract string EventName { get; }
     public abstract int TicksUntilNextEvent { get; }

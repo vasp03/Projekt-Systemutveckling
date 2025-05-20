@@ -1,5 +1,8 @@
 ﻿namespace Goodot15.Scripts.Game.Controller.Events;
 
+/// <summary>
+///     Any events will implement this interface; Includes basic properties that an event has to expose.
+/// </summary>
 public interface IGameEvent {
     /// <summary>
     ///     The name of the event. May be used for displaying the event in game through text or similar
