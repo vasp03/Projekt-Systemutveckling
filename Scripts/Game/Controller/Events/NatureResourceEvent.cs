@@ -18,6 +18,6 @@ public class NatureResourceEvent : IGameEvent {
         List<string> pack = cardCreationHelper.GetCardTypePacks(CardPackEnum.Nature);
         string randomCardType = pack[GD.RandRange(0, pack.Count - 1)];
 
-        cardController.CreateCard(randomCardType, context.GameController.GetRandomPositionWithinScreen());
+        cardController.CreateCard(randomCardType, context.GameController.NextRandomPositionOnScreen());
     }
 }
