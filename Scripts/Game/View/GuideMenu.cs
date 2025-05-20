@@ -46,7 +46,8 @@ public partial class GuideMenu : Control {
     private Button villagersButton;
 
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
+        menuController = MenuController.Singleton;
+        ;
         cardImage = GetNode<TextureRect>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/CardImage");
         descriptionLabel =
             GetNode<Label>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/DescriptionLabel");
@@ -131,21 +132,29 @@ public partial class GuideMenu : Control {
 
     #region Initialization of submenus
 
+    private Button Button(NodePath path) {
+        return GetNode<Button>(path);
+    }
+
+    private Button CategoryButton(string categoryButton) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ButtonContainer/{categoryButton}");
+    }
+
     /// <summary>
     ///     Initializes the main category buttons and assigns them event handlers that trigger OnMainButtonPressed When
     ///     clicked.
     ///     Also initializes the go back button which exits the menu
     /// </summary>
     private void InitializeMainButtons() {
-        toolsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/ToolsButton");
-        foodButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/FoodButton");
-        buildingsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/BuildingsButton");
-        natureButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/NatureButton");
-        villagersButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/VillagersButton");
-        resourcesButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer//ButtonContainer/ResourcesButton");
+        toolsButton = CategoryButton("ToolsButton");
+        foodButton = CategoryButton("FoodButton");
+        buildingsButton = CategoryButton("BuildingsButton");
+        natureButton = CategoryButton("NatureButton");
+        villagersButton = CategoryButton("VillagersButton");
+        resourcesButton = CategoryButton("ResourcesButton");
         randomEventsButton =
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/RandomEventsButton");
-        packsButton = GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ButtonContainer/PacksButton");
+            CategoryButton("RandomEventsButton");
+        packsButton = CategoryButton("PacksButton");
 
         toolsButton.Pressed += () => OnMainButtonPressed(toolsButton);
         foodButton.Pressed += () => OnMainButtonPressed(foodButton);
@@ -156,8 +165,16 @@ public partial class GuideMenu : Control {
         randomEventsButton.Pressed += () => OnMainButtonPressed(randomEventsButton);
         packsButton.Pressed += () => OnMainButtonPressed(packsButton);
 
-        goBackButton = GetNode<Button>("GoBackButton");
+        goBackButton = Button("GoBackButton");
         goBackButton.Pressed += OnGoBackButtonPressed;
+    }
+
+    private VBoxContainer BoxContainer(NodePath path) {
+        return GetNode<VBoxContainer>(path);
+    }
+
+    private VBoxContainer ContainerList(string category) {
+        return BoxContainer($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/{category}");
     }
 
     /// <summary>
@@ -165,17 +182,17 @@ public partial class GuideMenu : Control {
     ///     container.
     /// </summary>
     private void InitializeLists() {
-        toolList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList");
-        foodList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList");
+        toolList = ContainerList("ToolList");
+        foodList = ContainerList("FoodList");
         buildingList =
-            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList");
-        natureList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList");
+            ContainerList("BuildingList");
+        natureList = ContainerList("NatureList");
         villagerList =
-            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList");
+            ContainerList("VillagerList");
         resourceList =
-            GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList");
-        eventsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList");
-        packsList = GetNode<VBoxContainer>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList");
+            ContainerList("ResourceList");
+        eventsList = ContainerList("EventsList");
+        packsList = ContainerList("PacksList");
 
 
         buttons[toolsButton] = toolList;
@@ -198,25 +215,29 @@ public partial class GuideMenu : Control {
         packsList.Visible = false;
     }
 
+    private Button ResourceCardButton(string resourceCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/{resourceCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the resources category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeResourceCardButtons() {
-        resourceCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/WoodButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/PlanksButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/StickButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/StoneButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/WaterButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/BrickButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/SandButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/GlassButton"),
-            GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/LeafButton"), //no leaf card yet 
-            GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ResourceList/ClayButton") //no clay card yet 
-        };
+        resourceCardButtons = [
+            ResourceCardButton("WoodButton"),
+            ResourceCardButton("PlanksButton"),
+            ResourceCardButton("StickButton"),
+            ResourceCardButton("StoneButton"),
+            ResourceCardButton("WaterButton"),
+            ResourceCardButton("BrickButton"),
+            ResourceCardButton("SandButton"),
+            ResourceCardButton("GlassButton"),
+            ResourceCardButton(
+                "LeafButton"), //no leaf card yet 
+            ResourceCardButton(
+                "ClayButton") //no clay card yet 
+        ];
 
         foreach (Button button in resourceCardButtons) {
             string buttonName = button.Name;
@@ -224,18 +245,22 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button ToolCardButton(string toolCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList/{toolCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the tools category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeToolCardButtons() {
-        toolCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList/SwordButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList/FishingPoleButton"),
-            GetNode<Button>(
-                "TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList/ShovelButton"), //no shovel card yet 
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/ToolList/AxeButton")
-        };
+        toolCardButtons = [
+            ToolCardButton("SwordButton"),
+            ToolCardButton("FishingPoleButton"),
+            ToolCardButton(
+                "ShovelButton"), //no shovel card yet 
+            ToolCardButton("AxeButton")
+        ];
 
         foreach (Button button in toolCardButtons) {
             string buttonName = button.Name;
@@ -243,19 +268,23 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button BuildingCardButton(string buildingCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/{buildingCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the buildings category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeBuildingCardButtons() {
-        buildingCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/GreenhouseButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/HouseButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/TentButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/FieldButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/CampfireButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList/CookingPotButton")
-        };
+        buildingCardButtons = [
+            BuildingCardButton("GreenhouseButton"),
+            BuildingCardButton("HouseButton"),
+            BuildingCardButton("TentButton"),
+            BuildingCardButton("FieldButton"),
+            BuildingCardButton("CampfireButton"),
+            BuildingCardButton("CookingPotButton")
+        ];
 
         foreach (Button button in buildingCardButtons) {
             string buttonName = button.Name;
@@ -263,20 +292,24 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button FoodCardButton(string foodCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/{foodCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the food category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeFoodCardButtons() {
-        foodCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/AppleButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/BerryButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/JamButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/MeatButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/CookedMeatButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/FishButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/FoodList/CookedFishButton")
-        };
+        foodCardButtons = [
+            FoodCardButton("AppleButton"),
+            FoodCardButton("BerryButton"),
+            FoodCardButton("JamButton"),
+            FoodCardButton("MeatButton"),
+            FoodCardButton("CookedMeatButton"),
+            FoodCardButton("FishButton"),
+            FoodCardButton("CookedFishButton")
+        ];
 
         foreach (Button button in foodCardButtons) {
             string buttonName = button.Name;
@@ -284,16 +317,20 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button NatureCardButton(string natureCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList/{natureCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the nature category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeNatureCardButtons() {
-        natureCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList/TreeButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList/MineButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/NatureList/BushButton")
-        };
+        natureCardButtons = [
+            NatureCardButton("TreeButton"),
+            NatureCardButton("MineButton"),
+            NatureCardButton("BushButton")
+        ];
 
         foreach (Button button in natureCardButtons) {
             string buttonName = button.Name;
@@ -301,17 +338,21 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button VillagerCardButton(string villagerCardName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList/{villagerCardName}");
+    }
+
     /// <summary>
     ///     Initializes all individual card buttons under the villagers category and assigns them event handlers that trigger
     ///     OnSubButtonPressed when clicked.
     /// </summary>
     private void InitializeVillagerCardButtons() {
-        villagerCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList/VillagerButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList/HunterButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList/FarmerButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/VillagerList/BlacksmithButton")
-        };
+        villagerCardButtons = [
+            VillagerCardButton("VillagerButton"),
+            VillagerCardButton("HunterButton"),
+            VillagerCardButton("FarmerButton"),
+            VillagerCardButton("BlacksmithButton")
+        ];
 
         foreach (Button button in villagerCardButtons) {
             string buttonName = button.Name;
@@ -319,12 +360,16 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button RandomEventButton(string randomEventName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/{randomEventName}");
+    }
+
     private void InitializeRandomEventButtons() {
-        eventCardButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/MeteoriteButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/FireButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/EventsList/ResourceEventButton")
-        };
+        eventCardButtons = [
+            RandomEventButton("MeteoriteButton"),
+            RandomEventButton("FireButton"),
+            RandomEventButton("ResourceEventButton")
+        ];
 
         foreach (Button button in eventCardButtons) {
             string buttonName = button.Name;
@@ -332,12 +377,16 @@ public partial class GuideMenu : Control {
         }
     }
 
+    private Button PackButton(string packButtonName) {
+        return Button($"TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/{packButtonName}");
+    }
+
     private void InitializePacksButtons() {
-        packsButtons = new[] {
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/MaterialPackButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/StarterPackButton"),
-            GetNode<Button>("TabContainer/Card Types/CTBoxContainer/ListPanel/Container/PacksList/FoodPackButton")
-        };
+        packsButtons = [
+            PackButton("MaterialPackButton"),
+            PackButton("StarterPackButton"),
+            PackButton("FoodPackButton")
+        ];
 
         foreach (Button button in packsButtons) {
             string buttonName = button.Name;
@@ -349,7 +398,8 @@ public partial class GuideMenu : Control {
     ///     Sets up the texture and description for each card button in all categories
     /// </summary>
     private void InitializeDescriptions() {
-        //resource cards
+        #region Resource cards
+
         cardData["WoodButton"] = (LoadCardTexture("Wood"),
             "Wood is a basic resource used for crafting and building. \nRECIPE: \n1x Tree \n1x Axe \n1x Villager");
         cardData["PlanksButton"] = (LoadCardTexture("Planks"),
@@ -371,7 +421,10 @@ public partial class GuideMenu : Control {
         cardData["ClayButton"] = (LoadCardTexture("Clay"),
             "Clay is a basic resource used for crafting and building. \nRECIPE: \n1x Sand \n1x Water");
 
-        //tool cards
+        #endregion Resource cards
+
+        #region Tool cards
+
         cardData["SwordButton"] = (LoadCardTexture("Sword"),
             "A basic sword used for combat. \nRECIPE: \n2x Wood \n1x Stone");
         cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"),
@@ -381,7 +434,10 @@ public partial class GuideMenu : Control {
         cardData["AxeButton"] = (LoadCardTexture("Axe"),
             "A basic axe used for chopping wood. \nRECIPE: \n1x Stone \n2x Stick");
 
-        //building cards
+        #endregion Tool cards
+
+        #region Building cards
+
         cardData["GreenhouseButton"] = (LoadCardTexture("Greenhouse"),
             "A greenhouse used for growing plants. \nRECIPE: \n4x Glass \n2x Brick");
         cardData["HouseButton"] = (LoadCardTexture("House"),
@@ -394,7 +450,10 @@ public partial class GuideMenu : Control {
         cardData["CookingPotButton"] = (LoadCardTexture("CookingPot"),
             "A cooking pot used for cooking food. \n2x Clay \n1x Stick");
 
-        //food cards
+        #endregion Building cards
+
+        #region Food cards
+
         cardData["AppleButton"] =
             (LoadCardTexture("Apple"), "An apple used for food. \nRECIPE: \n1x Tree \n1x Villager");
         cardData["BerryButton"] =
@@ -410,13 +469,19 @@ public partial class GuideMenu : Control {
         cardData["CookedFishButton"] = (LoadCardTexture("CookedFish"),
             "Cooked fish used for food. \nRECIPE: \n1x Fish \n1x Campfire");
 
-        //nature cards
+        #endregion Food cards
+
+        #region Nature cards
+
         cardData["TreeButton"] = (LoadCardTexture("Tree"),
             "A tree used for wood. \nRECIPE: \nAppears in random Events. \nCan be found in packs");
         cardData["MineButton"] = (LoadCardTexture("Mine"), "A mine used for stone. \nRECIPE \n10x Stone");
         cardData["BushButton"] = (LoadCardTexture("Bush"), "A bush used to find berries. \nRECIPE: \n6x Leaf");
 
-        //villager cards
+        #endregion Nature cards
+
+        #region Villager cards
+
         cardData["VillagerButton"] = (LoadCardTexture("Villager"),
             "A villager used for crafting and building. \nRECIPE: \n2x Villager \n1x Tent or 1x House");
         cardData["HunterButton"] = (LoadCardTexture("Hunter"),
@@ -426,7 +491,10 @@ public partial class GuideMenu : Control {
         cardData["BlacksmithButton"] = (LoadCardTexture("Blacksmith"),
             "A blacksmith used for crafting. Crafts items faster than other villagers. \nRECIPE: \n1x Villager \n1x Axe");
 
-        //Random Event cards
+        #endregion Villager cards
+
+        #region Random event cards
+
         cardData["MeteoriteButton"] = (LoadCardTexture("Meteorite"),
             "As days go by there is a chance for a meteorite strike. \n\nThis cannot kill your villagers but can instead be mined with an axe to receive 10 stone.");
         cardData["FireButton"] = (LoadCardTexture("Fire"),
@@ -434,16 +502,21 @@ public partial class GuideMenu : Control {
         cardData["ResourceEventButton"] = (LoadCardTexture("ResourceEvent"),
             "As days go by there is a chance for a random resource event to happen. \n\nThis event randomly grants you any kind of resource card.");
 
-        //packs
+        #endregion Random event cards
+
+        #region Packs
+
         cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
             "A pack you can open up once at the start of a new game. \n\nCONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
         cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
             "A pack containing 3-5 random material cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nWood, Stone, Leaf, Sand, Stick, Water, Brick \nRARE CARDS: \nPlanks, Clay, Glass ");
         cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"),
             "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
+
+        #endregion Packs
     }
 
-    #endregion
+    #endregion Initialization of submenus
 
     #region Button pressed events
 
