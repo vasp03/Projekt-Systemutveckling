@@ -189,6 +189,10 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
+        if (CardType is ICardAnimateable animateableCard) {
+            animateableCard.Render(sprite, delta);
+        }
+        
         if (Dragged) {
             Vector2 mousePosition = GetGlobalMousePosition();
             Vector2 mousePositionDelta = mousePosition - oldMousePosition;

@@ -4,7 +4,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
-public class DayTimeEvent : GameEventBase, IPausable {
+public class DayTimeEvent : GameEvent, IPausable {
     /// <summary>
     ///     An event to handle when the day changes and it's time.
     /// </summary>

@@ -2,7 +2,7 @@
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
-public class FireEvent : GameEventBase {
+public class FireEvent : GameEvent {
     private const int FIRE_CARD_SPAWN_COUNT = 3;
 
     public override string EventName => "Fire event";
@@ -12,6 +12,6 @@ public class FireEvent : GameEventBase {
     public override void OnEvent(GameEventContext context) {
         for (int i = 0; i < FIRE_CARD_SPAWN_COUNT; i++)
             context.GameController.CardController.CreateCard(new MaterialFire(),
-                context.GameController.GetRandomPositionWithinScreen());
+                context.GameController.NextRandomPositionOnScreen());
     }
 }

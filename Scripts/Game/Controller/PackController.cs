@@ -78,7 +78,7 @@ public partial class PackController : HBoxContainer {
             : GeneratePackContents(pack);
 
         foreach (string cardName in cardsToSpawn) {
-            Vector2 randomPos = GameController.Singleton.GetRandomPositionWithinScreen();
+            Vector2 randomPos = GameController.Singleton.NextRandomPositionOnScreen();
             GameController.Singleton.CardController.CreateCard(cardName, randomPos);
         }
 
