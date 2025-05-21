@@ -1,15 +1,14 @@
 using Godot;
 using Goodot15.Scripts.Game.Controller;
-using System;
 
 public partial class GameOverMenu : Control {
     private const string LOSE_SOUND = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
     
-    Sprite2D background;
-    Button exitGameButton;
-    Button backToMenuButton;
-    MenuController menuController;
-    SoundController soundController;
+    private Sprite2D background;
+    private Button exitGameButton;
+    private Button backToMenuButton;
+    private MenuController menuController;
+    private SoundController soundController;
 
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");

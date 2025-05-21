@@ -16,12 +16,12 @@ public partial class SoundController : Node {
     
     public static SoundController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode("/root/SoundController") as SoundController;
     /// <summary>
-    /// Settings manager instance reference
+    ///     Settings manager instance reference
     /// </summary>
     private SettingsManager SettingsManager => GetNode<SettingsManager>("/root/SettingsManager");
-    
+
     /// <summary>
-    /// Determines if sound effects are muted
+    ///     Determines if sound effects are muted
     /// </summary>
     public bool SfxMuted { get; set; }
 
@@ -36,9 +36,6 @@ public partial class SoundController : Node {
 
         MusicVolume = SettingsManager.MusicVolume;
         SfxVolume = SettingsManager.SfxVolume;
-
-
-        // MusicPlayer.Finished += OnMusicFinished;
     }
 
     public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
@@ -84,14 +81,14 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Plays regular (main) menu music
+    ///     Plays regular (main) menu music
     /// </summary>
     public void PlayMenuMusic() {
         PlayMusic("xDeviruchi/02 - Title Theme.wav");
     }
 
     /// <summary>
-    /// Plays regular game music
+    ///     Plays regular game music
     /// </summary>
     public void PlayGameMusic() {
         PlayMusic("xDeviruchi/03 - Definitely Our Town.wav");
@@ -102,7 +99,8 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Plays a song with for the specified <see cref="dayTime"/> DayTime value. Automatically loads and caches the sound asset after
+    ///     Plays a song with for the specified <see cref="dayTime" /> DayTime value. Automatically loads and caches the sound
+    ///     asset after
     /// </summary>
     /// <param name="dayTime">Relevant Day-time</param>
     public void PlayDayTimeSong(string dayTime) {
@@ -117,7 +115,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Plays the specified <see cref="musicPath"/> music.
+    ///     Plays the specified <see cref="musicPath" /> music.
     /// </summary>
     /// <param name="musicPath">Music path, only the music path is needed</param>
     private void PlayMusic(string musicPath) {
@@ -135,7 +133,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Loads the specified music sound asset and caches it in memory
+    ///     Loads the specified music sound asset and caches it in memory
     /// </summary>
     /// <param name="soundAssetName">Music asset to be loaded</param>
     /// <returns>Loaded music as an AudioStream</returns>
@@ -151,7 +149,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Stops playing the current music
+    ///     Stops playing the current music
     /// </summary>
     public void StopMusic() {
         MusicPlayer?.Stop();
@@ -161,7 +159,8 @@ public partial class SoundController : Node {
     private const string BASE_SOUND_PATH = "res://Assets/Sounds";
 
     /// <summary>
-    /// Plays a sound effect with for the specified <see cref="dayTime"/> DayTime value. Automatically loads and caches the sound asset after
+    ///     Plays a sound effect with for the specified <see cref="dayTime" /> DayTime value. Automatically loads and caches
+    ///     the sound asset after
     /// </summary>
     /// <param name="soundName">Path and name of sound (excluding <b>res://Assets/Sounds/</b>)</param>
     public void PlaySound(string soundName) {
@@ -177,7 +176,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Loads the specified sound effect asset and caches it in memory
+    ///     Loads the specified sound effect asset and caches it in memory
     /// </summary>
     /// <param name="soundAssetName">Music asset to be loaded</param>
     /// <returns>Loaded sound effect as an AudioStream</returns>
@@ -199,7 +198,7 @@ public partial class SoundController : Node {
     #region Settings & configurability related
 
     /// <summary>
-    /// Determines if music is muted or not
+    ///     Determines if music is muted or not
     /// </summary>
     public bool MusicMuted {
         get => _musicMuted;
@@ -208,9 +207,9 @@ public partial class SoundController : Node {
             UpdateMusicMuted();
         }
     }
-    
+
     /// <summary>
-    /// The current music volume, range is <b>0-1</b> inclusive.
+    ///     The current music volume, range is <b>0-1</b> inclusive.
     /// </summary>
     public float MusicVolume {
         get => _musicVolume;
@@ -221,14 +220,14 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Fired when music volume changes, applies the new music volume to the music player
+    ///     Fired when music volume changes, applies the new music volume to the music player
     /// </summary>
     private void UpdateMusicVolume() {
         if (!MusicMuted) MusicPlayer.VolumeDb = Mathf.LinearToDb(MusicVolume);
     }
-    
+
     /// <summary>
-    /// Toggles if music is muted or not
+    ///     Toggles if music is muted or not
     /// </summary>
     /// <returns>True or false if music was just muted or not</returns>
     public bool ToggleMusicMuted() {
@@ -238,7 +237,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Fired when music is muted changes, applies the new muted property to the music player
+    ///     Fired when music is muted changes, applies the new muted property to the music player
     /// </summary>
     private void UpdateMusicMuted() {
         MusicPlayer.VolumeDb = MusicMuted
@@ -247,12 +246,12 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    /// Toggles if sound effects are muted or not
+    ///     Toggles if sound effects are muted or not
     /// </summary>
     /// <returns>True or false if sound effects were just muted or not</returns>
     public bool ToggleSfxMuted() {
         return SfxMuted = !SfxMuted;
     }
-    
+
     #endregion Settings & configurability related
 }

@@ -8,15 +8,15 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public class GameEventManager : GameManagerBase, ITickable {
     /// <summary>
-    /// Keeps tracks of event instances ticks
+    ///     Keeps tracks of event instances ticks
     /// </summary>
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
-    
+
     /// <summary>
-    /// Keeps track of registered events
+    ///     Keeps track of registered events
     /// </summary>
     private readonly IList<IGameEvent> registeredEvents = [];
-    
+
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
@@ -26,18 +26,16 @@ public class GameEventManager : GameManagerBase, ITickable {
 
     public void PostTick() {
         foreach (IGameEvent registeredEvent in registeredEvents)
-            if (registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
+            if (registeredEvent.EventActive && registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
-                if (registeredEvent.Chance >= GD.Randf()) {
-                    PostEvent(registeredEvent);
-                }
+                if (registeredEvent.Chance >= GD.Randf()) PostEvent(registeredEvent);
             } else {
                 eventTicks[registeredEvent]++;
             }
     }
 
     /// <summary>
-    /// Registers the default events for the game, called from the constructor
+    ///     Registers the default events for the game, called from the constructor
     /// </summary>
     private void RegisterDefaultEvents() {
         RegisterEvent(new MeteoriteEvent());
@@ -47,11 +45,12 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     /// <summary>
-    /// Registers any new <see cref="IGameEvent"/> event instances.
+    ///     Registers any new <see cref="IGameEvent" /> event instances.
     /// </summary>
     /// <param name="gameEvent">Game Event Instance to be registered</param>
     public void RegisterEvent(IGameEvent gameEvent) {
-        eventTicks.TryAdd(gameEvent, 0);
+        if (gameEvent.TicksUntilNextEvent >= 0) eventTicks.TryAdd(gameEvent, 0);
+
         registeredEvents.Add(gameEvent);
     }
 
