@@ -6,9 +6,14 @@ using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller;
 
+/// <summary>
+///     Responsible for handling game events, ticking logic and timing.<br />
+///     Acts as a register for events; Events must always be registered so they can be ticked and executed through
+///     <see cref="RegisterEvent" />.
+/// </summary>
 public class GameEventManager : GameManagerBase, ITickable {
     /// <summary>
-    ///     Keeps tracks of event instances ticks
+    ///     Keeps tracks of event instances timing ticks
     /// </summary>
     private readonly IDictionary<IGameEvent, int> eventTicks = new Dictionary<IGameEvent, int>();
 
@@ -17,21 +22,39 @@ public class GameEventManager : GameManagerBase, ITickable {
     /// </summary>
     private readonly IList<IGameEvent> registeredEvents = [];
 
+    /// <summary>
+    ///     Constructs a new Game Event Manager
+    /// </summary>
+    /// <param name="gameController">Game Controller instance to be used</param>
     public GameEventManager(GameController gameController) : base(gameController) {
         RegisterDefaultEvents();
     }
 
+    /// <summary>
+    ///     Executes Pre ticking logic, this includes for every event.
+    /// </summary>
     public void PreTick() {
+        foreach (IGameEvent gameEvent in registeredEvents) {
+            ITickable? tickableGameEvent = gameEvent as ITickable;
+            tickableGameEvent?.PreTick();
+        }
     }
 
+    /// <summary>
+    ///     Executes Post ticking logic, this includes incrementing tick counters for timing the events.
+    /// </summary>
     public void PostTick() {
-        foreach (IGameEvent registeredEvent in registeredEvents)
+        foreach (IGameEvent registeredEvent in registeredEvents) {
+            ITickable? tickableGameEvent = registeredEvent as ITickable;
             if (registeredEvent.EventActive && registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) PostEvent(registeredEvent);
             } else {
                 eventTicks[registeredEvent]++;
             }
+
+            tickableGameEvent?.PostTick();
+        }
     }
 
     /// <summary>
@@ -41,13 +64,18 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new MeteoriteEvent());
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
-        RegisterEvent(new DayTimeEvent(GameController));
+        RegisterEvent(new DayTimeEvent());
+        RegisterEvent(new ColdNightEvent());
     }
 
     /// <summary>
     ///     Registers any new <see cref="IGameEvent" /> event instances.
     /// </summary>
     /// <param name="gameEvent">Game Event Instance to be registered</param>
+    /// <remarks>
+    ///     Instance pass may implement the interface <see cref="ITickable" /> to allow an event to execute logic each
+    ///     tick
+    /// </remarks>
     public void RegisterEvent(IGameEvent gameEvent) {
         if (gameEvent.TicksUntilNextEvent >= 0) eventTicks.TryAdd(gameEvent, 0);
 
@@ -55,12 +83,12 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     /// <summary>
-    ///     Gets a registered event instance from the Game Event Manager
+    ///     Gets an already registered event instance from the Game Event Manager
     /// </summary>
     /// <typeparam name="T">The Event instance type</typeparam>
     /// <returns>Event instance registered, null if not registered</returns>
-    public T? EventInstance<T>() where T : IGameEvent {
-        return (T)registeredEvents.FirstOrDefault(e => e.GetType() == typeof(T));
+    public T? EventInstance<T>() where T : class, IGameEvent {
+        return registeredEvents.FirstOrDefault(e => e.GetType() == typeof(T)) as T;
     }
 
     /// <summary>
