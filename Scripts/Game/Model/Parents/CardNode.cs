@@ -33,7 +33,7 @@ public partial class CardNode : Node2D {
     public CardNode OverlappingCardUnder => OverlappingCardsUnder.OrderByDescending(e => e.ZIndex).FirstOrDefault();
 
     public IReadOnlyCollection<CardNode> OverlappingCardsUnder =>
-        OverlappingCards.Where(e => e.ZIndex > ZIndex).ToArray();
+        OverlappingCards.Where(e => e.ZIndex <= ZIndex).ToArray();
 
     public IReadOnlyCollection<CardNode> OverlappingCards =>
         area2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).ToArray();

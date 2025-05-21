@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class Boulder(Vector2 direction) : Card("", false), ICardAnimateable, ITickable {
+public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateable, ITickable {
     private const float MOVEMENT_RATE = 100;
     private const float ROTATION_RATE = 360;
     private static readonly int TICKS_ALIVE = Utilities.TimeToTicks(15d);
@@ -45,7 +45,10 @@ public class Boulder(Vector2 direction) : Card("", false), ICardAnimateable, ITi
     }
 
     private void ConvertOverlappingCardsToTrash() {
-        IEnumerable<CardNode> cardsNoTrashYet = CardNode.OverlappingCards.Where(e => e.CardType is not MaterialTrash);
-        foreach (CardNode cardNode in cardsNoTrashYet) cardNode.CardType = new MaterialTrash();
+        ICollection<CardNode> cardsNoTrashYet = CardNode.OverlappingCards
+            .Where(e => e.CardType is not MaterialTrash && e.CardType is not Boulder).ToArray();
+        foreach (CardNode cardNode in cardsNoTrashYet)
+            // TODO: SFX for "crushing" cards
+            cardNode.CardType = new MaterialTrash();
     }
 }
