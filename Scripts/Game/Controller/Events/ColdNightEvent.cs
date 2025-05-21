@@ -76,6 +76,7 @@ public class ColdNightEvent : GameEventBase, IGameEvent, ITickable {
     /// <summary>
     ///     Executes the damage logic when the event is fired. Applies damage every real time second to all living cards that
     ///     are not stacked on a campfire.
+    ///     A campfire can only protect up to 3 living cards from damage
     /// </summary>
     public void PostTick() {
         if (!hasTriggered) return;
