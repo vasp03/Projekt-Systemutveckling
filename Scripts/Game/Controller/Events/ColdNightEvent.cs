@@ -11,7 +11,7 @@ namespace Goodot15.Scripts.Game.Controller.Events;
 ///     Represents a cold night event in the game, which triggers during the night and depletes the health and saturation
 ///     of living cards.
 /// </summary>
-public class ColdNightEvent : GameEventBase, IGameEvent, ITickable {
+public class ColdNightEvent : GameEvent, IGameEvent, ITickable {
     private readonly GameController gameController;
 
     /// <summary>
