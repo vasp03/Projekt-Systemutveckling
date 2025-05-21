@@ -3,11 +3,11 @@ using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
+
 /// <summary>
-/// Class that handles the time of day and the temperature
+///     Class that handles the time of day and the temperature
 /// </summary>
 public class DayTimeEvent : GameEventBase, IPausable {
-
     /// <summary>
     ///     An event to handle when the day changes and it's time.
     /// </summary>
@@ -20,9 +20,11 @@ public class DayTimeEvent : GameEventBase, IPausable {
     }
 
     public override string EventName => "Day Time Event";
-    public float CurrentTemperature { get; set; }
     public override int TicksUntilNextEvent => 1;
     public override double Chance => 1.0d;
+
+    public float CurrentTemperature { get; set; }
+    public bool temperatureLocked { get; set; } = false;
 
     /// <summary>
     ///     Sets the paused state of the event.
@@ -62,7 +64,6 @@ public class DayTimeEvent : GameEventBase, IPausable {
         if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
 
         UpdateTemperature(dayTicks);
-        GD.Print("Temperature is: " + CurrentTemperature + "C");
         SetSceneDarkness(dayTicks);
         timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
         dayState = Utilities.GetCurrentDayState(dayTicks);
@@ -119,7 +120,8 @@ public class DayTimeEvent : GameEventBase, IPausable {
         if (ticks < midDay) {
             CurrentTemperature = Utilities.MapRange(0, midDay, 10f, 30f, ticks);
         } else {
-            CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 30f, 10f, ticks);
+            if (!temperatureLocked)
+                CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 30f, 10f, ticks);
         }
     }
 

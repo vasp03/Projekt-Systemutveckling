@@ -42,7 +42,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
         RegisterEvent(new DayTimeEvent(GameController));
-        RegisterEvent(new ColdNightEvent());
+        RegisterEvent(new ColdNightEvent(GameController));
     }
 
     /// <summary>
