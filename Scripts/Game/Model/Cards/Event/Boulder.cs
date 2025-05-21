@@ -7,7 +7,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateable, ITickable {
+public class Boulder : Card, ICardAnimateable, ITickable {
     private const string BOULDER_CRUSH_SFX = "Explosions/Shortest/sfx_exp_shortest_hard4.wav";
 
     private const float MOVEMENT_RATE = 100;
@@ -15,7 +15,11 @@ public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateab
     private static readonly int TICKS_ALIVE = Utilities.TimeToTicks(15d);
     private int remainingTicksAlive = TICKS_ALIVE;
 
-    private Vector2 travelDirection = direction.Normalized();
+    private Vector2 travelDirection;
+
+    public Boulder(Vector2 direction) : base("Boulder", false) {
+        TravelDirection = direction;
+    }
 
     public Vector2 TravelDirection {
         get => travelDirection;
@@ -30,7 +34,7 @@ public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateab
     }
 
     public void PostTick(double delta) {
-        CardNode.Position += TravelDirection * MOVEMENT_RATE * (float)delta * TravelDirection.X;
+        CardNode.Position += TravelDirection * MOVEMENT_RATE * (float)delta;
         if (remainingTicksAlive-- <= 0) {
             CardNode.Destroy();
             return;
