@@ -6,7 +6,7 @@ public class FireEvent : GameEvent {
     private const int FIRE_CARD_SPAWN_COUNT = 3;
 
     public override string EventName => "Fire event";
-    public override int TicksUntilNextEvent => Utilities.GameScaledTimeToTicks(days: 0.5d);
+    public override int TicksUntilNextEvent => Utilities.GameScaledTimeToTicks(days: 1d);
     public override double Chance => 0.25d;
 
     public override void OnEvent(GameEventContext context) {

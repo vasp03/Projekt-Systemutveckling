@@ -30,7 +30,7 @@ public abstract class CardLiving
                 : 0;
         }
 
-        if (Health <= 0) {
+        if (Health <= 0 || Saturation <= 0) {
             deathTimer--;
             if (deathTimer <= 0) {
                 CardNode.Destroy();

@@ -82,7 +82,6 @@ public partial class GameController : Node2D {
         }
     }
 
-
     public override void _PhysicsProcess(double delta) {
         GameEventManager.PostTick(delta);
         CameraController.PostTick(delta);
