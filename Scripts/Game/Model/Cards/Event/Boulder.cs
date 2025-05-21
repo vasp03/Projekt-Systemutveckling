@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateable, ITickable {
+    private const string BOULDER_CRUSH_SFX = "Explosions/Shortest/sfx_exp_shortest_hard4.wav";
+
     private const float MOVEMENT_RATE = 100;
     private const float ROTATION_RATE = 360;
     private static readonly int TICKS_ALIVE = Utilities.TimeToTicks(15d);
@@ -47,8 +50,9 @@ public class Boulder(Vector2 direction) : Card("Boulder", false), ICardAnimateab
     private void ConvertOverlappingCardsToTrash() {
         ICollection<CardNode> cardsNoTrashYet = CardNode.OverlappingCards
             .Where(e => e.CardType is not MaterialTrash && e.CardType is not Boulder).ToArray();
-        foreach (CardNode cardNode in cardsNoTrashYet)
-            // TODO: SFX for "crushing" cards
+        foreach (CardNode cardNode in cardsNoTrashYet) {
+            GameController.Singleton.SoundController.PlaySound(BOULDER_CRUSH_SFX);
             cardNode.CardType = new MaterialTrash();
+        }
     }
 }

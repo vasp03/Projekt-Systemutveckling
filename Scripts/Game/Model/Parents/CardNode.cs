@@ -6,6 +6,7 @@ using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
@@ -261,7 +262,10 @@ public partial class CardNode : Node2D {
     public Card CardType {
         get => cardType;
         set {
-            if (cardType is not null) cardType.CardNode = null;
+            if (cardType is not null) cardType.CardNode = null; // Update the old CardNode reference and unlink it
+
+            // If this card was a living player and the new card is not, we can assume one has just died
+            if (cardType is LivingPlayer && value is not LivingPlayer) CardController.CheckForGameOver(true);
 
             value.CardNode = this;
             cardType = value;
