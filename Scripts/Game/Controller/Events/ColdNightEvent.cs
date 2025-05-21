@@ -28,12 +28,10 @@ public class ColdNightEvent : GameEventBase, IGameEvent, ITickable {
     ///     Initializes the ColdNightEvent instance and registers it with the game controller.
     /// </summary>
     /// <param name="gameController">The GameController instance</param>
-    public ColdNightEvent(GameController gameController) {
-        this.gameController = gameController;
-        gameController.AddTickable(this);
+    public ColdNightEvent() {
     }
 
-    private DayTimeEvent dayTimeEvent => gameController.GameEventManager.EventInstance<DayTimeEvent>();
+    private DayTimeEvent dayTimeEvent => GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>();
 
     /// <inheritdoc cref="IGameEvent" />
     /// />

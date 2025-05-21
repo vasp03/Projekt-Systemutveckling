@@ -22,16 +22,24 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     public void PreTick() {
+        foreach (IGameEvent gameEvent in registeredEvents) {
+            ITickable? tickableGameEvent = gameEvent as ITickable;
+            tickableGameEvent?.PreTick();
+        }
     }
 
     public void PostTick() {
-        foreach (IGameEvent registeredEvent in registeredEvents)
+        foreach (IGameEvent registeredEvent in registeredEvents) {
+            ITickable? tickableGameEvent = registeredEvent as ITickable;
             if (registeredEvent.EventActive && registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
                 eventTicks[registeredEvent] = 0;
                 if (registeredEvent.Chance >= GD.Randf()) PostEvent(registeredEvent);
             } else {
                 eventTicks[registeredEvent]++;
             }
+
+            tickableGameEvent?.PostTick();
+        }
     }
 
     /// <summary>
@@ -42,7 +50,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
         RegisterEvent(new DayTimeEvent(GameController));
-        RegisterEvent(new ColdNightEvent(GameController));
+        RegisterEvent(new ColdNightEvent());
     }
 
     /// <summary>

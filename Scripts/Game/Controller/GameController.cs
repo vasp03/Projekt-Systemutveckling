@@ -10,7 +10,6 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
     private readonly List<int> numberList = new();
-    private readonly List<ITickable> tickables = new();
 
     /// <summary>
     ///     Gets the single GameController of the game (if the correct scene is loaded); Null if the game has no GameController
@@ -83,13 +82,7 @@ public partial class GameController : Node2D {
         }
     }
 
-    public void AddTickable(ITickable tickable) {
-        if (!tickables.Contains(tickable)) tickables.Add(tickable);
-    }
-
-
     public override void _PhysicsProcess(double delta) {
-        foreach (ITickable tickable in tickables) tickable.PostTick();
         GameEventManager.PostTick();
         CameraController.PostTick();
     }
