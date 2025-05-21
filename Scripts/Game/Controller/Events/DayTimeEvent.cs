@@ -11,12 +11,12 @@ public class DayTimeEvent : GameEventBase, IPausable {
     /// <summary>
     ///     An event to handle when the day changes and it's time.
     /// </summary>
-    public DayTimeEvent(GameController gameController) {
+    public DayTimeEvent() {
         oldDayState = DayStateEnum.Invalid;
-        canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
+        canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-        gameController.AddPauseCallback(this);
+        GameController.Singleton.AddPauseCallback(this);
     }
 
     public override string EventName => "Day Time Event";
