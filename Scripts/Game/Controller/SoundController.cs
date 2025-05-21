@@ -35,9 +35,6 @@ public partial class SoundController : Node {
 
         MusicVolume = SettingsManager.MusicVolume;
         SfxVolume = SettingsManager.SfxVolume;
-
-
-        // MusicPlayer.Finished += OnMusicFinished;
     }
 
     public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {

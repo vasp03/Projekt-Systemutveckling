@@ -32,7 +32,7 @@ public class CardController {
         GameController = gameController;
         MouseController = mouseController;
         CardCreationHelper = new CardCreationHelper(gameController);
-        CraftingController = new CraftingController(CardCreationHelper);
+        CraftingController = new CraftingController();
         this.menuController = menuController;
     }
 

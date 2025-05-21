@@ -18,7 +18,6 @@ public partial class CardNode : Node2D {
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
     public static readonly Vector2 CARD_OVERLAP_OFFSET = new(0, 20);
 
-
     private static int startingZIndex;
     private bool dragged;
     private bool oldIsHighlighted;
