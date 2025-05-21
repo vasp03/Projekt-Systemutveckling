@@ -7,8 +7,9 @@ using Goodot15.Scripts.Game.Model.Interface;
 namespace Goodot15.Scripts.Game.Controller;
 
 /// <summary>
-/// Responsible for handling game events, ticking logic and timing.<br/>
-/// Acts as a register for events; Events must always be registered so they can be ticked and executed through <see cref="RegisterEvent"/>.
+///     Responsible for handling game events, ticking logic and timing.<br />
+///     Acts as a register for events; Events must always be registered so they can be ticked and executed through
+///     <see cref="RegisterEvent" />.
 /// </summary>
 public class GameEventManager : GameManagerBase, ITickable {
     /// <summary>
@@ -22,7 +23,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     private readonly IList<IGameEvent> registeredEvents = [];
 
     /// <summary>
-    /// Constructs a new Game Event Manager
+    ///     Constructs a new Game Event Manager
     /// </summary>
     /// <param name="gameController">Game Controller instance to be used</param>
     public GameEventManager(GameController gameController) : base(gameController) {
@@ -30,7 +31,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     /// <summary>
-    /// Executes Pre ticking logic, this includes for every event.
+    ///     Executes Pre ticking logic, this includes for every event.
     /// </summary>
     public void PreTick() {
         foreach (IGameEvent gameEvent in registeredEvents) {
@@ -40,7 +41,7 @@ public class GameEventManager : GameManagerBase, ITickable {
     }
 
     /// <summary>
-    /// Executes Post ticking logic, this includes incrementing tick counters for timing the events.
+    ///     Executes Post ticking logic, this includes incrementing tick counters for timing the events.
     /// </summary>
     public void PostTick() {
         foreach (IGameEvent registeredEvent in registeredEvents) {
@@ -71,7 +72,10 @@ public class GameEventManager : GameManagerBase, ITickable {
     ///     Registers any new <see cref="IGameEvent" /> event instances.
     /// </summary>
     /// <param name="gameEvent">Game Event Instance to be registered</param>
-    /// <remarks>Instance pass may implement the interface <see cref="ITickable"/> to allow an event to execute logic each tick</remarks>
+    /// <remarks>
+    ///     Instance pass may implement the interface <see cref="ITickable" /> to allow an event to execute logic each
+    ///     tick
+    /// </remarks>
     public void RegisterEvent(IGameEvent gameEvent) {
         if (gameEvent.TicksUntilNextEvent >= 0) eventTicks.TryAdd(gameEvent, 0);
 
