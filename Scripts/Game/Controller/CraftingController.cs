@@ -8,13 +8,9 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
-    public CraftingController(CardCreationHelper cardCreationHelper) {
-        CardCreationHelper = cardCreationHelper;
-
+    public CraftingController() {
         CreateStartingRecipes();
     }
-
-    public CardCreationHelper CardCreationHelper { get; private set; }
 
     /// <summary>
     ///     Check if the cards in the stack can be crafted into a new card

@@ -17,6 +17,12 @@ public interface IGameEvent {
     public int TicksUntilNextEvent { get; }
 
     /// <summary>
+    ///     Determines if the event should actually be ticking and be executed.<br />
+    ///     If <see cref="TicksUntilNextEvent" /> is -1; This will automatically be <b>false</b>
+    /// </summary>
+    public virtual bool EventActive => TicksUntilNextEvent >= 0;
+
+    /// <summary>
     ///     The chance for the event to actually trigger, executed every <see cref="TicksUntilNextEvent" /> ticks.<br />
     ///     The value ranges from <b>0-1</b> inclusive. 1 meaning 100% and 0 meaning 0%
     ///     <remarks>When manually posting it to the <see cref="GameEventManager" /> event bus; This property is ignored.</remarks>
