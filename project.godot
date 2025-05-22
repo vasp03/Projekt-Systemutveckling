@@ -21,7 +21,7 @@ config/icon="res://Assets/Icons/icon.svg"
 MenuController="*res://Scripts/Game/Controller/MenuController.cs"
 SettingsManager="*res://Scripts/Game/Controller/SettingsManager.cs"
 SoundController="*res://Scripts/Game/Controller/SoundController.cs"
-Global="*res://Global.cs"
+Global="*res://Scripts/Global.cs"
 
 [debug]
 

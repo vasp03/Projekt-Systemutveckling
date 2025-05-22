@@ -4,7 +4,7 @@ using Timer = Godot.Timer;
 
 namespace Goodot15.Scripts.Game.Controller;
 
-public class MouseController : GameManagerBase {
+public class MouseController {
     private const string PATH = "res://Assets/MouseCursor/";
 
     private static readonly Timer LoadingTimer = new();
@@ -13,7 +13,7 @@ public class MouseController : GameManagerBase {
     private bool isLoading;
     private int loadingIndex;
 
-    public MouseController(GameController gameController) : base(gameController) {
+    public MouseController() {
         SetMouseCursor(MouseCursorEnum.point_small);
     }
 
