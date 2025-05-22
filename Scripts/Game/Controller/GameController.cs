@@ -107,7 +107,7 @@ public partial class GameController : Node2D {
     public CardController CardController { get; private set; }
     public GameEventManager GameEventManager { get; private set; }
     public MenuController MenuController { get; private set; }
-    public MouseController MouseController { get; private set; }
+    public MouseController MouseController { get; private set; } = Global.MouseController;
     public SoundController SoundController { get; private set; }
     public CameraController CameraController { get; private set; }
     public HUD HUD { get; private set; }
@@ -151,7 +151,6 @@ public partial class GameController : Node2D {
     }
 
     private void SetupControllers() {
-        MouseController = new MouseController(this);
         CardController = new CardController(this, MouseController, MenuController);
         GameEventManager = new GameEventManager(this);
         CameraController = new CameraController();

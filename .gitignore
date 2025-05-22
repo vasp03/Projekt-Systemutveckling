@@ -553,3 +553,4 @@ export_presets.cfg
 
 # Do not include old CSPROJ
 *.csproj.old
+/Assets/Posters
