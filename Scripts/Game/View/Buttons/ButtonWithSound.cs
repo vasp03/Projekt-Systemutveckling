@@ -6,8 +6,9 @@ namespace Goodot15.Scripts.Game.View;
 public partial class ButtonWithSound : Button {
     private const string GENERIC_CLICK_SFX = "General Sounds/Buttons/sfx_sounds_button11.wav";
     public virtual string ClickSfx => GENERIC_CLICK_SFX;
+
     public override void _Ready() {
-        this.ButtonDown += OnButtonDown;
+        ButtonDown += OnButtonDown;
     }
 
     private void OnButtonDown() {

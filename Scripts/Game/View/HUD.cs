@@ -1,5 +1,4 @@
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 

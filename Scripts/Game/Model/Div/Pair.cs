@@ -9,7 +9,7 @@
 /// <typeparam name="R">Right Datatype</typeparam>
 public record Pair<L, R> {
     /// <summary>
-    /// Constructs a Pair object. Left and Right being populated with default values
+    ///     Constructs a Pair object. Left and Right being populated with default values
     /// </summary>
     public Pair() {
         Left = default;
@@ -17,7 +17,7 @@ public record Pair<L, R> {
     }
 
     /// <summary>
-    /// Constructs a Pair object. Left and Right being populated by the supplied parameters
+    ///     Constructs a Pair object. Left and Right being populated by the supplied parameters
     /// </summary>
     /// <param name="left">Left value</param>
     /// <param name="right">Right value</param>
@@ -27,11 +27,12 @@ public record Pair<L, R> {
     }
 
     /// <summary>
-    /// Left value of this <see cref="Pair{L,R}"/> object
+    ///     Left value of this <see cref="Pair{L,R}" /> object
     /// </summary>
     public L Left { get; set; }
+
     /// <summary>
-    /// Right value of this <see cref="Pair{L,R}"/> object
+    ///     Right value of this <see cref="Pair{L,R}" /> object
     /// </summary>
     public R Right { get; set; }
 

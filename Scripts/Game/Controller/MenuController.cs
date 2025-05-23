@@ -8,7 +8,7 @@ namespace Goodot15.Scripts.Game.Controller;
 /// </summary>
 public partial class MenuController : Node {
     //  private const string CLICK_SFX = "General Sounds/Buttons/sfx_sounds_button11.wav";
-    
+
     private GameController gameController;
 
     public static MenuController Singleton =>

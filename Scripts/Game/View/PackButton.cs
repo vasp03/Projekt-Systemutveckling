@@ -18,8 +18,8 @@ public partial class PackButton : TextureButton {
         _costLabel = GetNode<Label>("PriceLabel");
         _originalPosition = Position;
 
-        this.MouseEntered += OnMouseEntered;
-        this.MouseExited += OnMouseExited;
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
     }
 
     public void SetPack(CardPack pack) {

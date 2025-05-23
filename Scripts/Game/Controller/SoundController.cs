@@ -13,8 +13,10 @@ public partial class SoundController : Node {
     private float _sfxVolume;
     private string CurrentPlayingMusicPath;
     private AudioStreamPlayer MusicPlayer;
-    
-    public static SoundController Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode("/root/SoundController") as SoundController;
+
+    public static SoundController Singleton =>
+        (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode("/root/SoundController") as SoundController;
+
     /// <summary>
     ///     Settings manager instance reference
     /// </summary>

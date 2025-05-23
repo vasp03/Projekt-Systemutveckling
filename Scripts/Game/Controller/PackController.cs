@@ -9,7 +9,7 @@ namespace Goodot15.Scripts.Game.View;
 public partial class PackController : HBoxContainer {
     private const string PACK_OPEN_SFX = "General Sounds/Interactions/sfx_sounds_interaction17.wav";
     private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
-    
+
     private readonly IList<CardPack> availablePacks = [];
     private Global global;
 
@@ -89,7 +89,7 @@ public partial class PackController : HBoxContainer {
             availablePacks.Remove(pack);
             UnlockAdditionalPacks();
         }
-        
+
         SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
     }
 
