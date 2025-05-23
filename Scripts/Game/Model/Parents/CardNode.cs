@@ -400,11 +400,11 @@ public partial class CardNode : Node2D {
             if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove &&
                 (CardType?.CanStackBelow(OverlappingCard.CardType) ?? false) &&
                 (OverlappingCard.CardType?.CanStackAbove(CardType) ?? false)) {
-                
                 NeighbourBelow = OverlappingCard;
-                
+
                 GameController.Singleton.SoundController.PlaySound(ON_STACK_SFX);
             }
+
             ResetZIndex();
 
             if (HasNeighbourBelow) NeighbourBelow.UpdateCardPositions();
@@ -448,7 +448,7 @@ public partial class CardNode : Node2D {
     /// </summary>
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
-        
+
         GameController.Singleton.SoundController.PlaySound(newDragValue ? ON_PICKUP_SFX : ON_DROP_SFX);
 
         oldMousePosition = GetGlobalMousePosition();
