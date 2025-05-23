@@ -239,6 +239,10 @@ public partial class CardNode : Node2D {
 
     #region Stack-related properties
 
+    private const string ON_PICKUP_SFX = "8bit_Sounds/sfx_movement_stairs1a.wav";
+    private const string ON_DROP_SFX = "8bit_Sounds/sfx_movement_stairs1b.wav";
+    private const string ON_STACK_SFX = "General Sounds/Impacts/sfx_sounds_impact1.wav";
+
     /// <summary>
     ///     Gets the closest overlapping card with the highest ZIndex.
     /// </summary>
@@ -351,7 +355,7 @@ public partial class CardNode : Node2D {
     ///     Similar to <see cref="StackAbove" />; But also includes this instance in the collection, positioned first in the
     ///     collection.
     /// </summary>
-    public IReadOnlyList<CardNode> StackAboveWithItself => new List<CardNode>([this]).Union(StackAbove).ToArray();
+    public IReadOnlyList<CardNode> StackAboveWithItself => new List<CardNode>([this]).Concat(StackAbove).ToArray();
 
     /// <summary>
     ///     Similar to <see cref="StackBelow" />; But also includes this instance in the collection, positioned last in the
@@ -395,7 +399,12 @@ public partial class CardNode : Node2D {
         } else {
             if (OverlappingCard is not null && !OverlappingCard.HasNeighbourAbove &&
                 (CardType?.CanStackBelow(OverlappingCard.CardType) ?? false) &&
-                (OverlappingCard.CardType?.CanStackAbove(CardType) ?? false)) NeighbourBelow = OverlappingCard;
+                (OverlappingCard.CardType?.CanStackAbove(CardType) ?? false)) {
+                
+                NeighbourBelow = OverlappingCard;
+                
+                GameController.Singleton.SoundController.PlaySound(ON_STACK_SFX);
+            }
             ResetZIndex();
 
             if (HasNeighbourBelow) NeighbourBelow.UpdateCardPositions();
@@ -439,6 +448,8 @@ public partial class CardNode : Node2D {
     /// </summary>
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
+        
+        GameController.Singleton.SoundController.PlaySound(newDragValue ? ON_PICKUP_SFX : ON_DROP_SFX);
 
         oldMousePosition = GetGlobalMousePosition();
 
@@ -481,6 +492,11 @@ public partial class CardNode : Node2D {
     public void OnMouseExitedCard() {
         MouseIsHovering = false;
         CardController.OnCardUnhovered(this);
+    }
+
+    public override void _Ready() {
+        CardArea2D.MouseEntered += OnMouseEnteredCard;
+        CardArea2D.MouseExited += OnMouseExitedCard;
     }
 
     #endregion Events
