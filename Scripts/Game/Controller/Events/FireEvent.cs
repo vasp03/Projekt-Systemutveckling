@@ -7,10 +7,10 @@ public class FireEvent : CardSpawnEvent {
     private const int FIRE_CARD_SPAWN_COUNT = 3;
 
     public override string EventName => "Fire event";
-    public override int TicksUntilNextEvent => 60; //Utilities.GameScaledTimeToTicks(days: 1d);
+    public override int TicksUntilNextEvent => Utilities.GameScaledTimeToTicks(days: 1d);
     public override double Chance => 0.25d;
 
-    public override int SpawnCardCount => 3;
+    public override int SpawnCardCount => FIRE_CARD_SPAWN_COUNT;
     public override string SpawnCardSfx => null;
 
     public override Card CardInstance() {
