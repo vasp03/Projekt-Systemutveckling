@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Timer = Godot.Timer;
@@ -25,27 +24,24 @@ public class MouseController {
         switch (cursor) {
             case MouseCursorEnum.point:
             case MouseCursorEnum.point_small:
-                if (sellModeActive) {
+                if (sellModeActive)
                     Input.SetCustomMouseCursor(Sell_point, Input.CursorShape.Arrow, Offset);
-                } else {
+                else
                     Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
-                }
 
                 return true;
             case MouseCursorEnum.hand_open:
-                if (sellModeActive) {
+                if (sellModeActive)
                     Input.SetCustomMouseCursor(Sell_open, Input.CursorShape.Arrow, Offset);
-                } else {
+                else
                     Input.SetCustomMouseCursor(Hand_open, Input.CursorShape.Arrow, Offset);
-                }
 
                 return true;
             case MouseCursorEnum.hand_close:
-                if (sellModeActive) {
+                if (sellModeActive)
                     Input.SetCustomMouseCursor(Sell_close, Input.CursorShape.Arrow, Offset);
-                } else {
+                else
                     Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
-                }
 
                 return true;
             case MouseCursorEnum.loading:
@@ -108,7 +104,6 @@ public class MouseController {
     private readonly Resource Sell_open = ResourceLoader.Load(PATH + "sell_open.png");
     private readonly Resource Sell_close = ResourceLoader.Load(PATH + "sell_close.png");
     private readonly Resource Sell_point = ResourceLoader.Load(PATH + "sell_point.png");
-
 
     #endregion Static resources
 }

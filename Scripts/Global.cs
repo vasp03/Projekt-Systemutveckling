@@ -5,18 +5,16 @@ using Goodot15.Scripts.Game.Controller;
 namespace Goodot15.Scripts.Game;
 
 public partial class Global : Node {
+    private static MouseController mouseController = new();
     private int money;
     public static Global Singleton { get; private set; }
 
-    private static MouseController mouseController = new MouseController();
     public static MouseController MouseController {
         get {
             if (mouseController == null) mouseController = new MouseController();
             return mouseController;
         }
-        private set {
-            return;
-        }
+        private set { }
     }
 
     public int Money {
