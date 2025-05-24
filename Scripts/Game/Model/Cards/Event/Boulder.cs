@@ -30,7 +30,7 @@ public class Boulder : Card, ICardAnimateable, ITickable {
     public override bool AlwaysOnTop => true;
 
     public void Render(Sprite2D cardSprite, double delta) {
-        cardSprite.RotationDegrees += ROTATION_RATE * (float)delta;
+        cardSprite.RotationDegrees += ROTATION_RATE * (float)delta * travelDirection.X;
     }
 
     public void PostTick(double delta) {

@@ -67,6 +67,7 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new DayTimeEvent());
         RegisterEvent(new BoulderEvent());
         RegisterEvent(new ColdNightEvent());
+        RegisterEvent(new RainEvent());
     }
 
     /// <summary>
