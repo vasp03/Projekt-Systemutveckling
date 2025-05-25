@@ -83,15 +83,15 @@ public partial class GameController : Node2D {
     }
 
     public override void _PhysicsProcess(double delta) {
-        GameEventManager.PostTick();
-        CameraController.PostTick();
+        GameEventManager.PostTick(delta);
+        CameraController.PostTick(delta);
     }
 
     public bool IsPaused() {
         return GetTree().Paused;
     }
 
-    internal Vector2 GetRandomPositionWithinScreen() {
+    internal Vector2 NextRandomPositionOnScreen() {
         // Get the size of the screen
         Vector2 screenSize = GetViewport().GetVisibleRect().Size;
 

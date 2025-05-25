@@ -7,7 +7,7 @@ namespace Goodot15.Scripts.Game.Controller.Events;
 /// <summary>
 ///     Class that handles the time of day and the temperature
 /// </summary>
-public class DayTimeEvent : GameEventBase, IPausable {
+public class DayTimeEvent : GameEvent, IPausable {
     /// <summary>
     ///     An event to handle when the day changes and it's time.
     /// </summary>

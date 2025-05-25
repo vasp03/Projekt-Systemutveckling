@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model.Buildings;
 using Goodot15.Scripts.Game.Model.Enums;
@@ -115,8 +116,8 @@ public class CardCreationHelper : GameManagerBase {
         }
     }
 
-    public List<string> GetCardTypePacks(CardPackEnum type) {
-        List<string> cardTypePacks = [];
+    public IReadOnlyList<string> GetCardTypePacks(CardPackEnum type) {
+        IList<string> cardTypePacks = [];
 
         switch (type) {
             case CardPackEnum.Nature:
@@ -151,6 +152,6 @@ public class CardCreationHelper : GameManagerBase {
                 break;
         }
 
-        return cardTypePacks;
+        return cardTypePacks.ToArray();
     }
 }
