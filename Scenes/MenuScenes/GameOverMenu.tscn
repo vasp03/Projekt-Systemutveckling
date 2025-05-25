@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://vj32u46kx1al"]
+[gd_scene load_steps=28 format=3 uid="uid://vj32u46kx1al"]
 
-[ext_resource type="Script" uid="uid://cbbe4ax2st1dy" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
+[ext_resource type="Script" uid="uid://bjljyscws3kds" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_83yi0"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_ancx5"]
+[ext_resource type="Script" uid="uid://wx2t5afhopx5" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="4_83yi0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gvw3c"]
 font = ExtResource("3_ancx5")
@@ -112,6 +113,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_rb7gs")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ghw6e")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6jcaj")
 text = "Exit Game"
+script = ExtResource("4_83yi0")
 
 [node name="BackToMenu" type="Button" parent="."]
 layout_mode = 1
@@ -141,3 +143,4 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_mmrr7")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_vgp5u")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_x8gp4")
 text = "Back to Menu"
+script = ExtResource("4_83yi0")

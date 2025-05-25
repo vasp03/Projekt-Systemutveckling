@@ -1,5 +1,4 @@
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -40,10 +39,7 @@ public partial class HUD : CanvasLayer {
 
     private void SetupSellModeButton() {
         SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
-        if (sellButton is not null) {
-            sellButton.GameController = GameController.Singleton;
-            sellButton.UpdateIcon();
-        }
+        sellButton?.UpdateIcon();
     }
 
     public void ShowFloatingMoneyLabel(int amount) {

@@ -4,18 +4,15 @@ using Goodot15.Scripts.Game.Controller;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class CraftButton : Node2D {
-    public CardController CardController { get; set; }
-
-    public string NameOfButton { get; set; }
-
     public CardNode CardNode { get; set; }
 
-    public void _on_button_button_down() {
+    public override void _Ready() {
+        GetNode<ButtonWithSound>("CraftButton").ButtonUp += OnCraftButtonReleased;
     }
 
-    public void _on_button_button_up() {
+    public void OnCraftButtonReleased() {
         // Handle the button release event
-        GD.Print("Craft button released.");
-        CardController.CraftCardFromSpecifiedCardNode(CardNode);
+        // GD.Print("Craft button released.");
+        GameController.Singleton.CardController.CraftCardFromSpecifiedCardNode(CardNode);
     }
 }

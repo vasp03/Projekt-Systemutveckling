@@ -17,6 +17,9 @@ public partial class PackButton : TextureButton {
     public override void _Ready() {
         _costLabel = GetNode<Label>("PriceLabel");
         _originalPosition = Position;
+
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
     }
 
     public void SetPack(CardPack pack) {
