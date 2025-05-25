@@ -121,6 +121,7 @@ public partial class GameController : Node2D {
     public void ToggleSellMode() {
         SellModeActive = !SellModeActive;
         GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
+        Global.MouseController.SetSellMode(SellModeActive);
     }
 
     public void SetSellMode(bool active) {
