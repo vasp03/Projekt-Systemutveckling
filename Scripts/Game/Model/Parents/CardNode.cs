@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts.Game;
 using Goodot15.Scripts.Game.Controller;
-using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Interface;
-using Goodot15.Scripts.Game.Model.Parents;
 using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
+
+namespace Goodot15.Scripts.Game.Model.Parents;
 
 /// <summary>
 ///     Represents a card node in the game.
@@ -75,6 +74,8 @@ public partial class CardNode : Node2D {
     /// </summary>
     /// <param name="delta"></param>
     public override void _Process(double delta) {
+        if (CardType is ICardAnimateable animatedCard) animatedCard.Render(CardSprite, delta);
+
         if (!Dragged) return;
         Vector2 mousePosition = GetGlobalMousePosition();
         Vector2 mousePositionDelta = mousePosition - oldMousePosition;
@@ -102,8 +103,8 @@ public partial class CardNode : Node2D {
 
     public override void _PhysicsProcess(double delta) {
         ITickable tickableCardType = CardType as ITickable;
-        tickableCardType?.PreTick();
-        tickableCardType?.PostTick();
+        tickableCardType?.PreTick(delta);
+        tickableCardType?.PostTick(delta);
     }
 
     private void ClampPositionInGameSpace(Vector2 mousePositionDelta) {
@@ -175,19 +176,22 @@ public partial class CardNode : Node2D {
 
     public Vector2 CardSize => CardSprite?.Texture?.GetSize() ?? new Vector2(80, 128);
 
-    private Card cardType;
+    private Card currentCardType;
 
     /// <summary>
     ///     The card type this <see cref="CardNode" /> instance is.<br />
     ///     Changing this property will automatically update the texture of this Card
     /// </summary>
     public Card CardType {
-        get => cardType;
+        get => currentCardType;
         set {
-            if (cardType is not null) cardType.CardNode = null;
+            if (currentCardType is not null) currentCardType.CardNode = null;
+
+            if (currentCardType is CardLiving && value is not CardLiving)
+                GameController.Singleton.CardController.CheckForGameOver(true);
 
             value.CardNode = this;
-            cardType = value;
+            currentCardType = value;
             UpdateCardTexture();
         }
     }
@@ -246,8 +250,14 @@ public partial class CardNode : Node2D {
     /// <summary>
     ///     Gets the closest overlapping card with the highest ZIndex.
     /// </summary>
-    private CardNode OverlappingCard => CardArea2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D)
-        .Where(e => e.ZIndex < ZIndex).OrderByDescending(e => e.ZIndex).FirstOrDefault();
+    public CardNode OverlappingCard => OverlappingCards.Where(e => e.ZIndex < ZIndex).OrderByDescending(e => e.ZIndex)
+        .FirstOrDefault();
+
+    /// <summary>
+    ///     Gets all overlapping CardNode objects using the <see cref="CardArea2D" />.
+    /// </summary>
+    public IReadOnlyCollection<CardNode> OverlappingCards =>
+        CardArea2D.GetOverlappingAreas().Select(GetCardNodeFromArea2D).ToArray();
 
     private CardNode cardAbove;
     private CardNode cardBelow;
