@@ -308,8 +308,8 @@ public class CardController {
         // CardNode.CardController = this;
 
         cardInstance.Position = position;
-        if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
-        GameController.AddChild(cardInstance);
+        // if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
+        // GameController.AddChild(cardInstance);
 
         return cardInstance;
     }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GdUnit4;
 using Godot;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Tests;
 
