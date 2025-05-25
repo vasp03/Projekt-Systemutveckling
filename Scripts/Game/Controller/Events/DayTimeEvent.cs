@@ -12,7 +12,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     An event to handle when the day changes and it's time.
     /// </summary>
     public DayTimeEvent() {
-        oldDayState = DayStateEnum.Invalid;
+        oldDayState = DayState.INVALID;
         canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
@@ -71,20 +71,20 @@ public class DayTimeEvent : GameEvent, IPausable {
         if (dayState == oldDayState) return;
 
         switch (dayState) {
-            case DayStateEnum.Night:
+            case DayState.NIGHT:
                 gameController.SoundController.PlayDayTimeSong("Night");
                 break;
-            case DayStateEnum.Morning:
+            case DayState.MORNING:
                 gameController.SoundController.PlayDayTimeSong("Morning");
                 break;
-            case DayStateEnum.Day:
+            case DayState.DAY:
                 gameController.SoundController.PlayDayTimeSong("Day");
                 break;
-            case DayStateEnum.Evening:
+            case DayState.EVENING:
                 gameController.SoundController.PlayDayTimeSong("Evening");
                 break;
-            case DayStateEnum.Invalid:
-            case DayStateEnum.Paused:
+            case DayState.INVALID:
+            case DayState.PAUSED:
             default:
                 gameController.SoundController.ToggleMusicMuted();
                 break;
@@ -162,9 +162,9 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Event state data
 
-    private DayStateEnum dayState;
+    private DayState dayState;
     private bool isPaused;
-    private DayStateEnum oldDayState;
+    private DayState oldDayState;
     private float oldSceneDarkness;
     public int dayTicks { get; set; }
 

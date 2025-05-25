@@ -120,7 +120,7 @@ public class CardCreationHelper : GameManagerBase {
         IList<string> cardTypePacks = [];
 
         switch (type) {
-            case CardPackEnum.Nature:
+            case CardPackEnum.NATURE:
                 cardTypePacks.Add("Wood");
                 cardTypePacks.Add("Stone");
                 cardTypePacks.Add("Water");
@@ -129,19 +129,19 @@ public class CardCreationHelper : GameManagerBase {
                 cardTypePacks.Add("Leaves");
                 cardTypePacks.Add("Clay");
                 break;
-            case CardPackEnum.Tools:
+            case CardPackEnum.TOOLS:
                 cardTypePacks.Add("MaterialSwordMk1");
                 cardTypePacks.Add("MaterialFishingPole");
                 cardTypePacks.Add("MaterialShovel");
                 cardTypePacks.Add("MaterialAxe");
                 break;
-            case CardPackEnum.Villager:
+            case CardPackEnum.VILLAGER:
                 cardTypePacks.Add("PlayerVillager");
                 cardTypePacks.Add("PlayerHunter");
                 cardTypePacks.Add("PlayerFarmer");
                 cardTypePacks.Add("PlayerBlacksmith");
                 break;
-            case CardPackEnum.Food:
+            case CardPackEnum.FOOD:
                 cardTypePacks.Add("MaterialApple");
                 cardTypePacks.Add("MaterialBerry");
                 cardTypePacks.Add("MaterialJam");

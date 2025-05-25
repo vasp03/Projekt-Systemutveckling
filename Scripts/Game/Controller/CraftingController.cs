@@ -8,6 +8,9 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
+    /// <summary>
+    ///     Constructs a new Crafting Controller instance, automatically registers default recipes
+    /// </summary>
     public CraftingController() {
         RegisterDefaultRecipes();
     }
@@ -72,7 +75,13 @@ public class CraftingController {
         return null;
     }
 
-    private IReadOnlyCollection<Pair<string, int>> CollectTotalCardTypesInStack(IReadOnlyCollection<Card> cards) {
+    /// <summary>
+    ///     Collects and counts each type of card in a given stack
+    /// </summary>
+    /// <param name="cards"></param>
+    /// <returns></returns>
+    private static IReadOnlyCollection<Pair<string, int>>
+        CollectTotalCardTypesInStack(IReadOnlyCollection<Card> cards) {
         IList<Pair<string, int>> CardForCraftingAmount = [];
         foreach (Card card in cards) {
             // Left (L) being card type ID; Right (R) being count of cards to crafted
@@ -92,7 +101,7 @@ public class CraftingController {
     /// <summary>
     ///     Creates the starting recipes for crafting.
     /// </summary>
-    public void RegisterDefaultRecipes() {
+    private void RegisterDefaultRecipes() {
         RegisterDefaultFoodRecipes();
 
         RegisterDefaultMaterialRecipes();
@@ -104,6 +113,9 @@ public class CraftingController {
         RegisterDefaultBuildingRecipes();
     }
 
+    /// <summary>
+    ///     Registers default tool recipes
+    /// </summary>
     private void RegisterDefaultToolRecipes() {
         RegisterRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"], ["Stone", "Stick"]));
 
@@ -115,6 +127,9 @@ public class CraftingController {
             ["Stick", "Stone"]));
     }
 
+    /// <summary>
+    ///     REgister default building recipes
+    /// </summary>
     private void RegisterDefaultBuildingRecipes() {
         RegisterRecipe(new CraftingRecipe("Campfire", ["Wood", "Wood", "Wood", "Stick", "Stick", "Leaves"],
             ["Campfire"],
@@ -147,6 +162,9 @@ public class CraftingController {
             ["Stone"]));
     }
 
+    /// <summary>
+    ///     Registers default villager recipes
+    /// </summary>
     private void RegisterDefaultVillagerRecipes() {
         RegisterRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], ["Sword", "Villager"]));
 
@@ -185,6 +203,9 @@ public class CraftingController {
         RegisterRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"], ["Villager"], []));
     }
 
+    /// <summary>
+    ///     Register default food recipes
+    /// </summary>
     private void RegisterDefaultFoodRecipes() {
         RegisterRecipe(new CraftingRecipe("Jam",
             ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "Cookingpot"],
@@ -211,7 +232,10 @@ public class CraftingController {
         RegisterRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"], []));
     }
 
-    public void RegisterDefaultMaterialRecipes() {
+    /// <summary>
+    ///     Registers default material recipes
+    /// </summary>
+    private void RegisterDefaultMaterialRecipes() {
         RegisterRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
         RegisterRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
         RegisterRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
@@ -262,8 +286,16 @@ public class CraftingController {
     #region Recipe data
 
     private readonly IList<CraftingRecipe> recipes = [];
-    public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
 
+    /// <summary>
+    ///     Gets the collection of currently registered recipes
+    /// </summary>
+    public IReadOnlyCollection<CraftingRecipe> RegisteredRecipes => recipes.AsReadOnly();
+
+    /// <summary>
+    ///     Registers a new recipe
+    /// </summary>
+    /// <param name="recipe">Recipe data to be registered</param>
     public void RegisterRecipe(CraftingRecipe recipe) {
         ArgumentNullException.ThrowIfNull(recipe, nameof(recipe));
 

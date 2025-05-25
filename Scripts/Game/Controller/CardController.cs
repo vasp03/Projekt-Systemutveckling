@@ -170,7 +170,7 @@ public class CardController {
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
+        MouseController.SetMouseCursor(MouseCursorIcon.HAND_CLOSE);
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
@@ -184,7 +184,7 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        MouseController.SetMouseCursor(MouseCursorEnum.point_small);
+        MouseController.SetMouseCursor(MouseCursorIcon.POINT_SMALL);
         if (selectedCard is not null) selectedCard.Dragged = false;
 
         // Checks if a card is supposed to have a craft button above it

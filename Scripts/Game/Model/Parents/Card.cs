@@ -72,5 +72,7 @@ public abstract class Card {
         }
     }
 
+    public virtual bool AlwaysOnTop => false;
+
     #endregion
 }

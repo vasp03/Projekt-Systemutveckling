@@ -47,10 +47,10 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     public bool EventActive {
         get {
-            DayStateEnum currentState = Utilities.GetCurrentDayState(dayTimeEvent.dayTicks);
-            if (!hasTriggered && currentState is DayStateEnum.Night) return true;
+            DayState currentState = Utilities.GetCurrentDayState(dayTimeEvent.dayTicks);
+            if (!hasTriggered && currentState is DayState.NIGHT) return true;
 
-            if (currentState is not DayStateEnum.Night) {
+            if (currentState is not DayState.NIGHT) {
                 hasTriggered = false;
                 dayTimeEvent.temperatureLocked = false;
             }

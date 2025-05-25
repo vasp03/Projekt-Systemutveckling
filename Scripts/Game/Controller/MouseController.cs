@@ -4,52 +4,61 @@ using Timer = Godot.Timer;
 
 namespace Goodot15.Scripts.Game.Controller;
 
+/// <summary>
+///     Mouse controller is responsible for managing the cursor icon
+/// </summary>
 public class MouseController {
-    private const string PATH = "res://Assets/MouseCursor/";
-
-    private static readonly Timer LoadingTimer = new();
-    private static readonly Vector2 Offset = new(12, 12);
+    private static readonly Timer LOADING_TIMER = new();
+    private static readonly Vector2 CURSOR_OFFSET = new(12, 12);
 
     private bool isLoading;
     private int loadingIndex;
     private bool sellModeActive;
 
+    /// <summary>
+    ///     Constructs a new instance of Mouse Controller, defaults to <see cref="MouseCursorIcon.POINT_SMALL" />
+    /// </summary>
     public MouseController() {
-        SetMouseCursor(MouseCursorEnum.point_small);
+        SetMouseCursor(MouseCursorIcon.POINT_SMALL);
     }
 
-    public bool SetMouseCursor(MouseCursorEnum cursor) {
-        if (cursor != MouseCursorEnum.loading && isLoading) StopLoading();
+    /// <summary>
+    ///     Sets a new Mouse cursor icon
+    /// </summary>
+    /// <param name="cursor"></param>
+    /// <returns></returns>
+    public bool SetMouseCursor(MouseCursorIcon cursor) {
+        if (cursor != MouseCursorIcon.LOADING && isLoading) StopLoading();
 
         switch (cursor) {
-            case MouseCursorEnum.point:
-            case MouseCursorEnum.point_small:
+            case MouseCursorIcon.POINT:
+            case MouseCursorIcon.POINT_SMALL:
                 if (sellModeActive)
-                    Input.SetCustomMouseCursor(Sell_point, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_SELL_POINT, Input.CursorShape.Arrow, CURSOR_OFFSET);
                 else
-                    Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_POINT_SMALL, Input.CursorShape.Arrow, CURSOR_OFFSET);
 
                 return true;
-            case MouseCursorEnum.hand_open:
+            case MouseCursorIcon.HAND_OPEN:
                 if (sellModeActive)
-                    Input.SetCustomMouseCursor(Sell_open, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_SELL_OPEN, Input.CursorShape.Arrow, CURSOR_OFFSET);
                 else
-                    Input.SetCustomMouseCursor(Hand_open, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_HAND_OPEN, Input.CursorShape.Arrow, CURSOR_OFFSET);
 
                 return true;
-            case MouseCursorEnum.hand_close:
+            case MouseCursorIcon.HAND_CLOSE:
                 if (sellModeActive)
-                    Input.SetCustomMouseCursor(Sell_close, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_SELL_CLOSE, Input.CursorShape.Arrow, CURSOR_OFFSET);
                 else
-                    Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
+                    Input.SetCustomMouseCursor(ICON_HAND_CLOSE, Input.CursorShape.Arrow, CURSOR_OFFSET);
 
                 return true;
-            case MouseCursorEnum.loading:
+            case MouseCursorIcon.LOADING:
                 if (!isLoading) StartLoading();
 
                 return true;
             default:
-                Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
+                Input.SetCustomMouseCursor(ICON_POINT_SMALL, Input.CursorShape.Arrow, CURSOR_OFFSET);
 
                 return false;
         }
@@ -59,51 +68,60 @@ public class MouseController {
         isLoading = true;
         loadingIndex = 0;
 
-        LoadingTimer.Timeout += LoadingThread;
-        LoadingTimer.WaitTime = 0.200;
-        LoadingTimer.Start();
+        LOADING_TIMER.Timeout += LoadingThread;
+        LOADING_TIMER.WaitTime = 0.200;
+        LOADING_TIMER.Start();
     }
 
     private void StopLoading() {
         isLoading = false;
         loadingIndex = 0;
-        LoadingTimer.Stop();
-        SetMouseCursor(MouseCursorEnum.point);
+        LOADING_TIMER.Stop();
+        SetMouseCursor(MouseCursorIcon.POINT);
     }
 
     private void LoadingThread() {
         loadingIndex = (loadingIndex + 1) % 8;
-        Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, Offset);
+        Input.SetCustomMouseCursor(ICON_LOADING_SPRITES[loadingIndex], Input.CursorShape.Arrow, CURSOR_OFFSET);
     }
 
     public void SetSellMode(bool sellModeActive) {
         this.sellModeActive = sellModeActive;
 
-        SetMouseCursor(MouseCursorEnum.point_small);
+        SetMouseCursor(MouseCursorIcon.POINT_SMALL);
     }
 
     #region Static resources
 
-    private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
-    private static readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
+    private static string IconResource(string iconName) {
+        return $"{PATH}/{iconName}";
+    }
 
-    private static readonly Resource[] loadingResources = [
-        ResourceLoader.Load(PATH + "loading_1.png"),
-        ResourceLoader.Load(PATH + "loading_2.png"),
-        ResourceLoader.Load(PATH + "loading_3.png"),
-        ResourceLoader.Load(PATH + "loading_4.png"),
-        ResourceLoader.Load(PATH + "loading_5.png"),
-        ResourceLoader.Load(PATH + "loading_6.png"),
-        ResourceLoader.Load(PATH + "loading_7.png"),
-        ResourceLoader.Load(PATH + "loading_8.png")
+    /// <summary>
+    ///     Base path of mouse cursor assets
+    /// </summary>
+    private const string PATH = "res://Assets/MouseCursor/";
+
+    private static readonly Resource ICON_HAND_CLOSE = ResourceLoader.Load(IconResource("hand_close.png"));
+    private static readonly Resource ICON_HAND_OPEN = ResourceLoader.Load(IconResource("hand_open.png"));
+
+    private static readonly Resource[] ICON_LOADING_SPRITES = [
+        ResourceLoader.Load(IconResource("loading_1.png")),
+        ResourceLoader.Load(IconResource("loading_2.png")),
+        ResourceLoader.Load(IconResource("loading_3.png")),
+        ResourceLoader.Load(IconResource("loading_4.png")),
+        ResourceLoader.Load(IconResource("loading_5.png")),
+        ResourceLoader.Load(IconResource("loading_6.png")),
+        ResourceLoader.Load(IconResource("loading_7.png")),
+        ResourceLoader.Load(IconResource("loading_8.png"))
     ];
 
-    private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
-    private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
+    private readonly Resource ICON_POINT = ResourceLoader.Load(IconResource("point.png"));
+    private readonly Resource ICON_POINT_SMALL = ResourceLoader.Load(IconResource("point_small.png"));
 
-    private readonly Resource Sell_open = ResourceLoader.Load(PATH + "sell_open.png");
-    private readonly Resource Sell_close = ResourceLoader.Load(PATH + "sell_close.png");
-    private readonly Resource Sell_point = ResourceLoader.Load(PATH + "sell_point.png");
+    private readonly Resource ICON_SELL_OPEN = ResourceLoader.Load(IconResource("sell_open.png"));
+    private readonly Resource ICON_SELL_CLOSE = ResourceLoader.Load(IconResource("sell_close.png"));
+    private readonly Resource ICON_SELL_POINT = ResourceLoader.Load(IconResource("sell_point.png"));
 
     #endregion Static resources
 }

@@ -12,7 +12,7 @@ public class CameraController : ITickable {
     /// </summary>
     public Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("Camera2D");
 
-    public void PostTick() {
+    public void PostTick(double delta) {
         // Shake feature
         ShakeScreen();
     }

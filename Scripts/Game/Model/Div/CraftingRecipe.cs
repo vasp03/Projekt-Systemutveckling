@@ -2,6 +2,12 @@ using System.Collections.Generic;
 
 namespace Goodot15.Scripts.Game.Model.Div;
 
+/// <summary>
+/// </summary>
+/// <param name="name">Display name of Recipe</param>
+/// <param name="craftingIngredients">Input for the crafting recipe</param>
+/// <param name="craftingResult">Output of the crafting recipe</param>
+/// <param name="itemsToRemove">Collection of items to not be removed when crafting</param>
 public class CraftingRecipe(
     string name,
     IReadOnlyCollection<string> craftingIngredients,
