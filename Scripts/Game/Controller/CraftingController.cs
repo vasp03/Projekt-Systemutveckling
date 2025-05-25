@@ -9,7 +9,7 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public class CraftingController {
     public CraftingController() {
-        CreateStartingRecipes();
+        RegisterDefaultRecipes();
     }
 
     /// <summary>
@@ -20,19 +20,21 @@ public class CraftingController {
     /// <param name="Cards">List of cards to check</param>
     public Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> CheckForCraftingWithStackable(
         IReadOnlyList<Card> Cards) {
-        List<Pair<string, int>> CardForCraftingAmount = [];
+        Pair<string, int>[] CardForCraftingAmount =
+            CollectTotalCardTypesInStack(Cards).OrderByDescending(e => e.Left).ToArray();
 
-        foreach (Card card in Cards) {
-            Pair<string, int> cardForCrafting =
-                CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
-            if (cardForCrafting is not null)
-                cardForCrafting.Right++;
-            else
-                CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
-        }
+        // foreach (Card card in Cards) {
+        //     // Left (L) being card type ID; Right (R) being count of cards to crafted
+        //     Pair<string, int> cardForCrafting =
+        //         CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
+        //     if (cardForCrafting is not null)
+        //         cardForCrafting.Right++;
+        //     else
+        //         CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
+        // }
 
         // Sort the list by the name of the card
-        CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
+        // CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
 
         foreach (CraftingRecipe recipe in recipes) {
             List<Pair<string, int>> CardsInRecipeAndAmount = [];
@@ -51,7 +53,7 @@ public class CraftingController {
             // Check if the recipe matches the cards in the stack
             bool recipeMatches = true;
 
-            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) continue;
+            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Length) continue;
 
             for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
                 if (CardsInRecipeAndAmount[i].Left != CardForCraftingAmount[i].Left ||
@@ -70,153 +72,199 @@ public class CraftingController {
         return null;
     }
 
+    private IReadOnlyCollection<Pair<string, int>> CollectTotalCardTypesInStack(IReadOnlyCollection<Card> cards) {
+        IList<Pair<string, int>> CardForCraftingAmount = [];
+        foreach (Card card in cards) {
+            // Left (L) being card type ID; Right (R) being count of cards to crafted
+            Pair<string, int> cardForCrafting =
+                CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
+            if (cardForCrafting is not null)
+                cardForCrafting.Right++;
+            else
+                CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
+        }
+
+        return CardForCraftingAmount.ToArray();
+    }
+
+    #region Recipe registration
+
     /// <summary>
     ///     Creates the starting recipes for crafting.
     /// </summary>
-    public void CreateStartingRecipes() {
-        AddRecipe(new CraftingRecipe("Jam", ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "Cookingpot"],
-            ["Jam"], ["Berry"]));
+    public void RegisterDefaultRecipes() {
+        RegisterDefaultFoodRecipes();
 
-        AddRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"], ["Wood"]));
-        AddRecipe(new CraftingRecipe("Stick", ["Hunter", "Wood", "Axe"], ["Stick"], ["Wood"]));
-        AddRecipe(new CraftingRecipe("Stick", ["Blacksmith", "Wood", "Axe"], ["Stick"], ["Wood"]));
-        AddRecipe(new CraftingRecipe("Stick", ["Farmer", "Wood", "Axe"], ["Stick"], ["Wood"]));
+        RegisterDefaultMaterialRecipes();
 
-        AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"], []));
-        AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Blacksmith"], ["Fish"], []));
-        AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Farmer"], ["Fish"], []));
-        AddRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Villager"], ["Fish"], []));
+        RegisterDefaultVillagerRecipes();
 
-        AddRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"], ["Stone", "Stick"]));
+        RegisterDefaultToolRecipes();
 
-        AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood", "Wood", "Wood", "Wood", "Wood"],
-            ["Tree"]));
+        RegisterDefaultBuildingRecipes();
+    }
 
-        AddRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"], []));
-        AddRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"], []));
-        AddRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"], []));
-        AddRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"], []));
-        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Villager", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
-        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Hunter", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
-        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Blacksmith", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
-        AddRecipe(new CraftingRecipe("Stone", ["Meteorite", "Farmer", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+    private void RegisterDefaultToolRecipes() {
+        RegisterRecipe(new CraftingRecipe("Axe", ["Stone", "Stick", "Stick"], ["Axe"], ["Stone", "Stick"]));
 
-        AddRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"], ["Tent"],
+        RegisterRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"], ["Stick", "Stone"]));
+
+        RegisterRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"], ["Wood", "Stone"]));
+
+        RegisterRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"],
+            ["Stick", "Stone"]));
+    }
+
+    private void RegisterDefaultBuildingRecipes() {
+        RegisterRecipe(new CraftingRecipe("Campfire", ["Wood", "Wood", "Wood", "Stick", "Stick", "Leaves"],
+            ["Campfire"],
+            ["Wood", "Stick", "Leaves"]));
+
+        RegisterRecipe(new CraftingRecipe("Cookingpot", ["Clay", "Clay", "Stick"], ["CookingPot"], ["Clay", "Stick"]));
+
+        RegisterRecipe(new CraftingRecipe("Tent", ["Leaves", "Leaves", "Leaves", "Leaves", "Wood"], ["Tent"],
             ["Leaves", "Wood"]));
 
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry", "Berry", "Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry", "Berry", "Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry", "Berry", "Berry"], ["Bush"]));
-        AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry", "Berry", "Berry", "Berry"],
-            ["Bush"]));
-
-        AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
-
-        AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"], ["Stick", "Stone"]));
-
-        AddRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"], ["Fish"]));
-
-        AddRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"], ["Meat"]));
-
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"], ["Villager"], []));
-        AddRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"], ["Villager"], []));
-
-        AddRecipe(new CraftingRecipe("House",
+        RegisterRecipe(new CraftingRecipe("House",
             ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"],
             ["Stone", "Planks", "Brick"]));
 
-        AddRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"],
+        RegisterRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"],
             ["Greenhouse"], ["Brick", "Glass"]));
 
-        AddRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"], ["Sand", "Water"]));
-
-        AddRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"], ["Clay"]));
-
-        AddRecipe(new CraftingRecipe("SwordMK1", ["Wood", "Wood", "Stone"], ["SwordMK1"], ["Wood", "Stone"]));
-
-        AddRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"], ["Wood"]));
-
-        AddRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"], ["Stone"]));
-        AddRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"], ["Stone"]));
-        AddRecipe(new CraftingRecipe("Sand", ["Stone", "Blacksmith"], ["Sand", "Sand", "Sand"], ["Stone"]));
-        AddRecipe(new CraftingRecipe("Sand", ["Stone", "Farmer"], ["Sand"], ["Stone"]));
-
-        AddRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"], ["Water"]));
-
-        AddRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"], ["Sand"]));
-
-        AddRecipe(new CraftingRecipe("Shovel", ["Stick", "Stick", "Stone", "Stone"], ["Shovel"], ["Stick", "Stone"]));
-
-        AddRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"], ["Field"],
+        RegisterRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"],
+            ["Field"],
             ["Sand", "Stone", "Water"]));
 
-        AddRecipe(new CraftingRecipe("Campfire", ["Wood", "Wood", "Wood", "Stick", "Stick", "Leaves"], ["Campfire"],
-            ["Wood", "Stick", "Leaves"]));
 
-        AddRecipe(new CraftingRecipe("Cookingpot", ["Clay", "Clay", "Stick"], ["CookingPot"], ["Clay", "Stick"]));
-
-        AddRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"], ["Bush"],
+        RegisterRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"],
+            ["Bush"],
             ["Leaves"]));
 
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"], []));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"], ["Meat", "Meat", "Meat"], []));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"], []));
-        AddRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"], []));
 
-        AddRecipe(new CraftingRecipe("Mine",
+        RegisterRecipe(new CraftingRecipe("Mine",
             ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"],
             ["Stone"]));
-
-        AddRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], ["Sword", "Villager"]));
-
-        AddRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"], ["Shovel", "Villager"]));
-
-        AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], ["Axe", "Villager"]));
     }
+
+    private void RegisterDefaultVillagerRecipes() {
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Villager", "Sword"], ["Hunter"], ["Sword", "Villager"]));
+
+        RegisterRecipe(new CraftingRecipe("Farmer", ["Villager", "Shovel"], ["Farmer"], ["Shovel", "Villager"]));
+
+        RegisterRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], ["Axe", "Villager"]));
+
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Villager", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Hunter", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Blacksmith", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Villager", ["Villager", "Farmer", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Hunter", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Blacksmith", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Hunter", ["Hunter", "Farmer", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Blacksmith", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Blacksmith", ["Blacksmith", "Farmer", "Tent"], ["Villager"], []));
+
+        RegisterRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "House"], ["Villager"], []));
+        RegisterRecipe(new CraftingRecipe("Farmer", ["Farmer", "Farmer", "Tent"], ["Villager"], []));
+    }
+
+    private void RegisterDefaultFoodRecipes() {
+        RegisterRecipe(new CraftingRecipe("Jam",
+            ["Berry", "Berry", "Berry", "Berry", "Berry", "Campfire", "Cookingpot"],
+            ["Jam"], ["Berry"]));
+
+        RegisterRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Hunter"], ["Fish"], []));
+        RegisterRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Blacksmith"], ["Fish"], []));
+        RegisterRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Farmer"], ["Fish"], []));
+        RegisterRecipe(new CraftingRecipe("Fish", ["FishingPole", "Water", "Villager"], ["Fish"], []));
+
+        RegisterRecipe(new CraftingRecipe("Berry", ["Bush", "Villager"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        RegisterRecipe(new CraftingRecipe("Berry", ["Bush", "Hunter"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        RegisterRecipe(new CraftingRecipe("Berry", ["Bush", "Blacksmith"], ["Berry", "Berry", "Berry"], ["Bush"]));
+        RegisterRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry", "Berry", "Berry", "Berry"],
+            ["Bush"]));
+
+        RegisterRecipe(new CraftingRecipe("CookedFish", ["Fish", "Campfire"], ["CookedFish"], ["Fish"]));
+
+        RegisterRecipe(new CraftingRecipe("CookedMeat", ["Meat", "Campfire"], ["CookedMeat"], ["Meat"]));
+
+        RegisterRecipe(new CraftingRecipe("Meat", ["Field", "Villager", "Tree", "Sword"], ["Meat"], []));
+        RegisterRecipe(new CraftingRecipe("Meat", ["Field", "Hunter", "Tree", "Sword"], ["Meat", "Meat", "Meat"], []));
+        RegisterRecipe(new CraftingRecipe("Meat", ["Field", "Blacksmith", "Tree", "Sword"], ["Meat"], []));
+        RegisterRecipe(new CraftingRecipe("Meat", ["Field", "Farmer", "Tree", "Sword"], ["Meat"], []));
+    }
+
+    public void RegisterDefaultMaterialRecipes() {
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple"], ["Tree"]));
+
+        RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"], ["Stone"]));
+        RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"], ["Stone"]));
+        RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Blacksmith"], ["Sand", "Sand", "Sand"], ["Stone"]));
+        RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Farmer"], ["Sand"], ["Stone"]));
+
+        RegisterRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick"], ["Wood"]));
+        RegisterRecipe(new CraftingRecipe("Stick", ["Hunter", "Wood", "Axe"], ["Stick"], ["Wood"]));
+        RegisterRecipe(new CraftingRecipe("Stick", ["Blacksmith", "Wood", "Axe"], ["Stick"], ["Wood"]));
+        RegisterRecipe(new CraftingRecipe("Stick", ["Farmer", "Wood", "Axe"], ["Stick"], ["Wood"]));
+
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood", "Wood", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood", "Wood", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood", "Wood", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood", "Wood", "Wood", "Wood", "Wood"],
+            ["Tree"]));
+
+        RegisterRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"], []));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Mine", "Hunter"], ["Stone"], []));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Mine", "Blacksmith"], ["Stone", "Stone", "Stone"], []));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Mine", "Farmer"], ["Stone"], []));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Villager", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Hunter", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Blacksmith", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+        RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Farmer", "Axe"],
+            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
+
+        RegisterRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"], ["Water"]));
+
+        RegisterRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"], ["Sand"]));
+
+        RegisterRecipe(new CraftingRecipe("Planks", ["Wood", "Wood"], ["Planks"], ["Wood"]));
+
+        RegisterRecipe(new CraftingRecipe("Clay", ["Sand", "Water"], ["Clay"], ["Sand", "Water"]));
+
+        RegisterRecipe(new CraftingRecipe("Brick", ["Clay", "Campfire"], ["Brick"], ["Clay"]));
+    }
+
+    #endregion Recipe registration
 
     #region Recipe data
 
     private readonly IList<CraftingRecipe> recipes = [];
     public IReadOnlyCollection<CraftingRecipe> Recipes => recipes.AsReadOnly();
 
-    public void AddRecipe(CraftingRecipe recipe) {
+    public void RegisterRecipe(CraftingRecipe recipe) {
         ArgumentNullException.ThrowIfNull(recipe, nameof(recipe));
 
         recipes.Add(recipe);

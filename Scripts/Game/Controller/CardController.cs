@@ -163,31 +163,8 @@ public class CardController {
     public CardNode GetTopCardAtMousePosition() {
         CardNode topCard = null;
 
-        foreach (CardNode card in HoveredCards)
-            if (topCard is null)
-                topCard = card;
-            else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
-
-        return topCard;
+        return HoveredCards.OrderByDescending(e => e.ZIndex).FirstOrDefault();
     }
-
-    ///// <summary>
-    /////     Gets the card under the moved card.
-    ///// </summary>
-    ///// <returns>
-    /////     The card under the moved card or null if no card is found.
-    ///// </returns>
-    //private CardNode GetCardUnderMovedCard() {
-    //    IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
-    //
-    //    CardNode topUnderCard = null;
-    //
-    //    foreach (CardNode card in hoveredCardsSorted)
-    //        if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
-    //            topUnderCard = card;
-    //
-    //    return topUnderCard;
-    //}
 
     /// <summary>
     ///     Called when the left mouse button is pressed.
