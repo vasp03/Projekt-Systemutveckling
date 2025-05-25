@@ -5,5 +5,8 @@ public enum MouseCursorEnum {
     point_small,
     hand_open,
     hand_close,
-    loading
+    loading,
+    sell_open,
+    sell_close,
+    sell_point
 }

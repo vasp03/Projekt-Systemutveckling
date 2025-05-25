@@ -2,6 +2,8 @@ using Godot;
 using Goodot15.Scripts.Game.Controller;
 
 public partial class GameOverMenu : Control {
+    private const string LOSE_SOUND = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
+
     private Sprite2D background;
     private Button backToMenuButton;
     private Button exitGameButton;
@@ -17,6 +19,8 @@ public partial class GameOverMenu : Control {
 
         exitGameButton.Pressed += OnExitGameButtonPressed;
         backToMenuButton.Pressed += OnBackToMenuButtonPressed;
+
+        SoundController.Singleton.PlaySound(LOSE_SOUND);
     }
 
     private void OnExitGameButtonPressed() {
