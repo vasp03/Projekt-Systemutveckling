@@ -12,6 +12,7 @@ public class MouseController {
 
     private bool isLoading;
     private int loadingIndex;
+    private bool sellModeActive;
 
     public MouseController() {
         SetMouseCursor(MouseCursorEnum.point_small);
@@ -22,22 +23,34 @@ public class MouseController {
 
         switch (cursor) {
             case MouseCursorEnum.point:
-                Input.SetCustomMouseCursor(Point, Input.CursorShape.Arrow, Offset);
-                return true;
             case MouseCursorEnum.point_small:
-                Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
+                if (sellModeActive)
+                    Input.SetCustomMouseCursor(Sell_point, Input.CursorShape.Arrow, Offset);
+                else
+                    Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
+
                 return true;
             case MouseCursorEnum.hand_open:
-                Input.SetCustomMouseCursor(Hand_open, Input.CursorShape.Arrow, Offset);
+                if (sellModeActive)
+                    Input.SetCustomMouseCursor(Sell_open, Input.CursorShape.Arrow, Offset);
+                else
+                    Input.SetCustomMouseCursor(Hand_open, Input.CursorShape.Arrow, Offset);
+
                 return true;
             case MouseCursorEnum.hand_close:
-                Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
+                if (sellModeActive)
+                    Input.SetCustomMouseCursor(Sell_close, Input.CursorShape.Arrow, Offset);
+                else
+                    Input.SetCustomMouseCursor(Hand_close, Input.CursorShape.Arrow, Offset);
+
                 return true;
             case MouseCursorEnum.loading:
                 if (!isLoading) StartLoading();
+
                 return true;
             default:
                 Input.SetCustomMouseCursor(Point_small, Input.CursorShape.Arrow, Offset);
+
                 return false;
         }
     }
@@ -63,6 +76,12 @@ public class MouseController {
         Input.SetCustomMouseCursor(loadingResources[loadingIndex], Input.CursorShape.Arrow, Offset);
     }
 
+    public void SetSellMode(bool sellModeActive) {
+        this.sellModeActive = sellModeActive;
+
+        SetMouseCursor(MouseCursorEnum.point_small);
+    }
+
     #region Static resources
 
     private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
@@ -81,6 +100,10 @@ public class MouseController {
 
     private readonly Resource Point = ResourceLoader.Load(PATH + "point.png");
     private readonly Resource Point_small = ResourceLoader.Load(PATH + "point_small.png");
+
+    private readonly Resource Sell_open = ResourceLoader.Load(PATH + "sell_open.png");
+    private readonly Resource Sell_close = ResourceLoader.Load(PATH + "sell_close.png");
+    private readonly Resource Sell_point = ResourceLoader.Load(PATH + "sell_point.png");
 
     #endregion Static resources
 }
