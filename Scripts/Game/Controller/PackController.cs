@@ -11,16 +11,14 @@ public partial class PackController : HBoxContainer {
     private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
 
     private readonly IList<CardPack> availablePacks = [];
-    private Global global;
 
     [Export] public PackedScene PackButtonScene;
 
     public override void _Ready() {
-        global = Global.Singleton;
         Initialize();
     }
 
-    public void Initialize() {
+    private void Initialize() {
         RegisterDefaultPacks();
         DisplayAvailablePacks();
     }
@@ -48,7 +46,7 @@ public partial class PackController : HBoxContainer {
     }
 
     private void DisplayAvailablePacks() {
-        if (global is null || PackButtonScene is null) return;
+        if (Global.Singleton is null || PackButtonScene is null) return;
 
         foreach (Node child in GetChildren()) child.QueueFree();
 
@@ -57,7 +55,7 @@ public partial class PackController : HBoxContainer {
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
 
-            bool isAffordable = global.Money >= pack.Cost;
+            bool isAffordable = Global.Singleton.Money >= pack.Cost;
             // button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
@@ -67,12 +65,12 @@ public partial class PackController : HBoxContainer {
     }
 
     private void OnPackClicked(CardPack pack) {
-        if (global.Money < pack.Cost) {
+        if (Global.Singleton.Money < pack.Cost) {
             SoundController.Singleton.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
             return;
         }
 
-        global.AddMoney(-pack.Cost);
+        Global.Singleton.AddMoney(-pack.Cost);
 
         ShowFloatingMoneyLabel(-pack.Cost);
 
@@ -101,7 +99,7 @@ public partial class PackController : HBoxContainer {
         foreach (Node child in GetChildren()) {
             if (child is not PackButton button || button.Pack is null) continue;
 
-            bool isAffordable = global.Money >= button.Pack.Cost;
+            bool isAffordable = Global.Singleton.Money >= button.Pack.Cost;
             // button.Disabled = !isAffordable;
             button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
             button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);

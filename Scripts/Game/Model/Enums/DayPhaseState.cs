@@ -1,6 +1,6 @@
 namespace Goodot15.Scripts.Game.Model.Enums;
 
-public enum DayState {
+public enum DayPhaseState {
     NIGHT,
     MORNING,
     DAY,

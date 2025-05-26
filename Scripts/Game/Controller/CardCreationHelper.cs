@@ -116,11 +116,16 @@ public class CardCreationHelper : GameManagerBase {
         }
     }
 
-    public IReadOnlyList<string> GetCardTypePacks(CardPackEnum type) {
+    /// <summary>
+    ///     Fetches the collection of card types included in each pack, supplied by <see cref="pack" />
+    /// </summary>
+    /// <param name="pack"></param>
+    /// <returns></returns>
+    public IReadOnlyList<string> GetCardTypePacks(CardPackCollection pack) {
         IList<string> cardTypePacks = [];
 
-        switch (type) {
-            case CardPackEnum.NATURE:
+        switch (pack) {
+            case CardPackCollection.NATURE:
                 cardTypePacks.Add("Wood");
                 cardTypePacks.Add("Stone");
                 cardTypePacks.Add("Water");
@@ -129,19 +134,19 @@ public class CardCreationHelper : GameManagerBase {
                 cardTypePacks.Add("Leaves");
                 cardTypePacks.Add("Clay");
                 break;
-            case CardPackEnum.TOOLS:
+            case CardPackCollection.TOOLS:
                 cardTypePacks.Add("MaterialSwordMk1");
                 cardTypePacks.Add("MaterialFishingPole");
                 cardTypePacks.Add("MaterialShovel");
                 cardTypePacks.Add("MaterialAxe");
                 break;
-            case CardPackEnum.VILLAGER:
+            case CardPackCollection.VILLAGER:
                 cardTypePacks.Add("PlayerVillager");
                 cardTypePacks.Add("PlayerHunter");
                 cardTypePacks.Add("PlayerFarmer");
                 cardTypePacks.Add("PlayerBlacksmith");
                 break;
-            case CardPackEnum.FOOD:
+            case CardPackCollection.FOOD:
                 cardTypePacks.Add("MaterialApple");
                 cardTypePacks.Add("MaterialBerry");
                 cardTypePacks.Add("MaterialJam");

@@ -13,6 +13,9 @@ public partial class SoundController : Node {
         QueueFree();
     }
 
+    /// <summary>
+    ///     Triggers disposal of cached audio
+    /// </summary>
     private void UnloadSounds() {
         CachedSounds.ToList().ForEach(e => e.Value.Dispose());
         CachedMusic.ToList().ForEach(e => e.Value.Dispose());

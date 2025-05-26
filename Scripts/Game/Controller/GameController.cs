@@ -25,7 +25,8 @@ public partial class GameController : Node2D {
                 case Key.Escape:
                     MenuController.OpenPauseMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(true);
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
+                        pausable.OnPauseStateChanged(true);
 
                     SoundController.MusicMuted = true;
                     HideHUD();
@@ -35,7 +36,7 @@ public partial class GameController : Node2D {
                     MenuController.OpenGameOverMenu();
 
                     if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-                        pausable2.SetPaused(true);
+                        pausable2.OnPauseStateChanged(true);
 
                     SoundController.MusicMuted = true;
                     Visible = false;
@@ -178,7 +179,7 @@ public partial class GameController : Node2D {
     public void CallPausedCallbacks(bool isPaused) {
         if (pausedCallbacks is null) return;
 
-        foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
+        foreach (IPausable callback in pausedCallbacks) callback.OnPauseStateChanged(isPaused);
     }
 
     public void AddPauseCallback(IPausable callback) {

@@ -15,7 +15,7 @@ public class NatureResourceEvent : CardSpawnEvent {
 
     public override Card CardInstance() {
         IReadOnlyList<string> pack =
-            GameController.Singleton.CardController.CardCreationHelper.GetCardTypePacks(CardPackEnum.NATURE);
+            GameController.Singleton.CardController.CardCreationHelper.GetCardTypePacks(CardPackCollection.NATURE);
         string randomCardType = pack[GD.RandRange(0, pack.Count - 1)];
         return GameController.Singleton.CardController.CardCreationHelper.GetCreatedInstanceOfCard(randomCardType);
     }

@@ -7,40 +7,24 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
-    //  private const string CLICK_SFX = "General Sounds/Buttons/sfx_sounds_button11.wav";
-
-    private GameController gameController;
+    private GameController GameController => GameController.Singleton;
 
     public static MenuController Singleton =>
         (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<MenuController>("/root/MenuController");
 
     public override void _Ready() {
-        // mainMenu = GetParent().GetNode<Control>("MainMenu");
         currentMenu = mainMenu;
         pauseMenu = null;
         optionsMenu = null;
         guideMenu = null;
-        // this.previousMenu = mainMenu;
-        // GetTree().NodeAdded += OnNodeAdded;
     }
-
-    // private void OnNodeAdded(Node node) {
-    //     if (node is Button addedButton) {
-    //         // GD.Print($"New button: [{addedButton.GetPath()}]");
-    //         addedButton.Pressed += AddedButtonOnPressed;
-    //     }
-    // }
-
-    // private void AddedButtonOnPressed() {
-    //     SoundController.Singleton.PlaySound(CLICK_SFX);
-    // }
 
     /// <summary>
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
     public void SetGameController(GameController gameController) {
-        this.gameController = gameController;
+        // this.gameController = gameController;
     }
 
     /// <summary>
@@ -97,7 +81,7 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        gameController.CallPausedCallbacks(true);
+        GameController.CallPausedCallbacks(true);
 
         if (pauseMenu is null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -136,6 +120,9 @@ public partial class MenuController : Node {
         SwitchMenu(guideMenu);
     }
 
+    /// <summary>
+    ///     Switches to the game over menu
+    /// </summary>
     public void OpenGameOverMenu() {
         previousMenu = currentMenu;
         if (gameOverMenu is null) {
@@ -179,11 +166,11 @@ public partial class MenuController : Node {
                 controlMenu.Visible = false;
 
         GetTree().Paused = false;
-        gameController.CallPausedCallbacks(false);
+        GameController.CallPausedCallbacks(false);
 
-        gameController.Visible = true;
+        GameController.Visible = true;
 
-        gameController.SoundController.MusicMuted = true;
+        GameController.SoundController.MusicMuted = true;
     }
 
     #endregion Menu opening methods

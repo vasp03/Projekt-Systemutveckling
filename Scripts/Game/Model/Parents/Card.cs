@@ -6,8 +6,8 @@ namespace Goodot15.Scripts.Game.Model.Parents;
 ///     Base class for any card-data
 /// </summary>
 public abstract class Card {
-    private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
-    private const string textureEnding = ".png";
+    private const string BASE_TEXTURE_PATH = "res://Assets/Cards/Ready To Use/";
+    private const string TEXTURE_ENDING = ".png";
 
     /// <summary>
     ///     Instantiates a new Card class<br />
@@ -17,7 +17,7 @@ public abstract class Card {
     /// <param name="movable">Determines if this card is movable/interactable</param>
     public Card(string textureAddress, bool movable) {
         // Generate a unique uuid as name
-        TexturePath = baseTexturePath + textureAddress + textureEnding;
+        TexturePath = BASE_TEXTURE_PATH + textureAddress + TEXTURE_ENDING;
         Movable = movable;
     }
 

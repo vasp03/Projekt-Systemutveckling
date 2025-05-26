@@ -12,7 +12,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     An event to handle when the day changes and it's time.
     /// </summary>
     public DayTimeEvent() {
-        oldDayState = DayState.INVALID;
+        oldDayPhaseState = DayPhaseState.INVALID;
         canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
         timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
         sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
@@ -30,7 +30,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     Sets the paused state of the event.
     /// </summary>
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
-    public void SetPaused(bool isPaused) {
+    public void OnPauseStateChanged(bool isPaused) {
         GameController gameController = GameController.Singleton;
 
         if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
@@ -66,31 +66,31 @@ public class DayTimeEvent : GameEvent, IPausable {
         UpdateTemperature(dayTicks);
         SetSceneDarkness(dayTicks);
         timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
-        dayState = Utilities.GetCurrentDayState(dayTicks);
+        dayPhaseState = Utilities.GetCurrentDayState(dayTicks);
 
-        if (dayState == oldDayState) return;
+        if (dayPhaseState == oldDayPhaseState) return;
 
-        switch (dayState) {
-            case DayState.NIGHT:
+        switch (dayPhaseState) {
+            case DayPhaseState.NIGHT:
                 gameController.SoundController.PlayDayTimeSong("Night");
                 break;
-            case DayState.MORNING:
+            case DayPhaseState.MORNING:
                 gameController.SoundController.PlayDayTimeSong("Morning");
                 break;
-            case DayState.DAY:
+            case DayPhaseState.DAY:
                 gameController.SoundController.PlayDayTimeSong("Day");
                 break;
-            case DayState.EVENING:
+            case DayPhaseState.EVENING:
                 gameController.SoundController.PlayDayTimeSong("Evening");
                 break;
-            case DayState.INVALID:
-            case DayState.PAUSED:
+            case DayPhaseState.INVALID:
+            case DayPhaseState.PAUSED:
             default:
                 gameController.SoundController.ToggleMusicMuted();
                 break;
         }
 
-        oldDayState = dayState;
+        oldDayPhaseState = dayPhaseState;
     }
 
     /// <summary>
@@ -162,9 +162,9 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Event state data
 
-    private DayState dayState;
+    private DayPhaseState dayPhaseState;
     private bool isPaused;
-    private DayState oldDayState;
+    private DayPhaseState oldDayPhaseState;
     private float oldSceneDarkness;
     public int dayTicks { get; set; }
 

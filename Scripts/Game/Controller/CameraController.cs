@@ -17,6 +17,9 @@ public class CameraController : ITickable {
         ShakeScreen();
     }
 
+    /// <summary>
+    ///     Runs screen shaking logic
+    /// </summary>
     private void ShakeScreen() {
         if (RemainingScreenShakeTicks > 0) {
             RemainingScreenShakeTicks--;

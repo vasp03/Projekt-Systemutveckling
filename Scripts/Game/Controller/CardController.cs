@@ -124,7 +124,7 @@ public class CardController {
         currentOverlay.Position = cardLiving.CardNode.Position + CARD_LIVING_OVERLAY_OFFSET;
 
 
-        currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+        currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
         currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
 
         // Add the overlay to the same parent as the card
@@ -136,7 +136,7 @@ public class CardController {
         overlayUpdateTimer.OneShot = false;
         cardLiving.CardNode.GetParent().AddChild(overlayUpdateTimer);
         overlayUpdateTimer.Timeout += () => {
-            currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+            currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
             currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
         };
     }
@@ -215,7 +215,7 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> recipe =
+        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>>? recipe =
             CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
                 .ToArray());
 
@@ -257,7 +257,7 @@ public class CardController {
             menuController.OpenGameOverMenu();
 
             if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-                pausable2.SetPaused(true);
+                pausable2.OnPauseStateChanged(true);
 
             GameController.SoundController.MusicMuted = true;
             GameController.Visible = false;
