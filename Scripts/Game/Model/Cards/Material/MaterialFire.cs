@@ -21,7 +21,7 @@ public class MaterialFire() : CardMaterial("Fire"), ITickable, ICardConsumer {
         return false;
     }
 
-    public void PostTick() {
+    public void PostTick(double delta) {
         LastFireDamageTick++;
         if (LastFireDamageTick >= Utilities.TimeToTicks(1)) {
             LastFireDamageTick = 0;

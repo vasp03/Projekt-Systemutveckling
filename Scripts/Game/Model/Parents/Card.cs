@@ -20,7 +20,7 @@ public abstract class Card {
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
     }
-
+    
     /// <summary>
     ///     Attached CardNode reference
     /// </summary>
