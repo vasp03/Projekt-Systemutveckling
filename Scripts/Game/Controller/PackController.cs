@@ -59,8 +59,12 @@ public partial class PackController : HBoxContainer {
 
             bool isAffordable = global.Money >= pack.Cost;
             // button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-            button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
+            button.Modulate = isAffordable
+                ? Colors.White
+                : new Color(1, 1, 1, 0.5f);
+            button.SetPriceColor(isAffordable
+                ? Colors.White
+                : Colors.Red);
 
             AddChild(button);
         }
@@ -103,8 +107,12 @@ public partial class PackController : HBoxContainer {
 
             bool isAffordable = global.Money >= button.Pack.Cost;
             // button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-            button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
+            button.Modulate = isAffordable
+                ? Colors.White
+                : new Color(1, 1, 1, 0.5f);
+            button.SetPriceColor(isAffordable
+                ? Colors.White
+                : Colors.Red);
         }
     }
 

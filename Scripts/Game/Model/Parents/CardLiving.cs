@@ -80,7 +80,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private readonly static int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
     /// <summary>
@@ -133,7 +133,9 @@ public abstract class CardLiving
     private int healTickProgress;
 
     public int HealTickProgress {
-        get => TicksUntilHeal == -1 ? 0 : healTickProgress;
+        get => TicksUntilHeal == -1
+            ? 0
+            : healTickProgress;
         protected set => healTickProgress = Math.Max(0, value);
     }
 
