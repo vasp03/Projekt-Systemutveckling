@@ -14,12 +14,14 @@ public partial class QuickGuideButton : TextureButton {
     public void OnButtonPressed() {
         GD.Print("Quick Guide button released.");
         SoundController.Singleton.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
-        GameController.Singleton.MenuController.OpenGameOverMenu();
+        GameController.Singleton.MenuController.QuickOpenGuideMenu(this);
 
-        // if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(true);
+        if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(true);
 
-        // SoundController.Singleton.MusicMuted = true;
-        // GameController.Singleton.HideHUD();
-        // Visible = false;
+        SoundController.Singleton.MusicMuted = true;
+        GameController.Singleton.HideHUD();
+        Visible = false;
+
+
     }
 }

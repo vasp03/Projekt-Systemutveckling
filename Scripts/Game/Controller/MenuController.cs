@@ -1,4 +1,6 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller.Events;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -72,6 +74,7 @@ public partial class MenuController : Node {
     private Control optionsMenu;
     private Control gameOverMenu;
     private Control pauseMenu;
+    private QuickGuideButton quickGuideButton;
 
     #endregion Control UI fields
 
@@ -108,17 +111,24 @@ public partial class MenuController : Node {
         SwitchMenu(pauseMenu);
     }
 
-    public void QuickOpenGuideMenu() {
+    public void QuickOpenGuideMenu(QuickGuideButton quickGuideButton) {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
         gameController.CallPausedCallbacks(true);
 
-        previousMenu = currentMenu;
+        if( quickGuideButton != null) {
+            this.quickGuideButton = quickGuideButton;
+        }
+
+        previousMenu = null;
         if (guideMenu is null) {
             PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
             guideMenu = packedGuideMenu.Instantiate() as Control;
             AddChild(guideMenu);
         }
+
+        guideMenu.Visible = true;
+        guideMenu.ZIndex = 3000;
 
         SwitchMenu(guideMenu);
     }
@@ -178,10 +188,23 @@ public partial class MenuController : Node {
     ///     Goes back to the previous menu.
     /// </summary>
     public void GoBackToPreviousMenu() {
+        GD.Print("Going back to previous menu... " + (previousMenu is not null));
         if (previousMenu is not null && previousMenu.IsInsideTree()) {
             Control menuToSwitchTo = previousMenu;
             previousMenu = currentMenu;
             SwitchMenu(menuToSwitchTo);
+        } else {
+            guideMenu.Visible = false;
+            GetTree().Paused = false;
+            gameController.CallPausedCallbacks(false);
+            if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(false);
+
+            SoundController.Singleton.MusicMuted = false;
+            GameController.Singleton.ShowHUD();
+
+            if (quickGuideButton != null) {
+                quickGuideButton.Visible = true;
+            }
         }
     }
 
