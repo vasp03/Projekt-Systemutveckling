@@ -10,7 +10,7 @@ public partial class HUD : CanvasLayer {
 
     private Global Global;
     private bool isFlashing;
-    private PackController packController;
+    private Controller.PackController packController;
 
     [Export] public TextureRect GoldIcon { get; set; }
     [Export] public Label MoneyLabel { get; set; }
@@ -23,7 +23,7 @@ public partial class HUD : CanvasLayer {
         Global = Global.Singleton;
         Global.MoneyChanged += OnMoneyChanged;
 
-        packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
+        packController = GetNodeOrNull<Controller.PackController>("HUDRoot/PackContainer");
 
         SetupSellModeButton();
 
@@ -72,7 +72,7 @@ public partial class HUD : CanvasLayer {
     }
 
     private void OnMoneyChanged(int newMoney) {
-        packController?.RefreshPackStates(newMoney);
+        packController?.RefreshAvailablePacks();
 
         MoneyLabel.Text = newMoney.ToString();
         MoneyLabel.Modulate = new Color(0.4f, 1f, 0.4f);

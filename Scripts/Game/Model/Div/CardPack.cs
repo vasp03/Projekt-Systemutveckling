@@ -1,43 +1,34 @@
 ﻿using System.Collections.Generic;
-using Goodot15.Scripts.Game.View;
+using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Div;
 
 /// <summary>
-///     A pack, used with <see cref="PackController" />.
+///     Base class used for Card Packs
 /// </summary>
-public record CardPack {
+public abstract class CardPack {
     /// <summary>
-    ///     Constructs a new CardPack instance
+    /// Determines if the pack is Single-time use only.
     /// </summary>
-    /// <param name="name">Name of card pack</param>
-    /// <param name="cost">Cost in coins</param>
-    /// <param name="commonCards">Common dropped cards</param>
-    /// <param name="rareCards">Rarely dropped cards</param>
-    public CardPack(string name, int cost, IReadOnlyList<string> commonCards, IReadOnlyList<string> rareCards) {
-        Name = name;
-        Cost = cost;
-        CommonCards = commonCards;
-        RareCards = rareCards;
-    }
-
+    public abstract bool SingleUse { get; }
     /// <summary>
-    ///     Name of card pack
+    /// Flag if the Card Pack has been used or not, used together with <see cref="SingleUse"/>
     /// </summary>
-    public string Name { get; }
+    public bool Consumed { get; set; }
+    
+    /// <summary>
+    /// Name of Card Pack
+    /// </summary>
+    public abstract string Name { get; }
 
     /// <summary>
     ///     Cost of card pack in coins
     /// </summary>
-    public int Cost { get; }
+    public abstract int Cost { get; }
 
     /// <summary>
-    ///     Common dropped cards
+    /// Provides a collection of randomized cards.
     /// </summary>
-    public IReadOnlyList<string> CommonCards { get; }
-
-    /// <summary>
-    ///     Rarely dropped cards
-    /// </summary>
-    public IReadOnlyList<string> RareCards { get; }
+    /// <returns></returns>
+    public abstract IReadOnlyCollection<Card> GenerateCards();
 }

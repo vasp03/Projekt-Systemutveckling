@@ -50,10 +50,9 @@ public class ColdNightEvent : GameEvent, ITickable {
             DayPhaseState currentPhaseState = Utilities.GetCurrentDayState(dayTimeEvent.dayTicks);
             if (!hasTriggered && currentPhaseState is DayPhaseState.NIGHT) return true;
 
-            if (currentPhaseState is not DayPhaseState.NIGHT) {
-                hasTriggered = false;
-                dayTimeEvent.temperatureLocked = false;
-            }
+            if (currentPhaseState is DayPhaseState.NIGHT) return false;
+            hasTriggered = false;
+            dayTimeEvent.temperatureLocked = false;
 
             return false;
         }
@@ -80,21 +79,23 @@ public class ColdNightEvent : GameEvent, ITickable {
     public void PostTick() {
         if (!hasTriggered) return;
 
-        lastDamageTick++;
-        if (lastDamageTick >= Utilities.TimeToTicks(1)) {
-            lastDamageTick = 0;
-
-            CardNode.CardController.AllCards.ToList().ForEach(card => {
-                bool isStackedOnCampfire = CardNode.CardController.AllCards.Any(otherCard =>
-                    otherCard.CardType is BuildingCampfire &&
-                    otherCard.StackAboveWithItself.Contains(card) &&
-                    otherCard.StackAboveWithItself.Where(c => c.CardType is CardLiving).Take(3).Contains(card));
-
-                if (card.CardType is CardLiving cardLiving && !isStackedOnCampfire) {
-                    cardLiving.Health -= 2;
-                    cardLiving.Saturation -= 3;
-                }
-            });
+        if (lastDamageTick++ < Utilities.TimeToTicks(1)) {
+            return;
         }
+
+        lastDamageTick++;
+        lastDamageTick = 0;
+
+        CardNode.CardController.AllCards.ToList().ForEach(card => {
+
+            bool isStackedOnCampfire = CardNode.CardController.AllCards.Any(otherCard =>
+                otherCard.CardType is BuildingCampfire &&
+                otherCard.StackAboveWithItself.Contains(card) &&
+                otherCard.StackAboveWithItself.Where(c => c.CardType is CardLiving).Take(3).Contains(card));
+
+            if (card.CardType is not CardLiving cardLiving || isStackedOnCampfire) return;
+            cardLiving.Health -= 2;
+            cardLiving.Saturation -= 3;
+        });
     }
 }
