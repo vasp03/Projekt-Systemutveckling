@@ -7,16 +7,17 @@ namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
 public abstract class CommonAndRarePack : CardPack {
     /// <summary>
-    /// The chance for a Rare Card to spawn when picking a card. Value ranges from <b>0-1</b> (inclusive).<b/>
-    /// Defaults to <b>0.1</b>.
+    ///     The chance for a Rare Card to spawn when picking a card. Value ranges from <b>0-1</b> (inclusive).<b />
+    ///     Defaults to <b>0.1</b>.
     /// </summary>
     protected virtual float RareCardChance => 0.1f;
+
     protected abstract IReadOnlyList<Card> CommonCards { get; }
     protected abstract IReadOnlyList<Card> RareCards { get; }
 
     /// <summary>
-    /// The count of cards to spawn.<br/>
-    /// Defaults to 3-5.
+    ///     The count of cards to spawn.<br />
+    ///     Defaults to 3-5.
     /// </summary>
     protected virtual int CardCount => GD.RandRange(3, 5);
 

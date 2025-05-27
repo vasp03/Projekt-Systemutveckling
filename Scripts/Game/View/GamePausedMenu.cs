@@ -106,7 +106,7 @@ public partial class GamePausedMenu : Control {
     ///     Changes the scene through deferred action.
     /// </summary>
     private void ChangeToMainMenu() {
-        GetTree().CurrentScene.Free(); 
+        GetTree().CurrentScene.Free();
         Visible = false;
     }
 }
