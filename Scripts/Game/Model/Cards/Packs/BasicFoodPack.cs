@@ -26,6 +26,4 @@ public class BasicFoodPack : CommonAndRarePack {
         new MaterialCookedMeat(),
         new MaterialCookedFish()
     ];
-
-    protected override int CardCount => GD.RandRange(3, 5);
 }

@@ -31,6 +31,4 @@ public class BasicMaterialPack : CommonAndRarePack {
         new MaterialGlass(),
         new MaterialPlank()
     ];
-
-    protected override int CardCount => GD.RandRange(3, 5);
 }
