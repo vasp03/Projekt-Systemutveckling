@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=4 uid="uid://vpn6axvy6c6u"]
+[gd_scene load_steps=15 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://o1wb55vmxiv3" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://cbm0e65p06r5y" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_m8nr8"]
@@ -8,7 +8,8 @@
 [ext_resource type="Script" uid="uid://8gjdde1g6hmb" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
 [ext_resource type="Script" uid="uid://bhufpwmstx7re" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
 [ext_resource type="PackedScene" uid="uid://crfa75uxwe6fa" path="res://Scenes/PackButton.tscn" id="8_w1dup"]
-[ext_resource type="Texture2D" uid="uid://bbpaj705glvud" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
+[ext_resource type="Texture2D" uid="uid://bjhelqhpj4w1r" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
+[ext_resource type="Script" uid="uid://soslvvx83qgi" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
 
@@ -128,3 +129,9 @@ offset_right = 96.0
 offset_bottom = 77.0
 grow_horizontal = 2
 texture = ExtResource("9_uvydw")
+
+[node name="TextureButton" type="TextureButton" parent="HUD"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_mhr8t")

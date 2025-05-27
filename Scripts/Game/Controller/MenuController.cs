@@ -108,6 +108,21 @@ public partial class MenuController : Node {
         SwitchMenu(pauseMenu);
     }
 
+    public void QuickOpenGuideMenu() {
+        if (GetTree().Paused) return;
+        GetTree().Paused = true;
+        gameController.CallPausedCallbacks(true);
+
+        previousMenu = currentMenu;
+        if (guideMenu is null) {
+            PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
+            guideMenu = packedGuideMenu.Instantiate() as Control;
+            AddChild(guideMenu);
+        }
+
+        SwitchMenu(guideMenu);
+    }
+
     /// <summary>
     ///     Loads and opens the options menu.
     /// </summary>
