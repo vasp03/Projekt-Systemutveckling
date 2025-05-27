@@ -29,7 +29,7 @@ sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ly6xb")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraCenter" type="Camera2D" parent="."]
 position = Vector2(640, 360)
 
 [node name="WorldBorder" type="Sprite2D" parent="."]

@@ -164,6 +164,14 @@ public partial class MenuController : Node {
             AddChild(gameOverMenu);
         }
 
+        if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
+            pausable2.SetPaused(true);
+
+        GameController.Singleton.SoundController.MusicMuted = true;
+        GameController.Singleton.Visible = false;
+        HUD hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
+        if (hud is not null) hud.Visible = false;
+
         SwitchMenu(gameOverMenu);
     }
 

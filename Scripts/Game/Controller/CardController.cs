@@ -280,14 +280,6 @@ public class CardController {
 
         if (livingCardsAmount <= 0) {
             menuController.OpenGameOverMenu();
-
-            if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-                pausable2.SetPaused(true);
-
-            GameController.SoundController.MusicMuted = true;
-            GameController.Visible = false;
-            HUD hud = GameController.GetNodeOrNull<HUD>("HUD");
-            if (hud is not null) hud.Visible = false;
         }
     }
 
