@@ -20,14 +20,6 @@ public partial class MenuController : Node {
     }
 
     /// <summary>
-    ///     sets the GameController to a variable for the MenuController.
-    /// </summary>
-    /// <param name="gameController">the GameController to be set</param>
-    public void SetGameController(GameController gameController) {
-        // this.gameController = gameController;
-    }
-
-    /// <summary>
     ///     Configures the MenuController with a new instance of the MainMenu.
     /// </summary>
     /// <param name="menu">The new main menu instance to configure with</param>

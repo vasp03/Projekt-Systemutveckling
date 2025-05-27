@@ -183,7 +183,7 @@ public partial class GameController : Node2D {
         SoundController.PlayGameMusic();
 
         MenuController = GetNode<MenuController>("/root/MenuController");
-        MenuController.SetGameController(this);
+        // MenuController.SetGameController(this);
     }
 
     #endregion Initialization
