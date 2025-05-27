@@ -17,6 +17,7 @@ public partial class GameController : Node2D {
     /// </summary>
     public static GameController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
+
     public override void _Input(InputEvent @event) {
         if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
@@ -111,13 +112,22 @@ public partial class GameController : Node2D {
     public MouseController MouseController { get; } = Global.MouseController;
     public SoundController SoundController { get; private set; }
     public CameraController CameraController { get; private set; }
-    public HUD HUD { get; private set; }
 
     #endregion
 
     #region Sell Mode
 
-    public bool SellModeActive { get; private set; }
+    private TextureRect SellModeLabel => GetNode<TextureRect>("HUD/HUDRoot/SellModeLabel");
+
+    private bool sellModeActive;
+
+    public bool SellModeActive {
+        get => sellModeActive;
+        set {
+            sellModeActive = value;
+            SellModeLabel.Visible = value;
+        }
+    }
 
     public void ToggleSellMode() {
         SellModeActive = !SellModeActive;
@@ -125,12 +135,9 @@ public partial class GameController : Node2D {
         Global.MouseController.SetSellMode(SellModeActive);
     }
 
-    public void SetSellMode(bool active) {
-        SellModeActive = active;
-        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
-    }
-
     #region HUD visibility
+
+    public HUD HUD { get; private set; }
 
     public void HideHUD() {
         HUD.Visible = false;
@@ -150,6 +157,8 @@ public partial class GameController : Node2D {
         ConfigureControllers();
         SetupControllers();
         SetupUI();
+
+        SellModeActive = false;
     }
 
     private void SetupControllers() {

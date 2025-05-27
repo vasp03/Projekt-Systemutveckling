@@ -29,6 +29,8 @@ public partial class SellModeButton : TextureButton {
     }
 
     public void UpdateIcon() {
-        TextureNormal = GameController.Singleton.SellModeActive ? iconOn : iconOff;
+        TextureNormal = GameController.Singleton.SellModeActive
+            ? iconOn
+            : iconOff;
     }
 }
