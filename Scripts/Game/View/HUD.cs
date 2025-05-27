@@ -14,8 +14,9 @@ public partial class HUD : CanvasLayer {
 
     [Export] public TextureRect GoldIcon { get; set; }
     [Export] public Label MoneyLabel { get; set; }
-
     [Export] public Control FloatingMoneyRoot { get; set; }
+
+    public SellModeButton sellModeButton { get; private set; }
 
     #region Setup
 
@@ -38,8 +39,8 @@ public partial class HUD : CanvasLayer {
     }
 
     private void SetupSellModeButton() {
-        SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
-        sellButton?.UpdateIcon();
+        sellModeButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
+        sellModeButton?.UpdateIcon();
     }
 
     public void ShowFloatingMoneyLabel(int amount) {

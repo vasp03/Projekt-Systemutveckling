@@ -95,6 +95,8 @@ public partial class PackController : HBoxContainer {
         }
 
         SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
+        
+        if (GameController.Singleton.SellModeActive) GameController.Singleton.SetSellMode(false);
     }
 
     private void UnlockAdditionalPacks() {

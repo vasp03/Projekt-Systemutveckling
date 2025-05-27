@@ -134,6 +134,13 @@ public partial class GameController : Node2D {
         Global.MouseController.SetSellMode(SellModeActive);
     }
 
+    public void SetSellMode(bool active) {
+        SellModeActive = active;
+        Global.MouseController.SetSellMode(SellModeActive);
+        HUD.sellModeButton?.UpdateIcon();
+        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
+    }
+
     #region HUD visibility
 
     public HUD HUD { get; private set; }
