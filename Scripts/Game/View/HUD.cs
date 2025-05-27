@@ -1,5 +1,4 @@
 using Godot;
-using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -40,10 +39,7 @@ public partial class HUD : CanvasLayer {
 
     private void SetupSellModeButton() {
         SellModeButton sellButton = GetNodeOrNull<SellModeButton>("HUDRoot/SellModeButton");
-        if (sellButton is not null) {
-            sellButton.GameController = GameController.Singleton;
-            sellButton.UpdateIcon();
-        }
+        sellButton?.UpdateIcon();
     }
 
     public void ShowFloatingMoneyLabel(int amount) {
@@ -100,6 +96,11 @@ public partial class HUD : CanvasLayer {
         GoldIcon.Texture = coinIcons[stage];
     }
 
+    /// <summary>
+    ///     Maps an integer-value to the string suffix equivalent
+    /// </summary>
+    /// <param name="index">0-9 value (inclusive)</param>
+    /// <returns>Stage suffix as string</returns>
     private string GetStageSuffix(int index) {
         return index switch {
             0 => "bronze",

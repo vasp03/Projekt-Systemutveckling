@@ -7,7 +7,9 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Class that controls the flow of the menus in the game.
 /// </summary>
 public partial class MenuController : Node {
-    private GameController GameController;
+    //  private const string CLICK_SFX = "General Sounds/Buttons/sfx_sounds_button11.wav";
+
+    private GameController gameController;
 
     public static MenuController Singleton =>
         (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<MenuController>("/root/MenuController");
@@ -19,14 +21,26 @@ public partial class MenuController : Node {
         optionsMenu = null;
         guideMenu = null;
         // this.previousMenu = mainMenu;
+        // GetTree().NodeAdded += OnNodeAdded;
     }
+
+    // private void OnNodeAdded(Node node) {
+    //     if (node is Button addedButton) {
+    //         // GD.Print($"New button: [{addedButton.GetPath()}]");
+    //         addedButton.Pressed += AddedButtonOnPressed;
+    //     }
+    // }
+
+    // private void AddedButtonOnPressed() {
+    //     SoundController.Singleton.PlaySound(CLICK_SFX);
+    // }
 
     /// <summary>
     ///     sets the GameController to a variable for the MenuController.
     /// </summary>
     /// <param name="gameController">the GameController to be set</param>
     public void SetGameController(GameController gameController) {
-        GameController = gameController;
+        this.gameController = gameController;
     }
 
     /// <summary>
@@ -83,7 +97,7 @@ public partial class MenuController : Node {
     public void OpenPauseMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        GameController.CallPausedCallbacks(true);
+        gameController.CallPausedCallbacks(true);
 
         if (pauseMenu is null) {
             PackedScene packedPauseMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GamePausedMenu.tscn");
@@ -165,11 +179,11 @@ public partial class MenuController : Node {
                 controlMenu.Visible = false;
 
         GetTree().Paused = false;
-        GameController.CallPausedCallbacks(false);
+        gameController.CallPausedCallbacks(false);
 
-        GameController.Visible = true;
+        gameController.Visible = true;
 
-        GameController.SoundController.MusicMuted = true;
+        gameController.SoundController.MusicMuted = true;
     }
 
     #endregion Menu opening methods

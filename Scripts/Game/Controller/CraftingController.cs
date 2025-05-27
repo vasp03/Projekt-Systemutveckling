@@ -24,11 +24,11 @@ public class CraftingController {
 
         foreach (Card card in Cards) {
             Pair<string, int> cardForCrafting =
-                CardForCraftingAmount.FirstOrDefault(x => x.Left == card.TextureType);
+                CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
             if (cardForCrafting is not null)
                 cardForCrafting.Right++;
             else
-                CardForCraftingAmount.Add(new Pair<string, int>(card.TextureType, 1));
+                CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
         }
 
         // Sort the list by the name of the card

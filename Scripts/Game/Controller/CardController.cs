@@ -18,8 +18,6 @@ public class CardController {
     public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
     public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
 
-    private readonly List<CardNode> hoveredCards = [];
-
     private CardLivingOverlay currentOverlay;
     private Timer overlayUpdateTimer;
 
@@ -35,6 +33,8 @@ public class CardController {
         CraftingController = new CraftingController();
         this.menuController = menuController;
     }
+
+    public IReadOnlyCollection<CardNode> HoveredCards => AllCards.Where(e => e.MouseIsHovering).ToArray();
 
     public CardCreationHelper CardCreationHelper { get; }
     public CraftingController CraftingController { get; }
@@ -82,32 +82,30 @@ public class CardController {
     ///     Checks if the card is the top card on the scene.
     /// </summary>
     private bool CardIsTopCard(CardNode cardNode) {
-        return hoveredCards.All(node => node.ZIndex <= cardNode.ZIndex);
+        return HoveredCards.All(node => node.ZIndex <= cardNode.ZIndex);
     }
 
     /// <summary>
     ///     Adds the card to the hovered cards list and sets its highlighted state to true.
     /// </summary>
-    public void AddCardToHoveredCards(CardNode cardNode) {
-        hoveredCards.Add(cardNode);
+    public void OnCardHovered(CardNode cardNodeInstance) {
         CheckForHighLight();
     }
 
     /// <summary>
     ///     Removes the card from the hovered cards list and sets its highlighted state to false.
     /// </summary>
-    public void RemoveCardFromHoveredCards(CardNode cardNode) {
-        hoveredCards.Remove(cardNode);
+    public void OnCardUnhovered(CardNode cardNodeInstance) {
         CheckForHighLight();
-        cardNode.SetHighlighted(false);
-        if (cardNode.CardType is CardLiving) HideHealthAndHunger();
+        cardNodeInstance.SetHighlighted(false);
+        if (cardNodeInstance.CardType is CardLiving) HideHealthAndHunger();
     }
 
     /// <summary>
     ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
     /// </summary>
     public void CheckForHighLight() {
-        foreach (CardNode card in hoveredCards)
+        foreach (CardNode card in HoveredCards)
             if (CardIsTopCard(card)) {
                 card.SetHighlighted(true);
                 if (!card.Dragged && !card.HasNeighbourAbove && card.CardType is CardLiving cardLiving)
@@ -165,7 +163,7 @@ public class CardController {
     public CardNode GetTopCardAtMousePosition() {
         CardNode topCard = null;
 
-        foreach (CardNode card in hoveredCards)
+        foreach (CardNode card in HoveredCards)
             if (topCard is null)
                 topCard = card;
             else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
@@ -254,7 +252,7 @@ public class CardController {
         // Remove the cards in the stack part of cardNode
         foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
             if (cardInStackAbove.CardType is not null) {
-                if (recipe.Right.Contains(cardInStackAbove.CardType.TextureType)) {
+                if (recipe.Right.Contains(cardInStackAbove.CardType.CardName)) {
                     cardInStackAbove.Destroy();
                 } else if (cardInStackAbove.CardType is IDurability durability) {
                     bool ret = durability.DecrementDurability();
@@ -309,7 +307,7 @@ public class CardController {
 
         craftButtonInstance.CardNode = cardNode;
 
-        craftButtonInstance.CardController = this;
+        // craftButtonInstance.CardController = this;
 
         GameController.AddChild(craftButtonInstance);
     }
@@ -333,8 +331,8 @@ public class CardController {
         // CardNode.CardController = this;
 
         cardInstance.Position = position;
-        if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
-        GameController.AddChild(cardInstance);
+        // if (cardInstance.GetParent() is not null) cardInstance.GetParent().RemoveChild(cardInstance);
+        // GameController.AddChild(cardInstance);
 
         return cardInstance;
     }
