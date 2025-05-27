@@ -74,7 +74,6 @@ public partial class MenuController : Node {
     private Control optionsMenu;
     private Control gameOverMenu;
     private Control pauseMenu;
-    private QuickGuideButton quickGuideButton;
 
     #endregion Control UI fields
 
@@ -111,14 +110,10 @@ public partial class MenuController : Node {
         SwitchMenu(pauseMenu);
     }
 
-    public void QuickOpenGuideMenu(QuickGuideButton quickGuideButton) {
+    public void QuickOpenGuideMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
         gameController.CallPausedCallbacks(true);
-
-        if( quickGuideButton != null) {
-            this.quickGuideButton = quickGuideButton;
-        }
 
         previousMenu = null;
         if (guideMenu is null) {
@@ -188,7 +183,6 @@ public partial class MenuController : Node {
     ///     Goes back to the previous menu.
     /// </summary>
     public void GoBackToPreviousMenu() {
-        GD.Print("Going back to previous menu... " + (previousMenu is not null));
         if (previousMenu is not null && previousMenu.IsInsideTree()) {
             Control menuToSwitchTo = previousMenu;
             previousMenu = currentMenu;
@@ -202,9 +196,10 @@ public partial class MenuController : Node {
             SoundController.Singleton.MusicMuted = false;
             GameController.Singleton.ShowHUD();
 
-            if (quickGuideButton != null) {
-                quickGuideButton.Visible = true;
-            }
+            CanvasLayer canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("HUD");
+            TextureButton quickGuideButton = canvasLayer.GetNode<TextureButton>("QuickGuideButton");
+
+            quickGuideButton.Visible = true;
         }
     }
 
