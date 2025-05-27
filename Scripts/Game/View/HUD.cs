@@ -96,6 +96,11 @@ public partial class HUD : CanvasLayer {
         GoldIcon.Texture = coinIcons[stage];
     }
 
+    /// <summary>
+    ///     Maps an integer-value to the string suffix equivalent
+    /// </summary>
+    /// <param name="index">0-9 value (inclusive)</param>
+    /// <returns>Stage suffix as string</returns>
     private string GetStageSuffix(int index) {
         return index switch {
             0 => "bronze",

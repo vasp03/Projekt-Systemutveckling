@@ -252,7 +252,7 @@ public class CardController {
         // Remove the cards in the stack part of cardNode
         foreach (CardNode cardInStackAbove in cardNode.StackAboveWithItself)
             if (cardInStackAbove.CardType is not null) {
-                if (recipe.Right.Contains(cardInStackAbove.CardType.TextureType)) {
+                if (recipe.Right.Contains(cardInStackAbove.CardType.CardName)) {
                     cardInStackAbove.Destroy();
                 } else if (cardInStackAbove.CardType is IDurability durability) {
                     bool ret = durability.DecrementDurability();

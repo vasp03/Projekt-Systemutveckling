@@ -1,39 +1,69 @@
-using System;
 using System.Linq;
 
 namespace Goodot15.Scripts.Game.Model.Parents;
 
+/// <summary>
+///     Base class for any card-data
+/// </summary>
 public abstract class Card {
     private const string baseTexturePath = "res://Assets/Cards/Ready To Use/";
     private const string textureEnding = ".png";
 
     /// <summary>
-    ///     Constructor for the Card class
+    ///     Instantiates a new Card class<br />
     ///     Texture address should be the address after "res://Assets/Cards/Ready To Use/".
     /// </summary>
-    /// <param name="textureAddress"></param>
-    /// <param name="movable"></param>
-    /// <param name="name"></param>
+    /// <param name="textureAddress">Path of Card texture</param>
+    /// <param name="movable">Determines if this card is movable/interactable</param>
     public Card(string textureAddress, bool movable) {
         // Generate a unique uuid as name
-        ID = Guid.NewGuid().ToString();
         TexturePath = baseTexturePath + textureAddress + textureEnding;
         Movable = movable;
     }
 
+    /// <summary>
+    ///     Attached CardNode reference
+    /// </summary>
+    public CardNode CardNode { get; set; }
+
+
+    /// <summary>
+    ///     Tests if this Card may stack with the <see cref="cardBelow" /> that is below this card
+    /// </summary>
+    /// <param name="cardBelow">Card below this card</param>
+    /// <returns>True if capable of stacking, false will deny it</returns>
+    public virtual bool CanStackBelow(Card cardBelow) {
+        return true;
+    }
+
+    /// <summary>
+    ///     Tests if this Card may stack with the <see cref="cardAbove" /> that is above this card
+    /// </summary>
+    /// <param name="cardAbove">Card above this card</param>
+    /// <returns>True if capable of stacking, false will deny it</returns>
+    public virtual bool CanStackAbove(Card cardAbove) {
+        return true;
+    }
+
+
+    #region Card data
+
+    /// <summary>
+    ///     Determines the value of the card. -1 implies not sellable.
+    /// </summary>
     public abstract int Value { get; }
 
     /// <summary>
-    ///     Determines if the card should always be on top
+    ///     Determines if the card can be moved or not
     /// </summary>
-    public virtual bool AlwaysOnTop => false;
+    public bool Movable { get; private set; }
 
-    public string ID { get; private set; }
+    /// <summary>
+    ///     The full asset texture path for this given card instance.
+    /// </summary>
     public string TexturePath { get; }
-    public CardNode CardNode { get; set; }
-    public bool Movable { get; set; }
 
-    public string TextureType {
+    public string CardName {
         get {
             string[] split = TexturePath.Split("/");
             string textureType = split.Last();
@@ -42,21 +72,7 @@ public abstract class Card {
         }
     }
 
-    /// <summary>
-    ///     Determines if this Card may stack with the <see cref="cardBelow" /> that is below this card
-    /// </summary>
-    /// <param name="cardBelow">CX</param>
-    /// <returns>True will allow stacking, false will deny it</returns>
-    public virtual bool CanStackBelow(Card cardBelow) {
-        return true;
-    }
+    public virtual bool AlwaysOnTop => false;
 
-    /// <summary>
-    ///     Determines if this Card may stack with the <see cref="cardAbove" /> that is above this card
-    /// </summary>
-    /// <param name="cardAbove"></param>
-    /// <returns></returns>
-    public virtual bool CanStackAbove(Card cardAbove) {
-        return true;
-    }
+    #endregion
 }
