@@ -41,6 +41,10 @@ public partial class PackController : HBoxContainer {
         // availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
     }
 
+    /// <summary>
+    /// Registers a pack
+    /// </summary>
+    /// <param name="pack"></param>
     public void RegisterPack(CardPack pack) {
         availablePacks.Add(pack);
     }
