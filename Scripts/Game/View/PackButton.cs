@@ -27,7 +27,9 @@ public partial class PackButton : TextureButton {
 
         _costLabel ??= GetNode<Label>("PriceLabel");
 
-        _costLabel.Text = pack.Cost == 0 ? "Free" : $"{pack.Cost}g";
+        _costLabel.Text = pack.Cost == 0
+            ? "Free"
+            : $"{pack.Cost}g";
 
         string texturePath = $"res://Assets/Packs/{pack.Name.Replace(" ", "_")}.png";
         if (ResourceLoader.Exists(texturePath))

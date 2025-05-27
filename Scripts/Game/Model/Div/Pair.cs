@@ -37,7 +37,11 @@ public record Pair<L, R> {
     public R Right { get; set; }
 
     public virtual bool Equals(Pair<L, R> other) {
-        return Left.Equals(other is null ? default : other.Left) && Right.Equals(other is null ? default : other.Right);
+        return Left.Equals(other is null
+            ? default
+            : other.Left) && Right.Equals(other is null
+            ? default
+            : other.Right);
     }
 
     public override string ToString() {

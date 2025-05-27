@@ -12,9 +12,13 @@ public partial class FloatingMoneyLabel : Control {
     }
 
     public void SetAmount(int amount) {
-        string prefix = amount >= 0 ? "+" : "-";
+        string prefix = amount >= 0
+            ? "+"
+            : "-";
         AmountLabel.Text = $"{prefix}{Mathf.Abs(amount)}g";
-        AmountLabel.Modulate = amount >= 0 ? new Color(0.2f, 1f, 0.2f) : new Color(1f, 0.3f, 0.3f);
+        AmountLabel.Modulate = amount >= 0
+            ? new Color(0.2f, 1f, 0.2f)
+            : new Color(1f, 0.3f, 0.3f);
     }
 
     private void OnAnimationFinished(StringName name) {

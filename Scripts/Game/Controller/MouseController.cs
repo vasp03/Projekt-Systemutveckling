@@ -7,8 +7,8 @@ namespace Goodot15.Scripts.Game.Controller;
 public class MouseController {
     private const string PATH = "res://Assets/MouseCursor/";
 
-    private static readonly Timer LoadingTimer = new();
-    private static readonly Vector2 Offset = new(12, 12);
+    private readonly static Timer LoadingTimer = new();
+    private readonly static Vector2 Offset = new(12, 12);
 
     private bool isLoading;
     private int loadingIndex;
@@ -84,10 +84,10 @@ public class MouseController {
 
     #region Static resources
 
-    private static readonly Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
-    private static readonly Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
+    private readonly static Resource Hand_close = ResourceLoader.Load(PATH + "hand_close.png");
+    private readonly static Resource Hand_open = ResourceLoader.Load(PATH + "hand_open.png");
 
-    private static readonly Resource[] loadingResources = [
+    private readonly static Resource[] loadingResources = [
         ResourceLoader.Load(PATH + "loading_1.png"),
         ResourceLoader.Load(PATH + "loading_2.png"),
         ResourceLoader.Load(PATH + "loading_3.png"),

@@ -4,13 +4,13 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Living;
 
 public class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
-    public static readonly int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
-    public static readonly int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
+    public readonly static int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
+    public readonly static int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
 
-    public static readonly int HEAL_TICK_DELAY = Utilities.GameScaledTimeToTicks(hours: 1);
+    public readonly static int HEAL_TICK_DELAY = Utilities.GameScaledTimeToTicks(hours: 1);
 
-    public static readonly int HEAL_GAIN_PER_CYCLE = 25;
-    public static readonly int SATURATION_LOSS_PER_HEAL = 25;
+    public readonly static int HEAL_GAIN_PER_CYCLE = 25;
+    public readonly static int SATURATION_LOSS_PER_HEAL = 25;
 
     public override int Value => -1;
     public override int BaseHealth => 100;

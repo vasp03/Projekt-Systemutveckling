@@ -122,7 +122,7 @@ public partial class CardNode : Node2D {
     private const string SELL_SFX = "General Sounds/Coins/sfx_coin_double2.wav";
 
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
-    private static readonly Vector2 CARD_OVERLAP_OFFSET = Vector2.Down * 20;
+    private readonly static Vector2 CARD_OVERLAP_OFFSET = Vector2.Down * 20;
 
     #endregion Constants
 
@@ -268,7 +268,9 @@ public partial class CardNode : Node2D {
     ///     reference
     /// </summary>
     public CardNode NeighbourAbove {
-        get => IsInstanceValid(cardAbove) ? cardAbove : null;
+        get => IsInstanceValid(cardAbove)
+            ? cardAbove
+            : null;
         set {
             // Setting it to null means clearing the reference as well
             if (value is null) {
@@ -288,7 +290,9 @@ public partial class CardNode : Node2D {
     ///     reference
     /// </summary>
     public CardNode NeighbourBelow {
-        get => IsInstanceValid(cardBelow) ? cardBelow : null;
+        get => IsInstanceValid(cardBelow)
+            ? cardBelow
+            : null;
         set {
             // Setting it to null means clearing the reference as well
             if (value is null) {
@@ -459,7 +463,9 @@ public partial class CardNode : Node2D {
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
 
-        GameController.Singleton.SoundController.PlaySound(newDragValue ? ON_PICKUP_SFX : ON_DROP_SFX);
+        GameController.Singleton.SoundController.PlaySound(newDragValue
+            ? ON_PICKUP_SFX
+            : ON_DROP_SFX);
 
         oldMousePosition = GetGlobalMousePosition();
 
