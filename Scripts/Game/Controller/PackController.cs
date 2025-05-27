@@ -30,6 +30,8 @@ public partial class PackController : HBoxContainer {
         List<string> starterCommons = ["Villager", "Tree", "Bush", "Stone", "Stick", "Stick"];
         List<string> starterRares = [];
         RegisterPack(new StarterPack());
+        RegisterPack(new BasicMaterialPack());
+        RegisterPack(new BasicFoodPack());
         // RegisterPack(new CardPack("Starter Pack", 0, starterCommons, starterRares));
 
         // List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];

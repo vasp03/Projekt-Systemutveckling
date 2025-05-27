@@ -7,6 +7,12 @@ namespace Goodot15.Scripts.Game.Model.Div;
 ///     Base class used for Card Packs
 /// </summary>
 public abstract class CardPack {
+    protected static string PackTexture(string packName) {
+        return $"res://Assets/Packs/{packName.Replace(" ", "_")}.png";
+    }
+
+    public abstract string PackButtonTexture { get; }
+
     /// <summary>
     /// Determines if the pack is Single-time use only.
     /// </summary>

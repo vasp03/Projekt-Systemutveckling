@@ -6,17 +6,17 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class PackButton : TextureButton {
     public delegate void PackClickedHandler(CardPack pack);
 
-    private Label _costLabel;
-    private Vector2 _originalPosition;
-    private TextureRect _textureRect;
+    private Label costLabel;
+    private Vector2 originalPosition;
+    private TextureRect textureRect;
 
     private Tween _tween;
     public CardPack Pack { get; private set; }
     public event PackClickedHandler PackClicked;
 
     public override void _Ready() {
-        _costLabel = GetNode<Label>("PriceLabel");
-        _originalPosition = Position;
+        costLabel = GetNode<Label>("PriceLabel");
+        originalPosition = Position;
 
         MouseEntered += OnMouseEntered;
         MouseExited += OnMouseExited;
@@ -25,13 +25,13 @@ public partial class PackButton : TextureButton {
     public void SetPack(CardPack pack) {
         Pack = pack;
 
-        _costLabel ??= GetNode<Label>("PriceLabel");
+        costLabel ??= GetNode<Label>("PriceLabel");
 
-        _costLabel.Text = pack.Cost == 0
+        costLabel.Text = pack.Cost == 0
             ? "Free"
             : $"{pack.Cost}g";
 
-        string texturePath = $"res://Assets/Packs/{pack.Name.Replace(" ", "_")}.png";
+        string texturePath = Pack.PackButtonTexture;
         if (ResourceLoader.Exists(texturePath))
             TextureNormal = GD.Load<Texture2D>(texturePath);
         else
@@ -39,7 +39,7 @@ public partial class PackButton : TextureButton {
     }
 
     public void OnMouseEntered() {
-        _originalPosition = Position;
+        originalPosition = Position;
         _tween = CreateTween();
         _tween.TweenProperty(this, "scale", new Vector2(1.1f, 1.1f), 0.1f);
     }
@@ -47,7 +47,7 @@ public partial class PackButton : TextureButton {
     public void OnMouseExited() {
         _tween = CreateTween();
         _tween.TweenProperty(this, "scale", Vector2.One, 0.1f);
-        _tween.TweenProperty(this, "position", _originalPosition, 0.1f);
+        _tween.TweenProperty(this, "position", originalPosition, 0.1f);
     }
 
     public override void _Pressed() {
@@ -55,6 +55,6 @@ public partial class PackButton : TextureButton {
     }
 
     public void SetPriceColor(Color color) {
-        _costLabel.Modulate = color;
+        costLabel.Modulate = color;
     }
 }
