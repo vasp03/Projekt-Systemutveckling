@@ -13,9 +13,9 @@ public partial class PackController : HBoxContainer {
     private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
 
     private readonly IList<CardPack> registeredPacks = [];
-    public IReadOnlyCollection<CardPack> RegisteredPacks => this.registeredPacks.AsReadOnly();
 
     [Export] public PackedScene PackButtonScene;
+    public IReadOnlyCollection<CardPack> RegisteredPacks => registeredPacks.AsReadOnly();
 
     public override void _Ready() {
         Initialize();
@@ -48,7 +48,7 @@ public partial class PackController : HBoxContainer {
     }
 
     /// <summary>
-    /// Registers a pack
+    ///     Registers a pack
     /// </summary>
     /// <param name="pack">Pack to be registered</param>
     public void RegisterPack(CardPack pack) {
@@ -60,15 +60,19 @@ public partial class PackController : HBoxContainer {
 
         foreach (Node child in GetChildren()) child.QueueFree();
 
-        foreach (CardPack pack in registeredPacks.Where(e=>!e.Consumed)) {
+        foreach (CardPack pack in registeredPacks.Where(e => !e.Consumed)) {
             PackButton button = PackButtonScene.Instantiate<PackButton>();
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
 
             bool isAffordable = Global.Singleton.Money >= pack.Cost;
             // button.Disabled = !isAffordable;
-            button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-            button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
+            button.Modulate = isAffordable
+                ? Colors.White
+                : new Color(1, 1, 1, 0.5f);
+            button.SetPriceColor(isAffordable
+                ? Colors.White
+                : Colors.Red);
 
             AddChild(button);
         }
@@ -95,7 +99,7 @@ public partial class PackController : HBoxContainer {
             pack.Consumed = true;
 
         SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
-        
+
         RefreshAvailablePacks();
     }
 

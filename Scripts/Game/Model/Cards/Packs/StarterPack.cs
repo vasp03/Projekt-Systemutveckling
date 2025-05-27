@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Goodot15.Scripts.Game.Model.Div;
-using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Living.Villagers;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
@@ -17,7 +16,7 @@ public class StarterPack : CardPack {
     public override string Name => "Starter Pack";
 
     public override int Cost => 0;
-    
+
     public override IReadOnlyCollection<Card> GenerateCards() {
         return [
             new PlayerVillager(),

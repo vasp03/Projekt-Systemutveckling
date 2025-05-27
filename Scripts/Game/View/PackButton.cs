@@ -6,11 +6,11 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class PackButton : TextureButton {
     public delegate void PackClickedHandler(CardPack pack);
 
+    private Tween _tween;
+
     private Label costLabel;
     private Vector2 originalPosition;
     private TextureRect textureRect;
-
-    private Tween _tween;
     public CardPack Pack { get; private set; }
     public event PackClickedHandler PackClicked;
 

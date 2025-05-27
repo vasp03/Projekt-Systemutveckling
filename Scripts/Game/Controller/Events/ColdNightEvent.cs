@@ -87,7 +87,6 @@ public class ColdNightEvent : GameEvent, ITickable {
         lastDamageTick = 0;
 
         CardNode.CardController.AllCards.ToList().ForEach(card => {
-
             bool isStackedOnCampfire = CardNode.CardController.AllCards.Any(otherCard =>
                 otherCard.CardType is BuildingCampfire &&
                 otherCard.StackAboveWithItself.Contains(card) &&

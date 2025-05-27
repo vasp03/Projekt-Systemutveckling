@@ -80,7 +80,7 @@ public class CraftingController {
     /// </summary>
     /// <param name="cards"></param>
     /// <returns></returns>
-    private static IReadOnlyCollection<Pair<string, int>>
+    private static IReadOnlyCollection<Pair<string, int>> 
         CollectTotalCardTypesInStack(IReadOnlyCollection<Card> cards) {
         IList<Pair<string, int>> CardForCraftingAmount = [];
         foreach (Card card in cards) {

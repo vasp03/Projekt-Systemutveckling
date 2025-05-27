@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -10,7 +11,7 @@ public partial class HUD : CanvasLayer {
 
     private Global Global;
     private bool isFlashing;
-    private Controller.PackController packController;
+    private PackController packController;
 
     [Export] public TextureRect GoldIcon { get; set; }
     [Export] public Label MoneyLabel { get; set; }
@@ -24,7 +25,7 @@ public partial class HUD : CanvasLayer {
         Global = Global.Singleton;
         Global.MoneyChanged += OnMoneyChanged;
 
-        packController = GetNodeOrNull<Controller.PackController>("HUDRoot/PackContainer");
+        packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
 
         SetupSellModeButton();
 

@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
 public class BasicFoodPack : CommonAndRarePack {
-    public override string PackButtonTexture => "Food Pack";
+    public override string PackButtonTexture => PackTexture("Food Pack");
 
     public override bool SingleUse => false;
 

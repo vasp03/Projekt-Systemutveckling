@@ -15,15 +15,15 @@ public abstract class CommonAndRarePack : CardPack {
     public override IReadOnlyCollection<Card> GenerateCards() {
         IList<Card> collectedCardsInpack = [];
         for (int i = 0; i < CardCount; i++) {
-            int randomIdxCommonCard = GD.RandRange(0,CommonCards.Count-1);
-            int randomIdxRareCard = GD.RandRange(0,RareCards.Count-1);
-            
+            int randomIdxCommonCard = GD.RandRange(0, CommonCards.Count - 1);
+            int randomIdxRareCard = GD.RandRange(0, RareCards.Count - 1);
+
             collectedCardsInpack.Add(CommonCards[randomIdxCommonCard]);
             if (GD.Randf() < RARE_CARD_CHANCE) {
                 collectedCardsInpack.Add(RareCards[randomIdxRareCard]);
             }
         }
-        
+
         return collectedCardsInpack.AsReadOnly();
     }
 }

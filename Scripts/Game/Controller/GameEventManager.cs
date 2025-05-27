@@ -51,7 +51,7 @@ public class GameEventManager : GameManagerBase, ITickable {
                 if (registeredEvent.Chance >= GD.Randf()) PostEvent(registeredEvent);
             } else {
                 eventTicks[registeredEvent]++;
-                }
+            }
 
             tickableGameEvent?.PostTick(delta);
         }
