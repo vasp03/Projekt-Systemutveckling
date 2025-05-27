@@ -7,6 +7,9 @@ namespace Goodot15.Scripts.Game.Model.Div;
 ///     Base class used for Card Packs
 /// </summary>
 public abstract class CardPack {
+    /// <summary>
+    /// Full texture address to the Pack button. <see cref="PackTexture"/> can be used to obtain the full path by name
+    /// </summary>
     public abstract string PackButtonTexture { get; }
 
     /// <summary>
@@ -29,6 +32,11 @@ public abstract class CardPack {
     /// </summary>
     public abstract int Cost { get; }
 
+    /// <summary>
+    /// Provides a full path to an card pack texture asset provided by name
+    /// </summary>
+    /// <param name="packName">Name of card pack</param>
+    /// <returns>Full path for pack texture asset</returns>
     protected static string PackTexture(string packName) {
         return $"res://Assets/Packs/{packName.Replace(" ", "_")}.png";
     }

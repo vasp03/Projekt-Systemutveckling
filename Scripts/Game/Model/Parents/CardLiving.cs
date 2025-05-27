@@ -100,7 +100,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private readonly static int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
     /// <summary>

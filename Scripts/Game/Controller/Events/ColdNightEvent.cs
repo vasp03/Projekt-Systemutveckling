@@ -79,9 +79,7 @@ public class ColdNightEvent : GameEvent, ITickable {
     public void PostTick() {
         if (!hasTriggered) return;
 
-        if (lastDamageTick++ < Utilities.TimeToTicks(1)) {
-            return;
-        }
+        if (lastDamageTick++ < Utilities.TimeToTicks(1)) return;
 
         lastDamageTick++;
         lastDamageTick = 0;

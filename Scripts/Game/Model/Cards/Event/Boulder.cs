@@ -12,7 +12,7 @@ public class Boulder : Card, ICardAnimateable, ITickable {
 
     private const float MOVEMENT_RATE = 100;
     private const float ROTATION_RATE = 360;
-    private readonly static int TICKS_ALIVE = Utilities.TimeToTicks(15d);
+    private static readonly int TICKS_ALIVE = Utilities.TimeToTicks(15d);
     private int remainingTicksAlive = TICKS_ALIVE;
 
     private Vector2 travelDirection;
