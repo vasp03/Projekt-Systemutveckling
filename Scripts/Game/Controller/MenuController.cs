@@ -1,4 +1,6 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller.Events;
+using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
@@ -108,6 +110,24 @@ public partial class MenuController : Node {
         SwitchMenu(pauseMenu);
     }
 
+    public void QuickOpenGuideMenu() {
+        if (GetTree().Paused) return;
+        GetTree().Paused = true;
+        gameController.CallPausedCallbacks(true);
+
+        previousMenu = null;
+        if (guideMenu is null) {
+            PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
+            guideMenu = packedGuideMenu.Instantiate() as Control;
+            AddChild(guideMenu);
+        }
+
+        guideMenu.Visible = true;
+        guideMenu.ZIndex = 3000;
+
+        SwitchMenu(guideMenu);
+    }
+
     /// <summary>
     ///     Loads and opens the options menu.
     /// </summary>
@@ -167,6 +187,19 @@ public partial class MenuController : Node {
             Control menuToSwitchTo = previousMenu;
             previousMenu = currentMenu;
             SwitchMenu(menuToSwitchTo);
+        } else {
+            guideMenu.Visible = false;
+            GetTree().Paused = false;
+            gameController.CallPausedCallbacks(false);
+            if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(false);
+
+            SoundController.Singleton.MusicMuted = false;
+            GameController.Singleton.ShowHUD();
+
+            CanvasLayer canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("HUD");
+            TextureButton quickGuideButton = canvasLayer.GetNode<TextureButton>("QuickGuideButton");
+
+            quickGuideButton.Visible = true;
         }
     }
 
