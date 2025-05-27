@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dx14hlvnl15bi"]
 
-[ext_resource type="Script" uid="uid://crfyl8dhd813n" path="res://Scripts/Game/View/FloatingMoneyLabel.cs" id="1_i2csg"]
+[ext_resource type="Script" uid="uid://bl6sgqbwww0ya" path="res://Scripts/Game/View/FloatingMoneyLabel.cs" id="1_i2csg"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_pjfde"]
 
 [sub_resource type="Animation" id="Animation_q2dbr"]

@@ -33,17 +33,17 @@ public class GameEventManager : GameManagerBase, ITickable {
     /// <summary>
     ///     Executes Pre ticking logic, this includes for every event.
     /// </summary>
-    public void PreTick() {
+    public void PreTick(double delta) {
         foreach (IGameEvent gameEvent in registeredEvents) {
             ITickable? tickableGameEvent = gameEvent as ITickable;
-            tickableGameEvent?.PreTick();
+            tickableGameEvent?.PreTick(delta);
         }
     }
 
     /// <summary>
     ///     Executes Post ticking logic, this includes incrementing tick counters for timing the events.
     /// </summary>
-    public void PostTick() {
+    public void PostTick(double delta) {
         foreach (IGameEvent registeredEvent in registeredEvents) {
             ITickable? tickableGameEvent = registeredEvent as ITickable;
             if (registeredEvent.EventActive && registeredEvent.TicksUntilNextEvent <= eventTicks[registeredEvent]) {
@@ -53,7 +53,7 @@ public class GameEventManager : GameManagerBase, ITickable {
                 eventTicks[registeredEvent]++;
             }
 
-            tickableGameEvent?.PostTick();
+            tickableGameEvent?.PostTick(delta);
         }
     }
 
@@ -65,7 +65,9 @@ public class GameEventManager : GameManagerBase, ITickable {
         RegisterEvent(new NatureResourceEvent());
         RegisterEvent(new FireEvent());
         RegisterEvent(new DayTimeEvent());
+        RegisterEvent(new BoulderEvent());
         RegisterEvent(new ColdNightEvent());
+        RegisterEvent(new RainEvent());
     }
 
     /// <summary>

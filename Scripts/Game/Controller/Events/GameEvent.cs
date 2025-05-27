@@ -3,7 +3,7 @@
 /// <summary>
 ///     <inheritdoc cref="IGameEvent" /><br />
 /// </summary>
-public abstract class GameEventBase : IGameEvent {
+public abstract class GameEvent : IGameEvent {
     public abstract string EventName { get; }
     public abstract int TicksUntilNextEvent { get; }
     public abstract double Chance { get; }

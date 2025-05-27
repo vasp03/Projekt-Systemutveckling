@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=4 uid="uid://dljf5d13mrh38"]
+[gd_scene load_steps=14 format=4 uid="uid://dljf5d13mrh38"]
 
-[ext_resource type="Script" uid="uid://dcgmgw1ntgov0" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
+[ext_resource type="Script" uid="uid://buexbqpymj5h6" path="res://Scripts/Game/View/MainOptions.cs" id="1_hndry"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_7cv4p"]
 [ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_7cv4p"]
+[ext_resource type="Script" uid="uid://wx2t5afhopx5" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="3_ys6ep"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5d3m"]
 
@@ -87,6 +88,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_d3k30")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8vi76")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eue7q")
 text = "GO BACK"
+script = ExtResource("3_ys6ep")
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

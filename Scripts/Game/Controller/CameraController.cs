@@ -6,7 +6,7 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CameraController : ITickable {
     private Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("Camera2D");
 
-    public void PostTick() {
+    public void PostTick(double delta) {
         if (remainingShakeTicks > 0) {
             remainingShakeTicks--;
             Camera2D.GlobalPosition = new Vector2(
