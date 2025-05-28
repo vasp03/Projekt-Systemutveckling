@@ -55,7 +55,15 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         backToMenuButton.Visible = true;
         gameOverLabel.Visible = true;
 
-        background.Modulate = new Color(0, 0, 0, 0.0f);
+        if (!IsInstanceValid(timeDarknessSprite)) {
+            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer").GetNode<Sprite2D>("Sprite2D");
+        }
+
+        timeDarknessStart = timeDarknessSprite.Modulate.A;
+
+        background.Modulate = new Color(0, 0, 0, timeDarknessStart);
+        timeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
+
         exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
         backToMenuButton.Modulate = new Color(1, 1, 1, 0.0f);
         gameOverLabel.Modulate = new Color(1, 1, 1, 0.0f);
@@ -77,26 +85,19 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         if (!isAnimating) return;
         animationTicks++;
 
-        float t = Mathf.Clamp(animationTicks / ANIMATION_DURATION, 0.0f, 1.0f);
+        float t = Utilities.MapRange(0.0f, ANIMATION_DURATION, 0.0f, 1.0f, animationTicks);
 
         if (t >= 1.0f) {
             isAnimating = false;
-            return;
         }
 
-        float easedT = Mathf.Log(1 + 9 * t);
+        float easedT = t * t * t;
+
+        float mapped = Mathf.Lerp(timeDarknessStart, 1.0f, easedT);
 
         exitGameButton.Modulate = new Color(1, 1, 1, easedT);
         backToMenuButton.Modulate = new Color(1, 1, 1, easedT);
         gameOverLabel.Modulate = new Color(1, 1, 1, easedT);
-        background.Modulate = new Color(0, 0, 0, easedT);
-
-        if (!IsInstanceValid(timeDarknessSprite)) {
-            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer").GetNode<Sprite2D>("Sprite2D");
-        }
-
-        if (timeDarknessSprite != null) {
-            timeDarknessSprite.Modulate = new Color(0, 0, 0, Mathf.Lerp(timeDarknessStart, 0.0f, easedT));
-        }
+        background.Modulate = new Color(0, 0, 0, mapped);
     }
 }

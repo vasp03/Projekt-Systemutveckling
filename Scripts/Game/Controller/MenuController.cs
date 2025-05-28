@@ -167,7 +167,7 @@ public partial class MenuController : Node {
         if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
             pausable2.SetPaused(true, false);
 
-        if (gameOverMenu is IMenuAnimation animated) animated.Animate();
+        // if (gameOverMenu is IMenuAnimation animated) animated.Animate();
 
         SwitchMenu(gameOverMenu, true, false);
     }
