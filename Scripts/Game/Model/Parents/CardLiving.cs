@@ -10,6 +10,8 @@ namespace Goodot15.Scripts.Game.Model;
 
 public abstract class CardLiving
     : Card, ITickable, ICardConsumer {
+    private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private int healingEffectPulseTickCount;
     public abstract bool ConsumeCard(Card otherCard);
 
     public virtual void PostTick(double delta) {
@@ -43,17 +45,14 @@ public abstract class CardLiving
             ? SaturationLossPerCycle
             : 0;
     }
-    
-    private readonly static int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
-    private int healingEffectPulseTickCount;
 
     /// <summary>
-    /// Heals Villagers and makes card flash green after a fixed amount of ticks, when health is below maximum and saturation is above half of maximum saturation.
+    ///     Heals Villagers and makes card flash green after a fixed amount of ticks, when health is below maximum and
+    ///     saturation is above half of maximum saturation.
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-       
         if (CardNode.CardController.AllCards.Any(card => card.CardType is MaterialFire)) return;
-        
+
         if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) {
             if (healingEffectPulseTickCount > 0) {
                 healingEffectPulseTickCount--;
@@ -67,6 +66,7 @@ public abstract class CardLiving
             }
             return;
         }
+
         if (HealTickProgress >= TicksUntilHeal) {
             HealTickProgress = 0;
             Health += HealthGainPerCycle;
@@ -75,6 +75,7 @@ public abstract class CardLiving
         } else {
             HealTickProgress++;
         }
+
         if (healingEffectPulseTickCount > 0) {
             healingEffectPulseTickCount--;
             CardNode.Modulate = new Color(
@@ -112,7 +113,7 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
-    private readonly static int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
     /// <summary>

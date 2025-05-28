@@ -191,7 +191,8 @@ public partial class MenuController : Node {
             guideMenu.Visible = false;
             GetTree().Paused = false;
             gameController.CallPausedCallbacks(false);
-            if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(false);
+            if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
+                pausable.SetPaused(false);
 
             SoundController.Singleton.MusicMuted = false;
             GameController.Singleton.ShowHUD();
