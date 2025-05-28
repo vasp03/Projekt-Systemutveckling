@@ -34,12 +34,6 @@ public partial class GameController : Node2D {
                     break;
                 case Key.O:
                     MenuController.OpenGameOverMenu();
-
-                    // if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-                    //     pausable2.SetPaused(true);
-
-                    // SoundController.MusicMuted = true;
-                    // Visible = false;
                     break;
                 case Key.Space:
                     CardController.CreateCard("Random", Vector2.One * 100);

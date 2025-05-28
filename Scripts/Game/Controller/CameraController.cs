@@ -7,13 +7,13 @@ namespace Goodot15.Scripts.Game.Controller;
 
 public class CameraController : ITickable {
     private Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("CameraCenter");
-    private bool isPlayinhgEndGameAnimation = false;
+    private bool isPlayingEndGameAnimation = false;
     private const int END_GAME_ANIMATION_TICKS = 60 * 3; // 3 seconds
     private int remainingEndGameAnimationTicks = 0;
     private Sprite2D darknessSprite;
 
     public void PostTick(double delta) {
-        if (isPlayinhgEndGameAnimation) {
+        if (isPlayingEndGameAnimation) {
             EndGameAnimation();
         } else if (remainingShakeTicks > 0) {
             ShakeAnimation();
@@ -36,20 +36,20 @@ public class CameraController : ITickable {
     }
 
     public void PlayEndGameAnimation() {
-        if (isPlayinhgEndGameAnimation) return;
+        if (isPlayingEndGameAnimation) return;
 
         darknessSprite = GameController.Singleton?.GetNode<CanvasLayer>("HUD")?.GetNode<Sprite2D>("EndGameOverlay");
 
         darknessSprite.Modulate = new Color(0, 0, 0, 0.0f);
         darknessSprite.Visible = true;
 
-        isPlayinhgEndGameAnimation = true;
+        isPlayingEndGameAnimation = true;
     }
 
     private void EndGameAnimation() {
         if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
             Camera2D.GlobalPosition = CAMERA_ORIGIN;
-            isPlayinhgEndGameAnimation = false;
+            isPlayingEndGameAnimation = false;
             MenuController.Singleton.OpenMainMenu();
             Camera2D.Zoom = new Vector2(1, 1);
             return;

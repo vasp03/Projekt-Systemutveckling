@@ -1,4 +1,6 @@
+using System;
 using Godot;
+using Godot.Collections;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -16,13 +18,14 @@ public partial class GameOverMenu : Control, IMenuAnimation {
     private SoundController soundController;
     // private Sprite2D foreground;
     private bool isAnimating = false;
-    private const float ANIMATION_DURATION = 60.0f * 5.0f; // Duration of the animation in seconds
+    private const float ANIMATION_DURATION = (float)(Utilities.TICKS_PER_SECOND * 5.0f); // Duration of the animation in seconds
     private int animationTicks = 0;
     private double deltaTime = 0.0;
 
     private Sprite2D timeDarknessSprite;
     private float timeDarknessStart = 0.0f;
     private HUD hud;
+    private Array<Node> hudChildren = new Array<Node>();
 
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");
@@ -67,6 +70,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         timeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
 
         hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
+        hudChildren = hud.GetChildren();
 
         exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
         backToMenuButton.Modulate = new Color(1, 1, 1, 0.0f);
@@ -105,7 +109,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         background.Modulate = new Color(0, 0, 0, mapped);
 
         if (hud != null) {
-            foreach (Node child in hud.GetChildren()) {
+            foreach (Node child in hudChildren) {
                 if (child is Control controlChild) {
                     controlChild.Modulate = new Color(1, 1, 1, 1 - easedT);
                 }
