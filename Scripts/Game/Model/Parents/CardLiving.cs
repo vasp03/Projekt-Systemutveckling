@@ -60,13 +60,36 @@ public abstract class CardLiving
     ///     <see cref="MaximumSaturation" />/2 and <see cref="Health" /> is less than <see cref="MaximumHealth" />
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        if (MaximumSaturation / 2 > Saturation || Health >= MaximumHealth) return;
+        GD.Print("Healtick progress: " + HealTickProgress + " Ticks until heal: " + TicksUntilHeal);
+        if (MaximumSaturation / 2 > Saturation || Health >= MaximumHealth) {
+            if (healingEffectPulseTickCount > 0) {
+                healingEffectPulseTickCount--;
+                CardNode.Modulate = new Color(
+                    1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f,
+                    1f,
+                    1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f
+                );
+            } else {
+                CardNode.Modulate = new Color(1f, 1f, 1f);
+            }
+            return;
+        }
         if (HealTickProgress >= TicksUntilHeal) {
             HealTickProgress = 0;
             Health += HealthGainPerCycle;
             Saturation -= SaturationLossPerHeal;
+            healingEffectPulseTickCount = HEALING_EFFECT_PULSE_TICK_DELAY;
         } else {
             HealTickProgress++;
+        }
+
+        if (healingEffectPulseTickCount > 0) {
+            healingEffectPulseTickCount--;
+            CardNode.Modulate = new Color(
+                1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f,
+                1f,
+                1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f
+            );
         }
     }
 
@@ -100,6 +123,9 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
+    private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private int healingEffectPulseTickCount;
+    
     private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
@@ -123,6 +149,7 @@ public abstract class CardLiving
             if (value < health) {
                 damageEffectPulseTickCount = DAMAGE_EFFECT_PULSE_TICK_DELAY;
                 HurtSound();
+                HealTickProgress = 0;
             }
 
             health = Math.Max(0, value);

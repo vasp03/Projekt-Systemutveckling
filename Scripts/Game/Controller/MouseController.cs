@@ -8,8 +8,8 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Mouse controller is responsible for managing the cursor icon
 /// </summary>
 public class MouseController {
-    private static readonly Timer LOADING_TIMER = new();
-    private static readonly Vector2 CURSOR_OFFSET = new(12, 12);
+    private static readonly Timer LoadingTimer = new();
+    private static readonly Vector2 Offset = new(12, 12);
 
     private bool isLoading;
     private int loadingIndex;

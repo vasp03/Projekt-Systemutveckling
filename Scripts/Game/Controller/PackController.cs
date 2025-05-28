@@ -27,8 +27,6 @@ public partial class PackController : HBoxContainer {
     }
 
     private void RegisterDefaultPacks() {
-        List<string> starterCommons = ["Villager", "Tree", "Bush", "Stone", "Stick", "Stick"];
-        List<string> starterRares = [];
         RegisterPack(new StarterPack());
         RegisterPack(new BasicMaterialPack());
         RegisterPack(new BasicFoodPack());

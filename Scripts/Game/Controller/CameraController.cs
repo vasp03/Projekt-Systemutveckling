@@ -50,7 +50,7 @@ public class CameraController : ITickable {
     /// <summary>
     ///     Camera origin position
     /// </summary>
-    private static Vector2 CAMERA_ORIGIN => GameController.Singleton.GetViewportRect().Size / 2;
+    private static readonly Vector2 CAMERA_ORIGIN => GameController.Singleton.GetViewportRect().Size / 2;
 
     #endregion Static values
 
