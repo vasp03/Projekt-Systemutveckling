@@ -51,8 +51,7 @@ public abstract class CardLiving
     ///     saturation is above half of maximum saturation.
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        if (CardNode.CardController.AllCards.Any(card => card.CardType is MaterialFire)) return;
-
+        GD.Print("Healtick progress: " + HealTickProgress + " Ticks until heal: " + TicksUntilHeal);
         if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) {
             if (healingEffectPulseTickCount > 0) {
                 healingEffectPulseTickCount--;
@@ -136,6 +135,7 @@ public abstract class CardLiving
             if (value < health) {
                 damageEffectPulseTickCount = DAMAGE_EFFECT_PULSE_TICK_DELAY;
                 HurtSound();
+                HealTickProgress = 0;
             }
 
             health = Math.Max(0, value);
