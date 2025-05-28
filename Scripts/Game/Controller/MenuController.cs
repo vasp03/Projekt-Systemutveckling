@@ -177,7 +177,8 @@ public partial class MenuController : Node {
     /// </summary>
     /// <param name="newMenu">The new menu that should be shown</param>
     private void SwitchMenu(Control newMenu, bool hidePreviousMenu = true) {
-        GameController.Singleton.SoundController.MusicMuted = true;
+        if (GameController.Singleton != null && GameController.Singleton.SoundController != null)
+            GameController.Singleton.SoundController.MusicMuted = true;
 
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
