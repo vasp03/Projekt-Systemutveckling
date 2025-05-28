@@ -10,40 +10,13 @@ public class CameraController : ITickable {
     private bool isPlayinhgEndGameAnimation = false;
     private const int END_GAME_ANIMATION_TICKS = 60 * 3; // 3 seconds
     private int remainingEndGameAnimationTicks = 0;
+    private float startingDarkness = 0;
 
     public void PostTick(double delta) {
         if (isPlayinhgEndGameAnimation) {
-            if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
-                Camera2D.GlobalPosition = CAMERA_ORIGIN;
-                isPlayinhgEndGameAnimation = false;
-                MenuController.Singleton.OpenGameOverMenu();
-                return;
-            }
-
-            remainingEndGameAnimationTicks++;
-
-            float t = (END_GAME_ANIMATION_TICKS - remainingEndGameAnimationTicks) / (float)END_GAME_ANIMATION_TICKS;
-            float startZoom = 1.0f;
-            float endZoom = 0.75f;
-
-            // Smooth zoom using a modified logarithmic interpolation
-            // Clamp t to avoid ln(0) and ensure smoothness at ends
-            // Invert the logarithmic interpolation to make the zoom quick at the beginning
-            float invertedT = 1 - Mathf.Clamp(t, 0, 1);
-            float zoomFactor = Mathf.Log(1 + 9 * invertedT) / Mathf.Log(10);
-
-            Camera2D.Zoom = new Vector2(
-                startZoom + (endZoom - startZoom) * zoomFactor,
-                startZoom + (endZoom - startZoom) * zoomFactor
-            );
-
-            remainingShakeTicks = 0; // Reset shake ticks during end game animation
+            EndGameAnimation();
         } else if (remainingShakeTicks > 0) {
-            remainingShakeTicks--;
-            Camera2D.GlobalPosition = new Vector2(
-                Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * X_SHAKE_FREQUENCY),
-                Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * Y_SHAKE_FREQUENCY)
-            ) * intensity + CAMERA_ORIGIN;
+            ShakeAnimation();
         } else {
             Camera2D.GlobalPosition = CAMERA_ORIGIN;
         }
@@ -54,10 +27,52 @@ public class CameraController : ITickable {
         this.intensity = intensity;
     }
 
+    private void ShakeAnimation() {
+        remainingShakeTicks--;
+        Camera2D.GlobalPosition = new Vector2(
+            Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * X_SHAKE_FREQUENCY),
+            Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * Y_SHAKE_FREQUENCY)
+        ) * intensity + CAMERA_ORIGIN;
+    }
+
     public void PlayEndGameAnimation() {
         if (isPlayinhgEndGameAnimation) return;
-
+        startingDarkness = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer")
+            .GetNode<Sprite2D>("Sprite2D").Modulate.A;
         isPlayinhgEndGameAnimation = true;
+    }
+
+    private void EndGameAnimation() {
+        if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
+            Camera2D.GlobalPosition = CAMERA_ORIGIN;
+            isPlayinhgEndGameAnimation = false;
+            MenuController.Singleton.OpenGameOverMenu();
+            return;
+        }
+
+        remainingEndGameAnimationTicks++;
+
+        float t = (END_GAME_ANIMATION_TICKS - remainingEndGameAnimationTicks) / (float)END_GAME_ANIMATION_TICKS;
+        float startZoom = 1.0f;
+        float endZoom = 0.75f;
+
+        GD.Print($"End game animation tick: {remainingEndGameAnimationTicks}, t: {t}");
+
+        float invertedT = 1 - Mathf.Clamp(t, 0, 1);
+        float zoomFactor = Mathf.Log(1 + 9 * invertedT) / Mathf.Log(10);
+
+        Camera2D.Zoom = new Vector2(
+            startZoom + (endZoom - startZoom) * zoomFactor,
+            startZoom + (endZoom - startZoom) * zoomFactor
+        );
+
+        CanvasLayer canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
+        Sprite2D darknessSprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+
+        darknessSprite.Visible = true;
+        darknessSprite.Modulate = new Color(0, 0, 0, Mathf.Clamp(invertedT, startingDarkness, 1.0f));
+
+        remainingShakeTicks = 0; // Reset shake ticks during end game animation
     }
 
     #region Static values
