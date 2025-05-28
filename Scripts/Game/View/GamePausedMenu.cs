@@ -107,6 +107,7 @@ public partial class GamePausedMenu : Control {
     /// </summary>
     private void ChangeToMainMenu() {
         GetTree().CurrentScene.Free();
+        GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
         Visible = false;
     }
 }
