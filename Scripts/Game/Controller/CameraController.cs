@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.View;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CameraController : ITickable {
-    private Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("CameraCenter");
+    private Camera2D Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
     private bool isPlayingEndGameAnimation = false;
     private const int END_GAME_ANIMATION_TICKS = 60 * 3; // 3 seconds
     private int remainingEndGameAnimationTicks = 0;
@@ -18,6 +18,10 @@ public class CameraController : ITickable {
         } else if (remainingShakeTicks > 0) {
             ShakeAnimation();
         } else {
+            if (!GodotObject.IsInstanceValid(Camera2D)) {
+                Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
+            }
+            
             Camera2D.GlobalPosition = CAMERA_ORIGIN;
         }
     }
@@ -29,6 +33,11 @@ public class CameraController : ITickable {
 
     private void ShakeAnimation() {
         remainingShakeTicks--;
+
+        if (!GodotObject.IsInstanceValid(Camera2D)) {
+            Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
+        }
+
         Camera2D.GlobalPosition = new Vector2(
             Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * X_SHAKE_FREQUENCY),
             Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * Y_SHAKE_FREQUENCY)
@@ -47,6 +56,10 @@ public class CameraController : ITickable {
     }
 
     private void EndGameAnimation() {
+        if (!GodotObject.IsInstanceValid(Camera2D)) {
+            Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
+        }
+
         if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
             Camera2D.GlobalPosition = CAMERA_ORIGIN;
             isPlayingEndGameAnimation = false;
