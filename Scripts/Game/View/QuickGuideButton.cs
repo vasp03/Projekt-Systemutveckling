@@ -14,7 +14,7 @@ public partial class QuickGuideButton : TextureButton {
         GameController.Singleton.MenuController.QuickOpenGuideMenu();
 
         if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
-            pausable.OnPauseStateChanged(true);
+            pausable.SetPaused(true);
 
         SoundController.Singleton.MusicMuted = true;
         GameController.Singleton.HideHUD();

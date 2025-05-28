@@ -259,7 +259,7 @@ public class CardController {
             menuController.OpenGameOverMenu();
 
             if (GameController.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-                pausable2.OnPauseStateChanged(true);
+                pausable2.SetPaused(true);
 
             GameController.SoundController.MusicMuted = true;
             GameController.Visible = false;

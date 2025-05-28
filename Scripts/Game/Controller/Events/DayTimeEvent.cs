@@ -30,7 +30,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     Sets the paused state of the event.
     /// </summary>
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
-    public void OnPauseStateChanged(bool isPaused) {
+    public void SetPaused(bool isPaused) {
         GameController gameController = GameController.Singleton;
 
         if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
