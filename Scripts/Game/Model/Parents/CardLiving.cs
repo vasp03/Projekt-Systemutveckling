@@ -60,7 +60,6 @@ public abstract class CardLiving
     ///     <see cref="MaximumSaturation" />/2 and <see cref="Health" /> is less than <see cref="MaximumHealth" />
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        GD.Print("Healtick progress: " + HealTickProgress + " Ticks until heal: " + TicksUntilHeal);
         if (MaximumSaturation / 2 > Saturation || Health >= MaximumHealth) {
             if (healingEffectPulseTickCount > 0) {
                 healingEffectPulseTickCount--;
