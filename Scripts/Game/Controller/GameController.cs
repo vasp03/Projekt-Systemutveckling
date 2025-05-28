@@ -57,6 +57,18 @@ public partial class GameController : Node2D {
                 case Key.Key9:
                     MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
                     break;
+                case Key.S:
+                    ToggleSellMode();
+                    break;
+                case Key.Q:
+                    MenuController.QuickOpenGuideMenu();
+
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3) pausable3.SetPaused(true);
+
+                    SoundController.Singleton.MusicMuted = true;
+                    HideHUD();
+                    Visible = true;
+                    break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {
             if (mouseButton.Pressed)
@@ -133,6 +145,7 @@ public partial class GameController : Node2D {
         SellModeActive = !SellModeActive;
         GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
         Global.MouseController.SetSellMode(SellModeActive);
+        HUD.sellModeButton?.UpdateIcon();
     }
 
     public void SetSellMode(bool active) {

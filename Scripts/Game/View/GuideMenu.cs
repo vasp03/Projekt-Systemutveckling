@@ -568,8 +568,9 @@ public partial class GuideMenu : Control {
     /// <summary>
     ///     Handles the event when the go back button is pressed
     ///     Goes back to the previous menu
-    /// </summary>
+    /// </summary>  
     private void OnGoBackButtonPressed() {
+        SoundController.Singleton.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
         ResetGuideMenu();
         menuController.GoBackToPreviousMenu();
     }
