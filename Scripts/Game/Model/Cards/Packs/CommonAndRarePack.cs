@@ -17,11 +17,12 @@ public abstract class CommonAndRarePack : CardPack {
     protected virtual float RareCardChance => 0.1f;
 
     /// <summary>
-    /// Available pool of common cards, will always be picked.
+    ///     Available pool of common cards, will always be picked.
     /// </summary>
     protected abstract IReadOnlyList<Card> CommonCards { get; }
+
     /// <summary>
-    /// Available pool of rare cards, being picked is determined by <see cref="RareCardChance"/>.
+    ///     Available pool of rare cards, being picked is determined by <see cref="RareCardChance" />.
     /// </summary>
     protected abstract IReadOnlyList<Card> RareCards { get; }
 

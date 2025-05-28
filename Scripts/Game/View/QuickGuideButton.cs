@@ -2,8 +2,6 @@ using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.Model.Interface;
-using Goodot15.Scripts.Game.View;
-using System;
 
 public partial class QuickGuideButton : TextureButton {
     public override void _Ready() {
@@ -15,7 +13,8 @@ public partial class QuickGuideButton : TextureButton {
         SoundController.Singleton.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
         GameController.Singleton.MenuController.QuickOpenGuideMenu();
 
-        if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.OnPauseStateChanged(true);
+        if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
+            pausable.OnPauseStateChanged(true);
 
         SoundController.Singleton.MusicMuted = true;
         GameController.Singleton.HideHUD();

@@ -63,7 +63,8 @@ public partial class GameController : Node2D {
                 case Key.Q:
                     MenuController.QuickOpenGuideMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3) pausable3.OnPauseStateChanged(true);
+                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3)
+                        pausable3.OnPauseStateChanged(true);
 
                     SoundController.Singleton.MusicMuted = true;
                     HideHUD();
