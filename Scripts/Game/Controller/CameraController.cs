@@ -6,23 +6,24 @@ using Goodot15.Scripts.Game.View;
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CameraController : ITickable {
-    private Camera2D Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
+    private Camera2D Camera2DInstance => GameController.Singleton?.GetNodeOrNull<Camera2D>("CameraCenter");
     private bool isPlayingEndGameAnimation = false;
-    private const int END_GAME_ANIMATION_TICKS = 60 * 3; // 3 seconds
+    private static readonly int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(seconds: 3); // 3 seconds
     private int remainingEndGameAnimationTicks = 0;
     private Sprite2D darknessSprite;
 
     public void PostTick(double delta) {
+        // Guard clause - if the camera controller happens to execute at the end of the frame and the camera is deleted
+        // Do nothing
+        if (Camera2DInstance is null)
+            return;
+        
         if (isPlayingEndGameAnimation) {
             EndGameAnimation();
         } else if (remainingShakeTicks > 0) {
             ShakeAnimation();
         } else {
-            if (!GodotObject.IsInstanceValid(Camera2D)) {
-                Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
-            }
-            
-            Camera2D.GlobalPosition = CAMERA_ORIGIN;
+            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
         }
     }
 
@@ -34,11 +35,7 @@ public class CameraController : ITickable {
     private void ShakeAnimation() {
         remainingShakeTicks--;
 
-        if (!GodotObject.IsInstanceValid(Camera2D)) {
-            Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
-        }
-
-        Camera2D.GlobalPosition = new Vector2(
+        Camera2DInstance.GlobalPosition = new Vector2(
             Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * X_SHAKE_FREQUENCY),
             Mathf.Sin(remainingShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * Y_SHAKE_FREQUENCY)
         ) * intensity + CAMERA_ORIGIN;
@@ -56,15 +53,10 @@ public class CameraController : ITickable {
     }
 
     private void EndGameAnimation() {
-        if (!GodotObject.IsInstanceValid(Camera2D)) {
-            Camera2D = GameController.Singleton.GetNode<Camera2D>("CameraCenter");
-        }
-
         if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
-            Camera2D.GlobalPosition = CAMERA_ORIGIN;
+            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
             isPlayingEndGameAnimation = false;
             MenuController.Singleton.OpenMainMenu();
-            Camera2D.Zoom = new Vector2(1, 1);
             return;
         }
 
@@ -77,7 +69,7 @@ public class CameraController : ITickable {
         float invertedT = 1 - Mathf.Clamp(t, 0, 1);
         float zoomFactor = Mathf.Log(1 + 9 * invertedT);
 
-        Camera2D.Zoom = new Vector2(
+        Camera2DInstance.Zoom = new Vector2(
             startZoom + (endZoom - startZoom) * zoomFactor,
             startZoom + (endZoom - startZoom) * zoomFactor
         );
