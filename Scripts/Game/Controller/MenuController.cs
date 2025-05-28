@@ -169,21 +169,15 @@ public partial class MenuController : Node {
 
         // if (gameOverMenu is IMenuAnimation animated) animated.Animate();
 
-        SwitchMenu(gameOverMenu, true, false);
+        SwitchMenu(gameOverMenu, false);
     }
 
     /// <summary>
     ///     Switches the current menu to the new menu and hides the previous menu.
     /// </summary>
     /// <param name="newMenu">The new menu that should be shown</param>
-    private void SwitchMenu(Control newMenu, bool hideHudElements = false, bool hidePreviousMenu = true) {
+    private void SwitchMenu(Control newMenu, bool hidePreviousMenu = true) {
         GameController.Singleton.SoundController.MusicMuted = true;
-
-        if (hideHudElements) {
-            // GameController.Singleton.Visible = false;
-            HUD hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
-            if (hud is not null) hud.Visible = false;
-        }
 
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;

@@ -13,10 +13,6 @@
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_hewda"]
-font = ExtResource("3_m8nr8")
-font_size = 51
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yyxd1"]
 texture = ExtResource("2_m8nr8")
 texture_region_size = Vector2i(256, 256)
@@ -25,6 +21,10 @@ texture_region_size = Vector2i(256, 256)
 [sub_resource type="TileSet" id="TileSet_0vbqt"]
 tile_size = Vector2i(256, 256)
 sources/0 = SubResource("TileSetAtlasSource_yyxd1")
+
+[sub_resource type="LabelSettings" id="LabelSettings_hewda"]
+font = ExtResource("3_m8nr8")
+font_size = 51
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ly6xb")
@@ -37,27 +37,13 @@ position = Vector2(640, 360)
 scale = Vector2(1280, 720)
 texture = SubResource("CanvasTexture_m8nr8")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="SceneDarknessCanvas" type="CanvasLayer" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+[node name="SceneDarkness" type="Sprite2D" parent="SceneDarknessCanvas"]
 z_as_relative = false
 position = Vector2(540, 277)
 scale = Vector2(5.508, 3.272)
 texture = ExtResource("2_hewda")
-
-[node name="DayTimeLabel" type="Label" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1096.0
-offset_top = 26.0
-offset_right = -25.0
-offset_bottom = -642.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Error"
-label_settings = SubResource("LabelSettings_hewda")
-uppercase = true
 
 [node name="Background" type="TileMapLayer" parent="."]
 position = Vector2(303, -216)
@@ -148,3 +134,17 @@ visible = false
 position = Vector2(579, 280)
 scale = Vector2(5.404, 3.258)
 texture = ExtResource("2_hewda")
+
+[node name="DayTimeLabel" type="Label" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1096.0
+offset_top = 26.0
+offset_right = -25.0
+offset_bottom = -642.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Error"
+label_settings = SubResource("LabelSettings_hewda")
+uppercase = true

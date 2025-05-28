@@ -2,6 +2,7 @@ using Godot;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 public partial class GameOverMenu : Control, IMenuAnimation {
     private const string LOSE_SOUND = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
@@ -21,6 +22,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
 
     private Sprite2D timeDarknessSprite;
     private float timeDarknessStart = 0.0f;
+    private HUD hud;
 
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");
@@ -56,13 +58,15 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         gameOverLabel.Visible = true;
 
         if (!IsInstanceValid(timeDarknessSprite)) {
-            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer").GetNode<Sprite2D>("Sprite2D");
+            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas").GetNode<Sprite2D>("SceneDarkness");
         }
 
         timeDarknessStart = timeDarknessSprite.Modulate.A;
 
         background.Modulate = new Color(0, 0, 0, timeDarknessStart);
         timeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
+
+        hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
 
         exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
         backToMenuButton.Modulate = new Color(1, 1, 1, 0.0f);
@@ -99,5 +103,13 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         backToMenuButton.Modulate = new Color(1, 1, 1, easedT);
         gameOverLabel.Modulate = new Color(1, 1, 1, easedT);
         background.Modulate = new Color(0, 0, 0, mapped);
+
+        if (hud != null) {
+            foreach (Node child in hud.GetChildren()) {
+                if (child is Control controlChild) {
+                    controlChild.Modulate = new Color(1, 1, 1, 1 - easedT);
+                }
+            }
+        }
     }
 }
