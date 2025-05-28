@@ -71,8 +71,10 @@ public abstract class CardLiving
             } else {
                 CardNode.Modulate = new Color(1f, 1f, 1f);
             }
+
             return;
         }
+
         if (HealTickProgress >= TicksUntilHeal) {
             HealTickProgress = 0;
             Health += HealthGainPerCycle;
@@ -105,7 +107,6 @@ public abstract class CardLiving
             } else {
                 CardNode.Modulate = new Color(1f, .5f, .5f);
             }
-            // CardNode.CardType = new ErrorCard();
         } else {
             if (damageEffectPulseTickCount <= 0) return;
             damageEffectPulseTickCount--;
@@ -124,7 +125,7 @@ public abstract class CardLiving
 
     private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int healingEffectPulseTickCount;
-    
+
     private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
