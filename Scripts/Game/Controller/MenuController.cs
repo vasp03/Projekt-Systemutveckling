@@ -89,7 +89,7 @@ public partial class MenuController : Node {
     public void QuickOpenGuideMenu() {
         if (GetTree().Paused) return;
         GetTree().Paused = true;
-        gameController.CallPausedCallbacks(true);
+        GameController.CallPausedCallbacks(true);
 
         previousMenu = null;
         if (guideMenu is null) {
@@ -169,8 +169,7 @@ public partial class MenuController : Node {
         } else {
             guideMenu.Visible = false;
             GetTree().Paused = false;
-            gameController.CallPausedCallbacks(false);
-            if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable) pausable.SetPaused(false);
+            GameController.CallPausedCallbacks(false);
 
             SoundController.Singleton.MusicMuted = false;
             GameController.Singleton.ShowHUD();
