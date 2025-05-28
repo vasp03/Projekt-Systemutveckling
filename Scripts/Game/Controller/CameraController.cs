@@ -10,7 +10,7 @@ public class CameraController : ITickable {
     private bool isPlayinhgEndGameAnimation = false;
     private const int END_GAME_ANIMATION_TICKS = 60 * 3; // 3 seconds
     private int remainingEndGameAnimationTicks = 0;
-    private float startingDarkness = 0;
+    private Sprite2D darknessSprite = GameController.Singleton?.GetNode<CanvasLayer>("HUD")?.GetNode<Sprite2D>("EndGameOverlay");
 
     public void PostTick(double delta) {
         if (isPlayinhgEndGameAnimation) {
@@ -37,8 +37,8 @@ public class CameraController : ITickable {
 
     public void PlayEndGameAnimation() {
         if (isPlayinhgEndGameAnimation) return;
-        startingDarkness = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer")
-            .GetNode<Sprite2D>("Sprite2D").Modulate.A;
+        darknessSprite.Modulate = new Color(0, 0, 0, 0.0f);
+        darknessSprite.Visible = true;
         isPlayinhgEndGameAnimation = true;
     }
 
@@ -47,6 +47,7 @@ public class CameraController : ITickable {
             Camera2D.GlobalPosition = CAMERA_ORIGIN;
             isPlayinhgEndGameAnimation = false;
             MenuController.Singleton.OpenGameOverMenu();
+            Camera2D.Zoom = new Vector2(1, 1);
             return;
         }
 
@@ -59,18 +60,15 @@ public class CameraController : ITickable {
         GD.Print($"End game animation tick: {remainingEndGameAnimationTicks}, t: {t}");
 
         float invertedT = 1 - Mathf.Clamp(t, 0, 1);
-        float zoomFactor = Mathf.Log(1 + 9 * invertedT) / Mathf.Log(10);
+        float zoomFactor = Mathf.Log(1 + 9 * invertedT);
 
         Camera2D.Zoom = new Vector2(
             startZoom + (endZoom - startZoom) * zoomFactor,
             startZoom + (endZoom - startZoom) * zoomFactor
         );
 
-        CanvasLayer canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
-        Sprite2D darknessSprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
-
         darknessSprite.Visible = true;
-        darknessSprite.Modulate = new Color(0, 0, 0, Mathf.Clamp(invertedT, startingDarkness, 1.0f));
+        darknessSprite.Modulate = new Color(0, 0, 0, Mathf.Clamp(invertedT, 0.0f, 1.0f));
 
         remainingShakeTicks = 0; // Reset shake ticks during end game animation
     }

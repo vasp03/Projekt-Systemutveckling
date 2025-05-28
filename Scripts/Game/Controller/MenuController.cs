@@ -165,24 +165,33 @@ public partial class MenuController : Node {
         }
 
         if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
-            pausable2.SetPaused(true);
+            pausable2.SetPaused(true, false);
 
-        GameController.Singleton.SoundController.MusicMuted = true;
-        GameController.Singleton.Visible = false;
-        HUD hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
-        if (hud is not null) hud.Visible = false;
+        if (gameOverMenu is IMenuAnimation animated) animated.Animate();
 
-        SwitchMenu(gameOverMenu);
+        SwitchMenu(gameOverMenu, true, false);
     }
 
     /// <summary>
     ///     Switches the current menu to the new menu and hides the previous menu.
     /// </summary>
     /// <param name="newMenu">The new menu that should be shown</param>
-    private void SwitchMenu(Control newMenu) {
+    private void SwitchMenu(Control newMenu, bool hideHudElements = false, bool hidePreviousMenu = true) {
+        GameController.Singleton.SoundController.MusicMuted = true;
+
+        if (hideHudElements) {
+            // GameController.Singleton.Visible = false;
+            HUD hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
+            if (hud is not null) hud.Visible = false;
+        }
+
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
             newMenu.Visible = true;
+            if (newMenu is IMenuAnimation animated) animated.Animate();
+        }
+
+        if (hidePreviousMenu) {
             if (previousMenu is not null && IsInstanceValid(previousMenu)) previousMenu.Visible = false;
         }
     }
