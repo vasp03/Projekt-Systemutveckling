@@ -47,7 +47,6 @@ public abstract class CardLiving
     ///     saturation is above half of maximum saturation.
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        GD.Print("Healtick progress: " + HealTickProgress + " Ticks until heal: " + TicksUntilHeal);
         if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) {
             if (healingEffectPulseTickCount > 0) {
                 healingEffectPulseTickCount--;
