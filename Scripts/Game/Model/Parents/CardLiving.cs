@@ -8,8 +8,6 @@ namespace Goodot15.Scripts.Game.Model;
 
 public abstract class CardLiving
     : Card, ITickable, ICardConsumer {
-    private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
-    private int healingEffectPulseTickCount;
     public abstract bool ConsumeCard(Card otherCard);
 
     public virtual void PostTick(double delta) {
@@ -110,6 +108,9 @@ public abstract class CardLiving
 
     private int deathTimer = Utilities.TimeToTicks(5);
 
+    private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private int healingEffectPulseTickCount;
+    
     private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 
