@@ -19,6 +19,9 @@ public partial class GameOverMenu : Control, IMenuAnimation {
     private int animationTicks = 0;
     private double deltaTime = 0.0;
 
+    private Sprite2D timeDarknessSprite;
+    private float timeDarknessStart = 0.0f;
+
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");
         exitGameButton = GetNode<Button>("ExitGame");
@@ -43,6 +46,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         menuController.OpenMainMenu();
         menuController.GetTree().Paused = false;
         soundController.MusicMuted = false;
+        isAnimating = false;
     }
 
     public void Animate() {
@@ -86,5 +90,13 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         backToMenuButton.Modulate = new Color(1, 1, 1, easedT);
         gameOverLabel.Modulate = new Color(1, 1, 1, easedT);
         background.Modulate = new Color(0, 0, 0, easedT);
+
+        if (!IsInstanceValid(timeDarknessSprite)) {
+            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer").GetNode<Sprite2D>("Sprite2D");
+        }
+
+        if (timeDarknessSprite != null) {
+            timeDarknessSprite.Modulate = new Color(0, 0, 0, Mathf.Lerp(timeDarknessStart, 0.0f, easedT));
+        }
     }
 }
