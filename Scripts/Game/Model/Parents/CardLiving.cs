@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model;
@@ -41,15 +43,45 @@ public abstract class CardLiving
             ? SaturationLossPerCycle
             : 0;
     }
+    
+    private readonly static int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
+    private int healingEffectPulseTickCount;
 
+    /// <summary>
+    /// Heals Villagers and makes card flash green after a fixed amount of ticks, when health is below maximum and saturation is above half of maximum saturation.
+    /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) return;
+       
+        if (CardNode.CardController.AllCards.Any(card => card.CardType is MaterialFire)) return;
+        
+        if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) {
+            if (healingEffectPulseTickCount > 0) {
+                healingEffectPulseTickCount--;
+                CardNode.Modulate = new Color(
+                    1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f,
+                    1f,
+                    1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f
+                );
+            } else {
+                CardNode.Modulate = new Color(1f, 1f, 1f);
+            }
+            return;
+        }
         if (HealTickProgress >= TicksUntilHeal) {
             HealTickProgress = 0;
             Health += HealthGainPerCycle;
             Saturation -= SaturationLossPerHeal;
+            healingEffectPulseTickCount = HEALING_EFFECT_PULSE_TICK_DELAY;
         } else {
             HealTickProgress++;
+        }
+        if (healingEffectPulseTickCount > 0) {
+            healingEffectPulseTickCount--;
+            CardNode.Modulate = new Color(
+                1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f,
+                1f,
+                1f - healingEffectPulseTickCount / (float)HEALING_EFFECT_PULSE_TICK_DELAY / 2f
+            );
         }
     }
 
