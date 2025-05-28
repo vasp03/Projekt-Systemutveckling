@@ -63,8 +63,8 @@ public class CameraController : ITickable {
         remainingEndGameAnimationTicks++;
 
         float t = (END_GAME_ANIMATION_TICKS - remainingEndGameAnimationTicks) / (float)END_GAME_ANIMATION_TICKS;
-        float startZoom = 1.0f;
-        float endZoom = 0.75f;
+        const float startZoom = 1.0f;
+        const float endZoom = 0.75f;
 
         float invertedT = 1 - Mathf.Clamp(t, 0, 1);
         float zoomFactor = Mathf.Log(1 + 9 * invertedT);
