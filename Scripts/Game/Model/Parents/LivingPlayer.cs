@@ -9,13 +9,13 @@ public abstract class LivingPlayer(string texturePath) : CardLiving(texturePath,
 
     public static readonly int HEAL_TICK_DELAY = Utilities.GameScaledTimeToTicks(hours: 1);
 
-    public static readonly int HEAL_GAIN_PER_CYCLE = 25;
-    public static readonly int SATURATION_LOSS_PER_HEAL = 25;
+    public const int HEAL_GAIN_PER_CYCLE = 25;
+    public const int SATURATION_LOSS_PER_HEAL = 25;
 
-    public static readonly int HUNGER_LOSS_PER_CYCLE = 30;
+    public const int HUNGER_LOSS_PER_CYCLE = 30;
 
-    public static readonly int MAXMIMUM_HEALTH = 100;
-    public static readonly int MAXIMUM_HUNGER = 100;
+    public const int MAXMIMUM_HEALTH = 100;
+    public const int MAXIMUM_HUNGER = 100;
 
     public override int Value => -1;
     public override int MaximumHealth => MAXMIMUM_HEALTH;
