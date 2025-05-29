@@ -25,20 +25,20 @@ public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
 
         switch (totalVillagersSacrificed) {
             case 0:
-                CardNode.UpdateCardTexture(STAGES_TEXTURES[0], true);
+                CardNode.UpdateCardTexture(STAGES_TEXTURES[0]);
                 break;
             case >= 1 when totalVillagersSacrificed <= TOTAL_SACRIFICES_REQUIRED * 1d / 3d:
-                CardNode.UpdateCardTexture(STAGES_TEXTURES[1], true);
+                CardNode.UpdateCardTexture(STAGES_TEXTURES[1]);
                 break;
             default: {
                 if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 4d &&
                     totalVillagersSacrificed <= TOTAL_SACRIFICES_REQUIRED * 2d / 3d)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[2], true);
+                    CardNode.UpdateCardTexture(STAGES_TEXTURES[2]);
                 else if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 2d &&
                          totalVillagersSacrificed < TOTAL_SACRIFICES_REQUIRED)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[3], true);
+                    CardNode.UpdateCardTexture(STAGES_TEXTURES[3]);
                 else if (totalVillagersSacrificed >= TOTAL_SACRIFICES_REQUIRED)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[4], true);
+                    CardNode.UpdateCardTexture(STAGES_TEXTURES[4]);
                 break;
             }
         }
