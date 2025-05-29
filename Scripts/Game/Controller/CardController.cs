@@ -91,14 +91,20 @@ public class CardController {
 	}
 
 	/// <summary>
-	///     Adds the card to the hovered cards list and sets its highlighted state to true.
+	///     Adds the card to the hovered cards list and sets its highlighted state to true and shows overlays if applicable.
 	/// </summary>
+	/// <param name="cardNodeInstance">The CardNode instance to be added</param>
 	public void OnCardHovered(CardNode cardNodeInstance) {
 		CheckForHighLight();
+        if (GameController.SellModeActive)
+            ShowCardValue(cardNodeInstance);
+        if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove && cardNodeInstance.CardType is CardLiving cardLiving)
+            if (!GameController.SellModeActive)
+                ShowHealthAndHunger(cardLiving);
 	}
 
 	/// <summary>
-	///     Removes the card from the hovered cards list and sets its highlighted state to false.
+	///     Removes the card from the hovered cards list and sets its highlighted state to false and hides overlays.
 	/// </summary>
     public void OnCardUnhovered(CardNode cardNodeInstance) {
         CheckForHighLight();
@@ -115,10 +121,6 @@ public class CardController {
         foreach (CardNode card in HoveredCards)
             if (CardIsTopCard(card)) {
                 card.SetHighlighted(true);
-                if (!card.Dragged && !card.HasNeighbourAbove && card.CardType is CardLiving cardLiving)
-                    ShowHealthAndHunger(cardLiving);
-                if (GameController.SellModeActive)
-                    ShowCardValue(card);
             } else {
                 card.SetHighlighted(false);
             }
@@ -132,11 +134,9 @@ public class CardController {
 
 		currentOverlay.Position = cardLiving.CardNode.Position + CARD_LIVING_OVERLAY_OFFSET;
 
-
 		currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
 		currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
-
-		// Add the overlay to the same parent as the card
+        
 		cardLiving.CardNode.GetParent().AddChild(currentOverlay);
 
 		overlayUpdateTimer = new Timer();
@@ -155,8 +155,7 @@ public class CardController {
 			overlayUpdateTimer.QueueFree();
 			overlayUpdateTimer = null;
 		}
-
-		// Remove the existing overlay if it exists
+        
 		if (currentOverlay is not null && currentOverlay.IsInsideTree()) {
 			currentOverlay.QueueFree();
 			currentOverlay = null;
