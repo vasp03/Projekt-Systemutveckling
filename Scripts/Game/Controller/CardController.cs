@@ -99,7 +99,7 @@ public class CardController {
     }
 
     /// <summary>
-    /// Fired when a card is being destroyed through <see cref="CardNode.Destroy"/>.
+    ///     Fired when a card is being destroyed through <see cref="CardNode.Destroy" />.
     /// </summary>
     /// <param name="cardNodeRemoving">Card node being removed</param>
     public void CardRemoved(CardNode cardNodeRemoving) {
