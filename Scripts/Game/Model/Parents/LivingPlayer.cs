@@ -3,7 +3,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Living;
 
-public abstract class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
+public abstract class LivingPlayer(string cardTexturePath) : CardLiving(cardTexturePath, true) {
     public const int HEAL_GAIN_PER_CYCLE = 25;
     public const int SATURATION_LOSS_PER_HEAL = 25;
 

@@ -13,11 +13,11 @@ public abstract class Card {
     ///     Instantiates a new Card class<br />
     ///     Texture address should be the address after "res://Assets/Cards/Ready To Use/".
     /// </summary>
-    /// <param name="textureAddress">Path of Card texture</param>
+    /// <param name="cardTextureName">Path of Card texture</param>
     /// <param name="movable">Determines if this card is movable/interactable</param>
-    public Card(string textureAddress, bool movable) {
+    public Card(string cardTextureName, bool movable) {
         // Generate a unique uuid as name
-        TexturePath = BASE_TEXTURE_PATH + textureAddress + TEXTURE_ENDING;
+        TexturePath = BASE_TEXTURE_PATH + cardTextureName + TEXTURE_ENDING;
         Movable = movable;
     }
 

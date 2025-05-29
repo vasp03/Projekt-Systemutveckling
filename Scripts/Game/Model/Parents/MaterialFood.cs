@@ -2,8 +2,8 @@
 
 namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
-public class MaterialFood(string textureAddress, int startFood)
-    : CardMaterial(textureAddress), IEdible {
+public class MaterialFood(string cardTextureName, int startFood)
+    : CardMaterial(cardTextureName), IEdible {
     private int remainingFood = startFood;
 
     public override int Value => 15;

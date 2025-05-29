@@ -134,7 +134,7 @@ public abstract class CardLiving
     /// </summary>
     private int health;
 
-    public CardLiving(string textureAddress, bool movable) : base(textureAddress, movable) {
+    public CardLiving(string cardTextureName, bool movable) : base(cardTextureName, movable) {
         Health = MaximumHealth;
         Saturation = MaximumSaturation;
     }
