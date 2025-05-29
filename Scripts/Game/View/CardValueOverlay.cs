@@ -16,7 +16,7 @@ public partial class CardValueOverlay : Node2D {
     /// <param name="value">The value that is being set</param>
     public void SetValue(int value) {
         valueLabel ??= GetNode<Label>("ValueBorder/Centering/HContainer/ValueLabel");
-        valueLabel.Text = value is 0 ? "X" : value.ToString();
+        valueLabel.Text = value is -1 ? "X" : value.ToString();
     }
 }
 
