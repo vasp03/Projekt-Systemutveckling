@@ -210,7 +210,8 @@ public class CraftingController {
 
         AddRecipe(new CraftingRecipe("Blacksmith", ["Villager", "Axe"], ["Blacksmith"], ["Axe", "Villager"]));
 
-        AddRecipe(new CraftingRecipe("Altar", ["Brick", "Brick", "Brick", "Brick", "Brick", "Glass", "Glass", "Wood"], ["Altar"], ["Brick", "Glass", "Wood"]));
+        AddRecipe(new CraftingRecipe("Altar", ["Brick", "Brick", "Brick", "Brick", "Brick", "Glass", "Glass", "Wood"],
+            ["Altar"], ["Brick", "Glass", "Wood"]));
     }
 
     #region Recipe data

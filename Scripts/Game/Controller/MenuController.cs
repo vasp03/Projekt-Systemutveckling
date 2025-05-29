@@ -186,9 +186,9 @@ public partial class MenuController : Node {
             if (newMenu is IMenuAnimation animated) animated.Animate();
         }
 
-        if (hidePreviousMenu) {
-            if (previousMenu is not null && IsInstanceValid(previousMenu)) previousMenu.Visible = false;
-        }
+        if (hidePreviousMenu)
+            if (previousMenu is not null && IsInstanceValid(previousMenu))
+                previousMenu.Visible = false;
     }
 
     /// <summary>
