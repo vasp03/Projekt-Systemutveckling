@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm7rdxepvtakl"]
+
+[ext_resource type="Texture2D" uid="uid://8u8lqnblrhn6" path="res://Assets/Div/ValueBorder.png" id="1_aiwjy"]
+[ext_resource type="Script" uid="uid://cx5bk2jwel5vl" path="res://Scripts/Game/View/CardValueOverlay.cs" id="1_ejuqn"]
+[ext_resource type="Texture2D" uid="uid://bfm3b4tkelo1g" path="res://Assets/Icons/64x64/fc160.png" id="1_wmdkm"]
+[ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="2_aiwjy"]
+
+[node name="CardValueOverlay" type="Node2D"]
+script = ExtResource("1_ejuqn")
+
+[node name="ValueBorder" type="Sprite2D" parent="."]
+position = Vector2(30.1304, 12.7826)
+scale = Vector2(0.456522, 0.456522)
+texture = ExtResource("1_aiwjy")
+
+[node name="CenterContainer" type="CenterContainer" parent="ValueBorder"]
+offset_left = -20.0
+offset_top = -19.2381
+offset_right = 39.0
+offset_bottom = 20.7619
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ValueBorder/CenterContainer"]
+layout_mode = 2
+
+[node name="MoneyIcon" type="Sprite2D" parent="ValueBorder/CenterContainer/HBoxContainer"]
+position = Vector2(-13.1429, 10.5238)
+scale = Vector2(0.359375, 0.359375)
+texture = ExtResource("1_wmdkm")
+
+[node name="ValueLabel" type="Label" parent="ValueBorder/CenterContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.972549, 0.941176, 0.878431, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_aiwjy")
+theme_override_font_sizes/font_size = 25
