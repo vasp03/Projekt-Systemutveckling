@@ -58,6 +58,7 @@ public abstract class CardLiving
             } else {
                 CardNode.Modulate = new Color(1f, 1f, 1f);
             }
+
             return;
         }
 
@@ -109,7 +110,7 @@ public abstract class CardLiving
 
     private static readonly int HEALING_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int healingEffectPulseTickCount;
-    
+
     private static readonly int DAMAGE_EFFECT_PULSE_TICK_DELAY = Utilities.TimeToTicks(1);
     private int damageEffectPulseTickCount;
 

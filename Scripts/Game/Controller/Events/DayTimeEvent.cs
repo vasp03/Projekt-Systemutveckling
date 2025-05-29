@@ -42,7 +42,8 @@ public class DayTimeEvent : GameEvent, IPausable {
             !canvasLayer.IsInsideTree())
             canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
 
-        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = gameController.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
+        if (!GodotObject.IsInstanceValid(timeLabel))
+            timeLabel = gameController.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
 
         this.isPaused = isPaused;
 
@@ -102,7 +103,8 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
 
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
+        if (sprite is null || !GodotObject.IsInstanceValid(sprite))
+            sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }

@@ -1,30 +1,27 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
-using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
 
 public class CameraController : ITickable {
-    private Camera2D Camera2DInstance => GameController.Singleton?.GetNodeOrNull<Camera2D>("CameraCenter");
-    private bool isPlayingEndGameAnimation = false;
-    private static readonly int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(seconds: 3); // 3 seconds
-    private int remainingEndGameAnimationTicks = 0;
+    private static readonly int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(3); // 3 seconds
     private Sprite2D darknessSprite;
+    private bool isPlayingEndGameAnimation;
+    private int remainingEndGameAnimationTicks;
+    private Camera2D Camera2DInstance => GameController.Singleton?.GetNodeOrNull<Camera2D>("CameraCenter");
 
     public void PostTick(double delta) {
         // Guard clause - if the camera controller happens to execute at the end of the frame and the camera is deleted
         // Do nothing
         if (Camera2DInstance is null)
             return;
-        
-        if (isPlayingEndGameAnimation) {
+
+        if (isPlayingEndGameAnimation)
             EndGameAnimation();
-        } else if (remainingShakeTicks > 0) {
+        else if (remainingShakeTicks > 0)
             ShakeAnimation();
-        } else {
+        else
             Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
-        }
     }
 
     public void Shake(float intensity, int ticks) {
