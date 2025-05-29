@@ -86,7 +86,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     }
 
     private void ShowAndHideTimeLabel(bool show) {
-        if (TimeLabel is null || !GodotObject.IsInstanceValid(TimeLabel)) return;
         if (show)
             TimeLabel.Show();
         else
