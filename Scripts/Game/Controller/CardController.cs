@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.Model;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
@@ -255,9 +254,7 @@ public class CardController {
 
         if (livingHasJustDied) livingCardsAmount--;
 
-        if (livingCardsAmount <= 0) {
-            menuController.OpenGameOverMenu();
-        }
+        if (livingCardsAmount <= 0) menuController.OpenGameOverMenu();
     }
 
     #region Specific Card

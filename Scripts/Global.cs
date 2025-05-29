@@ -1,7 +1,7 @@
+using System;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 
-namespace Goodot15.Scripts.Game;
 
 public partial class Global : Node {
     public delegate void MoneyChangedEvent(int newMoney);

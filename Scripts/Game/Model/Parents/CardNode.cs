@@ -202,12 +202,11 @@ public partial class CardNode : Node2D {
     ///     If the texture is not found, it loads the error texture.
     /// </summary>
     public void UpdateCardTexture(Texture2D texture = null, bool customTexture = false) {
-        if (customTexture) {
+        if (customTexture)
             if (texture is not null && IsInstanceValid(texture)) {
                 CardSprite.Texture = texture;
                 return;
             }
-        }
 
         // Check if the path is not null or empty and if there is a file at the path
         if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {

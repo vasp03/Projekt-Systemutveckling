@@ -1,7 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
-using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -13,8 +12,9 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     An event to handle when the day changes and it's time.
     /// </summary>
     public DayTimeEvent() {
+        InitializeReferences();
+        
         oldDayPhaseState = DayPhaseState.INVALID;
-        sprite = CanvasLayer.GetNode<Sprite2D>("Sprite2D");
         GameController.Singleton.AddPauseCallback(this);
     }
 
@@ -30,8 +30,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
     public void SetPaused(bool isPaused, bool hideDarknessOverlay = true) {
-        GameController gameController = GameController.Singleton;
-
         this.isPaused = isPaused;
 
         if (isPaused) {
@@ -87,12 +85,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     private void SetSceneDarkness(float darkness) {
         darkness = Mathf.Clamp(darkness, 0, 1);
-
-        if (CanvasLayer is null || !GodotObject.IsInstanceValid(CanvasLayer)) return;
-
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = CanvasLayer.GetNode<Sprite2D>("SceneDarkness");
-
-        sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
+        Sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
 
     private void ShowAndHideTimeLabel(bool show) {
@@ -143,9 +136,15 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Game object references
 
-    private CanvasLayer CanvasLayer => GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
-    private Sprite2D sprite;
-    private Label TimeLabel => CanvasLayer.GetNode<Label>("DayTimeLabel");
+    private void InitializeReferences() {
+        CanvasLayer = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        Sprite = CanvasLayer.GetNode<Sprite2D>("SceneDarkness");
+        TimeLabel = GameController.Singleton.GetNode<Label>("HUD/DayTimeLabel");
+    }
+
+    private Sprite2D Sprite { get; set; }
+    private CanvasLayer CanvasLayer { get; set; }
+    private Label TimeLabel { get; set; }
 
     #endregion
 
