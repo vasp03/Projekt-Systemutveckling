@@ -109,7 +109,8 @@ public class CardController {
     private void UpdateOverlays(CardNode cardNodeInstance) {
         if (!CardIsTopCard(cardNodeInstance)) return;
         if (cardNodeInstance.MouseIsHovering) {
-            if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove && cardNodeInstance.CardType is CardLiving cardLiving && !GameController.SellModeActive) 
+            if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove &&
+                cardNodeInstance.CardType is CardLiving cardLiving && !GameController.SellModeActive)
                 ShowHealthAndHunger(cardLiving);
             if (GameController.SellModeActive)
                 ShowCardValue(cardNodeInstance);
