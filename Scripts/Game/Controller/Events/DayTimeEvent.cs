@@ -8,12 +8,9 @@ namespace Goodot15.Scripts.Game.Controller.Events;
 ///     Class that handles the time of day and the temperature
 /// </summary>
 public class DayTimeEvent : GameEvent, IPausable {
-    /// <summary>
-    ///     An event to handle when the day changes and it's time.
-    /// </summary>
     public DayTimeEvent() {
         InitializeReferences();
-        
+
         oldDayPhaseState = DayPhaseState.INVALID;
         GameController.Singleton.AddPauseCallback(this);
     }
@@ -46,18 +43,18 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         GameController gameController = GameController.Singleton;
 
-        dayTicks++;
+        DayTicks++;
 
-        if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
+        if (DayTicks > Utilities.TICKS_PER_DAY) DayTicks = 0;
 
-        UpdateTemperature(dayTicks);
-        SetSceneDarkness(dayTicks);
-        TimeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
-        dayPhaseState = Utilities.GetCurrentDayState(dayTicks);
+        UpdateTemperature(DayTicks);
+        SetSceneDarkness(DayTicks);
+        TimeLabel.SetText(Utilities.GetTimeOfDay(DayTicks));
+        DayPhaseState = Utilities.GetCurrentDayState(DayTicks);
 
-        if (dayPhaseState == oldDayPhaseState) return;
+        if (DayPhaseState == oldDayPhaseState) return;
 
-        switch (dayPhaseState) {
+        switch (DayPhaseState) {
             case DayPhaseState.NIGHT:
                 gameController.SoundController.PlayDayTimeSong("Night");
                 break;
@@ -77,7 +74,7 @@ public class DayTimeEvent : GameEvent, IPausable {
                 break;
         }
 
-        oldDayPhaseState = dayPhaseState;
+        oldDayPhaseState = DayPhaseState;
     }
 
     /// <summary>
@@ -137,9 +134,9 @@ public class DayTimeEvent : GameEvent, IPausable {
     #region Game object references
 
     private void InitializeReferences() {
-        CanvasLayer = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        CanvasLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
         Sprite = CanvasLayer.GetNode<Sprite2D>("SceneDarkness");
-        TimeLabel = GameController.Singleton.GetNode<Label>("HUD/DayTimeLabel");
+        TimeLabel = GameController.Singleton!.GetNode<Label>("HUD/DayTimeLabel");
     }
 
     private Sprite2D Sprite { get; set; }
@@ -150,11 +147,11 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Event state data
 
-    private DayPhaseState dayPhaseState;
+    public DayPhaseState DayPhaseState { get; private set; }
     private bool isPaused;
     private DayPhaseState oldDayPhaseState;
     private float oldSceneDarkness;
-    public int dayTicks { get; set; }
+    public int DayTicks { get; set; }
 
     #endregion
 }
