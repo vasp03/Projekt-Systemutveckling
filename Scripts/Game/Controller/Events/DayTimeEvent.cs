@@ -133,13 +133,13 @@ public class DayTimeEvent : GameEvent, IPausable {
     #region Game object references
 
     private void InitializeReferences() {
-        CanvasLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
-        Sprite = CanvasLayer.GetNode<Sprite2D>("SceneDarkness");
+        DarknessLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        Sprite = DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
         TimeLabel = GameController.Singleton!.GetNode<Label>("HUD/DayTimeLabel");
     }
 
     private Sprite2D Sprite { get; set; }
-    private CanvasLayer CanvasLayer { get; set; }
+    public CanvasLayer DarknessLayer { get; set; }
     private Label TimeLabel { get; set; }
 
     #endregion

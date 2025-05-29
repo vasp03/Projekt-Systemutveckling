@@ -4,11 +4,6 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Living;
 
 public abstract class LivingPlayer(string texturePath) : CardLiving(texturePath, true) {
-    public static readonly int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
-    public static readonly int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
-
-    public static readonly int HEAL_TICK_DELAY = Utilities.GameScaledTimeToTicks(hours: 1);
-
     public const int HEAL_GAIN_PER_CYCLE = 25;
     public const int SATURATION_LOSS_PER_HEAL = 25;
 
@@ -16,6 +11,10 @@ public abstract class LivingPlayer(string texturePath) : CardLiving(texturePath,
 
     public const int MAXMIMUM_HEALTH = 100;
     public const int MAXIMUM_HUNGER = 100;
+    public static readonly int STARVATION_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 3);
+    public static readonly int HUNGER_TICK_DELAY = Utilities.GameScaledTimeToTicks(days: 1);
+
+    public static readonly int HEAL_TICK_DELAY = Utilities.GameScaledTimeToTicks(hours: 1);
 
     public override int Value => -1;
     public override int MaximumHealth => MAXMIMUM_HEALTH;
