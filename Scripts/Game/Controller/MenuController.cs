@@ -141,17 +141,29 @@ public partial class MenuController : Node {
             AddChild(gameOverMenu);
         }
 
-        SwitchMenu(gameOverMenu);
+        if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable2)
+            pausable2.SetPaused(true, false);
+
+        // if (gameOverMenu is IMenuAnimation animated) animated.Animate();
+
+        SwitchMenu(gameOverMenu, false);
     }
 
     /// <summary>
     ///     Switches the current menu to the new menu and hides the previous menu.
     /// </summary>
     /// <param name="newMenu">The new menu that should be shown</param>
-    private void SwitchMenu(Control newMenu) {
+    private void SwitchMenu(Control newMenu, bool hidePreviousMenu = true) {
+        if (GameController.Singleton != null && GameController.Singleton.SoundController != null)
+            GameController.Singleton.SoundController.MusicMuted = true;
+
         if (newMenu is not null && newMenu.IsInsideTree()) {
             currentMenu = newMenu;
             newMenu.Visible = true;
+            if (newMenu is IMenuAnimation animated) animated.Animate();
+        }
+
+        if (hidePreviousMenu) {
             if (previousMenu is not null && IsInstanceValid(previousMenu)) previousMenu.Visible = false;
         }
     }

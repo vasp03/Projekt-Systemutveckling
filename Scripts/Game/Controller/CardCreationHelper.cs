@@ -107,6 +107,8 @@ public class CardCreationHelper : GameManagerBase {
                 return new MaterialFire();
             case "Metorite" or "46":
                 return new MaterialMeteorite();
+            case "Altar" or "47":
+                return new Altar();
 
             case "Random":
                 return GetCreatedInstanceOfCard(GetRandomCardType());

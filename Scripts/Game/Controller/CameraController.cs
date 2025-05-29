@@ -1,5 +1,7 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller;
 
@@ -7,14 +9,25 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Camera controller responsible for camera-related functions
 /// </summary>
 public class CameraController : ITickable {
-    /// <summary>
-    ///     Camera2D reference being used by the game and the controller.
-    /// </summary>
-    public Camera2D Camera2D => GameController.Singleton.GetNode<Camera2D>("Camera2D");
+    private Camera2D Camera2DInstance => GameController.Singleton?.GetNodeOrNull<Camera2D>("CameraCenter");
+    private bool isPlayingEndGameAnimation = false;
+    private static readonly int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(seconds: 3); // 3 seconds
+    private int remainingEndGameAnimationTicks = 0;
+    private Sprite2D darknessSprite;
 
     public void PostTick(double delta) {
-        // Shake feature
-        ShakeScreen();
+        // Guard clause - if the camera controller happens to execute at the end of the frame and the camera is deleted
+        // Do nothing
+        if (Camera2DInstance is null)
+            return;
+        
+        if (isPlayingEndGameAnimation) {
+            EndGameAnimation();
+        } else if (RemainingScreenShakeTicks > 0) {
+            ShakeAnimation();
+        } else {
+            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
+        }
     }
 
     /// <summary>
@@ -23,17 +36,65 @@ public class CameraController : ITickable {
     private void ShakeScreen() {
         if (RemainingScreenShakeTicks > 0) {
             RemainingScreenShakeTicks--;
-            Camera2D.GlobalPosition = new Vector2(
+            Camera2DInstance.GlobalPosition = new Vector2(
                 Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 *
                           X_SHAKE_FREQUENCY),
                 Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 *
                           Y_SHAKE_FREQUENCY)
             ) * LastScreenShakeIntensity + CAMERA_ORIGIN;
         } else {
-            Camera2D.GlobalPosition = CAMERA_ORIGIN;
+            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
         }
     }
 
+
+    private void ShakeAnimation() {
+        RemainingScreenShakeTicks--;
+
+        Camera2DInstance.GlobalPosition = new Vector2(
+            Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * X_SHAKE_FREQUENCY),
+            Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 * Y_SHAKE_FREQUENCY)
+        ) * LastScreenShakeIntensity + CAMERA_ORIGIN;
+    }
+
+    public void PlayEndGameAnimation() {
+        if (isPlayingEndGameAnimation) return;
+
+        darknessSprite = GameController.Singleton?.GetNode<CanvasLayer>("HUD")?.GetNode<Sprite2D>("EndGameOverlay");
+
+        darknessSprite.Modulate = new Color(0, 0, 0, 0.0f);
+        darknessSprite.Visible = true;
+
+        isPlayingEndGameAnimation = true;
+    }
+
+    private void EndGameAnimation() {
+        if (remainingEndGameAnimationTicks >= END_GAME_ANIMATION_TICKS) {
+            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
+            isPlayingEndGameAnimation = false;
+            MenuController.Singleton.OpenMainMenu();
+            return;
+        }
+
+        remainingEndGameAnimationTicks++;
+
+        float t = (END_GAME_ANIMATION_TICKS - remainingEndGameAnimationTicks) / (float)END_GAME_ANIMATION_TICKS;
+        const float startZoom = 1.0f;
+        const float endZoom = 0.75f;
+
+        float invertedT = 1 - Mathf.Clamp(t, 0, 1);
+        float zoomFactor = Mathf.Log(1 + 9 * invertedT);
+
+        Camera2DInstance.Zoom = new Vector2(
+            startZoom + (endZoom - startZoom) * zoomFactor,
+            startZoom + (endZoom - startZoom) * zoomFactor
+        );
+
+        darknessSprite.Visible = true;
+        darknessSprite.Modulate = new Color(0, 0, 0, Mathf.Clamp(invertedT, 0.0f, 1.0f));
+
+        RemainingScreenShakeTicks = 0; // Reset shake ticks during end game animation
+    }
 
     #region Static values
 
