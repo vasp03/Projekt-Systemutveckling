@@ -196,7 +196,7 @@ public class CardController {
     /// <summary>
     ///     Hides the card value overlay if it exists.
     /// </summary>
-    private void HideCardValue() {
+    public void HideCardValue() {
         if (valueOverlay is null) return;
         valueOverlay.QueueFree();
         valueOverlay = null;

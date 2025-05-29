@@ -143,6 +143,10 @@ public partial class GameController : Node2D {
         GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
         Global.MouseController.SetSellMode(SellModeActive);
         HUD.sellModeButton?.UpdateIcon();
+        
+        if (!SellModeActive) {
+            CardController.HideCardValue();
+        }
     }
 
     public void SetSellMode(bool active) {
