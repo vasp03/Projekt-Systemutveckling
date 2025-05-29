@@ -94,30 +94,36 @@ public class CardController {
     /// </summary>
     /// <param name="cardNodeInstance">The CardNode instance to be added</param>
     public void OnCardHovered(CardNode cardNodeInstance) {
-        CheckForHighLight();
-        if (GameController.SellModeActive)
-            ShowCardValue(cardNodeInstance);
-        if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove &&
-            cardNodeInstance.CardType is CardLiving cardLiving)
-            if (!GameController.SellModeActive)
-                ShowHealthAndHunger(cardLiving);
+        UpdateHighlights(cardNodeInstance);
+        UpdateOverlays(cardNodeInstance);
     }
 
     /// <summary>
     ///     Removes the card from the hovered cards list and sets its highlighted state to false and hides overlays.
     /// </summary>
     public void OnCardUnhovered(CardNode cardNodeInstance) {
-        CheckForHighLight();
-        cardNodeInstance.SetHighlighted(false);
-        if (cardNodeInstance.CardType is CardLiving) HideHealthAndHunger();
-        if (GameController.SellModeActive) HideCardValue();
+        UpdateHighlights(cardNodeInstance);
+        UpdateOverlays(cardNodeInstance);
     }
 
+    private void UpdateOverlays(CardNode cardNodeInstance) {
+        if (!CardIsTopCard(cardNodeInstance)) return;
+        if (cardNodeInstance.MouseIsHovering) {
+            if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove && cardNodeInstance.CardType is CardLiving cardLiving && !GameController.SellModeActive) 
+                ShowHealthAndHunger(cardLiving);
+            if (GameController.SellModeActive)
+                ShowCardValue(cardNodeInstance);
+        } else {
+            HideHealthAndHunger();
+            HideCardValue();
+        }
+    }
 
     /// <summary>
     ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
     /// </summary>
-    public void CheckForHighLight() {
+    public void UpdateHighlights(CardNode cardNodeInstance) {
+        cardNodeInstance?.SetHighlighted(false);
         foreach (CardNode card in HoveredCards)
             if (CardIsTopCard(card))
                 card.SetHighlighted(true);
