@@ -43,6 +43,11 @@ public partial class CardNode : Node2D {
 
     public void Destroy() {
         ClearReferences();
+
+        this.MouseIsHovering = false;
+        
+        CardController.CardRemoved(this);
+        
         QueueFree();
     }
 

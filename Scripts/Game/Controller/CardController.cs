@@ -90,7 +90,7 @@ public class CardController {
     }
 
     /// <summary>
-    ///     Adds the card to the hovered cards list and sets its highlighted state to true and shows overlays if applicable.
+    ///     Fired when a mouse enters the boundary of a card.
     /// </summary>
     /// <param name="cardNodeInstance">The CardNode instance to be added</param>
     public void OnCardHovered(CardNode cardNodeInstance) {
@@ -99,7 +99,16 @@ public class CardController {
     }
 
     /// <summary>
-    ///     Removes the card from the hovered cards list and sets its highlighted state to false and hides overlays.
+    /// Fired when a card is being destroyed through <see cref="CardNode.Destroy"/>.
+    /// </summary>
+    /// <param name="cardNodeRemoving">Card node being removed</param>
+    public void CardRemoved(CardNode cardNodeRemoving) {
+        UpdateHighlights(cardNodeRemoving);
+        UpdateOverlays(cardNodeRemoving);
+    }
+
+    /// <summary>
+    ///     Fired when the mouse leaves the boundary of a card.
     /// </summary>
     public void OnCardUnhovered(CardNode cardNodeInstance) {
         UpdateHighlights(cardNodeInstance);
