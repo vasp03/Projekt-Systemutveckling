@@ -1,6 +1,7 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -13,9 +14,9 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     public DayTimeEvent() {
         oldDayState = DayStateEnum.Invalid;
-        canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
-        timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
-        sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+        canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        timeLabel = GameController.Singleton.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
+        sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
         GameController.Singleton.AddPauseCallback(this);
     }
 
@@ -30,7 +31,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     ///     Sets the paused state of the event.
     /// </summary>
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
-    public void SetPaused(bool isPaused) {
+    public void SetPaused(bool isPaused, bool hideDarknessOverlay = true) {
         GameController gameController = GameController.Singleton;
 
         if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
@@ -41,13 +42,13 @@ public class DayTimeEvent : GameEvent, IPausable {
             !canvasLayer.IsInsideTree())
             canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
 
-        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
+        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = gameController.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
 
         this.isPaused = isPaused;
 
         if (isPaused) {
-            ShowAndHideTimeLabel(false);
-            SetSceneDarkness(1.0f);
+            // ShowAndHideTimeLabel(false);
+            if (hideDarknessOverlay) SetSceneDarkness(1.0f);
         } else {
             ShowAndHideTimeLabel(true);
             SetSceneDarkness(oldSceneDarkness);
@@ -101,7 +102,7 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
 
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }

@@ -201,8 +201,14 @@ public partial class CardNode : Node2D {
     ///     It tries to load the texture from the address of the card type.
     ///     If the texture is not found, it loads the error texture.
     /// </summary>
-    private void UpdateCardTexture() {
-        Texture2D texture;
+    public void UpdateCardTexture(Texture2D texture = null, bool customTexture = false) {
+        if (customTexture) {
+            if (texture is not null && IsInstanceValid(texture)) {
+                CardSprite.Texture = texture;
+                return;
+            }
+        }
+
         // Check if the path is not null or empty and if there is a file at the path
         if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {
             GD.PrintErr("Texture path is null or empty for card: " + CardType.CardNode.CardType + " " +

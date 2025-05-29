@@ -10,7 +10,6 @@ public partial class QuickGuideButton : TextureButton {
     }
 
     public void OnButtonPressed() {
-        SoundController.Singleton.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
         GameController.Singleton.MenuController.QuickOpenGuideMenu();
 
         if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)

@@ -1,21 +1,17 @@
 [gd_scene load_steps=15 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://cbm0e65p06r5y" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://o1wb55vmxiv3" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_m8nr8"]
-[ext_resource type="Script" uid="uid://jqn2gaid60yk" path="res://Scripts/Game/View/HUD.cs" id="5_0vbqt"]
-[ext_resource type="Script" uid="uid://8gjdde1g6hmb" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
-[ext_resource type="Script" uid="uid://bhufpwmstx7re" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
+[ext_resource type="Script" uid="uid://t53s60ki6gau" path="res://Scripts/Game/View/HUD.cs" id="5_0vbqt"]
+[ext_resource type="Script" uid="uid://5ydg72aeby0y" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
+[ext_resource type="Script" uid="uid://d2bvbpx0exd30" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
 [ext_resource type="PackedScene" uid="uid://crfa75uxwe6fa" path="res://Scenes/PackButton.tscn" id="8_w1dup"]
-[ext_resource type="Texture2D" uid="uid://bjhelqhpj4w1r" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
-[ext_resource type="Script" uid="uid://soslvvx83qgi" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
+[ext_resource type="Texture2D" uid="uid://cxlq6spotvoh6" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
+[ext_resource type="Script" uid="uid://c5w2pljekgdfu" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_hewda"]
-font = ExtResource("3_m8nr8")
-font_size = 51
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yyxd1"]
 texture = ExtResource("2_m8nr8")
@@ -26,10 +22,14 @@ texture_region_size = Vector2i(256, 256)
 tile_size = Vector2i(256, 256)
 sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 
+[sub_resource type="LabelSettings" id="LabelSettings_hewda"]
+font = ExtResource("3_m8nr8")
+font_size = 51
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ly6xb")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraCenter" type="Camera2D" parent="."]
 position = Vector2(640, 360)
 
 [node name="WorldBorder" type="Sprite2D" parent="."]
@@ -37,26 +37,13 @@ position = Vector2(640, 360)
 scale = Vector2(1280, 720)
 texture = SubResource("CanvasTexture_m8nr8")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="SceneDarknessCanvas" type="CanvasLayer" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+[node name="SceneDarkness" type="Sprite2D" parent="SceneDarknessCanvas"]
+z_as_relative = false
 position = Vector2(540, 277)
 scale = Vector2(5.508, 3.272)
 texture = ExtResource("2_hewda")
-
-[node name="DayTimeLabel" type="Label" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1096.0
-offset_top = 26.0
-offset_right = -25.0
-offset_bottom = -642.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Error"
-label_settings = SubResource("LabelSettings_hewda")
-uppercase = true
 
 [node name="Background" type="TileMapLayer" parent="."]
 position = Vector2(303, -216)
@@ -141,3 +128,23 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 script = ExtResource("10_mhr8t")
+
+[node name="EndGameOverlay" type="Sprite2D" parent="HUD"]
+visible = false
+position = Vector2(579, 280)
+scale = Vector2(5.404, 3.258)
+texture = ExtResource("2_hewda")
+
+[node name="DayTimeLabel" type="Label" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1096.0
+offset_top = 26.0
+offset_right = -25.0
+offset_bottom = -642.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Error"
+label_settings = SubResource("LabelSettings_hewda")
+uppercase = true
