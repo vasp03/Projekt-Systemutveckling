@@ -14,9 +14,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     public DayTimeEvent() {
         oldDayPhaseState = DayPhaseState.INVALID;
-        canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
-        timeLabel = canvasLayer.GetNode<Label>("DayTimeLabel");
-        sprite = canvasLayer.GetNode<Sprite2D>("Sprite2D");
+        sprite = CanvasLayer.GetNode<Sprite2D>("Sprite2D");
         GameController.Singleton.AddPauseCallback(this);
     }
 
@@ -33,16 +31,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
     public void SetPaused(bool isPaused, bool hideDarknessOverlay = true) {
         GameController gameController = GameController.Singleton;
-
-        if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
-            !gameController.IsInsideTree())
-            return;
-
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer) ||
-            !canvasLayer.IsInsideTree())
-            canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
-
-        if (!GodotObject.IsInstanceValid(timeLabel)) timeLabel = gameController.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
 
         this.isPaused = isPaused;
 
@@ -66,7 +54,7 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         UpdateTemperature(dayTicks);
         SetSceneDarkness(dayTicks);
-        timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
+        TimeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
         dayPhaseState = Utilities.GetCurrentDayState(dayTicks);
 
         if (dayPhaseState == oldDayPhaseState) return;
@@ -100,19 +88,19 @@ public class DayTimeEvent : GameEvent, IPausable {
     private void SetSceneDarkness(float darkness) {
         darkness = Mathf.Clamp(darkness, 0, 1);
 
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
+        if (CanvasLayer is null || !GodotObject.IsInstanceValid(CanvasLayer)) return;
 
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
+        if (sprite is null || !GodotObject.IsInstanceValid(sprite)) sprite = CanvasLayer.GetNode<Sprite2D>("SceneDarkness");
 
         sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
 
     private void ShowAndHideTimeLabel(bool show) {
-        if (timeLabel is null || !GodotObject.IsInstanceValid(timeLabel)) return;
+        if (TimeLabel is null || !GodotObject.IsInstanceValid(TimeLabel)) return;
         if (show)
-            timeLabel.Show();
+            TimeLabel.Show();
         else
-            timeLabel.Hide();
+            TimeLabel.Hide();
     }
 
     private void UpdateTemperature(int ticks) {
@@ -155,9 +143,9 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Game object references
 
-    private CanvasLayer canvasLayer;
+    private CanvasLayer CanvasLayer => GameController.Singleton.GetNode<CanvasLayer>("CanvasLayer");
     private Sprite2D sprite;
-    private Label timeLabel;
+    private Label TimeLabel => CanvasLayer.GetNode<Label>("DayTimeLabel");
 
     #endregion
 
