@@ -27,24 +27,6 @@ public class CameraController : ITickable {
             Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
     }
 
-    /// <summary>
-    ///     Runs screen shaking logic
-    /// </summary>
-    private void ShakeScreen() {
-        if (RemainingScreenShakeTicks > 0) {
-            RemainingScreenShakeTicks--;
-            Camera2DInstance.GlobalPosition = new Vector2(
-                Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 *
-                          X_SHAKE_FREQUENCY),
-                Mathf.Sin(RemainingScreenShakeTicks / (float)Utilities.TICKS_PER_SECOND * Mathf.Pi * 2 *
-                          Y_SHAKE_FREQUENCY)
-            ) * LastScreenShakeIntensity + CAMERA_ORIGIN;
-        } else {
-            Camera2DInstance.GlobalPosition = CAMERA_ORIGIN;
-        }
-    }
-
-
     private void ShakeAnimation() {
         RemainingScreenShakeTicks--;
 

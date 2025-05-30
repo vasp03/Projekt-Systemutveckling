@@ -16,11 +16,13 @@ public class CardController {
 
     public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
     public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
+    public static readonly Vector2 CARD_VALUE_OVERLAY_OFFSET = new(-40, -92);
 
     private CardLivingOverlay currentOverlay;
     private Timer overlayUpdateTimer;
 
     private CardNode selectedCard;
+    private CardValueOverlay valueOverlay;
 
 
     // Constructor
@@ -87,34 +89,54 @@ public class CardController {
     }
 
     /// <summary>
-    ///     Adds the card to the hovered cards list and sets its highlighted state to true.
+    ///     Fired when a mouse enters the boundary of a card.
     /// </summary>
-    public void OnCardHovered(CardNode cardNodeInstance) {
-        CheckForHighLight();
+    /// <param name="cardNodeInstance">The CardNode instance to be added</param>public void OnCardHovered(CardNode cardNodeInstance) {
+        UpdateHighlights(cardNodeInstance);
+        UpdateOverlays(cardNodeInstance);
     }
 
     /// <summary>
-    ///     Removes the card from the hovered cards list and sets its highlighted state to false.
+    ///     Fired when a card is being destroyed through <see cref="CardNode.Destroy" />.
+    /// </summary>
+    /// <param name="cardNodeRemoving">Card node being removed</param>
+    public void CardRemoved(CardNode cardNodeRemoving) {
+        UpdateHighlights(cardNodeRemoving);
+        UpdateOverlays(cardNodeRemoving);
+    }
+
+    /// <summary>
+    ///     Fired when the mouse leaves the boundary of a card.
     /// </summary>
     public void OnCardUnhovered(CardNode cardNodeInstance) {
-        CheckForHighLight();
-        cardNodeInstance.SetHighlighted(false);
-        if (cardNodeInstance.CardType is CardLiving) HideHealthAndHunger();
+        UpdateHighlights(cardNodeInstance);
+        UpdateOverlays(cardNodeInstance);
+    }
+        private void UpdateOverlays(CardNode cardNodeInstance) {
+        if (!CardIsTopCard(cardNodeInstance)) return;
+        if (cardNodeInstance.MouseIsHovering) {
+            if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove &&
+                cardNodeInstance.CardType is CardLiving cardLiving && !GameController.SellModeActive)
+                ShowHealthAndHunger(cardLiving);
+            if (GameController.SellModeActive)
+                ShowCardValue(cardNodeInstance);
+        } else { HideHealthAndHunger();
+    HideCardValue();
+        }
     }
 
     /// <summary>
     ///     Checks if the card is the top card on the scene which the mouse is hovering over and sets the highlighted state.
     /// </summary>
-    public void CheckForHighLight() {
+    public void UpdateHighlights(CardNode cardNodeInstance) {
+        cardNodeInstance?.SetHighlighted(false);
         foreach (CardNode card in HoveredCards)
-            if (CardIsTopCard(card)) {
+            if (CardIsTopCard(card)) 
                 card.SetHighlighted(true);
-                if (!card.Dragged && !card.HasNeighbourAbove && card.CardType is CardLiving cardLiving)
-                    ShowHealthAndHunger(cardLiving);
-            } else {
+                 else
                 card.SetHighlighted(false);
             }
-    }
+    
 
     private void ShowHealthAndHunger(CardLiving cardLiving) {
         HideHealthAndHunger();
@@ -128,7 +150,7 @@ public class CardController {
         currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
         currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
 
-        // Add the overlay to the same parent as the card
+        
         cardLiving.CardNode.GetParent().AddChild(currentOverlay);
 
         overlayUpdateTimer = new Timer();
@@ -148,11 +170,36 @@ public class CardController {
             overlayUpdateTimer = null;
         }
 
-        // Remove the existing overlay if it exists
+        
         if (currentOverlay is not null && currentOverlay.IsInsideTree()) {
             currentOverlay.QueueFree();
             currentOverlay = null;
         }
+    }
+
+    /// <summary>
+    ///     Shows value of a card that is being hovered, if sell mode is active.
+    /// </summary>
+    /// <param name="card">The card that is being hovered</param>
+    private void ShowCardValue(CardNode card) {
+        HideCardValue();
+
+        PackedScene cardValueOverlay = GD.Load<PackedScene>("res://Scenes/ProgressBars/CardValueOverlay.tscn");
+        valueOverlay = cardValueOverlay.Instantiate<CardValueOverlay>();
+
+        valueOverlay.Position = card.Position + CARD_VALUE_OVERLAY_OFFSET;
+        valueOverlay.SetValue(card.CardType.Value);
+
+        card.GetParent().AddChild(valueOverlay);
+    }
+
+    /// <summary>
+    ///     Hides the card value overlay if it exists.
+    /// </summary>
+    public void HideCardValue() {
+        if (valueOverlay is null) return;
+        valueOverlay.QueueFree();
+        valueOverlay = null;
     }
 
     /// <summary>

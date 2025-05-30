@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
 using Goodot15.Scripts.Game.Controller.Events;
@@ -31,29 +33,6 @@ public partial class GameOverMenu : Control, IMenuAnimation {
     private Sprite2D TimeDarknessSprite => GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>()
         .DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
 
-    public void Animate() {
-        background.Visible = true;
-        exitGameButton.Visible = true;
-        backToMenuButton.Visible = true;
-        gameOverLabel.Visible = true;
-
-        timeDarknessStart = TimeDarknessSprite.Modulate.A;
-
-        background.Modulate = new Color(0, 0, 0, timeDarknessStart);
-        TimeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
-
-        hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
-        hudChildren = hud.GetChildren();
-
-        exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
-        backToMenuButton.Modulate = new Color(1, 1, 1, 0.0f);
-        gameOverLabel.Modulate = new Color(1, 1, 1, 0.0f);
-
-        animationTicks = 0;
-
-        isAnimating = true;
-    }
-
     public override void _Ready() {
         background = GetNode<Sprite2D>("Background");
         exitGameButton = GetNode<Button>("ExitGame");
@@ -79,6 +58,29 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         menuController.GetTree().Paused = false;
         soundController.MusicMuted = false;
         isAnimating = false;
+    }
+
+    public void Animate() {
+        background.Visible = true;
+        exitGameButton.Visible = true;
+        backToMenuButton.Visible = true;
+        gameOverLabel.Visible = true;
+
+        timeDarknessStart = TimeDarknessSprite.Modulate.A;
+
+        background.Modulate = new Color(0, 0, 0, timeDarknessStart);
+        TimeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
+
+        hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
+        hudChildren = hud.GetChildren();
+
+        exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
+        backToMenuButton.Modulate = new Color(1, 1, 1, 0.0f);
+        gameOverLabel.Modulate = new Color(1, 1, 1, 0.0f);
+
+        animationTicks = 0;
+
+        isAnimating = true;
     }
 
     public override void _PhysicsProcess(double delta) {
