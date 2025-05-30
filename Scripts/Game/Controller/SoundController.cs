@@ -130,20 +130,14 @@ public partial class SoundController : Node {
             return;
         }
 
-        Tween tween = CreateTween();
-        tween.TweenProperty(MusicPlayer, "volume_db", -80, 5f); // Fade out over 5 seconds
-        tween.Finished += () => {
-            MusicPlayer.Stop();
-            MusicPlayer.Stream = null;
-            CurrentPlayingMusicPath = musicPath;
-            MusicPlayer.Stream = LoadMusic(musicPath);
-            MusicPlayer.VolumeDb = MusicMuted
-                ? -80
-                : Mathf.LinearToDb(MusicVolume);
-            MusicPlayer.Play();
-        };
-
-
+        MusicPlayer.Stop();
+        MusicPlayer.Stream = null;
+        CurrentPlayingMusicPath = musicPath;
+        MusicPlayer.Stream = LoadMusic(musicPath);
+        MusicPlayer.VolumeDb = MusicMuted
+            ? -80
+            : Mathf.LinearToDb(MusicVolume);
+        MusicPlayer.Play();
     }
 
     /// <summary>
@@ -180,16 +174,13 @@ public partial class SoundController : Node {
     public void PlaySound(string soundName) {
         AudioStreamPlayer player = new();
         player.Stream = LoadSound(soundName);
-        player.VolumeDb = -80;
+        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
 
         AddChild(player);
         player.Play();
-
-        Tween tween = CreateTween();
-        tween.TweenProperty(player, "volume_db", SfxMuted ? -80 : Mathf.LinearToDb(SfxVolume), 5f);
     }
 
     /// <summary>
