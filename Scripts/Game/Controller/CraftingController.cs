@@ -21,20 +21,15 @@ public class CraftingController {
     ///     If no cards can be crafted, returns null
     /// </summary>
     /// <param name="Cards">List of cards to check</param>
+    /// <summary>
+    ///     Check if the cards in the stack can be crafted into a new card
+    ///     Returns a list of the cards that can be crafted
+    ///     If no cards can be crafted, returns null
+    /// </summary>
+    /// <param name="Cards">List of cards to check</param>
     public Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> CheckForCraftingWithStackable(
         IReadOnlyList<Card> Cards) {
-        Pair<string, int>[] CardForCraftingAmount =
-            CollectTotalCardTypesInStack(Cards).OrderByDescending(e => e.Left).ToArray();
-
-        // foreach (Card card in Cards) {
-        //     // Left (L) being card type ID; Right (R) being count of cards to crafted
-        //     Pair<string, int> cardForCrafting =
-        //         CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
-        //     if (cardForCrafting is not null)
-        //         cardForCrafting.Right++;
-        //     else
-        //         CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
-        // }
+        IReadOnlyList<Pair<string, int>> CardForCraftingAmount = CollectTotalCardTypesInStack(Cards);
 
         // Sort the list by the name of the card
         // CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
@@ -56,7 +51,7 @@ public class CraftingController {
             // Check if the recipe matches the cards in the stack
             bool recipeMatches = true;
 
-            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Length) continue;
+            if (CardsInRecipeAndAmount.Count != CardForCraftingAmount.Count) continue;
 
             for (int i = 0; i < CardsInRecipeAndAmount.Count; i++)
                 if (CardsInRecipeAndAmount[i].Left != CardForCraftingAmount[i].Left ||
@@ -80,11 +75,11 @@ public class CraftingController {
     /// </summary>
     /// <param name="cards"></param>
     /// <returns></returns>
-    private static IReadOnlyCollection<Pair<string, int>>
+    private static IReadOnlyList<Pair<string, int>>
         CollectTotalCardTypesInStack(IReadOnlyCollection<Card> cards) {
-        IList<Pair<string, int>> CardForCraftingAmount = [];
+        List<Pair<string, int>> CardForCraftingAmount = [];
+
         foreach (Card card in cards) {
-            // Left (L) being card type ID; Right (R) being count of cards to crafted
             Pair<string, int> cardForCrafting =
                 CardForCraftingAmount.FirstOrDefault(x => x.Left == card.CardName);
             if (cardForCrafting is not null)
@@ -93,7 +88,10 @@ public class CraftingController {
                 CardForCraftingAmount.Add(new Pair<string, int>(card.CardName, 1));
         }
 
-        return CardForCraftingAmount.ToArray();
+        // Sort the list by the name of the card
+        CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
+        
+        return CardForCraftingAmount;
     }
 
     #region Recipe registration
