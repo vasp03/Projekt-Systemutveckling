@@ -32,8 +32,7 @@ public partial class SoundController : Node {
     public float SfxVolume {
         get => _sfxVolume;
         set {
-            _sfxVolume = value;
-            Mathf.Clamp(value, 0.0f, 1.0f);
+            _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f); ;
             UpdateAmbianceVolume();
         }
     }
@@ -267,6 +266,7 @@ public partial class SoundController : Node {
     private const string BASE_AMBIANCE_PATH = "res://Assets/Sounds/Ambiance";
 
     private List<AudioStreamPlayer> AmbiancePlayers = new();
+    private List<AudioStreamPlayer> playersToRemove = new();
 
     private float ambianceVolumeMultiplier = 3;
 
@@ -278,15 +278,19 @@ public partial class SoundController : Node {
                 // Fade out before removing the player
                 if (IsInstanceValid(player)) {
                     Tween tween = CreateTween();
-                    tween.TweenProperty(player, "volume_db", -80, 4.0f); // Fade out over 1 second
+                    tween.TweenProperty(player, "volume_db", -80, 4.0f); // Fade out over 4 second
                     tween.Finished += () => {
-                        AmbiancePlayers.Remove(player);
+                        playersToRemove.Add(player);
                         player.QueueFree();
                     };
                 } else {
-                    AmbiancePlayers.Remove(player);
+                    playersToRemove.Add(player);
                 }
             }
+        }
+
+        foreach (AudioStreamPlayer player in playersToRemove) {
+            AmbiancePlayers.Remove(player);
         }
     }
 

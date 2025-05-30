@@ -59,8 +59,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     public override void OnEvent(GameEventContext context) {
         if (isPaused) return;
 
-        GameController gameController = GameController.Singleton;
-
         dayTicks++;
 
         if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
@@ -74,25 +72,25 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         switch (dayState) {
             case DayStateEnum.Night:
-                gameController.SoundController.PlayDayTimeSong("Night");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
+                SoundController.Singleton.PlayDayTimeSong("Night");
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind, false);
                 break;
             case DayStateEnum.Morning:
-                gameController.SoundController.PlayDayTimeSong("Morning");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
+                SoundController.Singleton.PlayDayTimeSong("Morning");
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest, false);
                 break;
             case DayStateEnum.Day:
-                gameController.SoundController.PlayDayTimeSong("Day");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
+                SoundController.Singleton.PlayDayTimeSong("Day");
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest, false);
                 break;
             case DayStateEnum.Evening:
-                gameController.SoundController.PlayDayTimeSong("Evening");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
+                SoundController.Singleton.PlayDayTimeSong("Evening");
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind, false);
                 break;
             case DayStateEnum.Invalid:
             case DayStateEnum.Paused:
             default:
-                gameController.SoundController.ToggleMusicMuted();
+                SoundController.Singleton.ToggleMusicMuted();
                 break;
         }
 
