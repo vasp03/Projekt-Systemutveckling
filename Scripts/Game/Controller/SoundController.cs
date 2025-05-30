@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -30,7 +31,11 @@ public partial class SoundController : Node {
 
     public float SfxVolume {
         get => _sfxVolume;
-        set => _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
+        set {
+            _sfxVolume = value;
+            Mathf.Clamp(value, 0.0f, 1.0f);
+            UpdateAmbianceVolume();
+        }
     }
 
     public override void _Ready() {
@@ -256,4 +261,119 @@ public partial class SoundController : Node {
     }
 
     #endregion Settings & configurability related
+
+    #region Ambiance-related
+
+    private const string BASE_AMBIANCE_PATH = "res://Assets/Sounds/Ambiance";
+
+    private List<AudioStreamPlayer> AmbiancePlayers = new();
+
+    private float ambianceVolumeMultiplier = 3;
+
+    private void UpdateAmbianceVolume() {
+        foreach (AudioStreamPlayer player in AmbiancePlayers) {
+            if (IsInstanceValid(player)) {
+                player.VolumeDb = Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
+            } else {
+                // Fade out before removing the player
+                if (IsInstanceValid(player)) {
+                    Tween tween = CreateTween();
+                    tween.TweenProperty(player, "volume_db", -80, 4.0f); // Fade out over 1 second
+                    tween.Finished += () => {
+                        AmbiancePlayers.Remove(player);
+                        player.QueueFree();
+                    };
+                } else {
+                    AmbiancePlayers.Remove(player);
+                }
+            }
+        }
+    }
+
+    public void PlayAmbianceType(AmbianceTypeEnum ambianceType, bool stopCurrent = true) {
+        if (stopCurrent) {
+            StopAmbianceType(ambianceType);
+        }
+
+        // Get all files in the corresponding folder for the ambiance type
+        string folderPath = $"{BASE_AMBIANCE_PATH}/{ambianceType}";
+        var dir = DirAccess.Open(folderPath);
+        if (dir == null) {
+            return;
+        }
+
+        List<string> files = dir.GetFiles().Where(f => f.EndsWith(".mp3")).ToList();
+
+        if (files.Count == 0) {
+            return;
+        }
+
+        // Pick a random file
+        string ambianceName = $"{ambianceType}/{files[GD.RandRange(0, files.Count - 1)]}";
+        if (ambianceName == "None") return;
+
+        PlayAmbiance(ambianceName, ambianceType);
+    }
+
+    public void StopAmbianceType(AmbianceTypeEnum ambianceType) {
+        string ambianceName = ambianceType.ToString();
+
+        if (AmbiancePlayers.Count == 0 || ambianceName == "None") {
+            return;
+        }
+
+        // Stop all ambiance players of the specified type
+        for (int i = 0; i < AmbiancePlayers.Count; i++) {
+            AudioStreamPlayer player = AmbiancePlayers[i];
+            if (IsInstanceValid(player) == false) {
+                AmbiancePlayers.RemoveAt(i);
+                i--; // Adjust index after removal
+                continue;
+            }
+
+            if (player.Name != ambianceName) {
+                player.Stop();
+                player.QueueFree();
+                AmbiancePlayers.RemoveAt(i);
+                i--; // Adjust index after removal
+            }
+        }
+    }
+
+    private void PlayAmbiance(string ambianceName, AmbianceTypeEnum ambianceType = AmbianceTypeEnum.None) {
+        AudioStreamPlayer player = new();
+        AmbiancePlayers.Add(player);
+
+        player.Bus = "Ambiance";
+        player.Name = ambianceType.ToString();
+
+        player.Stream = LoadAmbiance(ambianceName);
+        player.VolumeDb = Mathf.LinearToDb(-80);
+
+        // Queues the node to be deleted when player.Finished emits.
+        player.Finished += () => player.QueueFree();
+
+        AddChild(player);
+        player.Play();
+        Tween tween = CreateTween();
+        tween.TweenProperty(player, "volume_db", Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier), 4.0f);
+        tween.Finished += () => {
+            if (IsInstanceValid(player)) {
+                player.VolumeDb = Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
+            }
+        };
+    }
+
+    private AudioStream LoadAmbiance(string ambianceName) {
+        if (CachedSounds.TryGetValue(ambianceName, out AudioStream audioStream))
+            return audioStream;
+
+        // Ambiance not loaded, first time setup
+        audioStream = GD.Load<AudioStream>($"{BASE_AMBIANCE_PATH}/{ambianceName}");
+        CachedSounds.Add(ambianceName, audioStream);
+
+        return audioStream;
+    }
+
+    #endregion Ambiance-related
 }
