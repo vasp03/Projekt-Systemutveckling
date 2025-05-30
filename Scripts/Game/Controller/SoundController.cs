@@ -130,12 +130,20 @@ public partial class SoundController : Node {
             return;
         }
 
-        CurrentPlayingMusicPath = musicPath;
-        MusicPlayer.Stream = LoadMusic(musicPath);
-        MusicPlayer.VolumeDb = MusicMuted
-            ? -80
-            : Mathf.LinearToDb(MusicVolume);
-        MusicPlayer.Play();
+        Tween tween = CreateTween();
+        tween.TweenProperty(MusicPlayer, "volume_db", -80, 5f); // Fade out over 5 seconds
+        tween.Finished += () => {
+            MusicPlayer.Stop();
+            MusicPlayer.Stream = null;
+            CurrentPlayingMusicPath = musicPath;
+            MusicPlayer.Stream = LoadMusic(musicPath);
+            MusicPlayer.VolumeDb = MusicMuted
+                ? -80
+                : Mathf.LinearToDb(MusicVolume);
+            MusicPlayer.Play();
+        };
+
+
     }
 
     /// <summary>
@@ -172,13 +180,16 @@ public partial class SoundController : Node {
     public void PlaySound(string soundName) {
         AudioStreamPlayer player = new();
         player.Stream = LoadSound(soundName);
-        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
+        player.VolumeDb = -80;
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
 
         AddChild(player);
         player.Play();
+
+        Tween tween = CreateTween();
+        tween.TweenProperty(player, "volume_db", SfxMuted ? -80 : Mathf.LinearToDb(SfxVolume), 5f);
     }
 
     /// <summary>
@@ -277,6 +288,7 @@ public partial class SoundController : Node {
             } else {
                 // Fade out before removing the player
                 if (IsInstanceValid(player)) {
+                    ReplayPlayerAmbiance(player);
                     Tween tween = CreateTween();
                     tween.TweenProperty(player, "volume_db", -80, 4.0f); // Fade out over 4 second
                     tween.Finished += () => {
@@ -352,7 +364,7 @@ public partial class SoundController : Node {
         player.Name = ambianceType.ToString();
 
         player.Stream = LoadAmbiance(ambianceName);
-        player.VolumeDb = Mathf.LinearToDb(-80);
+        player.VolumeDb = -80;
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => player.QueueFree();
@@ -366,6 +378,14 @@ public partial class SoundController : Node {
                 player.VolumeDb = Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
             }
         };
+    }
+
+    private void ReplayPlayerAmbiance(AudioStreamPlayer player) {
+        if (IsInstanceValid(player)) {
+            player.Stop();
+            player.Stream = LoadAmbiance(player.Name);
+            player.Play();
+        }
     }
 
     private AudioStream LoadAmbiance(string ambianceName) {
