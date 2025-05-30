@@ -90,7 +90,7 @@ public class CraftingController {
 
         // Sort the list by the name of the card
         CardForCraftingAmount.Sort((x, y) => x.Left.CompareTo(y.Left));
-        
+
         return CardForCraftingAmount;
     }
 
