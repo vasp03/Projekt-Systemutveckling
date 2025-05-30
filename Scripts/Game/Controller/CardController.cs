@@ -92,6 +92,7 @@ public class CardController {
     ///     Fired when a mouse enters the boundary of a card.
     /// </summary>
     /// <param name="cardNodeInstance">The CardNode instance to be added</param>public void OnCardHovered(CardNode cardNodeInstance) {
+    public void OnCardHovered(CardNode cardNodeInstance) {
         UpdateHighlights(cardNodeInstance);
         UpdateOverlays(cardNodeInstance);
     }
