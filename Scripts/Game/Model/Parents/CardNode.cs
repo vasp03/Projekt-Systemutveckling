@@ -207,7 +207,7 @@ public partial class CardNode : Node2D {
     ///     Unless a custom texture is supplied, which then will be used instead
     ///     If the texture is not found, it loads the error texture.
     /// </summary>
-    /// <param name="texture">Texture to use instead. Null to use the underlying <see cref="CardType"/> texture</param>
+    /// <param name="texture">Texture to use instead. Null to use the underlying <see cref="CardType" /> texture</param>
     public void UpdateCardTexture(Texture2D texture = null) {
         if (texture is not null && IsInstanceValid(texture)) {
             CardSprite.Texture = texture;

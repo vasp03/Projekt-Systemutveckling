@@ -136,8 +136,8 @@ public partial class GameController : Node2D {
         set {
             sellModeActive = value;
             SellModeLabel.Visible = value;
-        
-    if (!sellModeActive)
+
+            if (!sellModeActive)
                 CardController.HideCardValue();
         }
     }

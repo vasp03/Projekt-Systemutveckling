@@ -91,7 +91,8 @@ public class CardController {
     /// <summary>
     ///     Fired when a mouse enters the boundary of a card.
     /// </summary>
-    /// <param name="cardNodeInstance">The CardNode instance to be added</param>public void OnCardHovered(CardNode cardNodeInstance) {
+    /// <param name="cardNodeInstance">The CardNode instance to be added</param>
+    /// public void OnCardHovered(CardNode cardNodeInstance) {
     public void OnCardHovered(CardNode cardNodeInstance) {
         UpdateHighlights(cardNodeInstance);
         UpdateOverlays(cardNodeInstance);
@@ -113,7 +114,8 @@ public class CardController {
         UpdateHighlights(cardNodeInstance);
         UpdateOverlays(cardNodeInstance);
     }
-        private void UpdateOverlays(CardNode cardNodeInstance) {
+
+    private void UpdateOverlays(CardNode cardNodeInstance) {
         if (!CardIsTopCard(cardNodeInstance)) return;
         if (cardNodeInstance.MouseIsHovering) {
             if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove &&
@@ -121,8 +123,9 @@ public class CardController {
                 ShowHealthAndHunger(cardLiving);
             if (GameController.SellModeActive)
                 ShowCardValue(cardNodeInstance);
-        } else { HideHealthAndHunger();
-    HideCardValue();
+        } else {
+            HideHealthAndHunger();
+            HideCardValue();
         }
     }
 
@@ -132,12 +135,12 @@ public class CardController {
     public void UpdateHighlights(CardNode cardNodeInstance) {
         cardNodeInstance?.SetHighlighted(false);
         foreach (CardNode card in HoveredCards)
-            if (CardIsTopCard(card)) 
+            if (CardIsTopCard(card))
                 card.SetHighlighted(true);
-                 else
+            else
                 card.SetHighlighted(false);
-            }
-    
+    }
+
 
     private void ShowHealthAndHunger(CardLiving cardLiving) {
         HideHealthAndHunger();
@@ -151,7 +154,7 @@ public class CardController {
         currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
         currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
 
-        
+
         cardLiving.CardNode.GetParent().AddChild(currentOverlay);
 
         overlayUpdateTimer = new Timer();
@@ -171,7 +174,7 @@ public class CardController {
             overlayUpdateTimer = null;
         }
 
-        
+
         if (currentOverlay is not null && currentOverlay.IsInsideTree()) {
             currentOverlay.QueueFree();
             currentOverlay = null;
