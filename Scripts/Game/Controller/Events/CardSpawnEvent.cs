@@ -22,9 +22,9 @@ public abstract class CardSpawnEvent : GameEvent {
     public override void OnEvent(GameEventContext context) {
         if (SpawnCardSfx is not null) context.GameController.SoundController.PlaySound(SpawnCardSfx);
 
+        context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Rain);
         for (int i = 0; i < SpawnCardCount; i++) {
             context.GameController.CardController.CreateCard(CardInstance(), context.GameController.NextRandomPositionOnScreen());
-            context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Rain);
         }
     }
 }
