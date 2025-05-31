@@ -301,14 +301,7 @@ public partial class SoundController : Node {
     /// <param name="ambianceType">The type of ambiance to play, e.g. Rain, Forest, etc.</param>
     /// <param name="stopCurrent">If true, stops any currently playing ambiance of the same type before playing the new one.</param>
     public void PlayAmbianceType(AmbianceTypeEnum ambianceType) {
-        if (ambianceType == AmbianceTypeEnum.None) return;
-
-        if (AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) {
-            GD.PrintErr($"Ambiance of type {ambianceType} is already playing.");
-            return;
-        } else {
-            GD.PrintErr($"Playing ambiance of type: {ambianceType}");
-        }
+        if (ambianceType == AmbianceTypeEnum.None || AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) return;
 
         if (ambianceType == AmbianceTypeEnum.Wind) {
             StopAmbianceType(AmbianceTypeEnum.Forest);
@@ -354,8 +347,6 @@ public partial class SoundController : Node {
     public void StopAmbianceType(AmbianceTypeEnum ambianceType) {
         string ambianceName = ambianceType.ToString();
 
-        GD.PrintErr($"Stopping ambiance of type: {ambianceName}");
-
         if (AmbiancePlayers.Count is 0) {
             return;
         }
@@ -368,7 +359,6 @@ public partial class SoundController : Node {
                 player.QueueFree();
                 AmbiancePlayers.RemoveAt(i);
             } else {
-                GD.PrintErr($"Invalid player instance or not matching type: {player.Name}");
                 AmbiancePlayers.RemoveAt(i);
             }
         }
@@ -394,13 +384,7 @@ public partial class SoundController : Node {
     /// </summary>
     /// <param name="ambianceName">Name coresponds to the file name in the Ambiance folder, e.g. "Rain" or "Forest"</param>
     private void PlayAmbiance(string ambianceName, AmbianceTypeEnum ambianceType) {
-        if (ambianceType == AmbianceTypeEnum.None) {
-            GD.PrintErr("Ambiance type is None, not playing any ambiance sound.");
-            return;
-        }
-
-        if (AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) {
-            GD.PrintErr($"Ambiance of type {ambianceType} is already playing.");
+        if (ambianceType == AmbianceTypeEnum.None || AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) {
             return;
         }
 
@@ -415,7 +399,6 @@ public partial class SoundController : Node {
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => {
-            GD.PrintErr($"Finished playing ambiance: {ambianceName}");
             if (AmbiancePlayers.Contains(player)) {
                 AmbiancePlayers.Remove(player);
             }

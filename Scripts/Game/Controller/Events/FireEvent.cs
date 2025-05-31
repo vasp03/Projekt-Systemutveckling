@@ -16,4 +16,9 @@ public class FireEvent : CardSpawnEvent {
     public override Card CardInstance() {
         return new MaterialFire();
     }
+
+    public override void OnEvent(GameEventContext context) {
+        context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Fire);
+        base.OnEvent(context);
+    }
 }

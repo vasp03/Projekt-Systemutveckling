@@ -26,20 +26,8 @@ public abstract class CardSpawnEvent : GameEvent {
     public override void OnEvent(GameEventContext context) {
         if (SpawnCardSfx is not null) context.GameController.SoundController.PlaySound(SpawnCardSfx);
 
-        List<CardNode> spawnedCardNode = new List<CardNode>();
-
         for (int i = 0; i < SpawnCardCount; i++) {
-            CardNode spawnedCard = context.GameController.CardController.CreateCard(CardInstance(), context.GameController.NextRandomPositionOnScreen());
-            GD.PrintErr($"CardSpawnEvent: Spawned card {i + 1} of {SpawnCardCount}. Cardtype: {spawnedCard?.CardType}");
-
-            switch (spawnedCard?.CardType) {
-                case MaterialWater:
-                    context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Rain);
-                    break;
-                case MaterialFire:
-                    context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Fire);
-                    break;
-            }
+            context.GameController.CardController.CreateCard(CardInstance(), context.GameController.NextRandomPositionOnScreen());
         }
     }
 }
