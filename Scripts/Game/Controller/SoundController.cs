@@ -32,7 +32,7 @@ public partial class SoundController : Node {
     public float SfxVolume {
         get => _sfxVolume;
         set {
-            _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f); ;
+            _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
             UpdateAmbianceVolume();
         }
     }
