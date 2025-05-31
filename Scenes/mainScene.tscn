@@ -24,7 +24,7 @@ sources/0 = SubResource("TileSetAtlasSource_yyxd1")
 
 [sub_resource type="LabelSettings" id="LabelSettings_hewda"]
 font = ExtResource("3_m8nr8")
-font_size = 51
+font_size = 37
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ly6xb")
@@ -57,15 +57,15 @@ MoneyLabel = NodePath("MoneyLabel")
 FloatingMoneyRoot = NodePath("HUDRoot/FloatingMoneyRoot")
 
 [node name="GoldIcon" type="TextureRect" parent="HUD"]
-offset_left = 12.0
+offset_left = 22.0
 offset_top = 20.0
-offset_right = 52.0
+offset_right = 62.0
 offset_bottom = 60.0
 
 [node name="MoneyLabel" type="Label" parent="HUD"]
-offset_left = 54.0
+offset_left = 64.0
 offset_top = 29.0
-offset_right = 94.0
+offset_right = 104.0
 offset_bottom = 52.0
 
 [node name="HUDRoot" type="Control" parent="HUD"]
@@ -123,8 +123,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 script = ExtResource("10_mhr8t")
@@ -139,12 +141,44 @@ texture = ExtResource("2_hewda")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1096.0
-offset_top = 26.0
-offset_right = -25.0
+offset_left = 1124.0
+offset_top = 40.0
+offset_right = -40.0
 offset_bottom = -642.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_m8nr8")
 text = "Error"
 label_settings = SubResource("LabelSettings_hewda")
 uppercase = true
+
+[node name="TextureRect" type="TextureRect" parent="HUD"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TutorialBubble" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="TutorialBubble"]
+offset_left = 340.0
+offset_top = 34.0
+offset_right = 940.0
+offset_bottom = 168.0
+
+[node name="Label" type="Label" parent="TutorialBubble/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_m8nr8")
+theme_override_font_sizes/font_size = 28
+autowrap_mode = 3
+
+[node name="Arrow" type="TextureRect" parent="TutorialBubble"]
+offset_right = 40.0
+offset_bottom = 40.0
