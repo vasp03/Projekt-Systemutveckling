@@ -117,10 +117,14 @@ public class CraftingController {
         AddRecipe(new CraftingRecipe("Berry", ["Bush", "Farmer"], ["Berry", "Berry", "Berry", "Berry", "Berry"],
             ["Bush"]));
 
-        AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood", "Wood", "Wood"], ["Tree"]));
-        AddRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"], ["Tree"]));
+        AddRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"],
+            ["Tree"]));
+        AddRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"],
+            ["Tree"]));
+        AddRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"],
+            ["Leaves", "Leaves", "Apple", "Wood", "Wood", "Wood", "Wood"], ["Tree"]));
+        AddRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"],
+            ["Tree"]));
 
         AddRecipe(new CraftingRecipe("FishingPole", ["Stick", "Stone"], ["FishingPole"], ["Stick", "Stone"]));
 

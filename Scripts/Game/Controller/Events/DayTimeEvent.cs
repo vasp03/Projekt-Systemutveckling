@@ -75,19 +75,19 @@ public class DayTimeEvent : GameEvent, IPausable {
         switch (dayState) {
             case DayStateEnum.Night:
                 SoundController.Singleton.PlayDayTimeSong("Night");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
             case DayStateEnum.Morning:
                 SoundController.Singleton.PlayDayTimeSong("Morning");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
             case DayStateEnum.Day:
                 SoundController.Singleton.PlayDayTimeSong("Day");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
             case DayStateEnum.Evening:
                 SoundController.Singleton.PlayDayTimeSong("Evening");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
             case DayStateEnum.Invalid:
             case DayStateEnum.Paused:

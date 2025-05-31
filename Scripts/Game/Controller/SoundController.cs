@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts.Game.Controller;
 
@@ -138,9 +138,7 @@ public partial class SoundController : Node {
                 LoadAndStartPlayingMusic(musicPath);
             };
         } else {
-            if (MusicPlayer.Stream != null && MusicPlayer.Playing) {
-                MusicPlayer.Stop();
-            }
+            if (MusicPlayer.Stream != null && MusicPlayer.Playing) MusicPlayer.Stop();
 
             LoadAndStartPlayingMusic(musicPath);
         }
@@ -281,37 +279,35 @@ public partial class SoundController : Node {
     #region Ambiance-related
 
     private const string BASE_AMBIANCE_PATH = "res://Assets/Sounds/Ambiance";
-    private List<AudioStreamPlayer> AmbiancePlayers = new();
+    private readonly List<AudioStreamPlayer> AmbiancePlayers = new();
     private float ambianceVolumeMultiplier = 3;
 
     private void UpdateAmbianceVolume() {
-        foreach (AudioStreamPlayer player in AmbiancePlayers) {
+        foreach (AudioStreamPlayer player in AmbiancePlayers)
             if (IsInstanceValid(player)) {
                 player.VolumeDb = Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
             } else {
                 AmbiancePlayers.Remove(player);
                 player.QueueFree();
             }
-        }
     }
 
     /// <summary>
-    ///   Plays a random ambiance sound of the specified type.
+    ///     Plays a random ambiance sound of the specified type.
     /// </summary>
-    /// <param name="ambianceType">The type of ambiance to play, e.g. Rain, Forest, etc.</param>
+    /// <param name="ambianceSoundType">The type of ambiance to play, e.g. Rain, Forest, etc.</param>
     /// <param name="stopCurrent">If true, stops any currently playing ambiance of the same type before playing the new one.</param>
-    public void PlayAmbianceType(AmbianceTypeEnum ambianceType) {
-        if (ambianceType == AmbianceTypeEnum.None || AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) return;
+    public void PlayAmbianceType(AmbianceSoundType ambianceSoundType) {
+        if (ambianceSoundType == AmbianceSoundType.None ||
+            AmbiancePlayers.Any(p => p.Name == ambianceSoundType.ToString())) return;
 
-        if (ambianceType == AmbianceTypeEnum.Wind) {
-            StopAmbianceType(AmbianceTypeEnum.Forest);
-        } else if (ambianceType == AmbianceTypeEnum.Forest) {
-            StopAmbianceType(AmbianceTypeEnum.Wind);
-        }
+        if (ambianceSoundType == AmbianceSoundType.Wind)
+            StopAmbianceType(AmbianceSoundType.Forest);
+        else if (ambianceSoundType == AmbianceSoundType.Forest) StopAmbianceType(AmbianceSoundType.Wind);
 
         // Get all files in the corresponding folder for the ambiance type
-        string folderPath = $"{BASE_AMBIANCE_PATH}/{ambianceType}";
-        var dir = DirAccess.Open(folderPath);
+        string folderPath = $"{BASE_AMBIANCE_PATH}/{ambianceSoundType}";
+        DirAccess dir = DirAccess.Open(folderPath);
         if (dir == null) {
             GD.PrintErr($"Failed to open directory: {folderPath}, SoundController");
             return;
@@ -325,31 +321,27 @@ public partial class SoundController : Node {
         }
 
         // Pick a random file
-        string ambianceName = $"{ambianceType}/{files[GD.RandRange(0, files.Count - 1)]}";
+        string ambianceName = $"{ambianceSoundType}/{files[GD.RandRange(0, files.Count - 1)]}";
 
-        PlayAmbiance(ambianceName, ambianceType);
+        PlayAmbiance(ambianceName, ambianceSoundType);
     }
 
     /// <summary>
-    ///    Stops all currently playing ambiance sounds of the specified type.
+    ///     Stops all currently playing ambiance sounds of the specified type.
     /// </summary>
     /// <param name="ambianceTypes">The type of ambiance to stop, e.g. Rain, Forest, etc. from a list</param>
-    public void StopAmbianceType(List<AmbianceTypeEnum> ambianceTypes) {
-        foreach (AmbianceTypeEnum ambianceType in ambianceTypes) {
-            StopAmbianceType(ambianceType);
-        }
+    public void StopAmbianceType(List<AmbianceSoundType> ambianceTypes) {
+        foreach (AmbianceSoundType ambianceType in ambianceTypes) StopAmbianceType(ambianceType);
     }
 
     /// <summary>
-    ///    Stops all currently playing ambiance sounds of the specified type.
+    ///     Stops all currently playing ambiance sounds of the specified type.
     /// </summary>
-    /// <param name="ambianceType">The type of ambiance to stop, e.g. Rain, Forest, etc.</param>
-    public void StopAmbianceType(AmbianceTypeEnum ambianceType) {
-        string ambianceName = ambianceType.ToString();
+    /// <param name="ambianceSoundType">The type of ambiance to stop, e.g. Rain, Forest, etc.</param>
+    public void StopAmbianceType(AmbianceSoundType ambianceSoundType) {
+        string ambianceName = ambianceSoundType.ToString();
 
-        if (AmbiancePlayers.Count is 0) {
-            return;
-        }
+        if (AmbiancePlayers.Count is 0) return;
 
         // Find and stop all players of the specified ambiance type
         for (int i = AmbiancePlayers.Count - 1; i >= 0; i--) {
@@ -369,39 +361,35 @@ public partial class SoundController : Node {
     /// </summary>
     public void StopAllAmbiance() {
         // Stop all ambiance players
-        foreach (AudioStreamPlayer player in AmbiancePlayers) {
+        foreach (AudioStreamPlayer player in AmbiancePlayers)
             if (IsInstanceValid(player)) {
                 player.Stop();
                 player.QueueFree();
             }
-        }
 
         AmbiancePlayers.Clear();
     }
 
     /// <summary>
-    ///    Plays an ambiance sound with the specified name and type.
+    ///     Plays an ambiance sound with the specified name and type.
     /// </summary>
     /// <param name="ambianceName">Name coresponds to the file name in the Ambiance folder, e.g. "Rain" or "Forest"</param>
-    private void PlayAmbiance(string ambianceName, AmbianceTypeEnum ambianceType) {
-        if (ambianceType == AmbianceTypeEnum.None || AmbiancePlayers.Any(p => p.Name == ambianceType.ToString())) {
-            return;
-        }
+    private void PlayAmbiance(string ambianceName, AmbianceSoundType ambianceSoundType) {
+        if (ambianceSoundType == AmbianceSoundType.None ||
+            AmbiancePlayers.Any(p => p.Name == ambianceSoundType.ToString())) return;
 
         AudioStreamPlayer player = new();
         AmbiancePlayers.Add(player);
 
         player.Bus = "Ambiance";
-        player.Name = ambianceType.ToString();
+        player.Name = ambianceSoundType.ToString();
 
         player.Stream = LoadAmbiance(ambianceName);
         player.VolumeDb = -Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
 
         // Queues the node to be deleted when player.Finished emits.
         player.Finished += () => {
-            if (AmbiancePlayers.Contains(player)) {
-                AmbiancePlayers.Remove(player);
-            }
+            if (AmbiancePlayers.Contains(player)) AmbiancePlayers.Remove(player);
 
             player.QueueFree();
         };
@@ -411,7 +399,7 @@ public partial class SoundController : Node {
     }
 
     /// <summary>
-    ///    Loads the specified ambiance sound asset and caches it in memory
+    ///     Loads the specified ambiance sound asset and caches it in memory
     /// </summary>
     /// <param name="ambianceName">Name of the ambiance sound asset to be loaded, uses BASE_AMBIANCE_PATH</param>
     private AudioStream LoadAmbiance(string ambianceName) {
@@ -428,13 +416,11 @@ public partial class SoundController : Node {
     public void LogAllAmbiancePlaying() {
         GD.PrintErr("--------------------------");
         GD.PrintErr("Currently playing ambiance sounds:");
-        foreach (AudioStreamPlayer player in AmbiancePlayers) {
-            if (IsInstanceValid(player)) {
+        foreach (AudioStreamPlayer player in AmbiancePlayers)
+            if (IsInstanceValid(player))
                 GD.PrintErr($"{player.Name} ({player.Stream.ResourcePath})");
-            } else {
+            else
                 GD.PrintErr("Invalid player instance");
-            }
-        }
     }
 
     #endregion Ambiance-related

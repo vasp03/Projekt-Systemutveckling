@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Godot;
-using Goodot15.Scripts.Game.Model.Material_Cards;
-using Goodot15.Scripts.Game.Model.Parents;
+﻿using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -26,8 +22,8 @@ public abstract class CardSpawnEvent : GameEvent {
     public override void OnEvent(GameEventContext context) {
         if (SpawnCardSfx is not null) context.GameController.SoundController.PlaySound(SpawnCardSfx);
 
-        for (int i = 0; i < SpawnCardCount; i++) {
-            context.GameController.CardController.CreateCard(CardInstance(), context.GameController.NextRandomPositionOnScreen());
-        }
+        for (int i = 0; i < SpawnCardCount; i++)
+            context.GameController.CardController.CreateCard(CardInstance(),
+                context.GameController.NextRandomPositionOnScreen());
     }
 }

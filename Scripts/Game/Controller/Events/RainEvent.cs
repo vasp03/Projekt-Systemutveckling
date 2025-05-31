@@ -1,4 +1,5 @@
-﻿using Goodot15.Scripts.Game.Model.Material_Cards;
+﻿using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
@@ -18,7 +19,7 @@ public class RainEvent : CardSpawnEvent {
     }
 
     public override void OnEvent(GameEventContext context) {
-        context.GameController.SoundController.PlayAmbianceType(AmbianceTypeEnum.Rain);
+        context.GameController.SoundController.PlayAmbianceType(AmbianceSoundType.Rain);
         base.OnEvent(context);
     }
 }
