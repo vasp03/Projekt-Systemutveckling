@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://vpn6axvy6c6u"]
+[gd_scene load_steps=17 format=4 uid="uid://vpn6axvy6c6u"]
 
 [ext_resource type="Script" uid="uid://dqbg03jh8sso1" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://crfa75uxwe6fa" path="res://Scenes/PackButton.tscn" id="8_w1dup"]
 [ext_resource type="Texture2D" uid="uid://c0ayvs2byfiva" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
 [ext_resource type="Script" uid="uid://cmpkjo02444mu" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
+[ext_resource type="Script" uid="uid://nln8n63effm" path="res://Scripts/Game/Controller/TutorialController.cs" id="11_l0d1b"]
+[ext_resource type="PackedScene" uid="uid://5esimaxbfh4p" path="res://Scenes/TutorialBubble.tscn" id="12_w8a2l"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
 
@@ -156,29 +158,6 @@ uppercase = true
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TutorialBubble" type="CanvasLayer" parent="."]
-
-[node name="Panel" type="Panel" parent="TutorialBubble"]
-offset_left = 340.0
-offset_top = 34.0
-offset_right = 940.0
-offset_bottom = 168.0
-
-[node name="Label" type="Label" parent="TutorialBubble/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("3_m8nr8")
-theme_override_font_sizes/font_size = 28
-autowrap_mode = 3
-
-[node name="Arrow" type="TextureRect" parent="TutorialBubble"]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Tutorial" type="CanvasLayer" parent="HUD"]
+script = ExtResource("11_l0d1b")
+TutorialBubbleScene = ExtResource("12_w8a2l")
