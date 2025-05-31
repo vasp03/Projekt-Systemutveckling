@@ -251,7 +251,8 @@ public class CraftingController {
 
         RegisterRecipe(new CraftingRecipe("Stick", ["Villager", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
         RegisterRecipe(new CraftingRecipe("Stick", ["Hunter", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
-        RegisterRecipe(new CraftingRecipe("Stick", ["Blacksmith", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
+        RegisterRecipe(
+            new CraftingRecipe("Stick", ["Blacksmith", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
         RegisterRecipe(new CraftingRecipe("Stick", ["Farmer", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
 
         RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood", "Wood", "Wood"], ["Tree"]));

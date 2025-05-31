@@ -100,46 +100,13 @@ public partial class PackController : HBoxContainer {
         SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
 
         RefreshAvailablePacks();
-        
+
         if (GameController.Singleton.SellModeActive) GameController.Singleton.SetSellMode(false);
     }
 
     private void UnlockAdditionalPacks() {
         RefreshAvailablePacks();
     }
-
-    // public void RefreshPackStates(int newMoney) {
-    //     foreach (Node child in GetChildren()) {
-    //         if (child is not PackButton button || button.Pack is null) continue;
-// 
-    //         bool isAffordable = Global.Singleton.Money >= button.Pack.Cost;
-    //         // button.Disabled = !isAffordable;
-    //         button.Modulate = isAffordable ? Colors.White : new Color(1, 1, 1, 0.5f);
-    //         button.SetPriceColor(isAffordable ? Colors.White : Colors.Red);
-    //     }
-    // }
-
-    // private static IReadOnlyCollection<string> GeneratePackContents(CardPack pack) {
-    //     IList<string> selectedCards = [];
-    //     RandomNumberGenerator rng = new();
-    //     rng.Randomize();
-// 
-    //     int cardCount = rng.RandiRange(3, 5);
-    //     for (int i = 0; i < cardCount; i++) {
-    //         bool isRare = rng.Randf() < 0.1f && pack.RareCards.Count > 0;
-// 
-    //         if (isRare) {
-    //             int index = rng.RandiRange(0, pack.RareCards.Count - 1);
-    //             selectedCards.Add(pack.RareCards[index]);
-    //         } else if (pack.CommonCards.Count > 0) {
-    //             int index = rng.RandiRange(0, pack.CommonCards.Count - 1);
-    //             selectedCards.Add(pack.CommonCards[index]);
-    //         }
-    //     }
-    // 
-// 
-    //     return selectedCards.AsReadOnly();
-    // }
 
     private void ShowFloatingMoneyLabel(int amount) {
         PackedScene labelScene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
