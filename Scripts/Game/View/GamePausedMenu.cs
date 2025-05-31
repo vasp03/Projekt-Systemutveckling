@@ -101,6 +101,7 @@ public partial class GamePausedMenu : Control {
                 // CallDeferred(nameof(ChangeSceneDeferred));
                 soundController.ToggleMusicMuted();
                 soundController.PlayMenuMusic();
+                soundController.StopAllAmbiance();
                 break;
         }
     }

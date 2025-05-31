@@ -61,7 +61,7 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         dayTicks++;
 
-        if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks = 0;
+        if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks -= Utilities.TICKS_PER_DAY;
 
         UpdateTemperature(dayTicks);
         SetSceneDarkness(dayTicks);
@@ -70,22 +70,24 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         if (dayState == oldDayState) return;
 
+        // SoundController.Singleton.StopAmbianceType([AmbianceTypeEnum.Wind, AmbianceTypeEnum.Forest]);
+
         switch (dayState) {
             case DayStateEnum.Night:
                 SoundController.Singleton.PlayDayTimeSong("Night");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind, false);
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
                 break;
             case DayStateEnum.Morning:
                 SoundController.Singleton.PlayDayTimeSong("Morning");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest, false);
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
                 break;
             case DayStateEnum.Day:
                 SoundController.Singleton.PlayDayTimeSong("Day");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest, false);
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Forest);
                 break;
             case DayStateEnum.Evening:
                 SoundController.Singleton.PlayDayTimeSong("Evening");
-                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind, false);
+                SoundController.Singleton.PlayAmbianceType(AmbianceTypeEnum.Wind);
                 break;
             case DayStateEnum.Invalid:
             case DayStateEnum.Paused:

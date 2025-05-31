@@ -66,6 +66,9 @@ public partial class GameController : Node2D {
                 case Key.F:
                     for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
                     break;
+                case Key.D:
+                    SoundController.LogAllAmbiancePlaying();
+                    break;
             }
         } else if (@event is InputEventMouseButton mouseButton) {
             if (mouseButton.Pressed)
@@ -135,7 +138,7 @@ public partial class GameController : Node2D {
         set {
             sellModeActive = value;
             SellModeLabel.Visible = value;
-            
+
             if (!sellModeActive)
                 CardController.HideCardValue();
         }
@@ -193,7 +196,6 @@ public partial class GameController : Node2D {
 
     private void ConfigureControllers() {
         SoundController = GetNode<SoundController>("/root/SoundController");
-        SoundController.PlayGameMusic();
 
         MenuController = GetNode<MenuController>("/root/MenuController");
         MenuController.SetGameController(this);
