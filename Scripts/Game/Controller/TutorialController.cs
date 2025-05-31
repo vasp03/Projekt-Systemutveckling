@@ -17,15 +17,7 @@ public partial class TutorialController : CanvasLayer {
 		bubbleInstance = TutorialBubbleScene.Instantiate<TutorialBubble>();
 		AddChild(bubbleInstance);
 
-		StartTutorial();
-	}
-
-	private async void StartTutorial() {
-		isTyping = true;
-		canAdvance = false;
-		await bubbleInstance.ShowText("Welcome to the island. Survive the days, craft, and sacrifice.");
-		isTyping = false;
-		canAdvance = true;
+		_ = ShowStep(0);
 	}
 
 	public override void _UnhandledInput(InputEvent @event) {
@@ -46,24 +38,28 @@ public partial class TutorialController : CanvasLayer {
 		canAdvance = false;
 
 		switch (index) {
+			case 0:
+				await bubbleInstance.ShowText("Welcome to the island. Survive the days, craft, and sacrifice.");
+				break;
 			case 1:
-				await bubbleInstance.ShowText("Use the packs below to get started.");
+				await bubbleInstance.ShowText("Use the packs below to get started. The first pack is free and contains a set of cards to help you get started on your journey.");
 				bubbleInstance.PointToUI("HUD/HUDRoot/PackContainer", TutorialBubble.PointingDirection.Down, new Vector2(8, -48));
 				break;
 			case 2:
-				await bubbleInstance.ShowText("This is your money. You gain gold from selling cards.");
+				await bubbleInstance.ShowText("This is your money. You gain gold from selling cards which you can use to buy more packs.");
 				bubbleInstance.PointToUI("HUD/GoldIcon", TutorialBubble.PointingDirection.Up, new Vector2(0, 45));
 				break;
 			case 3:
-				await bubbleInstance.ShowText("This is the current day and time.");
+				await bubbleInstance.ShowText("This is the current time. Random events can happen at any moment, so watch out.");
 				bubbleInstance.PointToUI("HUD/DayTimeLabel", TutorialBubble.PointingDirection.Up, new Vector2(20, 45));
 				break;
 			default:
 				bubbleInstance.HideArrow();
-				await bubbleInstance.ShowText("Tutorial complete. Good luck!");
-                await Task.Delay(2000);
+				await bubbleInstance.ShowText("Tutorial complete. If you need help, you can always access the tutorial again from the menu or from the guide button in the HUD. Good luck Adventurer!");
+				await Task.Delay(2000);
+				bubbleInstance.QueueFree();
 				QueueFree();
-				break;
+				return;
 		}
 
 		isTyping = false;

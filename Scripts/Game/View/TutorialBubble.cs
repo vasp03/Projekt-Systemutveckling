@@ -40,44 +40,44 @@ public partial class TutorialBubble : CanvasLayer {
 		textLabel.Text = fullText;
 	}
 
-    public void PointToUI(string nodePath, PointingDirection? forcedDirection = null, Vector2? manualOffset = null) {
-        Node target = GameController.Singleton.GetNodeOrNull(nodePath);
-        if (target is not Control control) return;
+	public void PointToUI(string nodePath, PointingDirection? forcedDirection = null, Vector2? manualOffset = null) {
+		Node target = GameController.Singleton.GetNodeOrNull(nodePath);
+		if (target is not Control control) return;
 
-        Vector2 controlGlobalPos = control.GetGlobalTransformWithCanvas().Origin;
-        Vector2 controlCenter = controlGlobalPos + control.Size / 2f;
+		Vector2 controlGlobalPos = control.GetGlobalTransformWithCanvas().Origin;
+		Vector2 controlCenter = controlGlobalPos + control.Size / 2f;
 
-        float screenMiddleY = GetViewport().GetVisibleRect().Size.Y / 2f;
+		float screenMiddleY = GetViewport().GetVisibleRect().Size.Y / 2f;
 
-        // Determine the pointing direction based on the control's position
-        PointingDirection direction = forcedDirection ?? (
-            controlCenter.Y < screenMiddleY ? PointingDirection.Down : PointingDirection.Up
-        );
+		// Determine the pointing direction based on the control's position
+		PointingDirection direction = forcedDirection ?? (
+			controlCenter.Y < screenMiddleY ? PointingDirection.Down : PointingDirection.Up
+		);
 
-        Vector2 arrowOffset;
+		Vector2 arrowOffset;
 
-        if (manualOffset != null) {
-            arrowOffset = manualOffset.Value;
-        } else if (direction == PointingDirection.Up) {
-            arrowOffset = new Vector2(control.Size.X / 2f, control.Size.Y + 10);
-            arrow.FlipV = true;
-        } else {
-            arrowOffset = new Vector2(control.Size.X / 2f, -40);
-            arrow.FlipV = false;
-        }
+		if (manualOffset != null) {
+			arrowOffset = manualOffset.Value;
+		} else if (direction == PointingDirection.Up) {
+			arrowOffset = new Vector2(control.Size.X / 2f, control.Size.Y + 10);
+			arrow.FlipV = true;
+		} else {
+			arrowOffset = new Vector2(control.Size.X / 2f, -40);
+			arrow.FlipV = false;
+		}
 
-        // If using manual offset, still apply correct flip based on direction
-        if (manualOffset != null) {
-            arrow.FlipV = direction == PointingDirection.Up;
-        }
+		// If using manual offset, still apply correct flip based on direction
+		if (manualOffset != null) {
+			arrow.FlipV = direction == PointingDirection.Up;
+		}
 
-        arrow.Position = controlGlobalPos + arrowOffset;
-        arrow.Show();
-        animator.Play("BounceUpDown");
-    }
+		arrow.Position = controlGlobalPos + arrowOffset;
+		arrow.Show();
+		animator.Play("BounceUpDown");
+	}
 
 
-    
+	
 	public void HideArrow() {
 		arrow.Hide();
 		animator.Stop();
