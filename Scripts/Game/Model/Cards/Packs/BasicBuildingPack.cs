@@ -7,7 +7,7 @@ namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 public class BasicBuildingPack : CommonAndRarePack {
     // List<string> buildingCommons = ["Field", "Campfire", "House"];
     // List<string> buildingRares = ["Greenhouse"];
-    public override string PackButtonTexture => PackTexture("Material pack");
+    public override string PackButtonTexture => PackTexture("Material Pack");
 
     public override bool SingleUse => false;
 

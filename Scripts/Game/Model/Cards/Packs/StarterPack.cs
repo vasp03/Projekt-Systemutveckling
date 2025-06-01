@@ -7,7 +7,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
 public class StarterPack : CardPack {
-    public override string PackButtonTexture => PackTexture("Starter pack");
+    public override string PackButtonTexture => PackTexture("Starter Pack");
 
     // List<string> starterCommons = ["Villager", "Tree", "Bush", "Stone", "Stick", "Stick"];
     // List<string> starterRares = [];
