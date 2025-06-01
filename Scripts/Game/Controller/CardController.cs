@@ -105,8 +105,6 @@ public class CardController {
     public void CardRemoved(CardNode cardNodeRemoving) {
         UpdateHighlights(cardNodeRemoving);
         UpdateOverlays(cardNodeRemoving);
-        
-        cardNodeRemoving.CraftButton?.QueueFree();
     }
 
     /// <summary>
@@ -128,6 +126,10 @@ public class CardController {
         } else {
             HideHealthAndHunger();
             HideCardValue();
+        }
+        
+        if (cardNodeInstance.IsQueuedForDeletion() || !cardNodeInstance.IsInsideTree()) {
+            cardNodeInstance.CraftButton?.QueueFree();
         }
     }
 
