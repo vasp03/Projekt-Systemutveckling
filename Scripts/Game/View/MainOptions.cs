@@ -13,6 +13,8 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
+    private CheckButton cheatModeButton;
+
     private MenuController menuController;
     private Label musicVolumePercentageLabel;
 
@@ -23,7 +25,6 @@ public partial class MainOptions : Control {
     private SoundController soundController;
     private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
     private Button GoBackButton => GetNode<Button>("GoBackButton");
-    private CheckButton cheatModeButton;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
@@ -38,7 +39,7 @@ public partial class MainOptions : Control {
 
         musicVolumePercentageLabel.Text = $"{musicVolumeSlider.Value * 100:F0}%";
         sfxVolumePercentageLabel.Text = $"{sfxVolumeSlider.Value * 100:F0}%";
-        
+
         cheatModeButton = GetNode<CheckButton>("ButtonContainer/CheatModeButton");
 
         musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
@@ -49,7 +50,7 @@ public partial class MainOptions : Control {
 
         musicVolumeSlider.Value = soundController.MusicVolume;
         sfxVolumeSlider.Value = soundController.SfxVolume;
-        
+
         PopulateDisplayModeOptions();
         SetDisplayModeButton();
         soundController.MusicVolume = settingsManager.MusicVolume;
@@ -106,7 +107,6 @@ public partial class MainOptions : Control {
 
     private void OnCheatModeToggled(bool value) {
         settingsManager.SetCheatMode(value);
-        
     }
 
     /// <summary>

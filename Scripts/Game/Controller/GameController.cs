@@ -48,9 +48,7 @@ public partial class GameController : Node2D {
                 case Key.Key7:
                 case Key.Key8:
                 case Key.Key9:
-                    if (SettingsManager.Singleton.CheatMode) {
-                        MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
-                    }
+                    if (SettingsManager.Singleton.CheatMode) MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
                     break;
                 case Key.S:
                     ToggleSellMode();
@@ -137,7 +135,7 @@ public partial class GameController : Node2D {
         set {
             sellModeActive = value;
             SellModeLabel.Visible = value;
-            
+
             if (!sellModeActive)
                 CardController.HideCardValue();
         }

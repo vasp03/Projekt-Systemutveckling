@@ -6,16 +6,16 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Class that manages and saves the game settings.
 /// </summary>
 public partial class SettingsManager : Node {
-    
+    private const string CONFIG_FILE = "user://settings.cfg";
+
     public static SettingsManager Singleton =>
         (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<SettingsManager>("/root/SettingsManager");
-    
-    private const string CONFIG_FILE = "user://settings.cfg";
+
     public SoundController SoundController { get; private set; }
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;
-    public bool CheatMode { get; private set; } = false;
+    public bool CheatMode { get; private set; }
 
     public override void _Ready() {
         SoundController = GetNode<SoundController>("/root/SoundController");
