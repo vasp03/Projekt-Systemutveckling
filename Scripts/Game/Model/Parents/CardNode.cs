@@ -45,10 +45,10 @@ public partial class CardNode : Node2D {
         ClearReferences();
 
         MouseIsHovering = false;
-
-        CardController.CardRemoved(this);
-
+        
         QueueFree();
+        
+        CardController.CardRemoved(this);
     }
 
     #endregion Generic instance methods
