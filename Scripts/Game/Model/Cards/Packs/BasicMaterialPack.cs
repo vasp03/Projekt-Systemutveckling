@@ -7,7 +7,7 @@ namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 public class BasicMaterialPack : CommonAndRarePack {
     // List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];
     // List<string> materialRares = ["Clay", "Glass", "Planks"];
-    public override string PackButtonTexture => PackTexture("Material pack");
+    public override string PackButtonTexture => PackTexture("Material Pack");
 
     public override bool SingleUse => false;
 

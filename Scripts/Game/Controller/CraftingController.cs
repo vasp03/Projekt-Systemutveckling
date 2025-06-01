@@ -14,13 +14,7 @@ public class CraftingController {
     public CraftingController() {
         RegisterDefaultRecipes();
     }
-
-    /// <summary>
-    ///     Check if the cards in the stack can be crafted into a new card
-    ///     Returns a list of the cards that can be crafted
-    ///     If no cards can be crafted, returns null
-    /// </summary>
-    /// <param name="Cards">List of cards to check</param>
+    
     /// <summary>
     ///     Check if the cards in the stack can be crafted into a new card
     ///     Returns a list of the cards that can be crafted
