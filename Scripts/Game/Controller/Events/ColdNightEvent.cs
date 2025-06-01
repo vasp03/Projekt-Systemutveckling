@@ -47,13 +47,12 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     public bool EventActive {
         get {
-            DayStateEnum currentState = Utilities.GetCurrentDayState(dayTimeEvent.dayTicks);
-            if (!hasTriggered && currentState is DayStateEnum.Night) return true;
+            DayPhaseState currentPhaseState = Utilities.GetCurrentDayState(dayTimeEvent.DayTicks);
+            if (!hasTriggered && currentPhaseState is DayPhaseState.NIGHT) return true;
 
-            if (currentState is not DayStateEnum.Night) {
-                hasTriggered = false;
-                dayTimeEvent.temperatureLocked = false;
-            }
+            if (currentPhaseState is DayPhaseState.NIGHT) return false;
+            hasTriggered = false;
+            dayTimeEvent.temperatureLocked = false;
 
             return false;
         }
@@ -80,21 +79,20 @@ public class ColdNightEvent : GameEvent, ITickable {
     public void PostTick() {
         if (!hasTriggered) return;
 
+        if (lastDamageTick++ < Utilities.TimeToTicks(1)) return;
+
         lastDamageTick++;
-        if (lastDamageTick >= Utilities.TimeToTicks(1)) {
-            lastDamageTick = 0;
+        lastDamageTick = 0;
 
-            CardNode.CardController.AllCards.ToList().ForEach(card => {
-                bool isStackedOnCampfire = CardNode.CardController.AllCards.Any(otherCard =>
-                    otherCard.CardType is BuildingCampfire &&
-                    otherCard.StackAboveWithItself.Contains(card) &&
-                    otherCard.StackAboveWithItself.Where(c => c.CardType is CardLiving).Take(3).Contains(card));
+        CardNode.CardController.AllCards.ToList().ForEach(card => {
+            bool isStackedOnCampfire = CardNode.CardController.AllCards.Any(otherCard =>
+                otherCard.CardType is BuildingCampfire &&
+                otherCard.StackAboveWithItself.Contains(card) &&
+                otherCard.StackAboveWithItself.Where(c => c.CardType is CardLiving).Take(3).Contains(card));
 
-                if (card.CardType is CardLiving cardLiving && !isStackedOnCampfire) {
-                    cardLiving.Health -= 2;
-                    cardLiving.Saturation -= 3;
-                }
-            });
-        }
+            if (card.CardType is not CardLiving cardLiving || isStackedOnCampfire) return;
+            cardLiving.Health -= 2;
+            cardLiving.Saturation -= 3;
+        });
     }
 }

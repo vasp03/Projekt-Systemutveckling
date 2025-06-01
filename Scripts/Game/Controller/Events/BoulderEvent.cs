@@ -17,7 +17,7 @@ public class BoulderEvent : GameEvent {
 
     public override void OnEvent(GameEventContext context) {
         for (int i = 0; i < BOULDER_COUNT; i++) {
-            bool fromLeft = GD.Randf() > .5d;
+            bool fromLeft = GD.RandRange(1, 2) is 1;
             int randomYPosition = (int)context.GameController.NextRandomPositionOnScreen().Y;
 
             int edgePosition =

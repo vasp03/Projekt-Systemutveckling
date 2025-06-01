@@ -16,10 +16,10 @@ public class CardCreationHelper : GameManagerBase {
 
     public string GetRandomCardType() {
         Random random = new();
-        Array values = Enum.GetValues(typeof(CardTypeEnum));
-        CardTypeEnum type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
+        Array values = Enum.GetValues(typeof(CardTypeName));
+        CardTypeName type = (CardTypeName)values.GetValue(random.Next(values.Length));
 
-        while (type == CardTypeEnum.Random) type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
+        while (type == CardTypeName.Random) type = (CardTypeName)values.GetValue(random.Next(values.Length));
 
         return type.ToString();
     }
@@ -118,11 +118,16 @@ public class CardCreationHelper : GameManagerBase {
         }
     }
 
-    public IReadOnlyList<string> GetCardTypePacks(CardPackEnum type) {
+    /// <summary>
+    ///     Fetches the collection of card types included in each pack, supplied by <see cref="pack" />
+    /// </summary>
+    /// <param name="pack"></param>
+    /// <returns></returns>
+    public IReadOnlyList<string> GetCardTypePacks(CardPackCollection pack) {
         IList<string> cardTypePacks = [];
 
-        switch (type) {
-            case CardPackEnum.Nature:
+        switch (pack) {
+            case CardPackCollection.NATURE:
                 cardTypePacks.Add("Wood");
                 cardTypePacks.Add("Stone");
                 cardTypePacks.Add("Water");
@@ -131,19 +136,19 @@ public class CardCreationHelper : GameManagerBase {
                 cardTypePacks.Add("Leaves");
                 cardTypePacks.Add("Clay");
                 break;
-            case CardPackEnum.Tools:
+            case CardPackCollection.TOOLS:
                 cardTypePacks.Add("MaterialSwordMk1");
                 cardTypePacks.Add("MaterialFishingPole");
                 cardTypePacks.Add("MaterialShovel");
                 cardTypePacks.Add("MaterialAxe");
                 break;
-            case CardPackEnum.Villager:
+            case CardPackCollection.VILLAGER:
                 cardTypePacks.Add("PlayerVillager");
                 cardTypePacks.Add("PlayerHunter");
                 cardTypePacks.Add("PlayerFarmer");
                 cardTypePacks.Add("PlayerBlacksmith");
                 break;
-            case CardPackEnum.Food:
+            case CardPackCollection.FOOD:
                 cardTypePacks.Add("MaterialApple");
                 cardTypePacks.Add("MaterialBerry");
                 cardTypePacks.Add("MaterialJam");

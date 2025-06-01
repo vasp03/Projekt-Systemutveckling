@@ -2,7 +2,14 @@ using System.Collections.Generic;
 
 namespace Goodot15.Scripts.Game.Model.Div;
 
-public class CraftingRecipe(
+/// <summary>
+///     Represents a crafting recipe in the game.
+/// </summary>
+/// <param name="name">Display name of Recipe</param>
+/// <param name="craftingIngredients">Input for the crafting recipe</param>
+/// <param name="craftingResult">Output of the crafting recipe</param>
+/// <param name="itemsToRemove">Collection of items to not be removed when crafting</param>
+public struct CraftingRecipe(
     string name,
     IReadOnlyCollection<string> craftingIngredients,
     IReadOnlyCollection<string> craftingResult,

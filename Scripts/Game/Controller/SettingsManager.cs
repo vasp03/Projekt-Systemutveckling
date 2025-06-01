@@ -3,17 +3,19 @@
 namespace Goodot15.Scripts.Game.Controller;
 
 /// <summary>
-///     Class that manages and saves the game settings.
+///     Responsible for saving and loading the game settings.
 /// </summary>
 public partial class SettingsManager : Node {
+    /// <summary>
+    ///     Path to config file
+    /// </summary>
     private const string CONFIG_FILE = "user://settings.cfg";
-    public SoundController SoundController { get; private set; }
+
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;
 
     public override void _Ready() {
-        SoundController = GetNode<SoundController>("/root/SoundController");
         LoadConfig();
         ApplyDisplayMode();
     }
@@ -54,7 +56,7 @@ public partial class SettingsManager : Node {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetMusicVolume(float volume) {
-        SoundController.MusicVolume = volume;
+        SoundController.Singleton.MusicVolume = volume;
         MusicVolume = volume;
         SaveConfig();
     }
@@ -64,7 +66,7 @@ public partial class SettingsManager : Node {
     /// </summary>
     /// <param name="volume">The volume selected</param>
     public void SetSfxVolume(float volume) {
-        SoundController.SfxVolume = volume;
+        SoundController.Singleton.SfxVolume = volume;
         SfxVolume = volume;
         SaveConfig();
     }
@@ -74,14 +76,12 @@ public partial class SettingsManager : Node {
     /// </summary>
     private void LoadConfig() {
         ConfigFile config = new();
-        if (FileAccess.FileExists(CONFIG_FILE)) {
-            Error error = config.Load(CONFIG_FILE);
-            if (error == Error.Ok) {
-                DisplayMode = (int)config.GetValue("Display", "Mode", 0);
-                MusicVolume = (float)config.GetValue("Audio", "MusicVolume", 1.0f);
-                SfxVolume = (float)config.GetValue("Audio", "SfxVolume", 1.0f);
-            }
-        }
+        if (!FileAccess.FileExists(CONFIG_FILE)) return;
+        Error error = config.Load(CONFIG_FILE);
+        if (error != Error.Ok) return;
+        DisplayMode = (int)config.GetValue("Display", "Mode", 0);
+        MusicVolume = (float)config.GetValue("Audio", "MusicVolume", 1.0f);
+        SfxVolume = (float)config.GetValue("Audio", "SfxVolume", 1.0f);
     }
 
     /// <summary>

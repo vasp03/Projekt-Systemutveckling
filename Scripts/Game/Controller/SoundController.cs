@@ -6,14 +6,28 @@ using Goodot15.Scripts.Game.Model.Enums;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class SoundController : Node {
-    private const string BASE_MUSIC_PATH = "res://Assets/Music";
-    private readonly IDictionary<string, AudioStream> CachedMusic = new Dictionary<string, AudioStream>();
+    public override void _ExitTree() {
+        StopMusic();
+
+        UnloadSounds();
+
+        QueueFree();
+    }
+
+    /// <summary>
+    ///     Triggers disposal of cached audio
+    /// </summary>
+    private void UnloadSounds() {
+        CachedSounds.ToList().ForEach(e => e.Value.Dispose());
+        CachedMusic.ToList().ForEach(e => e.Value.Dispose());
+    }
+
+    #region Sfx-related
+
     private readonly IDictionary<string, AudioStream> CachedSounds = new Dictionary<string, AudioStream>();
-    private bool _musicMuted;
-    private float _musicVolume;
+
     private float _sfxVolume;
-    private string CurrentPlayingMusicPath;
-    private AudioStreamPlayer MusicPlayer;
+
 
     public static SoundController Singleton =>
         (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode("/root/SoundController") as SoundController;
@@ -54,20 +68,20 @@ public partial class SoundController : Node {
         }
     }
 
-    public override void _ExitTree() {
-        StopMusic();
-
-        UnloadSounds();
-
-        QueueFree();
-    }
-
-    private void UnloadSounds() {
-        CachedSounds.ToList().ForEach(e => e.Value.Dispose());
-        CachedMusic.ToList().ForEach(e => e.Value.Dispose());
-    }
+    #endregion Sfx-related
 
     #region Music-related
+
+    private const string BASE_MUSIC_PATH = "res://Assets/Music";
+
+    private readonly IDictionary<string, AudioStream> CachedMusic = new Dictionary<string, AudioStream>();
+
+    private AudioStreamPlayer MusicPlayer;
+
+    private bool _musicMuted;
+    private float _musicVolume;
+
+    private string CurrentPlayingMusicPath;
 
     private void SetupMusicPlayer() {
         MusicPlayer = new AudioStreamPlayer();

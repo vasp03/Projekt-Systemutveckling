@@ -46,9 +46,9 @@ public partial class CardNode : Node2D {
 
         MouseIsHovering = false;
 
-        CardController.CardRemoved(this);
-
         QueueFree();
+
+        CardController.CardRemoved(this);
     }
 
     #endregion Generic instance methods
@@ -58,7 +58,7 @@ public partial class CardNode : Node2D {
 
     /// <summary>
     ///     Sets the highlighted state of the card node.
-    ///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
+    ///     Sets the modulate of the sprite to the highlighted color if the card is highlighted.
     /// </summary>
     public void SetHighlighted(bool isHighlighted) {
         switch (isHighlighted) {
@@ -204,14 +204,15 @@ public partial class CardNode : Node2D {
     /// <summary>
     ///     Applies the texture to the sprite of the card node.
     ///     It tries to load the texture from the address of the card type.
+    ///     Unless a custom texture is supplied, which then will be used instead
     ///     If the texture is not found, it loads the error texture.
     /// </summary>
-    public void UpdateCardTexture(Texture2D texture = null, bool customTexture = false) {
-        if (customTexture)
-            if (texture is not null && IsInstanceValid(texture)) {
-                CardSprite.Texture = texture;
-                return;
-            }
+    /// <param name="texture">Texture to use instead. Null to use the underlying <see cref="CardType" /> texture</param>
+    public void UpdateCardTexture(Texture2D texture = null) {
+        if (texture is not null && IsInstanceValid(texture)) {
+            CardSprite.Texture = texture;
+            return;
+        }
 
         // Check if the path is not null or empty and if there is a file at the path
         if (string.IsNullOrEmpty(CardType.TexturePath) || !ResourceLoader.Exists(CardType.TexturePath)) {

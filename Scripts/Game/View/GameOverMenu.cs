@@ -1,14 +1,14 @@
+using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 using Goodot15.Scripts;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Controller.Events;
 using Goodot15.Scripts.Game.View;
 
 public partial class GameOverMenu : Control, IMenuAnimation {
-    private const string LOSE_SOUND = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
+    private const string LOSE_SFX = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
 
-    private const float
-        ANIMATION_DURATION = (float)(Utilities.TICKS_PER_SECOND * 5.0f); // Duration of the animation in seconds
+    private static readonly float ANIMATION_DURATION = Utilities.TimeToTicks(5);
 
     private int animationTicks;
 
@@ -19,16 +19,17 @@ public partial class GameOverMenu : Control, IMenuAnimation {
     private Label gameOverLabel;
     private HUD hud;
 
-    private Array<Node> hudChildren = new();
+    private ICollection<Node> hudChildren = [];
 
     // private Sprite2D foreground;
     private bool isAnimating;
 
     private MenuController menuController;
     private SoundController soundController;
-
-    private Sprite2D timeDarknessSprite;
     private float timeDarknessStart;
+
+    private Sprite2D TimeDarknessSprite => GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>()
+        .DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
 
     public void Animate() {
         background.Visible = true;
@@ -36,14 +37,10 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         backToMenuButton.Visible = true;
         gameOverLabel.Visible = true;
 
-        if (!IsInstanceValid(timeDarknessSprite))
-            timeDarknessSprite = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas")
-                .GetNode<Sprite2D>("SceneDarkness");
-
-        timeDarknessStart = timeDarknessSprite.Modulate.A;
+        timeDarknessStart = TimeDarknessSprite.Modulate.A;
 
         background.Modulate = new Color(0, 0, 0, timeDarknessStart);
-        timeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
+        TimeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
 
         hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
         hudChildren = hud.GetChildren();
@@ -69,7 +66,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         exitGameButton.Pressed += OnExitGameButtonPressed;
         backToMenuButton.Pressed += OnBackToMenuButtonPressed;
 
-        SoundController.Singleton.PlaySound(LOSE_SOUND);
+        SoundController.Singleton.PlaySound(LOSE_SFX);
     }
 
     private void OnExitGameButtonPressed() {
@@ -107,9 +104,8 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         gameOverLabel.Modulate = new Color(1, 1, 1, easedT);
         background.Modulate = new Color(0, 0, 0, mapped);
 
-        if (hud != null)
-            foreach (Node child in hudChildren)
-                if (child is Control controlChild)
-                    controlChild.Modulate = new Color(1, 1, 1, 1 - easedT);
+        foreach (Node child in hudChildren)
+            if (child is Control controlChild)
+                controlChild.Modulate = new Color(1, 1, 1, 1 - easedT);
     }
 }

@@ -45,6 +45,6 @@ public record Pair<L, R> {
     }
 
     public override string ToString() {
-        return $"Left (T): {Left}, Right (K): {Right}";
+        return $"Left (L): {Left}, Right (R): {Right}";
     }
 }

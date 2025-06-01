@@ -1,7 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
-using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -9,14 +8,10 @@ namespace Goodot15.Scripts.Game.Controller.Events;
 ///     Class that handles the time of day and the temperature
 /// </summary>
 public class DayTimeEvent : GameEvent, IPausable {
-    /// <summary>
-    ///     An event to handle when the day changes and it's time.
-    /// </summary>
     public DayTimeEvent() {
-        oldDayState = DayStateEnum.Invalid;
-        canvasLayer = GameController.Singleton.GetNode<CanvasLayer>("SceneDarknessCanvas");
-        timeLabel = GameController.Singleton.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
-        sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
+        InitializeReferences();
+
+        oldDayPhaseState = DayPhaseState.INVALID;
         GameController.Singleton.AddPauseCallback(this);
     }
 
@@ -32,19 +27,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     /// <param name="isPaused">True if the event should be paused, false otherwise.</param>
     public void SetPaused(bool isPaused, bool hideDarknessOverlay = true) {
-        GameController gameController = GameController.Singleton;
-
-        if (gameController is null || !GodotObject.IsInstanceValid(gameController) ||
-            !gameController.IsInsideTree())
-            return;
-
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer) ||
-            !canvasLayer.IsInsideTree())
-            canvasLayer = gameController.GetNode<CanvasLayer>("CanvasLayer");
-
-        if (!GodotObject.IsInstanceValid(timeLabel))
-            timeLabel = gameController.GetNode<HUD>("HUD")?.GetNode<Label>("DayTimeLabel");
-
         this.isPaused = isPaused;
 
         if (isPaused) {
@@ -59,44 +41,46 @@ public class DayTimeEvent : GameEvent, IPausable {
     public override void OnEvent(GameEventContext context) {
         if (isPaused) return;
 
-        dayTicks++;
+        GameController gameController = GameController.Singleton;
 
-        if (dayTicks > Utilities.TICKS_PER_DAY) dayTicks -= Utilities.TICKS_PER_DAY;
+        DayTicks++;
 
-        UpdateTemperature(dayTicks);
-        SetSceneDarkness(dayTicks);
-        timeLabel.SetText(Utilities.GetTimeOfDay(dayTicks));
-        dayState = Utilities.GetCurrentDayState(dayTicks);
+        if (DayTicks > Utilities.TICKS_PER_DAY) DayTicks = 0;
 
-        if (dayState == oldDayState) return;
+        UpdateTemperature(DayTicks);
+        SetSceneDarkness(DayTicks);
+        TimeLabel.SetText(Utilities.GetTimeOfDay(DayTicks));
+        DayPhaseState = Utilities.GetCurrentDayState(DayTicks);
+
+        if (DayPhaseState == oldDayPhaseState) return;
 
         // SoundController.Singleton.StopAmbianceType([AmbianceTypeEnum.Wind, AmbianceTypeEnum.Forest]);
 
-        switch (dayState) {
-            case DayStateEnum.Night:
+        switch (DayPhaseState) {
+            case DayPhaseState.NIGHT:
                 SoundController.Singleton.PlayDayTimeSong("Night");
                 SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
-            case DayStateEnum.Morning:
+            case DayPhaseState.MORNING:
                 SoundController.Singleton.PlayDayTimeSong("Morning");
                 SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
-            case DayStateEnum.Day:
+            case DayPhaseState.DAY:
                 SoundController.Singleton.PlayDayTimeSong("Day");
                 SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
-            case DayStateEnum.Evening:
+            case DayPhaseState.EVENING:
                 SoundController.Singleton.PlayDayTimeSong("Evening");
                 SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
-            case DayStateEnum.Invalid:
-            case DayStateEnum.Paused:
+            case DayPhaseState.INVALID:
+            case DayPhaseState.PAUSED:
             default:
                 SoundController.Singleton.ToggleMusicMuted();
                 break;
         }
 
-        oldDayState = dayState;
+        oldDayPhaseState = DayPhaseState;
     }
 
     /// <summary>
@@ -104,21 +88,14 @@ public class DayTimeEvent : GameEvent, IPausable {
     /// </summary>
     private void SetSceneDarkness(float darkness) {
         darkness = Mathf.Clamp(darkness, 0, 1);
-
-        if (canvasLayer is null || !GodotObject.IsInstanceValid(canvasLayer)) return;
-
-        if (sprite is null || !GodotObject.IsInstanceValid(sprite))
-            sprite = canvasLayer.GetNode<Sprite2D>("SceneDarkness");
-
-        sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
+        Sprite.Modulate = new Color(0, 0, 0, 1 - darkness);
     }
 
     private void ShowAndHideTimeLabel(bool show) {
-        if (timeLabel is null || !GodotObject.IsInstanceValid(timeLabel)) return;
         if (show)
-            timeLabel.Show();
+            TimeLabel.Show();
         else
-            timeLabel.Hide();
+            TimeLabel.Hide();
     }
 
     private void UpdateTemperature(int ticks) {
@@ -161,19 +138,25 @@ public class DayTimeEvent : GameEvent, IPausable {
 
     #region Game object references
 
-    private CanvasLayer canvasLayer;
-    private Sprite2D sprite;
-    private Label timeLabel;
+    private void InitializeReferences() {
+        DarknessLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        Sprite = DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
+        TimeLabel = GameController.Singleton!.GetNode<Label>("HUD/DayTimeLabel");
+    }
+
+    private Sprite2D Sprite { get; set; }
+    public CanvasLayer DarknessLayer { get; set; }
+    private Label TimeLabel { get; set; }
 
     #endregion
 
     #region Event state data
 
-    private DayStateEnum dayState;
+    public DayPhaseState DayPhaseState { get; private set; }
     private bool isPaused;
-    private DayStateEnum oldDayState;
+    private DayPhaseState oldDayPhaseState;
     private float oldSceneDarkness;
-    public int dayTicks { get; set; }
+    public int DayTicks { get; set; }
 
     #endregion
 }

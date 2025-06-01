@@ -21,7 +21,6 @@ public class CardController {
     private CardLivingOverlay currentOverlay;
     private Timer overlayUpdateTimer;
 
-
     private CardNode selectedCard;
     private CardValueOverlay valueOverlay;
 
@@ -93,6 +92,7 @@ public class CardController {
     ///     Fired when a mouse enters the boundary of a card.
     /// </summary>
     /// <param name="cardNodeInstance">The CardNode instance to be added</param>
+    /// public void OnCardHovered(CardNode cardNodeInstance) {
     public void OnCardHovered(CardNode cardNodeInstance) {
         UpdateHighlights(cardNodeInstance);
         UpdateOverlays(cardNodeInstance);
@@ -116,6 +116,9 @@ public class CardController {
     }
 
     private void UpdateOverlays(CardNode cardNodeInstance) {
+        if (cardNodeInstance.IsQueuedForDeletion() || !cardNodeInstance.IsInsideTree())
+            cardNodeInstance.CraftButton?.QueueFree();
+
         if (!CardIsTopCard(cardNodeInstance)) return;
         if (cardNodeInstance.MouseIsHovering) {
             if (!cardNodeInstance.Dragged && !cardNodeInstance.HasNeighbourAbove &&
@@ -141,6 +144,7 @@ public class CardController {
                 card.SetHighlighted(false);
     }
 
+
     private void ShowHealthAndHunger(CardLiving cardLiving) {
         HideHealthAndHunger();
 
@@ -149,8 +153,10 @@ public class CardController {
 
         currentOverlay.Position = cardLiving.CardNode.Position + CARD_LIVING_OVERLAY_OFFSET;
 
-        currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+
+        currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
         currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
+
 
         cardLiving.CardNode.GetParent().AddChild(currentOverlay);
 
@@ -160,7 +166,7 @@ public class CardController {
         overlayUpdateTimer.OneShot = false;
         cardLiving.CardNode.GetParent().AddChild(overlayUpdateTimer);
         overlayUpdateTimer.Timeout += () => {
-            currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.BaseHealth);
+            currentOverlay.UpdateHealthBar(cardLiving.Health, cardLiving.MaximumHealth);
             currentOverlay.UpdateSaturationBar(cardLiving.Saturation, cardLiving.MaximumSaturation);
         };
     }
@@ -170,6 +176,7 @@ public class CardController {
             overlayUpdateTimer.QueueFree();
             overlayUpdateTimer = null;
         }
+
 
         if (currentOverlay is not null && currentOverlay.IsInsideTree()) {
             currentOverlay.QueueFree();
@@ -211,37 +218,14 @@ public class CardController {
     public CardNode GetTopCardAtMousePosition() {
         CardNode topCard = null;
 
-        foreach (CardNode card in HoveredCards)
-            if (topCard is null)
-                topCard = card;
-            else if (card.GetZIndex() > topCard.GetZIndex()) topCard = card;
-
-        return topCard;
+        return HoveredCards.OrderByDescending(e => e.ZIndex).FirstOrDefault();
     }
-
-    ///// <summary>
-    /////     Gets the card under the moved card.
-    ///// </summary>
-    ///// <returns>
-    /////     The card under the moved card or null if no card is found.
-    ///// </returns>
-    //private CardNode GetCardUnderMovedCard() {
-    //    IReadOnlyCollection<CardNode> hoveredCardsSorted = selectedCard.HoveredCardsSorted;
-    //
-    //    CardNode topUnderCard = null;
-    //
-    //    foreach (CardNode card in hoveredCardsSorted)
-    //        if (card.ZIndex < selectedCard.ZIndex && (topUnderCard is null || card.ZIndex > topUnderCard.ZIndex))
-    //            topUnderCard = card;
-    //
-    //    return topUnderCard;
-    //}
 
     /// <summary>
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        MouseController.SetMouseCursor(MouseCursorEnum.hand_close);
+        MouseController.SetMouseCursor(MouseCursorIcon.HAND_CLOSE);
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
@@ -255,7 +239,7 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        MouseController.SetMouseCursor(MouseCursorEnum.point_small);
+        MouseController.SetMouseCursor(MouseCursorIcon.POINT_SMALL);
         if (selectedCard is not null) selectedCard.Dragged = false;
 
         // Checks if a card is supposed to have a craft button above it
@@ -286,7 +270,7 @@ public class CardController {
         // if (cardNode.CardType is not IStackable stackable) return;
 
         // Check for the recipe
-        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>> recipe =
+        Pair<IReadOnlyCollection<string>, IReadOnlyCollection<string>>? recipe =
             CraftingController.CheckForCraftingWithStackable(cardNode.StackAboveWithItself.Select(e => e.CardType)
                 .ToArray());
 
