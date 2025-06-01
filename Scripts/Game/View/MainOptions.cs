@@ -105,8 +105,12 @@ public partial class MainOptions : Control {
         settingsManager.ChangeDisplayMode(index);
     }
 
-    private void OnCheatModeToggled(bool value) {
-        settingsManager.SetCheatMode(value);
+    /// <summary>
+    /// Handles event when the cheat mode button is toggled.
+    /// </summary>
+    /// <param name="enabled">if setting is on or off</param>
+    private void OnCheatModeToggled(bool enabled) {
+        settingsManager.SetCheatMode(enabled);
     }
 
     /// <summary>
