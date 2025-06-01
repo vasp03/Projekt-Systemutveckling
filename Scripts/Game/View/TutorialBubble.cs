@@ -6,8 +6,9 @@ namespace Goodot15.Scripts.Game.View;
 
 public partial class TutorialBubble : CanvasLayer {
 	private Label textLabel;
-	private TextureRect arrow;
-	private AnimationPlayer animator;
+	private Node2D arrow;
+	private TextureRect arrowImage;
+	private Tween bounceTween;
 
 	private string fullText;
 	private bool typingInterrupted;
@@ -16,8 +17,8 @@ public partial class TutorialBubble : CanvasLayer {
 
 	public override void _Ready() {
 		textLabel = GetNode<Label>("Panel/Label");
-		arrow = GetNode<TextureRect>("Arrow");
-		animator = GetNode<AnimationPlayer>("AnimationPlayer");
+		arrow = GetNode<Node2D>("Arrow");
+		arrowImage = arrow.GetNode<TextureRect>("ArrowImage");
 		arrow.Hide();
 	}
 
@@ -44,42 +45,53 @@ public partial class TutorialBubble : CanvasLayer {
 		Node target = GameController.Singleton.GetNodeOrNull(nodePath);
 		if (target is not Control control) return;
 
-		Vector2 controlGlobalPos = control.GetGlobalTransformWithCanvas().Origin;
-		Vector2 controlCenter = controlGlobalPos + control.Size / 2f;
+		Vector2 controlPos = control.GetGlobalRect().Position;
+		Vector2 controlSize = control.Size;
+		Vector2 controlCenter = controlPos + controlSize / 2f;
 
 		float screenMiddleY = GetViewport().GetVisibleRect().Size.Y / 2f;
-
-		// Determine the pointing direction based on the control's position
 		PointingDirection direction = forcedDirection ?? (
 			controlCenter.Y < screenMiddleY ? PointingDirection.Down : PointingDirection.Up
 		);
 
-		Vector2 arrowOffset;
+		Vector2 offset = manualOffset ?? (
+			direction == PointingDirection.Up
+				? new Vector2(controlSize.X / 2f, controlSize.Y + 10)
+				: new Vector2(controlSize.X / 2f, -40)
+		);
 
-		if (manualOffset != null) {
-			arrowOffset = manualOffset.Value;
-		} else if (direction == PointingDirection.Up) {
-			arrowOffset = new Vector2(control.Size.X / 2f, control.Size.Y + 10);
-			arrow.FlipV = true;
-		} else {
-			arrowOffset = new Vector2(control.Size.X / 2f, -40);
-			arrow.FlipV = false;
-		}
+		// Flip arrow image
+		arrowImage.FlipV = direction == PointingDirection.Up;
 
-		// If using manual offset, still apply correct flip based on direction
-		if (manualOffset != null) {
-			arrow.FlipV = direction == PointingDirection.Up;
-		}
-
-		arrow.Position = controlGlobalPos + arrowOffset;
+		// Place the outer arrow container at the target
+		arrow.Position = controlPos + offset;
+		arrowImage.Position = Vector2.Zero; // Reset local offset
 		arrow.Show();
-		animator.Play("BounceUpDown");
+
+		StartBounce();
 	}
 
-
-	
 	public void HideArrow() {
 		arrow.Hide();
-		animator.Stop();
+		StopBounce();
+	}
+
+	private void StartBounce() {
+		if (bounceTween != null && bounceTween.IsRunning()) return;
+
+		bounceTween = CreateTween().SetLoops();
+
+		bounceTween.TweenProperty(arrowImage, "position:y", -8, 0.25)
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.InOut);
+
+		bounceTween.TweenProperty(arrowImage, "position:y", 0, 0.25)
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.InOut);
+	}
+
+	private void StopBounce() {
+		bounceTween?.Kill();
+		bounceTween = null;
 	}
 }
