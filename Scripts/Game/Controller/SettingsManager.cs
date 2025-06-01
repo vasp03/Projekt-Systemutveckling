@@ -12,7 +12,7 @@ public partial class SettingsManager : Node {
     private const string CONFIG_FILE = "user://settings.cfg";
 
     public static SettingsManager Singleton =>
-        GameController.Singleton.GetNode<SettingsManager>("/root/SettingsManager");
+        (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<SettingsManager>("/root/SettingsManager");
 
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
