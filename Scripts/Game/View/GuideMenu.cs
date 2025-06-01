@@ -447,7 +447,7 @@ public partial class GuideMenu : Control {
             "A field used for growing crops. \nRECIPE: \n4x Sand \n2x Stone \n1x Water");
         cardData["CampfireButton"] = (LoadCardTexture("Campfire"),
             "A campfire used for cooking and warmth. \nRECIPE: \n 3x Wood \n2x Sticks \n1x Leaf");
-        cardData["CookingPotButton"] = (LoadCardTexture("CookingPot"),
+        cardData["CookingPotButton"] = (LoadCardTexture("Cookingpot"),
             "A cooking pot used for cooking food. \n2x Clay \n1x Stick");
 
         #endregion Building cards

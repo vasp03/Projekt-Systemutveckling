@@ -345,7 +345,7 @@ public class CardController {
 
         craftButtonInstance.CardNode = cardNode;
 
-        // craftButtonInstance.CardController = this;
+        craftButtonInstance.ZIndex = cardNode.ZIndex;
 
         GameController.AddChild(craftButtonInstance);
     }

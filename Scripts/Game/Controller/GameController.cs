@@ -61,7 +61,7 @@ public partial class GameController : Node2D {
 
                     SoundController.Singleton.MusicMuted = true;
                     HideHUD();
-                    Visible = true;
+                    Visible = false;
                     break;
                 case Key.F:
                     for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));

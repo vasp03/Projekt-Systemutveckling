@@ -203,6 +203,8 @@ public partial class MenuController : Node {
             guideMenu.Visible = false;
             GetTree().Paused = false;
             gameController.CallPausedCallbacks(false);
+            gameController.Visible = true;
+
             if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
                 pausable.SetPaused(false);
 
