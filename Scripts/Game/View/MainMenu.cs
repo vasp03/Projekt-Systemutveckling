@@ -7,7 +7,8 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the main menu of the game.
 /// </summary>
 public partial class MainMenu : Control {
-    private readonly bool canContinue = false;
+    private const bool canContinue = false;
+
     private Button continueButton;
     private Button exitButton;
     private Button guideButton;
@@ -17,6 +18,11 @@ public partial class MainMenu : Control {
 
     private SoundController soundController;
 
+    /// <summary>
+    ///     Quick reference for getting a button, <see cref="Node.GetNode{Button}()" />
+    /// </summary>
+    /// <param name="path">NodePath for button</param>
+    /// <returns>Button instance, or null if not found</returns>
     private Button Button(NodePath path) {
         return GetNode<Button>(path);
     }

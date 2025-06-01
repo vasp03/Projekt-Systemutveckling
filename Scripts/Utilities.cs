@@ -105,27 +105,27 @@ public static class Utilities {
     ///     Evening: 7/10 - 9/10 of the day
     ///     Night: 9/10 - 1 of the day
     /// </remarks>
-    public static DayStateEnum GetCurrentDayState(int ticks) {
+    public static DayPhaseState GetCurrentDayState(int ticks) {
         if (ticks >= 0 && ticks < TICKS_PER_DAY / 10)
             // Night
-            return DayStateEnum.Night;
+            return DayPhaseState.NIGHT;
 
         if (ticks >= TICKS_PER_DAY / 10 && ticks < TICKS_PER_DAY / 10 * 3)
             // Morning
-            return DayStateEnum.Morning;
+            return DayPhaseState.MORNING;
 
         if (ticks >= TICKS_PER_DAY / 10 * 3 && ticks < TICKS_PER_DAY / 10 * 7)
             // Day
-            return DayStateEnum.Day;
+            return DayPhaseState.DAY;
 
         if (ticks >= TICKS_PER_DAY / 10 * 7 && ticks < TICKS_PER_DAY / 10 * 9)
             // Evening
-            return DayStateEnum.Evening;
+            return DayPhaseState.EVENING;
 
         if (ticks >= TICKS_PER_DAY / 10 * 9 && ticks <= TICKS_PER_DAY)
             // Night
-            return DayStateEnum.Night;
+            return DayPhaseState.NIGHT;
 
-        return DayStateEnum.Invalid; // Invalid state
+        return DayPhaseState.INVALID; // Invalid state
     }
 }

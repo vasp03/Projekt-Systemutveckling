@@ -95,11 +95,8 @@ public partial class GamePausedMenu : Control {
             case 1:
                 exitConfirmationBox.Visible = false;
                 buttonContainer.Visible = true;
-                // Await is required to synchronize scene change
-                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                ChangeSceneDeferred();
-                // CallDeferred(nameof(ChangeSceneDeferred));
-                soundController.ToggleMusicMuted();
+                ChangeToMainMenu();
+                soundController.MusicMuted = false;
                 soundController.PlayMenuMusic();
                 break;
         }
@@ -108,9 +105,9 @@ public partial class GamePausedMenu : Control {
     /// <summary>
     ///     Changes the scene through deferred action.
     /// </summary>
-    private void ChangeSceneDeferred() {
+    private void ChangeToMainMenu() {
         GetTree().CurrentScene.Free();
-        Error e = GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
+        GetTree().ChangeSceneToFile("res://Scenes/MenuScenes/MainMenu.tscn");
         Visible = false;
     }
 }

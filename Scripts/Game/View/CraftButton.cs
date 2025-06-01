@@ -14,6 +14,6 @@ public partial class CraftButton : Node2D {
     public void OnCraftButtonReleased() {
         // Handle the button release event
         // GD.Print("Craft button released.");
-        GameController.Singleton.CardController.CraftCardFromSpecifiedCardNode(CardNode);
+        GameController.Singleton!.CardController.CraftCardFromSpecifiedCardNode(CardNode);
     }
 }
