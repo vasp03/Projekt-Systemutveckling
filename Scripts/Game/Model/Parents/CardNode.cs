@@ -52,8 +52,7 @@ public partial class CardNode : Node2D {
 	}
 
 	#endregion Generic instance methods
-
-
+    
 	#region Drag logic
 
 	/// <summary>

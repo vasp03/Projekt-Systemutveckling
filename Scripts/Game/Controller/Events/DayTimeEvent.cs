@@ -1,6 +1,7 @@
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
+using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -73,7 +74,8 @@ public class DayTimeEvent : GameEvent, IPausable {
                 gameController.SoundController.ToggleMusicMuted();
                 break;
         }
-
+        
+        GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
         oldDayPhaseState = DayPhaseState;
     }
 

@@ -5,6 +5,7 @@ using Goodot15.Scripts.Game.Model.Buildings;
 using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Parents;
+using Goodot15.Scripts.Game.View;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
 
@@ -67,7 +68,8 @@ public class ColdNightEvent : GameEvent, ITickable {
         GD.Print("Cold Night Event Triggered");
         dayTimeEvent.CurrentTemperature = -15f;
         GD.Print("Current Temperature: " + dayTimeEvent.CurrentTemperature + "C");
-
+        
+        GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
         hasTriggered = true;
     }
 

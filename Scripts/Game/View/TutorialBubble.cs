@@ -12,7 +12,12 @@ public partial class TutorialBubble : CanvasLayer {
 
 	private string fullText;
 	private bool typingInterrupted;
-
+    
+    private string lastNodePath;
+    private Vector2? lastOffset;
+    private PointingDirection? lastDirection;
+	
+	[Signal] public delegate void BubbleClickedEventHandler();
 	public enum PointingDirection { Up, Down }
 
 	public override void _Ready() {
@@ -20,6 +25,12 @@ public partial class TutorialBubble : CanvasLayer {
 		arrow = GetNode<Node2D>("Arrow");
 		arrowImage = arrow.GetNode<TextureRect>("ArrowImage");
 		arrow.Hide();
+	}
+	
+	private void _on_panel_gui_input(InputEvent @event) {
+		if (@event is InputEventMouseButton { Pressed: true }) {
+			EmitSignal(SignalName.BubbleClicked);
+		}
 	}
 
 	public async Task ShowText(string text, float speed = 0.03f) {
@@ -41,7 +52,11 @@ public partial class TutorialBubble : CanvasLayer {
 		textLabel.Text = fullText;
 	}
 
-	public void PointToUI(string nodePath, PointingDirection? forcedDirection = null, Vector2? manualOffset = null) {
+    public void PointToUI(string nodePath, PointingDirection? forcedDirection = null, Vector2? manualOffset = null) {
+        lastNodePath = nodePath;
+        lastOffset = manualOffset;
+        lastDirection = forcedDirection;
+
 		Node target = GameController.Singleton.GetNodeOrNull(nodePath);
 		if (target is not Control control) return;
 
@@ -70,6 +85,11 @@ public partial class TutorialBubble : CanvasLayer {
 
 		StartBounce();
 	}
+    
+    public void ShowLastArrow() {
+        if (string.IsNullOrEmpty(lastNodePath)) return;
+        PointToUI(lastNodePath, lastDirection, lastOffset);
+    }
 
 	public void HideArrow() {
 		arrow.Hide();
