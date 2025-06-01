@@ -42,6 +42,7 @@ public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
                 break;
             }
         }
+        GameController.Singleton!.CardController.CheckForGameOver(livingHasJustDied: true);
 
         return true;
     }
