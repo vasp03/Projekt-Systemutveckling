@@ -16,10 +16,10 @@ public class CardCreationHelper : GameManagerBase {
 
     public string GetRandomCardType() {
         Random random = new();
-        Array values = Enum.GetValues(typeof(CardTypeEnum));
-        CardTypeEnum type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
+        Array values = Enum.GetValues(typeof(CardTypeName));
+        CardTypeName type = (CardTypeName)values.GetValue(random.Next(values.Length));
 
-        while (type == CardTypeEnum.Random) type = (CardTypeEnum)values.GetValue(random.Next(values.Length));
+        while (type == CardTypeName.Random) type = (CardTypeName)values.GetValue(random.Next(values.Length));
 
         return type.ToString();
     }

@@ -9,216 +9,223 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
-	private readonly List<int> numberList = new();
+    private readonly List<int> numberList = new();
 
-	/// <summary>
-	///     Gets the single GameController of the game (if the correct scene is loaded); Null if the game has no GameController
-	///     at the given point of execution
-	/// </summary>
-	public static GameController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
+    /// <summary>
+    ///     Gets the single GameController of the game (if the correct scene is loaded); Null if the game has no GameController
+    ///     at the given point of execution
+    /// </summary>
+    public static GameController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as GameController;
 
 
-	public override void _Input(InputEvent @event) {
-		if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
+    public override void _Input(InputEvent @event) {
+        if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
-		if (@event is InputEventKey eventKey && eventKey.Pressed) {
-			switch (eventKey.Keycode) {
-				case Key.Escape:
-					MenuController.OpenPauseMenu();
+        switch (@event) {
+            case InputEventKey eventKey when eventKey.Pressed:
+                switch (eventKey.Keycode) {
+                    case Key.Escape:
+                        MenuController.OpenPauseMenu();
 
-					if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
-						pausable.SetPaused(true);
+                        if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
+                            pausable.SetPaused(true);
 
-					SoundController.MusicMuted = true;
-					HideHUD();
-					Visible = false;
-					break;
-				case Key.O:
-					MenuController.OpenGameOverMenu();
-					break;
-				case Key.Space:
-					CardController.CreateCard("Random", Vector2.One * 100);
-					break;
-				case Key.Key0:
-				case Key.Key1:
-				case Key.Key2:
-				case Key.Key3:
-				case Key.Key4:
-				case Key.Key5:
-				case Key.Key6:
-				case Key.Key7:
-				case Key.Key8:
-				case Key.Key9:
-					MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
-					break;
-				case Key.S:
-					ToggleSellMode();
-					break;
-				case Key.Q:
-					MenuController.QuickOpenGuideMenu();
+                        SoundController.MusicMuted = true;
+                        HideHUD();
+                        Visible = false;
+                        break;
+                    case Key.O:
+                        MenuController.OpenGameOverMenu();
+                        break;
+                    case Key.Space:
+                        CardController.CreateCard("Random", Vector2.One * 100);
+                        break;
+                    case Key.Key0:
+                    case Key.Key1:
+                    case Key.Key2:
+                    case Key.Key3:
+                    case Key.Key4:
+                    case Key.Key5:
+                    case Key.Key6:
+                    case Key.Key7:
+                    case Key.Key8:
+                    case Key.Key9:
+                        MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
+                        break;
+                    case Key.S:
+                        ToggleSellMode();
+                        break;
+                    case Key.Q:
+                        MenuController.QuickOpenGuideMenu();
 
-					if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3)
-						pausable3.SetPaused(true);
+                        if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3)
+                            pausable3.SetPaused(true);
 
-					SoundController.Singleton.MusicMuted = true;
-					HideHUD();
-					Visible = true;
-					break;
-				case Key.F:
-					for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
-					break;
-			}
-		} else if (@event is InputEventMouseButton mouseButton) {
-			if (mouseButton.Pressed)
-				CardController.LeftMouseButtonPressed();
-			else
-				CardController.LeftMouseButtonReleased();
-		}
-	}
+                        SoundController.Singleton.MusicMuted = true;
+                        HideHUD();
+                        Visible = true;
+                        break;
+                    case Key.F:
+                        for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
+                        break;
+                    case Key.B:
+                        GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
+                        break;
+                }
 
-	public Vector2 GetMousePosition() {
-		return GetGlobalMousePosition();
-	}
+                break;
+            case InputEventMouseButton mouseButton when mouseButton.Pressed:
+                CardController.LeftMouseButtonPressed();
+                break;
+            case InputEventMouseButton mouseButton:
+                CardController.LeftMouseButtonReleased();
+                break;
+        }
+    }
 
-	public void MultipleNumberInput(int number) {
-		numberList.Add(number);
+    public Vector2 GetMousePosition() {
+        return GetGlobalMousePosition();
+    }
 
-		if (numberList.Count >= 2) {
-			StringBuilder numbers = new();
-			for (int i = 0; i < numberList.Count; i++) numbers.Append(numberList[i]);
+    public void MultipleNumberInput(int number) {
+        numberList.Add(number);
 
-			// Create a new card with the numbers in the list
-			CardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
+        if (numberList.Count >= 2) {
+            StringBuilder numbers = new();
+            for (int i = 0; i < numberList.Count; i++) numbers.Append(numberList[i]);
 
-			numberList.Clear();
-		}
-	}
+            // Create a new card with the numbers in the list
+            CardController.CreateCard(numbers.ToString(), new Vector2(100, 100));
 
-	public override void _PhysicsProcess(double delta) {
-		GameEventManager.PostTick(delta);
-		CameraController.PostTick(delta);
-	}
+            numberList.Clear();
+        }
+    }
 
-	public bool IsPaused() {
-		return GetTree().Paused;
-	}
+    public override void _PhysicsProcess(double delta) {
+        GameEventManager.PostTick(delta);
+        CameraController.PostTick(delta);
+    }
 
-	internal Vector2 NextRandomPositionOnScreen() {
-		// Get the size of the screen
-		Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+    public bool IsPaused() {
+        return GetTree().Paused;
+    }
 
-		// Generate a random position within the screen bounds
-		float x = (float)GD.RandRange(0, screenSize.X);
-		float y = (float)GD.RandRange(0, screenSize.Y);
+    internal Vector2 NextRandomPositionOnScreen() {
+        // Get the size of the screen
+        Vector2 screenSize = GetViewport().GetVisibleRect().Size;
 
-		return new Vector2(x, y);
-	}
+        // Generate a random position within the screen bounds
+        float x = (float)GD.RandRange(0, screenSize.X);
+        float y = (float)GD.RandRange(0, screenSize.Y);
 
-	#region Controller references
+        return new Vector2(x, y);
+    }
 
-	public CardController CardController { get; private set; }
-	public GameEventManager GameEventManager { get; private set; }
-	public MenuController MenuController { get; private set; }
-	public MouseController MouseController { get; } = Global.MouseController;
-	public SoundController SoundController { get; private set; }
-	public CameraController CameraController { get; private set; }
+    #region Controller references
 
-	#endregion
+    public CardController CardController { get; private set; }
+    public GameEventManager GameEventManager { get; private set; }
+    public MenuController MenuController { get; private set; }
+    public MouseController MouseController { get; } = Global.MouseController;
+    public SoundController SoundController { get; private set; }
+    public CameraController CameraController { get; private set; }
 
-	#region Sell Mode
+    #endregion
 
-	private TextureRect SellModeLabel => GetNode<TextureRect>("HUD/HUDRoot/SellModeLabel");
+    #region Sell Mode
 
-	private bool sellModeActive;
+    private TextureRect SellModeLabel => GetNode<TextureRect>("HUD/HUDRoot/SellModeLabel");
 
-	public bool SellModeActive {
-		get => sellModeActive;
-		set {
-			sellModeActive = value;
-			SellModeLabel.Visible = value;
+    private bool sellModeActive;
 
-			if (!sellModeActive)
-				CardController.HideCardValue();
-		}
-	}
+    public bool SellModeActive {
+        get => sellModeActive;
+        set {
+            sellModeActive = value;
+            SellModeLabel.Visible = value;
 
-	public void ToggleSellMode() {
-		SellModeActive = !SellModeActive;
-		GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
-		Global.MouseController.SetSellMode(SellModeActive);
-		HUD.sellModeButton?.UpdateIcon();
-	}
+            if (!sellModeActive)
+                CardController.HideCardValue();
+        }
+    }
 
-	public void SetSellMode(bool active) {
-		SellModeActive = active;
-		Global.MouseController.SetSellMode(SellModeActive);
-		HUD.sellModeButton?.UpdateIcon();
-		GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
-	}
+    public void ToggleSellMode() {
+        SellModeActive = !SellModeActive;
+        GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
+        Global.MouseController.SetSellMode(SellModeActive);
+        HUD.sellModeButton?.UpdateIcon();
+    }
 
-	#region HUD visibility
+    public void SetSellMode(bool active) {
+        SellModeActive = active;
+        Global.MouseController.SetSellMode(SellModeActive);
+        HUD.sellModeButton?.UpdateIcon();
+        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
+    }
 
-	public HUD HUD { get; private set; }
+    #region HUD visibility
 
-	public void HideHUD() {
-		HUD.Visible = false;
-	}
+    public HUD HUD { get; private set; }
 
-	public void ShowHUD() {
-		HUD.Visible = true;
-	}
+    public void HideHUD() {
+        HUD.Visible = false;
+    }
 
-	#endregion
+    public void ShowHUD() {
+        HUD.Visible = true;
+    }
 
-	#endregion
+    #endregion
 
-	#region Initialization
+    #endregion
 
-	public override void _Ready() {
-		ConfigureControllers();
-		SetupControllers();
-		SetupUI();
+    #region Initialization
 
-		SellModeActive = false;
-	}
+    public override void _Ready() {
+        ConfigureControllers();
+        SetupControllers();
+        SetupUI();
 
-	private void SetupControllers() {
-		CardController = new CardController(this, MouseController, MenuController);
-		GameEventManager = new GameEventManager(this);
-		CameraController = new CameraController();
-	}
+        SellModeActive = false;
+    }
 
-	private void SetupUI() {
-		HUD = GetNode<HUD>("HUD");
-	}
+    private void SetupControllers() {
+        CardController = new CardController(this, MouseController, MenuController);
+        GameEventManager = new GameEventManager(this);
+        CameraController = new CameraController();
+    }
 
-	private void ConfigureControllers() {
-		SoundController = GetNode<SoundController>("/root/SoundController");
-		SoundController.PlayGameMusic();
+    private void SetupUI() {
+        HUD = GetNode<HUD>("HUD");
+    }
 
-		MenuController = GetNode<MenuController>("/root/MenuController");
-		// MenuController.SetGameController(this);
-	}
+    private void ConfigureControllers() {
+        SoundController = GetNode<SoundController>("/root/SoundController");
+        SoundController.PlayGameMusic();
 
-	#endregion Initialization
+        MenuController = GetNode<MenuController>("/root/MenuController");
+        // MenuController.SetGameController(this);
+    }
 
-	#region Callbacks related
+    #endregion Initialization
 
-	private readonly IList<IPausable> pausedCallbacks = [];
+    #region Callbacks related
 
-	public void CallPausedCallbacks(bool isPaused) {
-		if (pausedCallbacks is null) return;
+    private readonly IList<IPausable> pausedCallbacks = [];
 
-		foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
-	}
+    public void CallPausedCallbacks(bool isPaused) {
+        if (pausedCallbacks is null) return;
 
-	public void AddPauseCallback(IPausable callback) {
-		pausedCallbacks.Add(callback);
-	}
+        foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
+    }
 
-	public void RemovePauseCallback(IPausable callback) {
-		pausedCallbacks.Remove(callback);
-	}
+    public void AddPauseCallback(IPausable callback) {
+        pausedCallbacks.Add(callback);
+    }
 
-	#endregion Callbacks related
+    public void RemovePauseCallback(IPausable callback) {
+        pausedCallbacks.Remove(callback);
+    }
+
+    #endregion Callbacks related
 }
