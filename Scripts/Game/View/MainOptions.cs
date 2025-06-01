@@ -13,52 +13,85 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
-    private MenuController menuController;
+    #region UI elements
+    
+    private Button Button(NodePath path) {
+        return GetNode<Button>(path);
+    }
+    
+    private Label Label(NodePath path) {
+        return GetNode<Label>(path);
+    }
+    
+    private HSlider Slider(NodePath path) {
+        return GetNode<HSlider>(path);
+    }
+
+    private CheckButton cheatModeButton;
+
     private Label musicVolumePercentageLabel;
 
     private HSlider musicVolumeSlider;
-    private SettingsManager settingsManager;
+
     private Label sfxVolumePercentageLabel;
     private HSlider sfxVolumeSlider;
-    private SoundController soundController;
+    
+    private Button GoBackButton => Button("GoBackButton");
+
+    #endregion
+
+
+    #region Controller references
+    private static MenuController MenuControllerReference => MenuController.Singleton;
+    private static SettingsManager SettingsManagerReference => SettingsManager.Singleton;
+    private static SoundController SoundControllerReference => SoundController.Singleton;
+    #endregion
     private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
-    private Button GoBackButton => GetNode<Button>("GoBackButton");
-
+    
     public override void _Ready() {
-        menuController = GetNode<MenuController>("/root/MenuController");
-        settingsManager = GetNode<SettingsManager>("/root/SettingsManager");
-        soundController = GetNode<SoundController>("/root/SoundController");
+        InitializeReferences();
+        InitializeEvents();
 
-        musicVolumeSlider = GetNode<HSlider>("ButtonContainer/MusicVolumeSlider");
-        sfxVolumeSlider = GetNode<HSlider>("ButtonContainer/SFXVolumeSlider");
 
-        musicVolumePercentageLabel = GetNode<Label>("MusicPercentageLabel");
-        sfxVolumePercentageLabel = GetNode<Label>("SFXPercentageLabel");
+
+        musicVolumeSlider.Value = SoundControllerReference.MusicVolume;
+        sfxVolumeSlider.Value = SoundControllerReference.SfxVolume;
+
+        PopulateDisplayModeOptions();
+        SetDisplayModeButton();
+        SoundControllerReference.MusicVolume = SettingsManagerReference.MusicVolume;
+        SoundControllerReference.SfxVolume = SettingsManagerReference.SfxVolume;
+        cheatModeButton.ButtonPressed = SettingsManagerReference.CheatMode;
+    }
+
+    private void InitializeReferences() {
+        musicVolumeSlider = Slider("ButtonContainer/MusicVolumeSlider");
+        sfxVolumeSlider = Slider("ButtonContainer/SFXVolumeSlider");
+
+        musicVolumePercentageLabel = Label("MusicPercentageLabel");
+        sfxVolumePercentageLabel = Label("SFXPercentageLabel");
 
         musicVolumePercentageLabel.Text = $"{musicVolumeSlider.Value * 100:F0}%";
         sfxVolumePercentageLabel.Text = $"{sfxVolumeSlider.Value * 100:F0}%";
 
-        musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
-        sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
-        DisplayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
-        GoBackButton.Pressed += OnBackButtonPressed;
-
-        musicVolumeSlider.Value = soundController.MusicVolume;
-        sfxVolumeSlider.Value = soundController.SfxVolume;
-
-        PopulateDisplayModeOptions();
-        SetDisplayModeButton();
-        soundController.MusicVolume = settingsManager.MusicVolume;
-        soundController.SfxVolume = settingsManager.SfxVolume;
+        cheatModeButton = GetNode<CheckButton>("ButtonContainer/CheatModeButton");
     }
 
+    private void InitializeEvents() {
+        musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
+        sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
+        DisplayModeButton.ItemSelected += OnDisplayModeSelected; 
+        cheatModeButton.Toggled += OnCheatModeToggled;
+        GoBackButton.Pressed += OnBackButtonPressed;
+    }
+    
     /// <summary>
     ///     Handles the event for when the music volume slider value changes.
     ///     Sets the music volume
     /// </summary>
     private void OnMusicVolumeChanged(double value) {
-        settingsManager.SetMusicVolume((float)value);
-        GD.Print("Music volume changed to: " + soundController.MusicVolume);
+        SettingsManagerReference.SetMusicVolume((float)value);
+        GD.Print("Music volume changed to: " + SoundControllerReference.MusicVolume);
 
         musicVolumePercentageLabel.Text = $"{value * 100:F0}%";
     }
@@ -68,8 +101,8 @@ public partial class MainOptions : Control {
     ///     Sets the SFX volume
     /// </summary>
     private void OnSfxVolumeChanged(double value) {
-        settingsManager.SetSfxVolume((float)value);
-        GD.Print("SFX volume changed to: " + soundController.SfxVolume);
+        SettingsManagerReference.SetSfxVolume((float)value);
+        GD.Print("SFX volume changed to: " + SoundControllerReference.SfxVolume);
 
         sfxVolumePercentageLabel.Text = $"{value * 100:F0}%";
     }
@@ -78,7 +111,7 @@ public partial class MainOptions : Control {
     ///     Sets the display mode to the saved setting on the game startup.
     /// </summary>
     private void SetDisplayModeButton() {
-        int currentMode = settingsManager.DisplayMode;
+        int currentMode = SettingsManagerReference.DisplayMode;
         DisplayModeButton.Select(currentMode);
     }
 
@@ -92,11 +125,19 @@ public partial class MainOptions : Control {
     }
 
     /// <summary>
-    ///     Handles the event for when a display mode is selected from the drop down menu.
+    ///     Handles the event for when a display mode is selected from the dropdown menu.
     ///     Sets the display mode selected.
     /// </summary>
-    private void OnDisplayModeSelected(int index) {
-        settingsManager.ChangeDisplayMode(index);
+    private void OnDisplayModeSelected(long index) {
+        SettingsManagerReference.ChangeDisplayMode((int)index);
+    }
+
+    /// <summary>
+    ///     Handles event when the cheat mode button is toggled.
+    /// </summary>
+    /// <param name="enabled">if setting is on or off</param>
+    private void OnCheatModeToggled(bool enabled) {
+        SettingsManagerReference.SetCheatMode(enabled);
     }
 
     /// <summary>
@@ -104,6 +145,6 @@ public partial class MainOptions : Control {
     ///     Goes back to the previous menu.
     /// </summary>
     private void OnBackButtonPressed() {
-        menuController.GoBackToPreviousMenu();
+        MenuControllerReference.GoBackToPreviousMenu();
     }
 }
