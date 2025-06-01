@@ -45,9 +45,9 @@ public partial class CardNode : Node2D {
         ClearReferences();
 
         MouseIsHovering = false;
-        
+
         QueueFree();
-        
+
         CardController.CardRemoved(this);
     }
 
