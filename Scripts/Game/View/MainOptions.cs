@@ -23,6 +23,7 @@ public partial class MainOptions : Control {
     private SoundController soundController;
     private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
     private Button GoBackButton => GetNode<Button>("GoBackButton");
+    private CheckButton cheatModeButton;
 
     public override void _Ready() {
         menuController = GetNode<MenuController>("/root/MenuController");
@@ -37,19 +38,23 @@ public partial class MainOptions : Control {
 
         musicVolumePercentageLabel.Text = $"{musicVolumeSlider.Value * 100:F0}%";
         sfxVolumePercentageLabel.Text = $"{sfxVolumeSlider.Value * 100:F0}%";
+        
+        cheatModeButton = GetNode<CheckButton>("ButtonContainer/CheatModeButton");
 
         musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
         sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
         DisplayModeButton.Connect("item_selected", new Callable(this, nameof(OnDisplayModeSelected)));
+        cheatModeButton.Toggled += OnCheatModeToggled;
         GoBackButton.Pressed += OnBackButtonPressed;
 
         musicVolumeSlider.Value = soundController.MusicVolume;
         sfxVolumeSlider.Value = soundController.SfxVolume;
-
+        
         PopulateDisplayModeOptions();
         SetDisplayModeButton();
         soundController.MusicVolume = settingsManager.MusicVolume;
         soundController.SfxVolume = settingsManager.SfxVolume;
+        cheatModeButton.ButtonPressed = settingsManager.CheatMode;
     }
 
     /// <summary>
@@ -92,11 +97,16 @@ public partial class MainOptions : Control {
     }
 
     /// <summary>
-    ///     Handles the event for when a display mode is selected from the drop down menu.
+    ///     Handles the event for when a display mode is selected from the dropdown menu.
     ///     Sets the display mode selected.
     /// </summary>
     private void OnDisplayModeSelected(int index) {
         settingsManager.ChangeDisplayMode(index);
+    }
+
+    private void OnCheatModeToggled(bool value) {
+        settingsManager.SetCheatMode(value);
+        
     }
 
     /// <summary>

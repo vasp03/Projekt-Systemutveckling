@@ -11,6 +11,7 @@ public partial class SettingsManager : Node {
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;
+    public bool CheatMode { get; private set; } = false;
 
     public override void _Ready() {
         SoundController = GetNode<SoundController>("/root/SoundController");
@@ -69,6 +70,12 @@ public partial class SettingsManager : Node {
         SaveConfig();
     }
 
+    public void SetCheatMode(bool enabled) {
+        CheatMode = enabled;
+        GD.Print("Cheat mode is now " + CheatMode);
+        SaveConfig();
+    }
+
     /// <summary>
     ///     Loads the saved settings from a config file.
     /// </summary>
@@ -80,6 +87,8 @@ public partial class SettingsManager : Node {
                 DisplayMode = (int)config.GetValue("Display", "Mode", 0);
                 MusicVolume = (float)config.GetValue("Audio", "MusicVolume", 1.0f);
                 SfxVolume = (float)config.GetValue("Audio", "SfxVolume", 1.0f);
+                CheatMode = (bool)config.GetValue("Cheat", "Enabled", false);
+                GD.Print($"CheatMode loaded: {CheatMode}");
             }
         }
     }
@@ -93,6 +102,7 @@ public partial class SettingsManager : Node {
         config.SetValue("Display", "Mode", DisplayMode);
         config.SetValue("Audio", "MusicVolume", MusicVolume);
         config.SetValue("Audio", "SfxVolume", SfxVolume);
+        config.SetValue("Cheat", "Enabled", CheatMode);
         Error error = config.Save(CONFIG_FILE);
         if (error != Error.Ok) GD.Print("Failed to save settings.");
     }
