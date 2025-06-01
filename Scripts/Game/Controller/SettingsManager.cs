@@ -76,9 +76,10 @@ public partial class SettingsManager : Node {
         SaveConfig();
     }
 
+    /// <summary>
+    /// sets the cheat mode on or off based on the selected option and saves the setting.
     public void SetCheatMode(bool enabled) {
         CheatMode = enabled;
-        GD.Print("Cheat mode is now " + CheatMode);
         SaveConfig();
     }
 
@@ -93,6 +94,7 @@ public partial class SettingsManager : Node {
         DisplayMode = (int)config.GetValue("Display", "Mode", 0);
         MusicVolume = (float)config.GetValue("Audio", "MusicVolume", 1.0f);
         SfxVolume = (float)config.GetValue("Audio", "SfxVolume", 1.0f);
+        CheatMode = (bool)config.GetValue("Cheat", "Enabled", false);
     }
 
     /// <summary>
