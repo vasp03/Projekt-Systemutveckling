@@ -15,47 +15,47 @@ public partial class TutorialController : CanvasLayer, IPausable {
 	private int stepIndex = 0;
 	private bool isTyping = false;
 	private bool canAdvance = false;
-    
-    private bool isPaused;
+	
+	private bool isPaused;
 
 	public override void _Ready() {
 		bubbleInstance = TutorialBubbleScene.Instantiate<TutorialBubble>();
 		AddChild(bubbleInstance);
 		bubbleInstance.BubbleClicked += OnBubbleClicked;
-        
-        GameController.Singleton.AddPauseCallback(this);
+		
+		GameController.Singleton.AddPauseCallback(this);
 
 		_ = ShowStep(0);
 	}
 
-    private void OnBubbleClicked() {
-        if (tutorialEnded || isPaused) return;
+	private void OnBubbleClicked() {
+		if (tutorialEnded || isPaused) return;
 
-        if (isTyping) {
-            bubbleInstance.SkipTyping();
-            isTyping = false;
-            canAdvance = true;
-        } else if (canAdvance) {
-            stepIndex++;
-            _ = ShowStep(stepIndex);
-        }
-    }
+		if (isTyping) {
+			bubbleInstance.SkipTyping();
+			isTyping = false;
+			canAdvance = true;
+		} else if (canAdvance) {
+			stepIndex++;
+			_ = ShowStep(stepIndex);
+		}
+	}
 
-    public void SetPaused(bool paused, bool hideOverlay = true) {
-        isPaused = paused;
+	public void SetPaused(bool paused, bool hideOverlay = true) {
+		isPaused = paused;
 
-        if (!IsInstanceValid(bubbleInstance)) return;
+		if (!IsInstanceValid(bubbleInstance)) return;
 
-        // Hide the full tutorial bubble UI
-        bubbleInstance.Visible = !paused;
+		// Hide the full tutorial bubble UI
+		bubbleInstance.Visible = !paused;
 
-        // Hide or restore the arrow
-        if (paused) {
-            bubbleInstance.HideArrow();
-        } else if (!tutorialEnded) {
-            bubbleInstance.ShowLastArrow();
-        }
-    }
+		// Hide or restore the arrow
+		if (paused) {
+			bubbleInstance.HideArrow();
+		} else if (!tutorialEnded) {
+			bubbleInstance.ShowLastArrow();
+		}
+	}
 
 
 	private async Task ShowStep(int index) {

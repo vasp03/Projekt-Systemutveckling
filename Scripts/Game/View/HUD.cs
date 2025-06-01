@@ -43,7 +43,7 @@ public partial class HUD : CanvasLayer {
 
 		OnMoneyChanged(Global.Money);
 		
-        CallDeferred(nameof(UpdateThermometerUI));
+		CallDeferred(nameof(UpdateThermometerUI));
 	}
 
 	public override void _ExitTree() {

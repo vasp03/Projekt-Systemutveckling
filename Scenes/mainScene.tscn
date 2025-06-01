@@ -54,6 +54,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAA
 tile_set = SubResource("TileSet_0vbqt")
 
 [node name="HUD" type="CanvasLayer" parent="." node_paths=PackedStringArray("ThermometerIcon", "TemperatureLabel", "GoldIcon", "MoneyLabel", "FloatingMoneyRoot")]
+layer = 3
 script = ExtResource("5_0vbqt")
 ThermometerIcon = NodePath("HUDRoot/ThermometerContainer/ThermometerIcon")
 TemperatureLabel = NodePath("HUDRoot/ThermometerContainer/TemperatureLabel")
@@ -176,5 +177,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Tutorial" type="CanvasLayer" parent="HUD"]
+layer = 3
 script = ExtResource("11_l0d1b")
 TutorialBubbleScene = ExtResource("12_w8a2l")
