@@ -10,40 +10,9 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GuideMenu : Control {
     private readonly Dictionary<Button, VBoxContainer> buttons = new();
     private readonly Dictionary<string, (Texture2D, string)> cardData = new();
-    private Button[] buildingCardButtons;
-    private VBoxContainer buildingList;
-    private Button buildingsButton;
-
-    private TextureRect cardImage;
-    private Label cardInfoLabel;
-    private Label descriptionLabel;
-    private Button[] eventCardButtons;
-    private VBoxContainer eventsList;
-    private Button foodButton;
-    private Button[] foodCardButtons;
-    private VBoxContainer foodList;
     private Button goBackButton;
 
     private MenuController menuController;
-    private Button natureButton;
-    private Button[] natureCardButtons;
-    private VBoxContainer natureList;
-    private Button packsButton;
-    private Button[] packsButtons;
-    private VBoxContainer packsList;
-    private Button randomEventsButton;
-
-    private Button[] resourceCardButtons;
-
-    private VBoxContainer resourceList;
-
-    private Button resourcesButton;
-    private Button[] toolCardButtons;
-    private VBoxContainer toolList;
-    private Button toolsButton;
-    private Button[] villagerCardButtons;
-    private VBoxContainer villagerList;
-    private Button villagersButton;
 
     public override void _Ready() {
         menuController = MenuController.Singleton;
@@ -129,6 +98,47 @@ public partial class GuideMenu : Control {
         cardInfoLabel.Visible = false;
         cardImage.Visible = false;
     }
+
+    #region Building UI references
+
+    private Button[] buildingCardButtons;
+    private VBoxContainer buildingList;
+    private Button buildingsButton;
+
+    #endregion Building buttons
+
+    #region Card UI references
+
+    private TextureRect cardImage;
+    private Label cardInfoLabel;
+    private Label descriptionLabel;
+    private Button[] eventCardButtons;
+    private VBoxContainer eventsList;
+    private Button foodButton;
+    private Button[] foodCardButtons;
+    private VBoxContainer foodList;
+
+    private Button natureButton;
+    private Button[] natureCardButtons;
+    private VBoxContainer natureList;
+    private Button packsButton;
+    private Button[] packsButtons;
+    private VBoxContainer packsList;
+    private Button randomEventsButton;
+
+    private Button[] resourceCardButtons;
+
+    private VBoxContainer resourceList;
+
+    private Button resourcesButton;
+    private Button[] toolCardButtons;
+    private VBoxContainer toolList;
+    private Button toolsButton;
+    private Button[] villagerCardButtons;
+    private VBoxContainer villagerList;
+    private Button villagersButton;
+
+    #endregion Card UI references
 
     #region Initialization of submenus
 

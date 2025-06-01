@@ -1,6 +1,6 @@
 namespace Goodot15.Scripts.Game.Model.Enums;
 
-public enum CardTypeEnum {
+public enum CardTypeName {
     Wood,
     Stone,
     Water,

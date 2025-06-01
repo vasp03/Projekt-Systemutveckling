@@ -1,4 +1,5 @@
 using Godot;
+using Goodot15.Scripts.Game.Controller;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -73,7 +74,7 @@ public partial class HUD : CanvasLayer {
     }
 
     private void OnMoneyChanged(int newMoney) {
-        packController?.RefreshPackStates(newMoney);
+        packController?.RefreshAvailablePacks();
 
         MoneyLabel.Text = newMoney.ToString();
         MoneyLabel.Modulate = new Color(0.4f, 1f, 0.4f);

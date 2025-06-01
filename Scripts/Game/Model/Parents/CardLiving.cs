@@ -6,16 +6,14 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model;
 
+/// <summary>
+///     Cards that are considered to be alive - have health and hunger
+/// </summary>
 public abstract class CardLiving
     : Card, ITickable, ICardConsumer {
     public abstract bool ConsumeCard(Card otherCard);
 
     public virtual void PostTick(double delta) {
-        if (Saturation <= 0)
-            StarvationTickProgress++;
-        else
-            HungerTickProgress++;
-
         ExecuteTickLogic();
     }
 
@@ -24,7 +22,7 @@ public abstract class CardLiving
         if (TicksUntilFullyStarved != -1 && StarvationTickProgress >= TicksUntilFullyStarved)
             StarvationTickProgress = 0;
 
-        ExecuteHungerLogic();
+        ExecuteHungerProgress();
 
         ExecuteHungerLogic();
 
@@ -33,6 +31,20 @@ public abstract class CardLiving
         ExecuteDeathLogic();
     }
 
+    /// <summary>
+    ///     Increments the tick counter progress for starvation or hunger
+    /// </summary>
+    protected virtual void ExecuteHungerProgress() {
+        if (Saturation <= 0)
+            StarvationTickProgress++;
+        else
+            HungerTickProgress++;
+    }
+
+    /// <summary>
+    ///     Decreases <see cref="Saturation" /> by <see cref="SaturationLossPerCycle" /> when <see cref="HungerTickProgress" />
+    ///     is more than or equal to <see cref="TicksUntilSaturationDecrease" />
+    /// </summary>
     protected virtual void ExecuteHungerLogic() {
         // Resets hunger tick progress once it reaches TicksUntilSaturationDecrease
         if (TicksUntilSaturationDecrease == -1 || HungerTickProgress < TicksUntilSaturationDecrease) return;
@@ -43,11 +55,12 @@ public abstract class CardLiving
     }
 
     /// <summary>
-    ///     Heals Villagers and makes card flash green after a fixed amount of ticks, when health is below maximum and
-    ///     saturation is above half of maximum saturation.
+    ///     Increases <see cref="Health" /> by <see cref="HealthGainPerCycle" /> when <see cref="HealTickProgress" /> is more
+    ///     than or equal to <see cref="TicksUntilHeal" /> and <see cref="Saturation" /> is more than
+    ///     <see cref="MaximumSaturation" />/2 and <see cref="Health" /> is less than <see cref="MaximumHealth" />
     /// </summary>
     protected virtual void ExecuteHealingLogic() {
-        if (MaximumSaturation / 2 > Saturation || Health >= BaseHealth) {
+        if (MaximumSaturation / 2 > Saturation || Health >= MaximumHealth) {
             if (healingEffectPulseTickCount > 0) {
                 healingEffectPulseTickCount--;
                 CardNode.Modulate = new Color(
@@ -81,6 +94,9 @@ public abstract class CardLiving
         }
     }
 
+    /// <summary>
+    ///     Determines if this living card should be dead or not
+    /// </summary>
     protected virtual void ExecuteDeathLogic() {
         // Determines if the CardLiving is dead
         if (Health <= 0 || Saturation <= 0) {
@@ -91,7 +107,6 @@ public abstract class CardLiving
             } else {
                 CardNode.Modulate = new Color(1f, .5f, .5f);
             }
-            // CardNode.CardType = new ErrorCard();
         } else {
             if (damageEffectPulseTickCount <= 0) return;
             damageEffectPulseTickCount--;
@@ -119,8 +134,8 @@ public abstract class CardLiving
     /// </summary>
     private int health;
 
-    public CardLiving(string textureAddress, bool movable) : base(textureAddress, movable) {
-        Health = BaseHealth;
+    public CardLiving(string cardTextureName, bool movable) : base(cardTextureName, movable) {
+        Health = MaximumHealth;
         Saturation = MaximumSaturation;
     }
 
@@ -141,16 +156,18 @@ public abstract class CardLiving
         }
     }
 
+    private const string HURT_SFX = "General Sounds/Negative Sounds/sfx_sounds_damage1.wav";
+
     private void HurtSound() {
         if (health > 0)
             GameController.Singleton.SoundController
-                .PlaySound("General Sounds/Negative Sounds/sfx_sounds_damage1.wav");
+                .PlaySound(HURT_SFX);
     }
 
     /// <summary>
     ///     Starting health
     /// </summary>
-    public abstract int BaseHealth { get; }
+    public abstract int MaximumHealth { get; }
 
     /// <summary>
     ///     Health regained for each heal cycle
@@ -164,6 +181,9 @@ public abstract class CardLiving
 
     private int healTickProgress;
 
+    /// <summary>
+    ///     Current healing tick counter progress
+    /// </summary>
     public int HealTickProgress {
         get => TicksUntilHeal == -1
             ? 0
