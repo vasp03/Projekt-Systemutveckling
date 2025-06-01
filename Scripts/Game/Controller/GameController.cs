@@ -21,58 +21,66 @@ public partial class GameController : Node2D {
     public override void _Input(InputEvent @event) {
         if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
-        if (@event is InputEventKey eventKey && eventKey.Pressed) {
-            switch (eventKey.Keycode) {
-                case Key.Escape:
-                    MenuController.OpenPauseMenu();
+        switch (@event)
+        {
+            case InputEventKey eventKey when eventKey.Pressed:
+                switch (eventKey.Keycode) {
+                    case Key.Escape:
+                        MenuController.OpenPauseMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
-                        pausable.SetPaused(true);
+                        if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)
+                            pausable.SetPaused(true);
 
-                    SoundController.MusicMuted = true;
-                    HideHUD();
-                    Visible = false;
-                    break;
-                case Key.O:
-                    MenuController.OpenGameOverMenu();
-                    break;
-                case Key.Space:
-                    CardController.CreateCard("Random", Vector2.One * 100);
-                    break;
-                case Key.Key0:
-                case Key.Key1:
-                case Key.Key2:
-                case Key.Key3:
-                case Key.Key4:
-                case Key.Key5:
-                case Key.Key6:
-                case Key.Key7:
-                case Key.Key8:
-                case Key.Key9:
-                    MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
-                    break;
-                case Key.S:
-                    ToggleSellMode();
-                    break;
-                case Key.Q:
-                    MenuController.QuickOpenGuideMenu();
+                        SoundController.MusicMuted = true;
+                        HideHUD();
+                        Visible = false;
+                        break;
+                    case Key.O:
+                        MenuController.OpenGameOverMenu();
+                        break;
+                    case Key.Space:
+                        CardController.CreateCard("Random", Vector2.One * 100);
+                        break;
+                    case Key.Key0:
+                    case Key.Key1:
+                    case Key.Key2:
+                    case Key.Key3:
+                    case Key.Key4:
+                    case Key.Key5:
+                    case Key.Key6:
+                    case Key.Key7:
+                    case Key.Key8:
+                    case Key.Key9:
+                        MultipleNumberInput((int)eventKey.Keycode - (int)Key.Key0);
+                        break;
+                    case Key.S:
+                        ToggleSellMode();
+                        break;
+                    case Key.Q:
+                        MenuController.QuickOpenGuideMenu();
 
-                    if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3)
-                        pausable3.SetPaused(true);
+                        if (GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable3)
+                            pausable3.SetPaused(true);
 
-                    SoundController.Singleton.MusicMuted = true;
-                    HideHUD();
-                    Visible = true;
-                    break;
-                case Key.F:
-                    for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
-                    break;
-            }
-        } else if (@event is InputEventMouseButton mouseButton) {
-            if (mouseButton.Pressed)
+                        SoundController.Singleton.MusicMuted = true;
+                        HideHUD();
+                        Visible = true;
+                        break;
+                    case Key.F:
+                        for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
+                        break;
+                    case Key.B:
+                        GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
+                        break;
+                }
+
+                break;
+            case InputEventMouseButton mouseButton when mouseButton.Pressed:
                 CardController.LeftMouseButtonPressed();
-            else
+                break;
+            case InputEventMouseButton mouseButton:
                 CardController.LeftMouseButtonReleased();
+                break;
         }
     }
 
