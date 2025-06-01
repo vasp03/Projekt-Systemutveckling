@@ -58,7 +58,7 @@ public partial class CardNode : Node2D {
 
     /// <summary>
     ///     Sets the highlighted state of the card node.
-    ///     It sets the modulate of the sprite to the highlighted color if the card is highlighted.
+    ///     Sets the modulate of the sprite to the highlighted color if the card is highlighted.
     /// </summary>
     public void SetHighlighted(bool isHighlighted) {
         switch (isHighlighted) {
