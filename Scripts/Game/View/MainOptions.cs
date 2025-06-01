@@ -106,7 +106,7 @@ public partial class MainOptions : Control {
     }
 
     /// <summary>
-    /// Handles event when the cheat mode button is toggled.
+    ///     Handles event when the cheat mode button is toggled.
     /// </summary>
     /// <param name="enabled">if setting is on or off</param>
     private void OnCheatModeToggled(bool enabled) {

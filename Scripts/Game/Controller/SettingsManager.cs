@@ -12,9 +12,8 @@ public partial class SettingsManager : Node {
     private const string CONFIG_FILE = "user://settings.cfg";
 
     public static SettingsManager Singleton =>
-        (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<SettingsManager>("/root/SettingsManager");
+        GameController.Singleton.GetNode<SettingsManager>("/root/SettingsManager");
 
-    public SoundController SoundController { get; private set; }
     public int DisplayMode { get; private set; }
     public float MusicVolume { get; private set; } = 1.0f;
     public float SfxVolume { get; private set; } = 1.0f;
@@ -77,7 +76,7 @@ public partial class SettingsManager : Node {
     }
 
     /// <summary>
-    /// sets the cheat mode on or off based on the selected option and saves the setting.
+    ///     sets the cheat mode on or off based on the selected option and saves the setting.
     public void SetCheatMode(bool enabled) {
         CheatMode = enabled;
         SaveConfig();
