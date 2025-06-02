@@ -1,0 +1,403 @@
+<?xml version="1.0" standalone="no"?>
+<mlt LC_NUMERIC="C" version="7.33.0" title="Shotcut version 25.05.11" producer="main_bin">
+  <profile description="HD 1080p 25 fps" width="1280" height="720" progressive="1" sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="16" display_aspect_den="9" frame_rate_num="60" frame_rate_den="1" colorspace="709"/>
+  <chain id="chain0" out="00:00:48.017">
+    <property name="length">00:00:48.033</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Epic Trailer Song.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-06-02T09:42:22</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">7be3b777f9a7e97e945b1656a1024a9c</property>
+  </chain>
+  <chain id="chain1" out="00:02:18.633">
+    <property name="length">00:02:18.650</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Day.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-05-05T18:25:33</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">9a84ff26c76cfeee596927a984219b75</property>
+  </chain>
+  <chain id="chain2" out="00:02:45.467">
+    <property name="length">00:02:45.483</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Evening.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-05-05T18:25:33</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">a312afb110aa2e1cb0274518ea1fb5aa</property>
+  </chain>
+  <chain id="chain3" out="00:02:10.333">
+    <property name="length">00:02:10.350</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Morning.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-05-05T18:25:33</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">e3f2d6ad307f14d522b684cd0b707fd7</property>
+  </chain>
+  <chain id="chain4" out="00:02:08.150">
+    <property name="length">00:02:08.167</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Night.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">48000</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">163182</property>
+    <property name="meta.attr.0.stream.encoder.markup">LAME3.100</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-06-02T06:25:23</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">936deb0a7149581b157a9432400b8c49</property>
+  </chain>
+  <chain id="chain5" out="00:06:17.683">
+    <property name="length">00:06:17.700</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Long gameplay - Eventfull ending.webm</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">29.6667</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">724</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">libvpx</property>
+    <property name="meta.media.0.codec.long_name">libvpx VP8</property>
+    <property name="meta.media.0.codec.bit_rate">0</property>
+    <property name="meta.attr.0.stream.language.markup">eng</property>
+    <property name="meta.attr.0.stream.title.markup">Video</property>
+    <property name="meta.attr.encoder.markup">GStreamer matroskamux version 1.24.2</property>
+    <property name="meta.attr.creation_time.markup">2025-06-02T09:52:30.011302Z</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="audio_index">-1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2025-06-02T09:52:30</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">89</property>
+    <property name="meta.media.frame_rate_den">3</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">0</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">724</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">878d1e9e489e0f98ec833769031bd8f2</property>
+  </chain>
+  <chain id="chain6" out="00:02:26.017">
+    <property name="length">00:02:26.033</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Boulder event, beginer gameplay.webm</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">29.9167</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">724</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">libvpx</property>
+    <property name="meta.media.0.codec.long_name">libvpx VP8</property>
+    <property name="meta.media.0.codec.bit_rate">0</property>
+    <property name="meta.attr.0.stream.language.markup">eng</property>
+    <property name="meta.attr.0.stream.title.markup">Video</property>
+    <property name="meta.attr.encoder.markup">GStreamer matroskamux version 1.24.2</property>
+    <property name="meta.attr.creation_time.markup">2025-06-02T09:45:15.768499Z</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="audio_index">-1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2025-06-02T09:45:15</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">359</property>
+    <property name="meta.media.frame_rate_den">12</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">0</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">724</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">7068d669fd7ea20345aeb45419250ba9</property>
+  </chain>
+  <playlist id="main_bin" title="Shotcut version 25.05.11">
+    <property name="shotcut:projectAudioChannels">2</property>
+    <property name="shotcut:projectFolder">1</property>
+    <property name="xml_retain">1</property>
+    <entry producer="chain0" in="00:00:00.000" out="00:00:48.017"/>
+    <entry producer="chain1" in="00:00:00.000" out="00:02:18.633"/>
+    <entry producer="chain2" in="00:00:00.000" out="00:02:45.467"/>
+    <entry producer="chain3" in="00:00:00.000" out="00:02:10.333"/>
+    <entry producer="chain4" in="00:00:00.000" out="00:02:08.150"/>
+    <entry producer="chain5" in="00:00:00.000" out="00:06:17.683"/>
+    <entry producer="chain6" in="00:00:00.000" out="00:02:26.017"/>
+  </playlist>
+  <producer id="black" in="00:00:00.000" out="00:02:25.433">
+    <property name="length">00:02:25.450</property>
+    <property name="eof">pause</property>
+    <property name="resource">0</property>
+    <property name="aspect_ratio">1</property>
+    <property name="mlt_service">color</property>
+    <property name="mlt_image_format">rgba</property>
+    <property name="set.test_audio">0</property>
+  </producer>
+  <playlist id="background">
+    <entry producer="black" in="00:00:00.000" out="00:02:25.433"/>
+  </playlist>
+  <chain id="chain7" out="00:02:26.017">
+    <property name="length">00:02:26.033</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Boulder event, beginer gameplay.webm</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">video</property>
+    <property name="meta.media.0.stream.frame_rate">29.9167</property>
+    <property name="meta.media.0.stream.sample_aspect_ratio">1</property>
+    <property name="meta.media.0.codec.width">1280</property>
+    <property name="meta.media.0.codec.height">724</property>
+    <property name="meta.media.0.codec.rotate">0</property>
+    <property name="meta.media.0.codec.pix_fmt">yuv420p</property>
+    <property name="meta.media.0.codec.sample_aspect_ratio">0</property>
+    <property name="meta.media.0.codec.colorspace">709</property>
+    <property name="meta.media.0.codec.color_trc">1</property>
+    <property name="meta.media.0.codec.name">libvpx</property>
+    <property name="meta.media.0.codec.long_name">libvpx VP8</property>
+    <property name="meta.media.0.codec.bit_rate">0</property>
+    <property name="meta.attr.0.stream.language.markup">eng</property>
+    <property name="meta.attr.0.stream.title.markup">Video</property>
+    <property name="meta.attr.encoder.markup">GStreamer matroskamux version 1.24.2</property>
+    <property name="meta.attr.creation_time.markup">2025-06-02T09:45:15.768499Z</property>
+    <property name="seekable">1</property>
+    <property name="meta.media.sample_aspect_num">1</property>
+    <property name="meta.media.sample_aspect_den">1</property>
+    <property name="audio_index">-1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2025-06-02T09:45:15</property>
+    <property name="vstream">0</property>
+    <property name="meta.media.frame_rate_num">359</property>
+    <property name="meta.media.frame_rate_den">12</property>
+    <property name="meta.media.colorspace">709</property>
+    <property name="meta.media.color_trc">1</property>
+    <property name="meta.media.has_b_frames">0</property>
+    <property name="meta.media.width">1280</property>
+    <property name="meta.media.height">724</property>
+    <property name="meta.media.aspect_ratio">1</property>
+    <property name="meta.media.color_range">mpeg</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">7068d669fd7ea20345aeb45419250ba9</property>
+    <property name="meta.media.top_field_first">0</property>
+    <property name="meta.media.progressive">1</property>
+    <property name="shotcut:caption">Boulder event, beginer gameplay.webm</property>
+  </chain>
+  <playlist id="playlist0">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">V1</property>
+    <entry producer="chain7" in="00:00:00.583" out="00:02:26.017"/>
+  </playlist>
+  <chain id="chain8" out="00:00:48.017">
+    <property name="length">00:00:48.033</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Epic Trailer Song.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-06-02T09:42:22</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">7be3b777f9a7e97e945b1656a1024a9c</property>
+    <property name="shotcut:caption">Epic Trailer Song.mp3</property>
+  </chain>
+  <chain id="chain9" out="00:00:48.017">
+    <property name="length">00:00:48.033</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Epic Trailer Song.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-06-02T09:42:22</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">7be3b777f9a7e97e945b1656a1024a9c</property>
+    <property name="shotcut:caption">Epic Trailer Song.mp3</property>
+  </chain>
+  <playlist id="playlist1">
+    <property name="shotcut:audio">1</property>
+    <property name="shotcut:name">A1</property>
+    <blank length="00:00:12.967"/>
+    <entry producer="chain8" in="00:00:00.000" out="00:00:04.383"/>
+    <entry producer="chain9" in="00:00:04.400" out="00:00:48.017"/>
+  </playlist>
+  <chain id="chain10" out="00:02:18.633">
+    <property name="length">00:02:18.650</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kactuz/Documents/Github/Projekt-Systemutveckling/Shotcut - Trailer/Assets/Day.mp3</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="meta.media.nb_streams">1</property>
+    <property name="meta.media.0.stream.type">audio</property>
+    <property name="meta.media.0.codec.sample_fmt">fltp</property>
+    <property name="meta.media.0.codec.sample_rate">44100</property>
+    <property name="meta.media.0.codec.channels">2</property>
+    <property name="meta.media.0.codec.layout">stereo</property>
+    <property name="meta.media.0.codec.name">mp3float</property>
+    <property name="meta.media.0.codec.long_name">MP3 (MPEG audio layer 3)</property>
+    <property name="meta.media.0.codec.bit_rate">256000</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="creation_time">2025-05-05T18:25:33</property>
+    <property name="astream">0</property>
+    <property name="shotcut:skipConvert">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">9a84ff26c76cfeee596927a984219b75</property>
+    <property name="shotcut:caption">Day.mp3</property>
+  </chain>
+  <playlist id="playlist2">
+    <property name="shotcut:audio">1</property>
+    <property name="shotcut:name">A2</property>
+    <entry producer="chain10" in="00:00:00.283" out="00:02:18.633"/>
+  </playlist>
+  <tractor id="tractor0" title="Shotcut version 25.05.11" in="00:00:00.000" out="00:02:25.433">
+    <property name="shotcut">1</property>
+    <property name="shotcut:projectAudioChannels">2</property>
+    <property name="shotcut:projectFolder">1</property>
+    <track producer="background"/>
+    <track producer="playlist0"/>
+    <track producer="playlist1" hide="video"/>
+    <track producer="playlist2" hide="video"/>
+    <transition id="transition0">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition1">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="version">0.1</property>
+      <property name="mlt_service">frei0r.cairoblend</property>
+      <property name="threads">0</property>
+      <property name="disable">1</property>
+    </transition>
+    <transition id="transition2">
+      <property name="a_track">0</property>
+      <property name="b_track">2</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition3">
+      <property name="a_track">0</property>
+      <property name="b_track">3</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+  </tractor>
+</mlt>
