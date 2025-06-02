@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -47,7 +48,7 @@ public partial class SoundController : Node {
         get => _sfxVolume;
         set {
             _sfxVolume = Mathf.Clamp(value, 0.0f, 1.0f);
-            UpdateAmbianceVolume();
+            UpdateAmbianceVolume(_sfxVolume);
         }
     }
 
@@ -296,10 +297,10 @@ public partial class SoundController : Node {
     private readonly List<AudioStreamPlayer> AmbiancePlayers = new();
     private float ambianceVolumeMultiplier = 3;
 
-    private void UpdateAmbianceVolume() {
+    private void UpdateAmbianceVolume(float sfxVolume) {
         foreach (AudioStreamPlayer player in AmbiancePlayers)
             if (IsInstanceValid(player)) {
-                player.VolumeDb = Mathf.LinearToDb(SfxVolume * ambianceVolumeMultiplier);
+                player.VolumeDb = Mathf.LinearToDb(sfxVolume * ambianceVolumeMultiplier);
             } else {
                 AmbiancePlayers.Remove(player);
                 player.QueueFree();
@@ -435,6 +436,16 @@ public partial class SoundController : Node {
                 GD.PrintErr($"{player.Name} ({player.Stream.ResourcePath})");
             else
                 GD.PrintErr("Invalid player instance");
+    }
+
+    /// <summary>
+    ///     Forces the currently playing song to stop immediately, clearing the current playing music path.
+    /// </summary>
+    public void ForceStopSong() {
+        if (MusicPlayer != null && MusicPlayer.Playing) {
+            MusicPlayer.Stop();
+        }
+        CurrentPlayingMusicPath = string.Empty;
     }
 
     #endregion Ambiance-related

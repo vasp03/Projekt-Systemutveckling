@@ -78,6 +78,8 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         menuController.OpenMainMenu();
         menuController.GetTree().Paused = false;
         soundController.MusicMuted = false;
+        soundController.StopAllAmbiance();
+        soundController.ForceStopSong();
         isAnimating = false;
     }
 

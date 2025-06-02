@@ -20,6 +20,7 @@ public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
 
     public bool ConsumeCard(Card otherCard) {
         if (otherCard is not LivingPlayer || totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED) return false;
+
         totalVillagersSacrificed++;
         GameController.Singleton!.CameraController.Shake(totalVillagersSacrificed, Utilities.TimeToTicks(0.75d));
 
@@ -31,18 +32,21 @@ public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
                 CardNode.UpdateCardTexture(STAGES_TEXTURES[1]);
                 break;
             default: {
-                if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 4d &&
-                    totalVillagersSacrificed <= TOTAL_SACRIFICES_REQUIRED * 2d / 3d)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[2]);
-                else if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 2d &&
-                         totalVillagersSacrificed < TOTAL_SACRIFICES_REQUIRED)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[3]);
-                else if (totalVillagersSacrificed >= TOTAL_SACRIFICES_REQUIRED)
-                    CardNode.UpdateCardTexture(STAGES_TEXTURES[4]);
-                break;
-            }
+                    if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 4d &&
+                        totalVillagersSacrificed <= TOTAL_SACRIFICES_REQUIRED * 2d / 3d)
+                        CardNode.UpdateCardTexture(STAGES_TEXTURES[2]);
+                    else if (totalVillagersSacrificed > TOTAL_SACRIFICES_REQUIRED * 1d / 2d &&
+                             totalVillagersSacrificed < TOTAL_SACRIFICES_REQUIRED)
+                        CardNode.UpdateCardTexture(STAGES_TEXTURES[3]);
+                    else if (totalVillagersSacrificed >= TOTAL_SACRIFICES_REQUIRED)
+                        CardNode.UpdateCardTexture(STAGES_TEXTURES[4]);
+                    break;
+                }
         }
-        GameController.Singleton!.CardController.CheckForGameOver(livingHasJustDied: true);
+
+        if (totalVillagersSacrificed < TOTAL_SACRIFICES_REQUIRED) {
+            GameController.Singleton!.CardController.CheckForGameOver(livingHasJustDied: true);
+        }
 
         return true;
     }
