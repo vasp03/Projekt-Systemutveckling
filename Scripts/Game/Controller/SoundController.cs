@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -442,9 +441,7 @@ public partial class SoundController : Node {
     ///     Forces the currently playing song to stop immediately, clearing the current playing music path.
     /// </summary>
     public void ForceStopSong() {
-        if (MusicPlayer != null && MusicPlayer.Playing) {
-            MusicPlayer.Stop();
-        }
+        if (MusicPlayer != null && MusicPlayer.Playing) MusicPlayer.Stop();
         CurrentPlayingMusicPath = string.Empty;
     }
 

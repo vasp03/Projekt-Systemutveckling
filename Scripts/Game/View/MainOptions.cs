@@ -13,45 +13,11 @@ public partial class MainOptions : Control {
         "BORDERLESS WINDOWED"
     };
 
-    #region UI elements
-    
-    private Button Button(NodePath path) {
-        return GetNode<Button>(path);
-    }
-    
-    private Label Label(NodePath path) {
-        return GetNode<Label>(path);
-    }
-    
-    private HSlider Slider(NodePath path) {
-        return GetNode<HSlider>(path);
-    }
-
-    private CheckButton cheatModeButton;
-
-    private Label musicVolumePercentageLabel;
-
-    private HSlider musicVolumeSlider;
-
-    private Label sfxVolumePercentageLabel;
-    private HSlider sfxVolumeSlider;
-    
-    private Button GoBackButton => Button("GoBackButton");
-
-    #endregion
-
-
-    #region Controller references
-    private static MenuController MenuControllerReference => MenuController.Singleton;
-    private static SettingsManager SettingsManagerReference => SettingsManager.Singleton;
-    private static SoundController SoundControllerReference => SoundController.Singleton;
-    #endregion
     private OptionButton DisplayModeButton => GetNode<OptionButton>("ButtonContainer/DisplayModeButton");
-    
+
     public override void _Ready() {
         InitializeReferences();
         InitializeEvents();
-
 
 
         musicVolumeSlider.Value = SoundControllerReference.MusicVolume;
@@ -80,11 +46,11 @@ public partial class MainOptions : Control {
     private void InitializeEvents() {
         musicVolumeSlider.ValueChanged += OnMusicVolumeChanged;
         sfxVolumeSlider.ValueChanged += OnSfxVolumeChanged;
-        DisplayModeButton.ItemSelected += OnDisplayModeSelected; 
+        DisplayModeButton.ItemSelected += OnDisplayModeSelected;
         cheatModeButton.Toggled += OnCheatModeToggled;
         GoBackButton.Pressed += OnBackButtonPressed;
     }
-    
+
     /// <summary>
     ///     Handles the event for when the music volume slider value changes.
     ///     Sets the music volume
@@ -147,4 +113,40 @@ public partial class MainOptions : Control {
     private void OnBackButtonPressed() {
         MenuControllerReference.GoBackToPreviousMenu();
     }
+
+    #region UI elements
+
+    private Button Button(NodePath path) {
+        return GetNode<Button>(path);
+    }
+
+    private Label Label(NodePath path) {
+        return GetNode<Label>(path);
+    }
+
+    private HSlider Slider(NodePath path) {
+        return GetNode<HSlider>(path);
+    }
+
+    private CheckButton cheatModeButton;
+
+    private Label musicVolumePercentageLabel;
+
+    private HSlider musicVolumeSlider;
+
+    private Label sfxVolumePercentageLabel;
+    private HSlider sfxVolumeSlider;
+
+    private Button GoBackButton => Button("GoBackButton");
+
+    #endregion
+
+
+    #region Controller references
+
+    private static MenuController MenuControllerReference => MenuController.Singleton;
+    private static SettingsManager SettingsManagerReference => SettingsManager.Singleton;
+    private static SoundController SoundControllerReference => SoundController.Singleton;
+
+    #endregion
 }

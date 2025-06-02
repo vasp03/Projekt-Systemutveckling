@@ -80,7 +80,7 @@ public class DayTimeEvent : GameEvent, IPausable {
                 SoundController.Singleton.ToggleMusicMuted();
                 break;
         }
-        
+
         GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
         oldDayPhaseState = DayPhaseState;
     }

@@ -233,10 +233,14 @@ public class CraftingController {
     ///     Registers default material recipes
     /// </summary>
     private void RegisterDefaultMaterialRecipes() {
-        RegisterRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Villager", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"],
+            ["Tree"]));
+        RegisterRecipe(
+            new CraftingRecipe("Leaves", ["Hunter", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Blacksmith", "Tree"], ["Leaves", "Leaves", "Apple", "Wood"],
+            ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Leaves", ["Farmer", "Tree"], ["Leaves", "Leaves", "Apple", "Wood", "Wood"],
+            ["Tree"]));
 
         RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Villager"], ["Sand"], ["Stone"]));
         RegisterRecipe(new CraftingRecipe("Sand", ["Stone", "Hunter"], ["Sand"], ["Stone"]));
@@ -249,10 +253,14 @@ public class CraftingController {
             new CraftingRecipe("Stick", ["Blacksmith", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
         RegisterRecipe(new CraftingRecipe("Stick", ["Farmer", "Wood", "Axe"], ["Stick", "Stick", "Stick"], ["Wood"]));
 
-        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood", "Wood", "Wood", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood", "Wood", "Wood", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood", "Wood", "Wood", "Wood"], ["Tree"]));
-        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"], ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood"],
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Villager"], ["Wood", "Wood", "Wood", "Wood"],
+            ["Tree"]));
+        RegisterRecipe(
+            new CraftingRecipe("Wood", ["Tree", "Axe", "Hunter"], ["Wood", "Wood", "Wood", "Wood"], ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Blacksmith"], ["Wood", "Wood", "Wood", "Wood"],
+            ["Tree"]));
+        RegisterRecipe(new CraftingRecipe("Wood", ["Tree", "Axe", "Farmer"],
+            ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood"],
             ["Tree"]));
 
         RegisterRecipe(new CraftingRecipe("Stone", ["Mine", "Villager"], ["Stone"], []));

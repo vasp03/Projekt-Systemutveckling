@@ -68,7 +68,7 @@ public class ColdNightEvent : GameEvent, ITickable {
         GD.Print("Cold Night Event Triggered");
         dayTimeEvent.CurrentTemperature = -15f;
         GD.Print("Current Temperature: " + dayTimeEvent.CurrentTemperature + "C");
-        
+
         GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
         hasTriggered = true;
     }
