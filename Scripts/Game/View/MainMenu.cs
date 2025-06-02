@@ -32,8 +32,8 @@ public partial class MainMenu : Control {
 		menuController.ConfigureWithNewMainMenuInstance(this);
 		soundController = GetNode<SoundController>("/root/SoundController");
 		soundController.ForceStopSong();
-        soundController.PlayMenuMusic();
-        soundController.StopAllAmbiance();
+		soundController.PlayMenuMusic();
+		soundController.StopAllAmbiance();
 
 		continueButton = Button("ButtonContainer/ContinueButton");
 		continueButton.Pressed += OnContinueButtonPressed;

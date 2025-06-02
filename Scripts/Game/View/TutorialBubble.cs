@@ -16,7 +16,6 @@ public partial class TutorialBubble : CanvasLayer {
 	private string lastNodePath;
 	private Vector2? lastOffset;
 	private PointingDirection? lastDirection;
-	
 	[Signal] public delegate void BubbleClickedEventHandler();
 	public enum PointingDirection { Up, Down }
 

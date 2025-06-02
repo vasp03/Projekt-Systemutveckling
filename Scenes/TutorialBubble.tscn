@@ -9,10 +9,11 @@
 texture = ExtResource("1_4d6f7")
 
 [node name="TutorialBubble" type="CanvasLayer"]
+layer = 3
 script = ExtResource("1_kpjdk")
 
 [node name="Panel" type="Panel" parent="."]
-z_index = 4095
+z_index = 4090
 offset_left = 340.0
 offset_top = 34.0
 offset_right = 940.0
@@ -20,6 +21,7 @@ offset_bottom = 168.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_kpjdk")
 
 [node name="Label" type="Label" parent="Panel"]
+z_index = 4090
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

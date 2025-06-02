@@ -69,13 +69,13 @@ public partial class GameController : Node2D {
 						for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
 						break;
 					case Key.D:
-                        SoundController.LogAllAmbiancePlaying();
-                        break;
-                    caseKey.B:
+						SoundController.LogAllAmbiancePlaying();
+						break;
+					case Key.B:
 						GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
 						break;
 				
-                }
+				}
 				break;
 			case InputEventMouseButton mouseButton when mouseButton.Pressed:
 				CardController.LeftMouseButtonPressed();
