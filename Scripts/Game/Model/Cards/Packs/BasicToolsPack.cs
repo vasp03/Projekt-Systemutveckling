@@ -17,16 +17,12 @@ public class BasicToolsPack : CommonAndRarePack{
     protected override int CardCount => GD.RandRange(1, 2);
 
     protected override IReadOnlyList<Card> CommonCards => [
-        new MaterialSwordMk1(),
         new MaterialAxe(),
         new MaterialFishingPole(),
         new MaterialShovel()
     ];
 
     protected override IReadOnlyList<Card> RareCards => [
-        new MaterialSwordMk1(),
-        new MaterialAxe(),
-        new MaterialFishingPole(),
-        new MaterialShovel()
+        new MaterialSwordMk1()
     ];
 }

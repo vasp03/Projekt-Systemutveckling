@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
 
@@ -13,7 +14,7 @@ public class BasicMaterialPack : CommonAndRarePack {
 
     public override int Cost => 75;
     
-    protected override int CardCount => 4;
+    protected override int CardCount => GD.RandRange(3, 4);
 
     protected override IReadOnlyList<Card> CommonCards => [
         new MaterialWood(),

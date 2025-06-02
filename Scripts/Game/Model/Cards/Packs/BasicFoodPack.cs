@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Godot;
 using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
 
@@ -13,7 +14,7 @@ public class BasicFoodPack : CommonAndRarePack {
 
     public override int Cost => 125;
     
-    protected override int CardCount => 3;
+    protected override int CardCount => GD.RandRange(2,3);
 
     protected override IReadOnlyList<Card> CommonCards => [
         new MaterialBerry(),
