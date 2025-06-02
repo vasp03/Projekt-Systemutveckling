@@ -138,6 +138,7 @@ public partial class GameController : Node2D {
     #region Sell Mode
 
     private TextureRect SellModeLabel => GetNode<TextureRect>("HUD/HUDRoot/SellModeLabel");
+    private Node SellBorder => GetNode("HUD").GetNode("SellBorder");
 
     private bool sellModeActive;
 
@@ -154,16 +155,22 @@ public partial class GameController : Node2D {
 
     public void ToggleSellMode() {
         SellModeActive = !SellModeActive;
-        GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
-        Global.MouseController.SetSellMode(SellModeActive);
-        HUD.sellModeButton?.UpdateIcon();
+        UpdateSellMode();
     }
 
     public void SetSellMode(bool active) {
         SellModeActive = active;
+        UpdateSellMode();
+    }
+
+    public void UpdateSellMode() {
         Global.MouseController.SetSellMode(SellModeActive);
         HUD.sellModeButton?.UpdateIcon();
-        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
+        foreach (Node child in SellBorder.GetChildren()) {
+            if (child is ColorRect control) {
+                control.Visible = SellModeActive;
+            }
+        }
     }
 
     #region HUD visibility

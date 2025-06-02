@@ -91,6 +91,8 @@ public partial class MenuController : Node {
         GetTree().Paused = true;
         GameController.CallPausedCallbacks(true);
 
+        GameController.SetSellMode(false);
+
         previousMenu = null;
         if (guideMenu is null) {
             PackedScene packedGuideMenu = GD.Load<PackedScene>("res://Scenes/MenuScenes/GuideMenu.tscn");
