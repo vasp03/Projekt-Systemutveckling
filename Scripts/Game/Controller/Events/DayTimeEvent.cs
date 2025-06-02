@@ -54,23 +54,29 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         if (DayPhaseState == oldDayPhaseState) return;
 
+        // SoundController.Singleton.StopAmbianceType([AmbianceTypeEnum.Wind, AmbianceTypeEnum.Forest]);
+
         switch (DayPhaseState) {
             case DayPhaseState.NIGHT:
-                gameController.SoundController.PlayDayTimeSong("Night");
+                SoundController.Singleton.PlayDayTimeSong("Night");
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
             case DayPhaseState.MORNING:
-                gameController.SoundController.PlayDayTimeSong("Morning");
+                SoundController.Singleton.PlayDayTimeSong("Morning");
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
             case DayPhaseState.DAY:
-                gameController.SoundController.PlayDayTimeSong("Day");
+                SoundController.Singleton.PlayDayTimeSong("Day");
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Forest);
                 break;
             case DayPhaseState.EVENING:
-                gameController.SoundController.PlayDayTimeSong("Evening");
+                SoundController.Singleton.PlayDayTimeSong("Evening");
+                SoundController.Singleton.PlayAmbianceType(AmbianceSoundType.Wind);
                 break;
             case DayPhaseState.INVALID:
             case DayPhaseState.PAUSED:
             default:
-                gameController.SoundController.ToggleMusicMuted();
+                SoundController.Singleton.ToggleMusicMuted();
                 break;
         }
 

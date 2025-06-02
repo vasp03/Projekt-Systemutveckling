@@ -64,16 +64,18 @@ public partial class GameController : Node2D {
 
                         SoundController.Singleton.MusicMuted = true;
                         HideHUD();
-                        Visible = true;
+                        Visible = false;
                         break;
                     case Key.F:
                         for (int i = 0; i < 100; i++) CardController.CreateCard("Fire", new Vector2(200, 200));
+                        break;
+                    case Key.D:
+                        SoundController.LogAllAmbiancePlaying();
                         break;
                     case Key.B:
                         GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
                         break;
                 }
-
                 break;
             case InputEventMouseButton mouseButton when mouseButton.Pressed:
                 CardController.LeftMouseButtonPressed();
@@ -202,7 +204,6 @@ public partial class GameController : Node2D {
 
     private void ConfigureControllers() {
         SoundController = GetNode<SoundController>("/root/SoundController");
-        SoundController.PlayGameMusic();
 
         MenuController = GetNode<MenuController>("/root/MenuController");
         // MenuController.SetGameController(this);

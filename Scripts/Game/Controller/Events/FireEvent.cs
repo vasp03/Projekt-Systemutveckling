@@ -1,4 +1,5 @@
-﻿using Goodot15.Scripts.Game.Model.Material_Cards;
+﻿using Goodot15.Scripts.Game.Model.Enums;
+using Goodot15.Scripts.Game.Model.Material_Cards;
 using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Controller.Events;
@@ -15,5 +16,10 @@ public class FireEvent : CardSpawnEvent {
 
     public override Card CardInstance() {
         return new MaterialFire();
+    }
+
+    public override void OnEvent(GameEventContext context) {
+        context.GameController.SoundController.PlayAmbianceType(AmbianceSoundType.Fire);
+        base.OnEvent(context);
     }
 }

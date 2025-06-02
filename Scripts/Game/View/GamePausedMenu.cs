@@ -98,6 +98,7 @@ public partial class GamePausedMenu : Control {
                 ChangeToMainMenu();
                 soundController.MusicMuted = false;
                 soundController.PlayMenuMusic();
+                soundController.StopAllAmbiance();
                 break;
         }
     }

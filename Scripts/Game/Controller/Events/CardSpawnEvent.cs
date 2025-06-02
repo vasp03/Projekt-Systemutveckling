@@ -24,7 +24,6 @@ public abstract class CardSpawnEvent : GameEvent {
 
         for (int i = 0; i < SpawnCardCount; i++)
             context.GameController.CardController.CreateCard(CardInstance(),
-                context.GameController.NextRandomPositionOnScreen()
-            );
+                context.GameController.NextRandomPositionOnScreen());
     }
 }
