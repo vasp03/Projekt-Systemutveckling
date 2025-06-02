@@ -72,7 +72,6 @@ public partial class GameController : Node2D {
                     case Key.D:
                         SoundController.LogAllAmbiancePlaying();
                         break;
-
                     case Key.F1:
                         if (SettingsManager.Singleton.CheatMode)
                             GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
@@ -98,6 +97,7 @@ public partial class GameController : Node2D {
                             GameEventManager.PostEvent(GameEventManager.EventInstance<NatureResourceEvent>());
                         break;
                 }
+
                 break;
             case InputEventMouseButton mouseButton when mouseButton.Pressed:
                 CardController.LeftMouseButtonPressed();
@@ -226,6 +226,7 @@ public partial class GameController : Node2D {
 
     private void ConfigureControllers() {
         SoundController = GetNode<SoundController>("/root/SoundController");
+
 
         MenuController = GetNode<MenuController>("/root/MenuController");
         // MenuController.SetGameController(this);
