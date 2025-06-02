@@ -20,6 +20,14 @@ public partial class MenuController : Node {
         optionsMenu = null;
         guideMenu = null;
     }
+    
+    /// <summary>
+    /// Checks if the game over menu is currently active and visible.
+    /// </summary>
+    /// <returns>true if game over is active. False if game over isn't active</returns>
+    public bool IsGameOverMenuActive => 
+        gameOverMenu is not null && gameOverMenu.IsInsideTree() && gameOverMenu.Visible;
+    
 
     /// <summary>
     ///     Configures the MenuController with a new instance of the MainMenu.
@@ -151,13 +159,6 @@ public partial class MenuController : Node {
         SwitchMenu(gameOverMenu, false);
     }
     
-    /// <summary>
-    /// Checks if the game over menu is currently active and visible.
-    /// </summary>
-    /// <returns>true if game over is active. False if game over isn't active</returns>
-    public bool IsGameOverMenuActive() {
-        return gameOverMenu is not null && gameOverMenu.IsInsideTree() && gameOverMenu.Visible;
-    }
 
     /// <summary>
     ///     Switches the current menu to the new menu and hides the previous menu.

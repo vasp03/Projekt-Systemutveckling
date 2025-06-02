@@ -6,7 +6,9 @@ using Goodot15.Scripts.Game.View;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class TutorialController : CanvasLayer, IPausable {
-    private TutorialBubble bubbleInstance;
+    
+    public static TutorialController? Singleton => (Engine.GetMainLoop() as SceneTree).CurrentScene as TutorialController;
+    public TutorialBubble bubbleInstance { get; private set; }
     private bool canAdvance;
 
     private bool isPaused;
