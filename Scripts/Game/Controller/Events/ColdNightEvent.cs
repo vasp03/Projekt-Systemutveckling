@@ -78,7 +78,7 @@ public class ColdNightEvent : GameEvent, ITickable {
     ///     are not stacked on a campfire.
     ///     A campfire can only protect up to 3 living cards from damage
     /// </summary>
-    public void PostTick() {
+    public void PostTick(double delta) {
         if (!hasTriggered) return;
 
         if (lastDamageTick++ < Utilities.TimeToTicks(1)) return;
