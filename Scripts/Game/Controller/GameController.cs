@@ -71,8 +71,28 @@ public partial class GameController : Node2D {
 					case Key.D:
 						SoundController.LogAllAmbiancePlaying();
 						break;
-					case Key.B:
-						GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());
+					case Key.F1:
+                        if (SettingsManager.Singleton.CheatMode)
+						GameEventManager.PostEvent(GameEventManager.EventInstance<BoulderEvent>());break;
+                    case Key.F2:
+                        if (SettingsManager.Singleton.CheatMode)
+                            GameEventManager.PostEvent(GameEventManager.EventInstance<ColdNightEvent>());
+                        break;
+                    case Key.F3:
+                        if (SettingsManager.Singleton.CheatMode)
+                            GameEventManager.PostEvent(GameEventManager.EventInstance<FireEvent>());
+                        break;
+                    case Key.F4:
+                        if (SettingsManager.Singleton.CheatMode)
+                            GameEventManager.PostEvent(GameEventManager.EventInstance<MeteoriteEvent>());
+                        break;
+                    case Key.F5:
+                        if (SettingsManager.Singleton.CheatMode)
+                            GameEventManager.PostEvent(GameEventManager.EventInstance<RainEvent>());
+                        break;
+                    case Key.F6:
+                        if (SettingsManager.Singleton.CheatMode)
+                            GameEventManager.PostEvent(GameEventManager.EventInstance<NatureResourceEvent>());
 						break;
 				
 				}
