@@ -5,8 +5,6 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
 public class BasicBuildingPack : CommonAndRarePack {
-    // List<string> buildingCommons = ["Field", "Campfire", "House"];
-    // List<string> buildingRares = ["Greenhouse"];
     public override string PackButtonTexture => PackTexture("Building Pack");
 
     public override bool SingleUse => false;
@@ -14,14 +12,17 @@ public class BasicBuildingPack : CommonAndRarePack {
     public override string Name => "Basic building pack";
 
     public override int Cost => 200;
+    
+    protected override int CardCount => 1;
+
+    protected override float RareCardChance => 0.2f;
 
     protected override IReadOnlyList<Card> CommonCards => [
         new BuildingField(),
-        new BuildingCampfire(),
-        new BuildingHouse()
+        new BuildingCampfire()
     ];
 
     protected override IReadOnlyList<Card> RareCards => [
-        new BuildingGreenhouse()
+        new BuildingHouse()
     ];
 }

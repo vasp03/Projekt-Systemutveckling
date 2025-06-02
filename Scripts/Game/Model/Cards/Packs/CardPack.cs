@@ -33,7 +33,7 @@ public abstract class CardPack {
     public abstract int Cost { get; }
 
     /// <summary>
-    ///     Provides a full path to an card pack texture asset provided by name
+    ///     Provides a full path to a card pack texture asset provided by name
     /// </summary>
     /// <param name="packName">Name of card pack</param>
     /// <returns>Full path for pack texture asset</returns>

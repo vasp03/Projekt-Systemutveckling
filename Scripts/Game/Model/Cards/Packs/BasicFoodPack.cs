@@ -11,7 +11,9 @@ public class BasicFoodPack : CommonAndRarePack {
 
     public override string Name => "Basic Food Pack";
 
-    public override int Cost => 120;
+    public override int Cost => 125;
+    
+    protected override int CardCount => 3;
 
     protected override IReadOnlyList<Card> CommonCards => [
         new MaterialBerry(),

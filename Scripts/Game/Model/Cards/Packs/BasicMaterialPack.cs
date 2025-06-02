@@ -5,15 +5,15 @@ using Goodot15.Scripts.Game.Model.Parents;
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
 public class BasicMaterialPack : CommonAndRarePack {
-    // List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];
-    // List<string> materialRares = ["Clay", "Glass", "Planks"];
     public override string PackButtonTexture => PackTexture("Material Pack");
 
     public override bool SingleUse => false;
 
     public override string Name => "Basic Material pack";
 
-    public override int Cost => 80;
+    public override int Cost => 75;
+    
+    protected override int CardCount => 4;
 
     protected override IReadOnlyList<Card> CommonCards => [
         new MaterialWood(),
@@ -22,12 +22,12 @@ public class BasicMaterialPack : CommonAndRarePack {
         new MaterialSand(),
         new MaterialStick(),
         new MaterialWater(),
-        new MaterialBrick()
     ];
 
     protected override IReadOnlyList<Card> RareCards => [
         new MaterialClay(),
         new MaterialGlass(),
-        new MaterialPlank()
+        new MaterialPlank(),
+        new MaterialBrick()
     ];
 }

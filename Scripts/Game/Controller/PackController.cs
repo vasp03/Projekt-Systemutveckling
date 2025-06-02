@@ -28,22 +28,12 @@ public partial class PackController : HBoxContainer {
 
     private void RegisterDefaultPacks() {
         RegisterPack(new StarterPack());
+        RegisterPack(new BasicWaterPack());
         RegisterPack(new BasicMaterialPack());
         RegisterPack(new BasicFoodPack());
+        RegisterPack(new BasicToolsPack());
         RegisterPack(new BasicBuildingPack());
-        // RegisterPack(new CardPack("Starter Pack", 0, starterCommons, starterRares));
-
-        // List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];
-        // List<string> materialRares = ["Clay", "Glass", "Planks"];
-        // RegisterPack(new CardPack("Material Pack", 80, materialCommons, materialRares));
-// 
-        // List<string> foodCommons = ["Berry", "Apple", "Fish", "Meat"];
-        // List<string> foodRares = ["Jam", "CookedFish", "CookedMeat"];
-        // RegisterPack(new CardPack("Food Pack", 120, foodCommons, foodRares));
-// 
-        // List<string> buildingCommons = ["Field", "Campfire", "House"];
-        // List<string> buildingRares = ["Greenhouse"];
-        // availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
+        RegisterPack(new BasicVillagerPack());
     }
 
     /// <summary>
