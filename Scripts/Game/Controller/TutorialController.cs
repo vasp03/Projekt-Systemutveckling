@@ -28,6 +28,10 @@ public partial class TutorialController : CanvasLayer, IPausable {
 		_ = ShowStep(0);
 	}
 
+    /// <summary>
+    /// Method called when the tutorial bubble is clicked.
+    /// Used for advancing the tutorial steps or skipping typing.
+    /// </summary>
 	private void OnBubbleClicked() {
 		if (tutorialEnded || isPaused) return;
 
@@ -40,7 +44,12 @@ public partial class TutorialController : CanvasLayer, IPausable {
 			_ = ShowStep(stepIndex);
 		}
 	}
-
+    
+    /// <summary>
+    /// Method for setting the paused state of the tutorial.
+    /// </summary>
+    /// <param name="paused"></param>
+    /// <param name="hideOverlay"></param>
 	public void SetPaused(bool paused, bool hideOverlay = true) {
 		isPaused = paused;
 
@@ -57,7 +66,11 @@ public partial class TutorialController : CanvasLayer, IPausable {
 		}
 	}
 
-
+    /// <summary>
+    /// Shows the tutorial step based on the index provided.
+    /// Calls the appropriate method to display the text and UI elements for each step.
+    /// </summary>
+    /// <param name="index"></param>
 	private async Task ShowStep(int index) {
 		isTyping = true;
 		canAdvance = false;
