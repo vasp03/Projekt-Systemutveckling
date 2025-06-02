@@ -867,6 +867,7 @@ offset_bottom = 399.0
 theme_override_constants/separation = 27
 
 [node name="GreenhouseButton" type="Button" parent="TabContainer/Card Types/CTBoxContainer/ListPanel/Container/BuildingList"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
