@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
@@ -72,6 +74,18 @@ public static class Utilities {
         float newValue = (OldValue - OldMin) * newRange / oldRange + NewMin;
 
         return newValue;
+    }
+
+    public static IReadOnlyCollection<Node> RecursiveGetChildren(Node node) {
+        if (node == null) return [];
+
+        List<Node> children = [];
+        foreach (Node child in node.GetChildren()) {
+            children.Add(child);
+            children.AddRange(RecursiveGetChildren(child));
+        }
+
+        return children;
     }
 
     /// <summary>

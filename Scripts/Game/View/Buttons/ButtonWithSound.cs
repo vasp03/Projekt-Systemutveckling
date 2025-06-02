@@ -14,4 +14,8 @@ public partial class ButtonWithSound : Button {
     private void OnButtonDown() {
         SoundController.Singleton.PlaySound(ClickSfx);
     }
+
+    public static void PlayGenericClickSound() {
+        SoundController.Singleton.PlaySound(GENERIC_CLICK_SFX);
+    }
 }
