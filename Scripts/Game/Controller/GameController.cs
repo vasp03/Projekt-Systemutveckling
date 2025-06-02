@@ -21,7 +21,7 @@ public partial class GameController : Node2D {
     public override void _Input(InputEvent @event) {
         if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
-        if (MenuController.Singleton.IsGameOverMenuActive()) return;
+        if (MenuController.Singleton.IsGameOverMenuActive) return;
 
         switch (@event) {
             case InputEventKey eventKey when eventKey.Pressed:
