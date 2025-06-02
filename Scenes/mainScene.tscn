@@ -1,17 +1,17 @@
 [gd_scene load_steps=18 format=4 uid="uid://vpn6axvy6c6u"]
 
-[ext_resource type="Script" uid="uid://lowqknwmn7vs" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
+[ext_resource type="Script" uid="uid://dqbg03jh8sso1" path="res://Scripts/Game/Controller/GameController.cs" id="1_ly6xb"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_hewda"]
 [ext_resource type="Texture2D" uid="uid://c2fp3myawv0wf" path="res://Assets/Background/Grass Tiles/Grass 002.png" id="2_m8nr8"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_m8nr8"]
-[ext_resource type="Script" uid="uid://vx3c6u2phxu3" path="res://Scripts/Game/View/HUD.cs" id="5_0vbqt"]
-[ext_resource type="Script" uid="uid://b257hx2af4lao" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
-[ext_resource type="Script" uid="uid://ma323h2odlaq" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
+[ext_resource type="Script" uid="uid://bds65uc6mtdwy" path="res://Scripts/Game/View/HUD.cs" id="5_0vbqt"]
+[ext_resource type="Script" uid="uid://ldkhakx4rusn" path="res://Scripts/Game/View/SellModeButton.cs" id="6_w1dup"]
+[ext_resource type="Script" uid="uid://dwq57jkp8h6td" path="res://Scripts/Game/Controller/PackController.cs" id="7_uvydw"]
 [ext_resource type="PackedScene" uid="uid://crfa75uxwe6fa" path="res://Scenes/PackButton.tscn" id="8_w1dup"]
-[ext_resource type="Texture2D" uid="uid://de5aoclmsh8qe" path="res://Assets/UI/Thermometer/thermometer_normal.png" id="9_so5kr"]
-[ext_resource type="Texture2D" uid="uid://bbpaj705glvud" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
-[ext_resource type="Script" uid="uid://dmmt3a5ytdwq2" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
-[ext_resource type="Script" uid="uid://cqjknwk7wmej2" path="res://Scripts/Game/Controller/TutorialController.cs" id="11_l0d1b"]
+[ext_resource type="Texture2D" uid="uid://bl0tk86jsugik" path="res://Assets/UI/Thermometer/thermometer_normal.png" id="9_so5kr"]
+[ext_resource type="Texture2D" uid="uid://c0ayvs2byfiva" path="res://Assets/Div/sellModeText.png" id="9_uvydw"]
+[ext_resource type="Script" uid="uid://cmpkjo02444mu" path="res://Scripts/Game/View/QuickGuideButton.cs" id="10_mhr8t"]
+[ext_resource type="Script" uid="uid://nln8n63effm" path="res://Scripts/Game/Controller/TutorialController.cs" id="11_l0d1b"]
 [ext_resource type="PackedScene" uid="uid://5esimaxbfh4p" path="res://Scenes/TutorialBubble.tscn" id="12_w8a2l"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m8nr8"]
@@ -177,6 +177,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Tutorial" type="CanvasLayer" parent="HUD"]
-visible = false
+layer = 3
 script = ExtResource("11_l0d1b")
 TutorialBubbleScene = ExtResource("12_w8a2l")

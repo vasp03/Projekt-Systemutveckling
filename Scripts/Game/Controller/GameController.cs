@@ -21,8 +21,7 @@ public partial class GameController : Node2D {
     public override void _Input(InputEvent @event) {
         if (!IsInstanceValid(MenuController)) MenuController = GetNode<MenuController>("/root/MenuController");
 
-        if (MenuController.Singleton.IsGameOverMenuActive)
-            return;
+        if (MenuController.Singleton.IsGameOverMenuActive()) return;
 
         switch (@event) {
             case InputEventKey eventKey when eventKey.Pressed:
@@ -41,7 +40,7 @@ public partial class GameController : Node2D {
                         MenuController.OpenGameOverMenu();
                         break;
                     case Key.Space:
-                        //CardController.CreateCard("Random", Vector2.One * 100);
+                        CardController.CreateCard("Random", Vector2.One * 100);
                         break;
                     case Key.Key0:
                     case Key.Key1:
