@@ -1,8 +1,8 @@
 [gd_scene load_steps=27 format=4 uid="uid://dhv30067wc2yy"]
 
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="1_i04w5"]
-[ext_resource type="Script" uid="uid://8gqwjiuqfun7" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
-[ext_resource type="Script" uid="uid://bpxu2yecknclj" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="3_5vdl0"]
+[ext_resource type="Script" uid="uid://bxs4neupfuddj" path="res://Scripts/Game/View/GamePausedMenu.cs" id="1_o2um7"]
+[ext_resource type="Script" uid="uid://bjeseklv523ka" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="3_5vdl0"]
 [ext_resource type="Texture2D" uid="uid://b5gkk30fjrcok" path="res://Assets/Background/BrickTiles/BrickTile.png" id="3_pqm6c"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="4_67e3d"]
 

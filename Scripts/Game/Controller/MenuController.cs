@@ -190,6 +190,7 @@ public partial class MenuController : Node {
             TextureButton quickGuideButton = canvasLayer.GetNode<TextureButton>("QuickGuideButton");
 
             quickGuideButton.Visible = true;
+            GameController.Visible = true;
         }
     }
 
