@@ -11,9 +11,9 @@ public class BoulderEvent : GameEvent {
     public override string EventName => "Random boulders";
 
     public override int TicksUntilNextEvent =>
-        Utilities.TimeToTicks(days: 1d); //Utilities.GameScaledTimeToTicks(days: 0.5d);
+        Utilities.GameScaledTimeToTicks(days: 0.5d);
 
-    public override double Chance => 0.15d; // 0.2d;
+    public override double Chance => 0.25d;
 
     public override void OnEvent(GameEventContext context) {
         for (int i = 0; i < BOULDER_COUNT; i++) {
