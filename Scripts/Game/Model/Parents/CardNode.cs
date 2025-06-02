@@ -61,6 +61,7 @@ public partial class CardNode : Node2D {
     ///     Sets the modulate of the sprite to the highlighted color if the card is highlighted.
     /// </summary>
     public void SetHighlighted(bool isHighlighted) {
+        if (!CardType.Movable) return;
         switch (isHighlighted) {
             case true when !oldIsHighlighted:
                 CardSprite.SetModulate(CardSprite.Modulate * HIGHTLIGHT_MODULATE_FACTOR);
@@ -170,6 +171,7 @@ public partial class CardNode : Node2D {
     public bool Dragged {
         get => dragged;
         set {
+            if (!CardType.Movable) return;
             dragged = value;
             OnDragChanged(dragged);
         }
