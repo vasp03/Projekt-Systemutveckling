@@ -1,5 +1,6 @@
 using Godot;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Controller.Events;
 
 namespace Goodot15.Scripts.Game.View;
 
@@ -12,7 +13,12 @@ public partial class HUD : CanvasLayer {
     private Global Global;
     private bool isFlashing;
     private PackController packController;
+    private Texture2D thermometerCold;
 
+    private Texture2D thermometerNormal;
+
+    [Export] public TextureRect ThermometerIcon { get; set; }
+    [Export] public Label TemperatureLabel { get; set; }
     [Export] public TextureRect GoldIcon { get; set; }
     [Export] public Label MoneyLabel { get; set; }
     [Export] public Control FloatingMoneyRoot { get; set; }
@@ -27,12 +33,17 @@ public partial class HUD : CanvasLayer {
 
         packController = GetNodeOrNull<PackController>("HUDRoot/PackContainer");
 
+        thermometerNormal = GD.Load<Texture2D>("res://Assets/UI/Thermometer/thermometer_normal.png");
+        thermometerCold = GD.Load<Texture2D>("res://Assets/UI/Thermometer/thermometer_cold.png");
+
         SetupSellModeButton();
 
         defaultColor = MoneyLabel.Modulate;
         LoadCoinTextures();
 
         OnMoneyChanged(Global.Money);
+
+        CallDeferred(nameof(UpdateThermometerUI));
     }
 
     public override void _ExitTree() {
@@ -96,6 +107,19 @@ public partial class HUD : CanvasLayer {
         if (money >= 1000) stage = 8;
 
         GoldIcon.Texture = coinIcons[stage];
+    }
+
+    public void UpdateThermometerUI() {
+        if (ThermometerIcon == null || TemperatureLabel == null) {
+            GD.PrintErr("ThermometerIcon or TemperatureLabel is null");
+            return;
+        }
+
+        float temp = GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>().CurrentTemperature;
+
+        ThermometerIcon.Texture = temp <= 0 ? thermometerCold : thermometerNormal;
+
+        TemperatureLabel.Text = $"{Mathf.RoundToInt(temp)}°C";
     }
 
     /// <summary>

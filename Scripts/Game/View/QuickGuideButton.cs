@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.Model.Interface;
 public partial class QuickGuideButton : TextureButton {
     public override void _Ready() {
         Pressed += OnButtonPressed;
-        TextureNormal = GD.Load<Texture2D>("res://Assets/Icons/64x64/fc9.png");
+        TextureNormal = GD.Load<Texture2D>("res://Assets/Icons/64x64/fc289.png");
     }
 
     public void OnButtonPressed() {
