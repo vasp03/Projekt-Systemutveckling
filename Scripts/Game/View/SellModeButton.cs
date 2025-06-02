@@ -4,6 +4,7 @@ using Goodot15.Scripts.Game.Controller;
 namespace Goodot15.Scripts.Game.View;
 
 public partial class SellModeButton : TextureButton {
+    
     private Texture2D iconOff;
     private Texture2D iconOn;
 

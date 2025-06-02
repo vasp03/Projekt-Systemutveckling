@@ -9,6 +9,9 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
+    private const string SELL_MODE_ACTIVE_SFX = "General Sounds/Buttons/sfx_sounds_button7.wav";
+    private const string SELL_MODE_DEACTIVE_SFX = "General Sounds/Buttons/sfx_sounds_button7_rev.wav";
+    
     private readonly List<int> numberList = new();
 
     /// <summary>
@@ -171,6 +174,10 @@ public partial class GameController : Node2D {
 
             if (!sellModeActive)
                 CardController.HideCardValue();
+            
+            SoundController.Singleton.PlaySound(SellModeActive
+                ? SELL_MODE_ACTIVE_SFX
+                : SELL_MODE_DEACTIVE_SFX);
         }
     }
 
