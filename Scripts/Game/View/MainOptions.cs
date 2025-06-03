@@ -62,8 +62,6 @@ public partial class MainOptions : Control {
         GD.Print("Music volume changed to: " + SoundControllerReference.MusicVolume);
 
         musicVolumePercentageLabel.Text = $"{value * 100:F0}%";
-
-        SoundControllerReference.PlaySound(SLIDER_SFX, Utilities.MapRange(0f, 1f, 0.5f, 1f, (float)value));
     }
 
     /// <summary>
@@ -75,8 +73,6 @@ public partial class MainOptions : Control {
         GD.Print("SFX volume changed to: " + SoundControllerReference.SfxVolume);
 
         sfxVolumePercentageLabel.Text = $"{value * 100:F0}%";
-
-        SoundControllerReference.PlaySound(SLIDER_SFX, Utilities.MapRange(0f, 1f, 0.5f, 1f, (float)value));
     }
 
     /// <summary>
