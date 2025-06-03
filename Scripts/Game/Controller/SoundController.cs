@@ -18,8 +18,11 @@ public partial class SoundController : Node {
     ///     Triggers disposal of cached audio
     /// </summary>
     private void UnloadSounds() {
-        CachedSounds.ToList().ForEach(e => e.Value.Dispose());
-        CachedMusic.ToList().ForEach(e => e.Value.Dispose());
+        cachedSounds.Values.ToList().ForEach(e => e.Dispose());
+        cachedMusic.Values.ToList().ForEach(e => e.Dispose());
+        
+        cachedSounds.Clear();
+        cachedMusic.Clear();
     }
 
     public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
@@ -34,7 +37,8 @@ public partial class SoundController : Node {
 
     #region Sfx-related
 
-    private readonly IDictionary<string, AudioStream> CachedSounds = new Dictionary<string, AudioStream>();
+    private readonly IDictionary<string, AudioStream> cachedSounds = new Dictionary<string, AudioStream>();
+    public IReadOnlyCollection<AudioStream> CachedSounds => cachedSounds.Values.ToArray();
 
     private float _sfxVolume;
 
@@ -94,14 +98,14 @@ public partial class SoundController : Node {
     /// <param name="soundAssetName">Music asset to be loaded</param>
     /// <returns>Loaded sound effect as an AudioStream</returns>
     private AudioStream LoadSound(string soundAssetName) {
-        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
+        if (cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
             // Return already loaded asset
             return audioStream;
 
         // Music not loaded, first time setup
-        audioStream = GD.Load<AudioStream>($"{BASE_SOUND_PATH}/{soundAssetName}");
+        audioStream = ResourceLoader.Load<AudioStream>($"{BASE_SOUND_PATH}/{soundAssetName}");
         // ConfigureLoopingSound(audioStream);
-        CachedMusic.Add(soundAssetName, audioStream);
+        cachedMusic.Add(soundAssetName, audioStream);
 
         return audioStream;
     }
@@ -112,7 +116,8 @@ public partial class SoundController : Node {
 
     private const string BASE_MUSIC_PATH = "res://Assets/Music";
 
-    private readonly IDictionary<string, AudioStream> CachedMusic = new Dictionary<string, AudioStream>();
+    private readonly IDictionary<string, AudioStream> cachedMusic = new Dictionary<string, AudioStream>();
+    public IReadOnlyCollection<AudioStream> CachedMusic => cachedMusic.Values.ToArray();
 
     private AudioStreamPlayer MusicPlayer;
 
@@ -211,12 +216,12 @@ public partial class SoundController : Node {
     /// <param name="soundAssetName">Music asset to be loaded</param>
     /// <returns>Loaded music as an AudioStream</returns>
     private AudioStream LoadMusic(string soundAssetName) {
-        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) return audioStream;
+        if (cachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream)) return audioStream;
 
         // Music not loaded, first time setup
-        audioStream = GD.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
+        audioStream = ResourceLoader.Load<AudioStream>($"{BASE_MUSIC_PATH}/{soundAssetName}");
         ConfigureLoopingSound(audioStream);
-        CachedMusic.Add(soundAssetName, audioStream);
+        cachedMusic.Add(soundAssetName, audioStream);
 
         return audioStream;
     }
@@ -420,12 +425,12 @@ public partial class SoundController : Node {
     /// </summary>
     /// <param name="ambianceName">Name of the ambiance sound asset to be loaded, uses BASE_AMBIANCE_PATH</param>
     private AudioStream LoadAmbiance(string ambianceName) {
-        if (CachedSounds.TryGetValue(ambianceName, out AudioStream audioStream))
+        if (cachedSounds.TryGetValue(ambianceName, out AudioStream audioStream))
             return audioStream;
 
         // Ambiance not loaded, first time setup
-        audioStream = GD.Load<AudioStream>($"{BASE_AMBIANCE_PATH}/{ambianceName}");
-        CachedSounds.Add(ambianceName, audioStream);
+        audioStream = ResourceLoader.Load<AudioStream>($"{BASE_AMBIANCE_PATH}/{ambianceName}");
+        cachedSounds.Add(ambianceName, audioStream);
 
         return audioStream;
     }

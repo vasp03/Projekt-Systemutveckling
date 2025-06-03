@@ -10,8 +10,8 @@ public partial class SellModeButton : TextureButton {
     public override void _Ready() {
         Pressed += OnButtonPressed;
 
-        iconOn = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
-        iconOff = GD.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
+        iconOn = ResourceLoader.Load<Texture2D>("res://Assets/UI/Sell/sell_on.png");
+        iconOff = ResourceLoader.Load<Texture2D>("res://Assets/UI/Sell/sell_off.png");
 
         Setup();
     }

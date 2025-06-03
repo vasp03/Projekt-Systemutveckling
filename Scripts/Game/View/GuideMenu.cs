@@ -10,6 +10,7 @@ namespace Goodot15.Scripts.Game.View;
 /// </summary>
 public partial class GuideMenu : Control {
     private const string DEFAULT_ERROR_CARD_TEX = "res://Assets/Cards/Ready To Use/Error.png";
+    private const string DEFAULT_ERROR_PACK_TEX = "res://Assets/Packs/Error.png";
     
     private readonly Dictionary<Button, VBoxContainer> buttons = new();
     private readonly Dictionary<string, (Texture2D, string)> cardData = new();
@@ -68,21 +69,14 @@ public partial class GuideMenu : Control {
     /// </summary>
     /// <param name="cardName">The name of the card to load the image for</param>
     /// <returns>The card image or a default image if no image is found</returns>
-    private Texture2D LoadCardTexture(string cardName) {
+    private static Texture2D LoadCardTexture(string cardName) {
         string cardImagePath = $"res://Assets/Cards/Ready To Use/{cardName}.png";
         return ResourceLoader.Load<Texture2D>(cardImagePath) ?? ResourceLoader.Load<Texture2D>(DEFAULT_ERROR_CARD_TEX);
     }
 
-    private Texture2D LoadPackTexture(string cardName) {
-        string packImagePath = "res://Assets/Packs/" + cardName + ".png";
-        string defaultPath = "res://Assets/Packs/Error.png";
-        if (!FileAccess.FileExists(packImagePath)) {
-            GD.PrintErr($"Pack image not found: {packImagePath}");
-            return GD.Load<Texture2D>(defaultPath);
-        }
-
-        Texture2D packTexture = GD.Load<Texture2D>(packImagePath);
-        return packTexture;
+    private static Texture2D LoadPackTexture(string cardName) {
+        string packImagePath = $"res://Assets/Packs/{cardName}.png";
+        return ResourceLoader.Load<Texture2D>(packImagePath) ?? ResourceLoader.Load<Texture2D>(DEFAULT_ERROR_PACK_TEX);
     }
 
     /// <summary>
