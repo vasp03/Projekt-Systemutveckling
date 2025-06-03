@@ -42,9 +42,6 @@ public partial class GameController : Node2D {
                     case Key.O:
                         MenuController.OpenGameOverMenu();
                         break;
-                    case Key.Space:
-                        CardController.CreateCard("Random", Vector2.One * 100);
-                        break;
                     case Key.Key0:
                     case Key.Key1:
                     case Key.Key2:
