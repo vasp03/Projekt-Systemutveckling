@@ -114,7 +114,7 @@ public partial class GameController : Node2D {
         return GetGlobalMousePosition();
     }
 
-    public void MultipleNumberInput(int number) {
+    private void MultipleNumberInput(int number) {
         numberList.Add(number);
 
         if (numberList.Count >= 2) {
