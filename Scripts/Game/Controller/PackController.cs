@@ -80,7 +80,13 @@ public partial class PackController : HBoxContainer {
         IReadOnlyCollection<Card> cardsInPack = pack.GenerateCards();
 
         foreach (Card cardInstance in cardsInPack) {
-            Vector2 randomPos = GameController.Singleton.NextRandomPositionOnScreen();
+            Rect2 spawnArea = new Rect2(new Vector2(75, 150), new Vector2(1125, 375));
+            
+            Vector2 randomPos = new Vector2(
+                (float)GD.RandRange(spawnArea.Position.X, spawnArea.End.X),
+                (float)GD.RandRange(spawnArea.Position.Y, spawnArea.End.Y)
+            );
+
             GameController.Singleton.CardController.CreateCard(cardInstance, randomPos);
         }
 
