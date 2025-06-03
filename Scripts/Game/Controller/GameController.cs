@@ -98,6 +98,11 @@ public partial class GameController : Node2D {
 						if (SettingsManager.Singleton.CheatMode)
 							GameEventManager.PostEvent(GameEventManager.EventInstance<NatureResourceEvent>());
 						break;
+                    case Key.F7:
+                        if (SettingsManager.Singleton.CheatMode) {
+                            Global.Singleton.AddMoney(500);
+                        }
+                        break;
 				}
 
 				break;

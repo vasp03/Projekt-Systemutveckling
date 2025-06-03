@@ -12,7 +12,7 @@ public class BasicVillagerPack : CommonAndRarePack{
 
     public override string Name => "Basic Villager pack";
 
-    public override int Cost => 500;
+    public override int Cost => 1000;
     
     protected override int CardCount => 1;
     

@@ -12,7 +12,7 @@ public class BasicMaterialPack : CommonAndRarePack {
 
     public override string Name => "Basic Material pack";
 
-    public override int Cost => 75;
+    public override int Cost => 140;
     
     protected override int CardCount => GD.RandRange(3, 4);
 

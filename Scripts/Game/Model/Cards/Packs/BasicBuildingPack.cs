@@ -15,6 +15,8 @@ public class BasicBuildingPack : CommonAndRarePack {
     
     protected override int CardCount => 1;
 
+    protected override float RareCardChance => 0.15f;
+
     protected override IReadOnlyList<Card> CommonCards => [
         new BuildingField(),
         new BuildingCampfire()

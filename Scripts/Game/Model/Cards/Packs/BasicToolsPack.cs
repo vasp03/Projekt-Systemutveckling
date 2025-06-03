@@ -14,6 +14,8 @@ public class BasicToolsPack : CommonAndRarePack{
 
     public override int Cost => 150;
 
+    protected override float RareCardChance => 0.2f;
+
     protected override int CardCount => GD.RandRange(1, 2);
 
     protected override IReadOnlyList<Card> CommonCards => [

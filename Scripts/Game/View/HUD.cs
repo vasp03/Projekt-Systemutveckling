@@ -98,19 +98,19 @@ public partial class HUD : CanvasLayer {
 		UpdateGoldIcon(newMoney);
 	}
 
-	private void UpdateGoldIcon(int money) {
-		int stage = 0;
-		if (money >= 25) stage = 1;
-		if (money >= 75) stage = 2;
-		if (money >= 150) stage = 3;
-		if (money >= 250) stage = 4;
-		if (money >= 400) stage = 5;
-		if (money >= 600) stage = 6;
-		if (money >= 800) stage = 7;
-		if (money >= 1000) stage = 8;
+    private void UpdateGoldIcon(int money) {
+        int stage = 0;
+        if (money >= 200) stage = 1;
+        if (money >= 500) stage = 2;
+        if (money >= 1000) stage = 3;
+        if (money >= 2000) stage = 4;
+        if (money >= 3000) stage = 5;
+        if (money >= 4000) stage = 6;
+        if (money >= 5000) stage = 7;
+        if (money >= 7000) stage = 8;
 
-		GoldIcon.Texture = coinIcons[stage];
-	}
+        GoldIcon.Texture = coinIcons[stage];
+    }
 
 	public void UpdateThermometerUI() {
 		if (ThermometerIcon == null || TemperatureLabel == null) {

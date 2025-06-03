@@ -126,7 +126,7 @@ public partial class TutorialController : CanvasLayer, IPausable {
 				isTyping = true;
 				canAdvance = false;
 				await bubbleInstance.ShowText(
-					"Tutorial complete. If you need help, you can always access the guide meny by clicking the HUD button in the bottom left corner of the screen.");
+					"Tutorial complete. If you need help, you can always access the guide meny by clicking the HUD button in the bottom right corner of the screen. Good luck Adventurer!");
 				tutorialEnded = true;
 				await Task.Delay(3000);
 				bubbleInstance.QueueFree();
