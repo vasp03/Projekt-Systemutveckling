@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 
@@ -570,7 +571,8 @@ public partial class GuideMenu : Control {
     ///     Goes back to the previous menu
     /// </summary>
     private void OnGoBackButtonPressed() {
-        SoundController.Singleton.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
+        SoundController tempQualifier = SoundController.Singleton;
+        tempQualifier.PlaySound("General Sounds/Buttons/sfx_sounds_button11.wav");
         ResetGuideMenu();
         menuController.GoBackToPreviousMenu();
     }

@@ -1,9 +1,10 @@
 ﻿using System;
+using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
 
-public static class Utilities {
+public class Utilities {
     public const double TICKS_PER_SECOND = 60;
 
     /// <summary>
@@ -22,7 +23,7 @@ public static class Utilities {
     /// <param name="days">Real-life Days</param>
     /// <returns>Real-life time units converted to ticks (60 ticks = 1 second)</returns>
     public static int TimeToTicks(double seconds = 0, double minutes = 0, double hours = 0, double days = 0) {
-        return (int)Math.Floor(
+        return (int)Mathf.Floor(
             seconds * TICKS_PER_SECOND + // Seconds to ticks
             minutes * 60 * TICKS_PER_SECOND + // Minutes to seconds to ticks
             hours * 60 * 60 * TICKS_PER_SECOND + // Hours to seconds to ticks
@@ -45,7 +46,7 @@ public static class Utilities {
         double factorScaledToDays = TICKS_PER_DAY / (double)TimeToTicks(days: 1);
 
         // Scale the game ticks to real time
-        return (int)Math.Floor(gameTicks * factorScaledToDays);
+        return (int)Mathf.Floor(gameTicks * factorScaledToDays);
     }
 
     /// <summary>
@@ -66,7 +67,7 @@ public static class Utilities {
     /// <param name="NewMax">End of the new range</param>
     /// <param name="OldValue">Value to map from the old range</param>
     /// <returns>Mapped value</returns>
-    internal static float MapRange(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue) {
+    public static float MapRange(float OldMin, float OldMax, float NewMin, float NewMax, float OldValue) {
         float oldRange = OldMax - OldMin;
         float newRange = NewMax - NewMin;
         float newValue = (OldValue - OldMin) * newRange / oldRange + NewMin;
