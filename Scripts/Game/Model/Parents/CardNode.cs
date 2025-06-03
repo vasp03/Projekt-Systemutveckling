@@ -501,7 +501,8 @@ public partial class CardNode : Node2D {
         Global.Singleton.AddMoney(cardValue);
         GameController.Singleton.HUD.ShowFloatingMoneyLabel(cardValue);
 
-        SoundController.Singleton.PlaySound(SELL_SFX);
+        SoundController tempQualifier = SoundController.Singleton;
+        tempQualifier.PlaySound(SELL_SFX);
 
         Destroy();
         return true;

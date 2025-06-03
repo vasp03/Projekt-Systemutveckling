@@ -79,7 +79,8 @@ public partial class PackController : HBoxContainer {
 
     private void OnPackClicked(CardPack pack) {
         if (Global.Singleton.Money < pack.Cost) {
-            SoundController.Singleton.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
+            SoundController tempQualifier = SoundController.Singleton;
+            tempQualifier.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
             return;
         }
 
@@ -97,11 +98,12 @@ public partial class PackController : HBoxContainer {
         if (pack.SingleUse)
             pack.Consumed = true;
 
-        SoundController.Singleton.PlaySound(PACK_OPEN_SFX);
+        SoundController tempQualifier1 = SoundController.Singleton;
+        tempQualifier1.PlaySound(PACK_OPEN_SFX);
 
         RefreshAvailablePacks();
 
-        if (GameController.Singleton.SellModeActive) GameController.Singleton.SetSellMode(false);
+        if (GameController.Singleton.SellModeActive) GameController.Singleton.SellModeActive = false;
     }
 
     private void UnlockAdditionalPacks() {
