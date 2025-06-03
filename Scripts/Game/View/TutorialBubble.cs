@@ -128,6 +128,14 @@ public partial class TutorialBubble : CanvasLayer {
     }
 
     /// <summary>
+    ///     Method for showing the arrow image and starting the bounce animation.
+    /// </summary>
+    public void ShowArrow() {
+        arrow.Show();
+        StartBounce();
+    }
+
+    /// <summary>
     ///     Method for starting the bounce animation for the arrow image.
     ///     Uses a Tween to animate the arrow's vertical position based on its relative position.
     /// </summary>

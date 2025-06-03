@@ -1,5 +1,5 @@
 ﻿namespace Goodot15.Scripts.Game.Model.Material_Cards;
 
 public class MaterialMeteorite() : CardMaterial("Meteorite") {
-    public override int Value => 120;
+    public override int Value => 250;
 }
