@@ -49,7 +49,7 @@ public partial class PackController : HBoxContainer {
 
         foreach (Node child in GetChildren()) child.QueueFree();
 
-        foreach (CardPack pack in registeredPacks.Where(e => !e.Consumed)) {
+        foreach (CardPack pack in RegisteredPacks.Where(e => !e.Consumed)) {
             PackButton button = PackButtonScene.Instantiate<PackButton>();
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
@@ -80,9 +80,9 @@ public partial class PackController : HBoxContainer {
         IReadOnlyCollection<Card> cardsInPack = pack.GenerateCards();
 
         foreach (Card cardInstance in cardsInPack) {
-            Rect2 spawnArea = new Rect2(new Vector2(75, 150), new Vector2(1125, 375));
-            
-            Vector2 randomPos = new Vector2(
+            Rect2 spawnArea = new(new Vector2(75, 150), new Vector2(1125, 375));
+
+            Vector2 randomPos = new(
                 (float)GD.RandRange(spawnArea.Position.X, spawnArea.End.X),
                 (float)GD.RandRange(spawnArea.Position.Y, spawnArea.End.Y)
             );
