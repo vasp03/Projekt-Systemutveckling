@@ -103,7 +103,7 @@ public partial class PackController : HBoxContainer {
 
         RefreshAvailablePacks();
 
-        if (GameController.Singleton.SellModeActive) GameController.Singleton.SetSellMode(false);
+        if (GameController.Singleton.SellModeActive) GameController.Singleton.SellModeActive = false;
     }
 
     private void UnlockAdditionalPacks() {
