@@ -354,6 +354,7 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
 [node name="HTPBoxContainer" type="VBoxContainer" parent="TabContainer/How To Play/HTPScrollContainer"]
+layout_direction = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -370,8 +371,7 @@ theme_override_font_sizes/mono_font_size = 30
 theme_override_font_sizes/normal_font_size = 35
 theme_override_font_sizes/bold_font_size = 30
 bbcode_enabled = true
-text = "[img]res://Assets/Icons/32x32/fb101.png[/img] [img]res://Assets/Icons/32x32/fb204.png[/img] [img]res://Assets/Icons/32x32/fb309.png[/img] [img]res://Assets/Icons/32x32/fb412.png[/img] [img]res://Assets/Icons/32x32/fb528.png[/img] [img]res://Assets/Icons/32x32/fb633.png[/img] [img]res://Assets/Icons/32x32/fb740.png[/img]  - Welcome to Stackitects -  [img]res://Assets/Icons/32x32/fb845.png[/img] [img]res://Assets/Icons/32x32/fb950.png[/img] [img]res://Assets/Icons/32x32/fb1060.png[/img] [img]res://Assets/Icons/32x32/fb1175.png[/img] [img]res://Assets/Icons/32x32/fb1299.png[/img] [img]res://Assets/Icons/32x32/fb1388.png[/img] [img]res://Assets/Icons/32x32/fb1450.png[/img]
-"
+text = "[img]res://Assets/Icons/32x32/fb101.png[/img] [img]res://Assets/Icons/32x32/fb204.png[/img] [img]res://Assets/Icons/32x32/fb309.png[/img] [img]res://Assets/Icons/32x32/fb412.png[/img] [img]res://Assets/Icons/32x32/fb528.png[/img] [img]res://Assets/Icons/32x32/fb633.png[/img] [img]res://Assets/Icons/32x32/fb740.png[/img]  - Welcome to Stackitects -  [img]res://Assets/Icons/32x32/fb845.png[/img] [img]res://Assets/Icons/32x32/fb950.png[/img] [img]res://Assets/Icons/32x32/fb1060.png[/img] [img]res://Assets/Icons/32x32/fb1175.png[/img] [img]res://Assets/Icons/32x32/fb1299.png[/img] [img]res://Assets/Icons/32x32/fb1388.png[/img] [img]res://Assets/Icons/32x32/fb1450.png[/img]"
 fit_content = true
 horizontal_alignment = 1
 
@@ -384,7 +384,7 @@ theme_override_font_sizes/mono_font_size = 30
 theme_override_font_sizes/normal_font_size = 30
 theme_override_font_sizes/bold_font_size = 30
 bbcode_enabled = true
-text = "Introduction:
+text = "[color=#a3c4dc]Introduction[/color]:
 Get cards by opening packs, crafting or random events. Every card represents a resource, item, building, or villager. Move cards freely. Stack cards to interact or combine them. Discover how cards work together by experimenting.
 
 You can access this guide by either pressing the GUIDE button in the pause or main menu, or pressing the designated quick guide button [img]res://Assets/Icons/32x32/fb289.png[/img] in the HUD"
@@ -395,7 +395,7 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("1_jwvxl")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "Crafting:
+text = "[color=#b5d8b2]Crafting[/color]:
 Stack certain cards to trigger a recipe. There are a bunch of different recipes to discover, so just explore and try out new combinations. When stacking cards if the combination is valid, a Craft button appears [img]res://Assets/Icons/32x32/fb39.png[/img]. Click it to craft the result and consume the required cards. Many recipes require specific tools, materials, or villagers to work. Complex recipes may involve campfires, pots, or buildings."
 fit_content = true
 
@@ -404,7 +404,7 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("1_jwvxl")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "Sell Mode/Pack System:
+text = "[color=#d6c1e5]Sell Mode and Pack System[/color]:
 Toggle Sell Mode with [img]res://Assets/Icons/32x32/fb160.png[/img] or press S. In this mode, dragging a card will sell it for coins[img]res://Assets/Icons/32x32/fb131.png[/img]. Hovering shows its value [img]res://Assets/Div/ValueBorder - GuideIcon.png[/img]. Use coins to buy packs, which contain new cards. Packs appear at the bottom left of the screen and vary in price. The pack content varies thematically."
 fit_content = true
 
@@ -413,7 +413,7 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("1_jwvxl")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "Events:
+text = "[color=#e4c2b0]Events[/color]:
 Random events occur throughout the game. Cold nights will damage villagers if they are not near a campfire[img]res://Assets/Icons/32x32/fb23.png[/img]. Fires can start randomly and will begin damaging any nearby villagers. The only way to stop a [img]res://Assets/Icons/32x32/fb998.png[/img] is to use a [img]res://Assets/Icons/32x32/fb823.png[/img] card on it. Meteorites may land on the board; they do not damage cards directly but may start a fire. Always keep extra food and water prepared to handle these events."
 fit_content = true
 
@@ -422,7 +422,7 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("1_jwvxl")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "Goal:
+text = "[color=#c6b2d8]Goal[/color]:
 The main objective is to build an Altar [img]res://Assets/Icons/32x32/fb6666.png[/img] and use it to complete the game. The Altar is crafted using rare materials that must be gathered or created through crafting. Once built, it allows you to sacrifice villagers [img]res://Assets/Icons/32x32/fb9999.png[/img] Sacrificing multiple villagers is required to win. If all your villagers die before the goal is reached, the game ends. Balancing survival and progress is key to success."
 fit_content = true
 

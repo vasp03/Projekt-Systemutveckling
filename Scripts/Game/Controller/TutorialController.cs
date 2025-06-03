@@ -75,7 +75,7 @@ public partial class TutorialController : CanvasLayer, IPausable {
 		switch (tutorialStage) {
 			case 0:
 				await bubbleInstance.ShowText(
-					"Welcome to the island. Survive as long as you can by collecting cards and using them to your advantage. This tutorial will guide you through the basics of the game.");
+					"Welcome to the island. Survive against the elements by using and crafting cards. This tutorial will guide you though the basics.");
 				break;
 			case 1:
 				bubbleInstance.PointToUI("HUD/HUDRoot/PackContainer", TutorialBubble.PointingDirection.Down,
@@ -92,25 +92,41 @@ public partial class TutorialController : CanvasLayer, IPausable {
 				bubbleInstance.PointToUI("HUD/HUDRoot/SellModeButton", TutorialBubble.PointingDirection.Down,
 					new Vector2(-5, -50));
 				await bubbleInstance.ShowText(
-					"This is the Sell Mode button. When activated, you can sell cards for money. Click on it to toggle Sell mode on and off.");
+					"This is the Sell Mode button. When activated, you can sell cards for money.");
 				break;
-			case 4:
+            case 4:
+                bubbleInstance.PointToUI("HUD/HUDRoot/SellModeButton", TutorialBubble.PointingDirection.Down,
+                    new Vector2(-5, -50));
+                await bubbleInstance.ShowText(
+                    "Click on it to toggle Sell mode on and off or use the hotkey 'S' to toggle it quickly.");
+                break;
+			case 5:
 				bubbleInstance.PointToUI("HUD/DayTimeLabel", TutorialBubble.PointingDirection.Up, new Vector2(32, 65));
 				await bubbleInstance.ShowText(
 					"This is the current time. Random events can happen at any moment, so watch out.");
 				break;
-			case 5:
-				bubbleInstance.PointToUI("HUD/HUDRoot/ThermometerContainer", TutorialBubble.PointingDirection.Up,
-					new Vector2(13, 77));
-				await bubbleInstance.ShowText(
-					"Temperature changes with time and weather. If it gets too cold, villagers freeze and take damage. Find a way to keep them warm to survive.");
-				break;
+			case 6:
+                bubbleInstance.PointToUI("HUD/DayTimeLabel", TutorialBubble.PointingDirection.Up, new Vector2(32, 65));
+                await bubbleInstance.ShowText(
+                    "There are different types of events that can happen, such as fires, meteorite strikes, and more.");
+                break;
+            case 7:
+                bubbleInstance.PointToUI("HUD/DayTimeLabel", TutorialBubble.PointingDirection.Up, new Vector2(32, 65));
+                await bubbleInstance.ShowText(
+                    "Whenever a fire starts, your villagers will start taking damage. You can use water cards to extinguish the fires and save them.");
+                break;
+            case 8:
+                bubbleInstance.PointToUI("HUD/HUDRoot/ThermometerContainer", TutorialBubble.PointingDirection.Up,
+                    new Vector2(13, 77));
+                await bubbleInstance.ShowText(
+                    "Temperature changes with time and weather. If it gets too cold, villagers freeze and take damage. Find a way to keep them warm to survive.");
+                break;
 			default:
 				bubbleInstance.HideArrow();
 				isTyping = true;
 				canAdvance = false;
 				await bubbleInstance.ShowText(
-					"Tutorial complete. If you need help, you can always access the tutorial again from the menu or from the guide button in the HUD. Good luck Adventurer!");
+					"Tutorial complete. If you need help, you can always access the guide meny by clicking the HUD button in the bottom left corner of the screen.");
 				tutorialEnded = true;
 				await Task.Delay(3000);
 				bubbleInstance.QueueFree();

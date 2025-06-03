@@ -21,8 +21,7 @@ public class BasicMaterialPack : CommonAndRarePack {
         new MaterialStone(),
         new MaterialLeaves(),
         new MaterialSand(),
-        new MaterialStick(),
-        new MaterialWater(),
+        new MaterialStick()
     ];
 
     protected override IReadOnlyList<Card> RareCards => [
