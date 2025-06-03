@@ -4,7 +4,7 @@ using Goodot15.Scripts.Game.Controller;
 public partial class Global : Node {
     public delegate void MoneyChangedEvent(int newMoney);
 
-    private int money;
+    private int money = 150;
     public static Global Singleton { get; private set; }
 
     public static MouseController MouseController { get; } = new();

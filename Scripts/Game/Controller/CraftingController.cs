@@ -269,9 +269,7 @@ public class CraftingController {
         RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Blacksmith", "Axe"],
             ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
         RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Farmer", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
-
-        RegisterRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"], ["Water"]));
+            ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
 
         RegisterRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"], ["Sand"]));
 
