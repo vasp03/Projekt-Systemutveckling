@@ -9,6 +9,8 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the guide menu in the game.
 /// </summary>
 public partial class GuideMenu : Control {
+    private const string DEFAULT_ERROR_CARD_TEX = "res://Assets/Cards/Ready To Use/Error.png";
+    
     private readonly Dictionary<Button, VBoxContainer> buttons = new();
     private readonly Dictionary<string, (Texture2D, string)> cardData = new();
     private Button goBackButton;
@@ -67,16 +69,8 @@ public partial class GuideMenu : Control {
     /// <param name="cardName">The name of the card to load the image for</param>
     /// <returns>The card image or a default image if no image is found</returns>
     private Texture2D LoadCardTexture(string cardName) {
-        string cardImagePath = "res://Assets/Cards/Ready To Use/" + cardName + ".png";
-        string defaultPath = "res://Assets/Cards/Ready To Use/Error.png";
-        if (!FileAccess.FileExists(cardImagePath)) {
-            GD.PrintErr($"Card image not found: {cardImagePath}");
-            return GD.Load<Texture2D>(defaultPath);
-        }
-
-        Texture2D cardTexture = GD.Load<Texture2D>(cardImagePath);
-
-        return cardTexture;
+        string cardImagePath = $"res://Assets/Cards/Ready To Use/{cardName}.png";
+        return ResourceLoader.Load<Texture2D>(cardImagePath) ?? ResourceLoader.Load<Texture2D>(DEFAULT_ERROR_CARD_TEX);
     }
 
     private Texture2D LoadPackTexture(string cardName) {
