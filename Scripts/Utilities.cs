@@ -1,11 +1,10 @@
-﻿using System;
 using System.Collections.Generic;
 using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
 
-public class Utilities {
+public static class Utilities {
     public const double TICKS_PER_SECOND = 60;
 
     /// <summary>
@@ -56,7 +55,7 @@ public class Utilities {
     /// <param name="ticks">Ticks to convert</param>
     /// <returns>Seconds (60 ticks = 1 second)</returns>
     public static int TicksToTime(int ticks) {
-        return (int)Math.Floor(ticks / (float)TICKS_PER_SECOND);
+        return (int)Mathf.Floor(ticks / (float)TICKS_PER_SECOND);
     }
 
     /// <summary>
@@ -97,7 +96,7 @@ public class Utilities {
         int minutes = ticks % (TICKS_PER_DAY / 24) * 60 / (TICKS_PER_DAY / 24);
 
         // Round minutes to the nearest 10 minutes
-        minutes = (int)Math.Round(minutes / 10.0) * 10;
+        minutes = (int)Mathf.Round(minutes / 10.0) * 10;
 
         if (minutes == 60) {
             minutes = 0;
