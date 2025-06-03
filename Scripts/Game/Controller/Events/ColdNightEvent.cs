@@ -60,25 +60,11 @@ public class ColdNightEvent : GameEvent, ITickable {
     }
 
     /// <summary>
-    ///     Executes the event and sets the temperature to -15 degrees Celsius.
-    /// </summary>
-    /// <param name="context">not used</param>
-    public override void OnEvent(GameEventContext context) {
-        dayTimeEvent.temperatureLocked = true;
-        GD.Print("Cold Night Event Triggered");
-        dayTimeEvent.CurrentTemperature = -15f;
-        GD.Print("Current Temperature: " + dayTimeEvent.CurrentTemperature + "C");
-
-        GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
-        hasTriggered = true;
-    }
-
-    /// <summary>
     ///     Executes the damage logic when the event is fired. Applies damage every real time second to all living cards that
     ///     are not stacked on a campfire.
     ///     A campfire can only protect up to 3 living cards from damage
     /// </summary>
-    public void PostTick() {
+    public void PostTick(double delta) {
         if (!hasTriggered) return;
 
         if (lastDamageTick++ < Utilities.TimeToTicks(1)) return;
@@ -96,5 +82,19 @@ public class ColdNightEvent : GameEvent, ITickable {
             cardLiving.Health -= 2;
             cardLiving.Saturation -= 3;
         });
+    }
+
+    /// <summary>
+    ///     Executes the event and sets the temperature to -15 degrees Celsius.
+    /// </summary>
+    /// <param name="context">not used</param>
+    public override void OnEvent(GameEventContext context) {
+        dayTimeEvent.temperatureLocked = true;
+        GD.Print("Cold Night Event Triggered");
+        dayTimeEvent.CurrentTemperature = -15f;
+        GD.Print("Current Temperature: " + dayTimeEvent.CurrentTemperature + "C");
+
+        GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
+        hasTriggered = true;
     }
 }

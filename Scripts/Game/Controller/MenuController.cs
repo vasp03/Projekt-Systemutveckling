@@ -14,12 +14,20 @@ public partial class MenuController : Node {
     public static MenuController Singleton =>
         (Engine.GetMainLoop() as SceneTree).CurrentScene.GetNode<MenuController>("/root/MenuController");
 
+    /// <summary>
+    ///     Checks if the game over menu is currently active and visible.
+    /// </summary>
+    /// <returns>true if game over is active. False if game over isn't active</returns>
+    public bool IsGameOverMenuActive =>
+        gameOverMenu is not null && gameOverMenu.IsInsideTree() && gameOverMenu.Visible;
+
     public override void _Ready() {
         currentMenu = mainMenu;
         pauseMenu = null;
         optionsMenu = null;
         guideMenu = null;
     }
+
 
     /// <summary>
     ///     Configures the MenuController with a new instance of the MainMenu.
