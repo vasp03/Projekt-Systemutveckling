@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Godot;
-using Goodot15.Scripts.Game.Model.Enums;
+﻿using Goodot15.Scripts.Game.Model.Enums;
 
-s Utilities {
+namespace Goodot15.Scripts;
+
+public class Utilities {
     public const double TICKS_PER_SECOND = 60;
 
     /// <summary>
