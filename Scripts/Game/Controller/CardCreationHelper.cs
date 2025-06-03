@@ -135,6 +135,8 @@ public class CardCreationHelper : GameManagerBase {
                 cardTypePacks.Add("Sand");
                 cardTypePacks.Add("Leaves");
                 cardTypePacks.Add("Clay");
+                cardTypePacks.Add("Tree");
+                cardTypePacks.Add("Bush");
                 break;
             case CardPackCollection.TOOLS:
                 cardTypePacks.Add("MaterialSwordMk1");
