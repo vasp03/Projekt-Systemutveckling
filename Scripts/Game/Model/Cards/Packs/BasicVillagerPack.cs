@@ -25,6 +25,6 @@ public class BasicVillagerPack : CommonAndRarePack{
     protected override IReadOnlyList<Card> RareCards => [
         new PlayerBlacksmith(),
         new PlayerFarmer(),
-        new PlayerFarmer()
+        new PlayerHunter()
     ];
 }

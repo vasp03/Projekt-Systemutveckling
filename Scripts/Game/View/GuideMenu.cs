@@ -294,7 +294,7 @@ public partial class GuideMenu : Control {
 			BuildingCardButton("FieldButton"),
 			BuildingCardButton("CampfireButton"),
 			BuildingCardButton("CookingPotButton"),
-            BuildingCardButton("AltarButton")
+			BuildingCardButton("AltarButton")
 		];
 
 		foreach (Button button in buildingCardButtons) {
@@ -397,10 +397,10 @@ public partial class GuideMenu : Control {
 			PackButton("MaterialPackButton"),
 			PackButton("StarterPackButton"),
 			PackButton("FoodPackButton"),
-            PackButton("WaterPackButton"),
-            PackButton("ToolsPackButton"),
-            PackButton("BuildingPackButton"),
-            PackButton("VillagerPackButton")
+			PackButton("WaterPackButton"),
+			PackButton("ToolsPackButton"),
+			PackButton("BuildingPackButton"),
+			PackButton("VillagerPackButton")
 		];
 
 		foreach (Button button in packsButtons) {
@@ -464,8 +464,8 @@ public partial class GuideMenu : Control {
 			"A campfire used for cooking and warmth. \nRECIPE: \n 3x Wood \n2x Sticks \n1x Leaf");
 		cardData["CookingPotButton"] = (LoadCardTexture("Cookingpot"),
 			"A cooking pot used for cooking food. \n2x Clay \n1x Stick");
-        cardData["AltarButton"] = (LoadCardTexture("Alter_4"),
-            "A mysterious and ominous structure built from refined materials. Sacrificing villagers upon the Altar is the key to fulfilling your dark purpose and achieving victory. This is your ultimate objective—prepare wisely. \nRECIPE: \n5x Brick \n2x Glass \n1x Wood");
+		cardData["AltarButton"] = (LoadCardTexture("Alter_4"),
+			"A mysterious and ominous structure built from refined materials. Sacrificing villagers upon the Altar is the key to fulfilling your dark purpose and achieving victory. This is your ultimate objective—prepare wisely. \nRECIPE: \n5x Brick \n2x Glass \n1x Wood");
 
 		#endregion Building cards
 
@@ -525,20 +525,19 @@ public partial class GuideMenu : Control {
 
 		cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
 			"A pack you can open up once at the start of a new game. \nCONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
-        cardData["WaterPackButton"] = (LoadPackTexture("Water_Pack"), "CONTAINS: \n1x Water");
-        cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
-            "CONTAINS 3–4 CARDS\nRare Chance: 10% per card\nCOMMON CARDS: \nWood, Stone, Leaves, Sand, Stick, Water\nRARE CARDS: \nPlanks, Clay, Glass, Brick");
-        cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"),
-            "A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
-        cardData["ToolsPackButton"] = (LoadPackTexture("Tools_Pack"),
-            "PLACEHOLDER");
-        cardData["BuildingPackButton"] = (LoadPackTexture("Building_Pack"),
-            "PLACEHOLDER");
-        cardData["VillagerPackButton"] = (LoadPackTexture("Villager_Pack"),
-            "PLACEHOLDER");
+		cardData["WaterPackButton"] = (LoadPackTexture("Water_Pack"), 
+			"A pack containing one water card, useful when needing to extinguish fires. \nCONTAINS: \n1x Water");
+		cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),
+			"CONTAINS 3–4 CARDS. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nWood, Stone, Leaves, Sand, Stick, Water\nRARE CARDS: \nPlanks, Clay, Glass, Brick");
+		cardData["FoodPackButton"] = (LoadPackTexture("Food_Pack"),
+			"A pack containing 3-5 random food cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nBerry, Apple, Fish, Meat \nRARE CARDS: \nJam, Cooked Fish, Cooked Meat");
+		cardData["ToolsPackButton"] = (LoadPackTexture("Tools_Pack"),
+			"A pack containing 1-2 random tool cards. There is a 10% chance for each of the cards in the pack to be a rare. \n\nCOMMON CARDS: \nAxe, Fishing Pole, Shovel \nRARE CARDS: \nSword");
+		cardData["BuildingPackButton"] = (LoadPackTexture("Building_Pack"),
+			"A pack containing 1 random building card. There is a 10% chance for the card to be a house. \n\nCOMMON CARDS: \nField, Campfire, Tent \nRARE CARDS: \nHouse, Greenhouse");
+		cardData["VillagerPackButton"] = (LoadPackTexture("Villager_Pack"),
+			"A pack containing 1 random villager card. There is a 10% chance for the card to be a blacksmith, farmer or a Hunter. \n\nCOMMON CARDS: \nVillager \nRARE CARDS: \nHunter, Farmer, Blacksmith");
 		
-		
-
 		#endregion Packs
 	}
 
