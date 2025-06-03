@@ -99,8 +99,7 @@ public partial class HUD : CanvasLayer {
     }
 
     private void UpdateGoldIcon(int money) {
-        int stage = money switch
-        {
+        int stage = money switch {
             >= 7000 => 8,
             >= 5000 => 7,
             >= 4000 => 6,
