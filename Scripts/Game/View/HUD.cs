@@ -17,11 +17,11 @@ public partial class HUD : CanvasLayer {
 
 	private Texture2D thermometerNormal;
 
-	[Export] public TextureRect ThermometerIcon { get; set; }
-	[Export] public Label TemperatureLabel { get; set; }
-	[Export] public TextureRect GoldIcon { get; set; }
-	[Export] public Label MoneyLabel { get; set; }
-	[Export] public Control FloatingMoneyRoot { get; set; }
+    public TextureRect ThermometerIcon { get; set; }
+    public Label TemperatureLabel { get; set; }
+    [Export] public TextureRect GoldIcon { get; set; }
+    [Export] public Label MoneyLabel { get; set; }
+    [Export] public Control FloatingMoneyRoot { get; set; }
 
 	public SellModeButton sellModeButton { get; private set; }
 
@@ -36,7 +36,10 @@ public partial class HUD : CanvasLayer {
 		thermometerNormal = GD.Load<Texture2D>("res://Assets/UI/Thermometer/thermometer_normal.png");
 		thermometerCold = GD.Load<Texture2D>("res://Assets/UI/Thermometer/thermometer_cold.png");
 
-		SetupSellModeButton();
+        ThermometerIcon = GetNodeOrNull<TextureRect>("HUDRoot/ThermometerContainer/ThermometerIcon");
+        TemperatureLabel = GetNodeOrNull<Label>("HUDRoot/ThermometerContainer/TemperatureLabel");
+
+        SetupSellModeButton();
 
 		defaultColor = MoneyLabel.Modulate;
 		LoadCoinTextures();
