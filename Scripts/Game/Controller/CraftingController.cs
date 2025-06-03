@@ -136,18 +136,13 @@ public class CraftingController {
             ["Stone", "Stone", "Stone", "Stone", "Planks", "Planks", "Brick", "Brick", "Brick", "Brick"], ["House"],
             ["Stone", "Planks", "Brick"]));
 
-        RegisterRecipe(new CraftingRecipe("Greenhouse", ["Brick", "Brick", "Glass", "Glass", "Glass", "Glass"],
-            ["Greenhouse"], ["Brick", "Glass"]));
-
         RegisterRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"],
             ["Field"],
             ["Sand", "Stone", "Water"]));
 
-
         RegisterRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"],
             ["Bush"],
             ["Leaves"]));
-
 
         RegisterRecipe(new CraftingRecipe("Mine",
             ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"],
@@ -274,9 +269,7 @@ public class CraftingController {
         RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Blacksmith", "Axe"],
             ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
         RegisterRecipe(new CraftingRecipe("Stone", ["Meteorite", "Farmer", "Axe"],
-            ["Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
-
-        RegisterRecipe(new CraftingRecipe("Water", ["Water", "Water"], ["Water", "Water", "Water"], ["Water"]));
+            ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Meteorite"]));
 
         RegisterRecipe(new CraftingRecipe("Glass", ["Sand", "Campfire"], ["Glass"], ["Sand"]));
 

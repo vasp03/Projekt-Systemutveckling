@@ -28,22 +28,12 @@ public partial class PackController : HBoxContainer {
 
     private void RegisterDefaultPacks() {
         RegisterPack(new StarterPack());
+        RegisterPack(new BasicWaterPack());
         RegisterPack(new BasicMaterialPack());
         RegisterPack(new BasicFoodPack());
+        RegisterPack(new BasicToolsPack());
         RegisterPack(new BasicBuildingPack());
-        // RegisterPack(new CardPack("Starter Pack", 0, starterCommons, starterRares));
-
-        // List<string> materialCommons = ["Wood", "Stone", "Leaves", "Sand", "Stick", "Water", "Brick"];
-        // List<string> materialRares = ["Clay", "Glass", "Planks"];
-        // RegisterPack(new CardPack("Material Pack", 80, materialCommons, materialRares));
-// 
-        // List<string> foodCommons = ["Berry", "Apple", "Fish", "Meat"];
-        // List<string> foodRares = ["Jam", "CookedFish", "CookedMeat"];
-        // RegisterPack(new CardPack("Food Pack", 120, foodCommons, foodRares));
-// 
-        // List<string> buildingCommons = ["Field", "Campfire", "House"];
-        // List<string> buildingRares = ["Greenhouse"];
-        // availablePacks.Add(new CardPack("Building Pack", 200, buildingCommons, buildingRares));
+        RegisterPack(new BasicVillagerPack());
     }
 
     /// <summary>
@@ -59,7 +49,7 @@ public partial class PackController : HBoxContainer {
 
         foreach (Node child in GetChildren()) child.QueueFree();
 
-        foreach (CardPack pack in registeredPacks.Where(e => !e.Consumed)) {
+        foreach (CardPack pack in RegisteredPacks.Where(e => !e.Consumed)) {
             PackButton button = PackButtonScene.Instantiate<PackButton>();
             button.SetPack(pack);
             button.PackClicked += OnPackClicked;
@@ -91,7 +81,13 @@ public partial class PackController : HBoxContainer {
         IReadOnlyCollection<Card> cardsInPack = pack.GenerateCards();
 
         foreach (Card cardInstance in cardsInPack) {
-            Vector2 randomPos = GameController.Singleton.NextRandomPositionOnScreen();
+            Rect2 spawnArea = new(new Vector2(75, 150), new Vector2(1125, 375));
+
+            Vector2 randomPos = new(
+                (float)GD.RandRange(spawnArea.Position.X, spawnArea.End.X),
+                (float)GD.RandRange(spawnArea.Position.Y, spawnArea.End.Y)
+            );
+
             GameController.Singleton.CardController.CreateCard(cardInstance, randomPos);
         }
 

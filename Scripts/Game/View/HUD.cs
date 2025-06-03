@@ -100,16 +100,17 @@ public partial class HUD : CanvasLayer {
 
     private void UpdateGoldIcon(int money) {
         int stage = money switch {
-            >= 25 and < 75 => 1,
-            >= 75 and < 150 => 2,
-            >= 150 and < 250 => 3,
-            >= 250 and < 400 => 4,
-            >= 400 and < 600 => 5,
-            >= 600 and < 800 => 6,
-            >= 800 and < 1000 => 7,
-            >= 1000 => 8,
+            >= 7000 => 8,
+            >= 5000 => 7,
+            >= 4000 => 6,
+            >= 3000 => 5,
+            >= 2000 => 4,
+            >= 1000 => 3,
+            >= 500 => 2,
+            >= 200 => 1,
+            _ => 0
         };
-        
+
         GoldIcon.Texture = coinIcons[stage];
     }
 

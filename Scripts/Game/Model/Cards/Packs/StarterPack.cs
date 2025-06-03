@@ -24,7 +24,9 @@ public class StarterPack : CardPack {
             new MaterialBush(),
             new MaterialStone(),
             new MaterialStick(),
-            new MaterialStick()
+            new MaterialStick(),
+            new MaterialWater(),
+            new MaterialWood()
         ];
     }
 }
