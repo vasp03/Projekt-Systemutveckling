@@ -167,21 +167,19 @@ public partial class GameController : Node2D {
     private bool sellModeActive;
 
     /// <summary>
-    /// Determines if the sell mode is active or not.
+    ///     Determines if the sell mode is active or not.
     /// </summary>
     public bool SellModeActive {
         get => sellModeActive;
         set {
             sellModeActive = value;
-            
-            SellModeUpdated();
-            
 
+            SellModeUpdated();
         }
     }
 
     /// <summary>
-    /// Toggles sell mode on and off.
+    ///     Toggles sell mode on and off.
     /// </summary>
     public void ToggleSellMode() {
         SellModeActive = !SellModeActive;
@@ -193,13 +191,13 @@ public partial class GameController : Node2D {
     private void SellModeUpdated() {
         if (!sellModeActive)
             CardController.HideCardValue();
-        
+
         SellModeLabel.Visible = sellModeActive;
-        
+
         SoundController.Singleton.PlaySound(SellModeActive
             ? SELL_MODE_ACTIVE_SFX
             : SELL_MODE_DEACTIVE_SFX);
-        
+
         Global.MouseController.SetSellMode(SellModeActive);
         HUD.sellModeButton?.UpdateIcon();
         // GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
