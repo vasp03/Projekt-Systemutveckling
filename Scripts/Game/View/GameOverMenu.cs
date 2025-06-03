@@ -66,7 +66,8 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         exitGameButton.Pressed += OnExitGameButtonPressed;
         backToMenuButton.Pressed += OnBackToMenuButtonPressed;
 
-        SoundController.Singleton.PlaySound(LOSE_SFX);
+        SoundController tempQualifier = SoundController.Singleton;
+        tempQualifier.PlaySound(LOSE_SFX);
     }
 
     private void OnExitGameButtonPressed() {

@@ -52,8 +52,7 @@ public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
 
     public void PostTick(double delta) {
         if (totalVillagersSacrificed < TOTAL_SACRIFICES_REQUIRED || playedSound) return;
-        GameController.Singleton!.SoundController.PlaySound(
-            "General Sounds/Interactions/sfx_sounds_interaction5.wav");
+        GameController.Singleton!.SoundController.PlaySound("General Sounds/Interactions/sfx_sounds_interaction5.wav");
         playedSound = true;
         GameController.Singleton.CameraController.PlayEndGameAnimation();
     }

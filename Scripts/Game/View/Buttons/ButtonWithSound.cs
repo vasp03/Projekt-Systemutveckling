@@ -12,6 +12,12 @@ public partial class ButtonWithSound : Button {
     }
 
     private void OnButtonDown() {
-        SoundController.Singleton.PlaySound(ClickSfx);
+        SoundController tempQualifier = SoundController.Singleton;
+        tempQualifier.PlaySound(ClickSfx);
+    }
+
+    public static void PlayGenericClickSound() {
+        SoundController tempQualifier = SoundController.Singleton;
+        tempQualifier.PlaySound(GENERIC_CLICK_SFX);
     }
 }

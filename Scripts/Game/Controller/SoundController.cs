@@ -22,6 +22,16 @@ public partial class SoundController : Node {
         CachedMusic.ToList().ForEach(e => e.Value.Dispose());
     }
 
+    public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
+        if (audioStreamAsset is AudioStreamOggVorbis oggStream) {
+            oggStream.Loop = true;
+        } else if (audioStreamAsset is AudioStreamWav wavStream) {
+            wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+
+            wavStream.LoopEnd = wavStream.Data.Length;
+        }
+    }
+
     #region Sfx-related
 
     private readonly IDictionary<string, AudioStream> CachedSounds = new Dictionary<string, AudioStream>();
@@ -58,14 +68,42 @@ public partial class SoundController : Node {
         SfxVolume = SettingsManager.SfxVolume;
     }
 
-    public static void ConfigureLoopingSound(AudioStream audioStreamAsset) {
-        if (audioStreamAsset is AudioStreamOggVorbis oggStream) {
-            oggStream.Loop = true;
-        } else if (audioStreamAsset is AudioStreamWav wavStream) {
-            wavStream.LoopMode = AudioStreamWav.LoopModeEnum.Forward;
+    /// <summary>
+    ///     Plays a sound effect. Automatically loads and caches
+    ///     the sound asset after with a specified pitch scale.
+    /// </summary>
+    /// <param name="soundName">Path and name of sound (excluding <b>res://Assets/Sounds/</b>)</param>
+    /// <param name="pitchScale">Pitch of the sound being played, 1 plays the sound as normal.</param>
+    public void PlaySound(string soundName, float pitchScale = 1f) {
+        AudioStreamPlayer player = new();
+        player.Stream = LoadSound(soundName);
+        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
 
-            wavStream.LoopEnd = wavStream.Data.Length;
-        }
+        player.PitchScale = pitchScale;
+
+        // Queues the node to be deleted when player.Finished emits.
+        player.Finished += () => player.QueueFree();
+
+        AddChild(player);
+        player.Play();
+    }
+
+    /// <summary>
+    ///     Loads the specified sound effect asset and caches it in memory
+    /// </summary>
+    /// <param name="soundAssetName">Music asset to be loaded</param>
+    /// <returns>Loaded sound effect as an AudioStream</returns>
+    private AudioStream LoadSound(string soundAssetName) {
+        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
+            // Return already loaded asset
+            return audioStream;
+
+        // Music not loaded, first time setup
+        audioStream = GD.Load<AudioStream>($"{BASE_SOUND_PATH}/{soundAssetName}");
+        // ConfigureLoopingSound(audioStream);
+        CachedMusic.Add(soundAssetName, audioStream);
+
+        return audioStream;
     }
 
     #endregion Sfx-related
@@ -192,41 +230,6 @@ public partial class SoundController : Node {
     }
 
     private const string BASE_SOUND_PATH = "res://Assets/Sounds";
-
-    /// <summary>
-    ///     Plays a sound effect with for the specified <see cref="dayTime" /> DayTime value. Automatically loads and caches
-    ///     the sound asset after
-    /// </summary>
-    /// <param name="soundName">Path and name of sound (excluding <b>res://Assets/Sounds/</b>)</param>
-    public void PlaySound(string soundName) {
-        AudioStreamPlayer player = new();
-        player.Stream = LoadSound(soundName);
-        player.VolumeDb = Mathf.LinearToDb(SfxVolume);
-
-        // Queues the node to be deleted when player.Finished emits.
-        player.Finished += () => player.QueueFree();
-
-        AddChild(player);
-        player.Play();
-    }
-
-    /// <summary>
-    ///     Loads the specified sound effect asset and caches it in memory
-    /// </summary>
-    /// <param name="soundAssetName">Music asset to be loaded</param>
-    /// <returns>Loaded sound effect as an AudioStream</returns>
-    private AudioStream LoadSound(string soundAssetName) {
-        if (CachedMusic.TryGetValue(soundAssetName, out AudioStream audioStream))
-            // Return already loaded asset
-            return audioStream;
-
-        // Music not loaded, first time setup
-        audioStream = GD.Load<AudioStream>($"{BASE_SOUND_PATH}/{soundAssetName}");
-        // ConfigureLoopingSound(audioStream);
-        CachedMusic.Add(soundAssetName, audioStream);
-
-        return audioStream;
-    }
 
     #endregion Music-related
 

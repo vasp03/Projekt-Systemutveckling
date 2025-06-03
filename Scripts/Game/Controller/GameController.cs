@@ -9,6 +9,9 @@ using Vector2 = Godot.Vector2;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class GameController : Node2D {
+    private const string SELL_MODE_ACTIVE_SFX = "General Sounds/Buttons/sfx_sounds_button7.wav";
+    private const string SELL_MODE_DEACTIVE_SFX = "General Sounds/Buttons/sfx_sounds_button7_rev.wav";
+
     private readonly List<int> numberList = new();
 
     /// <summary>
@@ -165,17 +168,21 @@ public partial class GameController : Node2D {
 
     private bool sellModeActive;
 
+    /// <summary>
+    ///     Determines if the sell mode is active or not.
+    /// </summary>
     public bool SellModeActive {
         get => sellModeActive;
         set {
             sellModeActive = value;
-            SellModeLabel.Visible = value;
 
-            if (!sellModeActive)
-                CardController.HideCardValue();
+            SellModeUpdated();
         }
     }
 
+    /// <summary>
+    ///     Toggles sell mode on and off.
+    /// </summary>
     public void ToggleSellMode() {
         SellModeActive = !SellModeActive;
         GD.Print($"Sell mode is now {(SellModeActive ? "ON" : "OFF")}");
@@ -183,11 +190,19 @@ public partial class GameController : Node2D {
         HUD.sellModeButton?.UpdateIcon();
     }
 
-    public void SetSellMode(bool active) {
-        SellModeActive = active;
+    private void SellModeUpdated() {
+        if (!sellModeActive)
+            CardController.HideCardValue();
+
+        SellModeLabel.Visible = sellModeActive;
+
+        SoundController.Singleton.PlaySound(SellModeActive
+            ? SELL_MODE_ACTIVE_SFX
+            : SELL_MODE_DEACTIVE_SFX);
+
         Global.MouseController.SetSellMode(SellModeActive);
         HUD.sellModeButton?.UpdateIcon();
-        GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
+        // GD.Print($"Sell mode set to {(SellModeActive ? "ON" : "OFF")}");
     }
 
     #region HUD visibility
