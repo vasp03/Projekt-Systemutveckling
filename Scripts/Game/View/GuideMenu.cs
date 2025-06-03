@@ -441,7 +441,7 @@ public partial class GuideMenu : Control {
         #region Tool cards
 
         cardData["SwordButton"] = (LoadCardTexture("Sword"),
-            "A basic sword used for combat. \nRECIPE: \n2x Wood \n1x Stone");
+            "A basic sword used to hunt food. \nRECIPE: \n2x Wood \n1x Stone");
         cardData["FishingPoleButton"] = (LoadCardTexture("FishingPole"),
             "A basic fishing pole used for fishing. \nRECIPE: \n1x Stick \n1x Stone");
         cardData["ShovelButton"] = (LoadCardTexture("Shovel"),
