@@ -4,7 +4,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
-public class BasicWaterPack : CommonAndRarePack{
+public class BasicWaterPack : CommonAndRarePack {
     public override string PackButtonTexture => PackTexture("Water Pack");
 
     public override bool SingleUse => false;

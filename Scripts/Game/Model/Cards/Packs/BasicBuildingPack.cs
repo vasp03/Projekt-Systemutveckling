@@ -12,7 +12,7 @@ public class BasicBuildingPack : CommonAndRarePack {
     public override string Name => "Basic building pack";
 
     public override int Cost => 200;
-    
+
     protected override int CardCount => 1;
 
     protected override float RareCardChance => 0.15f;

@@ -139,11 +139,11 @@ public class CraftingController {
         RegisterRecipe(new CraftingRecipe("Field", ["Sand", "Sand", "Sand", "Sand", "Stone", "Stone", "Water"],
             ["Field"],
             ["Sand", "Stone", "Water"]));
-        
+
         RegisterRecipe(new CraftingRecipe("Bush", ["Leaves", "Leaves", "Leaves", "Leaves", "Leaves", "Leaves"],
             ["Bush"],
             ["Leaves"]));
-        
+
         RegisterRecipe(new CraftingRecipe("Mine",
             ["Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone", "Stone"], ["Mine"],
             ["Stone"]));

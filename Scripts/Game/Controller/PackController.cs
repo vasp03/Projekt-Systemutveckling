@@ -80,9 +80,9 @@ public partial class PackController : HBoxContainer {
         IReadOnlyCollection<Card> cardsInPack = pack.GenerateCards();
 
         foreach (Card cardInstance in cardsInPack) {
-            Rect2 spawnArea = new Rect2(new Vector2(75, 150), new Vector2(1125, 375));
-            
-            Vector2 randomPos = new Vector2(
+            Rect2 spawnArea = new(new Vector2(75, 150), new Vector2(1125, 375));
+
+            Vector2 randomPos = new(
                 (float)GD.RandRange(spawnArea.Position.X, spawnArea.End.X),
                 (float)GD.RandRange(spawnArea.Position.Y, spawnArea.End.Y)
             );

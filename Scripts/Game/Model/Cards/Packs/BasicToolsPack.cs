@@ -5,7 +5,7 @@ using Goodot15.Scripts.Game.Model.Parents;
 
 namespace Goodot15.Scripts.Game.Model.Cards.Packs;
 
-public class BasicToolsPack : CommonAndRarePack{
+public class BasicToolsPack : CommonAndRarePack {
     public override string PackButtonTexture => PackTexture("Tools Pack");
 
     public override bool SingleUse => false;

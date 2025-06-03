@@ -13,8 +13,8 @@ public class BasicFoodPack : CommonAndRarePack {
     public override string Name => "Basic Food Pack";
 
     public override int Cost => 125;
-    
-    protected override int CardCount => GD.RandRange(2,3);
+
+    protected override int CardCount => GD.RandRange(2, 3);
 
     protected override IReadOnlyList<Card> CommonCards => [
         new MaterialBerry(),
