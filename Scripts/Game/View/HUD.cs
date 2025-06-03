@@ -99,16 +99,17 @@ public partial class HUD : CanvasLayer {
     }
 
     private void UpdateGoldIcon(int money) {
-        int stage = 0;
-        if (money >= 25) stage = 1;
-        if (money >= 75) stage = 2;
-        if (money >= 150) stage = 3;
-        if (money >= 250) stage = 4;
-        if (money >= 400) stage = 5;
-        if (money >= 600) stage = 6;
-        if (money >= 800) stage = 7;
-        if (money >= 1000) stage = 8;
-
+        int stage = money switch {
+            >= 25 and < 75 => 1,
+            >= 75 and < 150 => 2,
+            >= 150 and < 250 => 3,
+            >= 250 and < 400 => 4,
+            >= 400 and < 600 => 5,
+            >= 600 and < 800 => 6,
+            >= 800 and < 1000 => 7,
+            >= 1000 => 8,
+        };
+        
         GoldIcon.Texture = coinIcons[stage];
     }
 
