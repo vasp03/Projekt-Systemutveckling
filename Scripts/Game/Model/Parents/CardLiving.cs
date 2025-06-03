@@ -160,8 +160,7 @@ public abstract class CardLiving
 
     private void HurtSound() {
         if (health > 0)
-            GameController.Singleton.SoundController
-                .PlaySound(HURT_SFX);
+            GameController.Singleton.SoundController.PlaySound(HURT_SFX);
     }
 
     /// <summary>

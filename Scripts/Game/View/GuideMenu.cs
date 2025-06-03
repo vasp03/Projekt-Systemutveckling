@@ -37,6 +37,14 @@ public partial class GuideMenu : Control {
         InitializeVillagerCardButtons();
         InitializeRandomEventButtons();
         InitializePacksButtons();
+
+        InitializeButtonSounds();
+    }
+
+    private void InitializeButtonSounds() {
+        Utilities.RecursiveGetChildren(this).ToList().ForEach(e => {
+            if (e is Button button) button.Pressed += ButtonWithSound.PlayGenericClickSound;
+        });
     }
 
     /// <summary>
