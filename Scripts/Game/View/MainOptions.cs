@@ -7,6 +7,8 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the options menu.
 /// </summary>
 public partial class MainOptions : Control {
+    private const string SLIDER_SFX = "General Sounds/Menu Sounds/sfx_menu_move1.wav";
+
     private readonly string[] displayModes = {
         "WINDOWED",
         "FULLSCREEN",
@@ -60,6 +62,8 @@ public partial class MainOptions : Control {
         GD.Print("Music volume changed to: " + SoundControllerReference.MusicVolume);
 
         musicVolumePercentageLabel.Text = $"{value * 100:F0}%";
+
+        SoundControllerReference.PlaySound(SLIDER_SFX, Utilities.MapRange(0f, 1f, 0.5f, 1f, (float)value));
     }
 
     /// <summary>
@@ -71,6 +75,8 @@ public partial class MainOptions : Control {
         GD.Print("SFX volume changed to: " + SoundControllerReference.SfxVolume);
 
         sfxVolumePercentageLabel.Text = $"{value * 100:F0}%";
+
+        SoundControllerReference.PlaySound(SLIDER_SFX, Utilities.MapRange(0f, 1f, 0.5f, 1f, (float)value));
     }
 
     /// <summary>
