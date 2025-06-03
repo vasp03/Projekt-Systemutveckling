@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
