@@ -27,7 +27,7 @@ public partial class PackButton : TextureButton {
 
         costLabel ??= GetNode<Label>("PriceLabel");
 
-        costLabel.Text = pack.Cost == 0
+        costLabel.Text = pack.Cost == Mathf.Max(0,pack.Cost)
             ? "Free"
             : $"{pack.Cost}g";
 
