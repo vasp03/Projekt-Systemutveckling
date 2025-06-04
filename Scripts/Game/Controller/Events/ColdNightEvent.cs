@@ -69,7 +69,6 @@ public class ColdNightEvent : GameEvent, ITickable {
 
         if (lastDamageTick++ < Utilities.TimeToTicks(1)) return;
 
-        lastDamageTick++;
         lastDamageTick = 0;
 
         CardNode.CardController.AllCards.ToList().ForEach(card => {

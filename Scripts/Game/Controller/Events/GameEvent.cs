@@ -7,5 +7,6 @@ public abstract class GameEvent : IGameEvent {
     public abstract string EventName { get; }
     public abstract int TicksUntilNextEvent { get; }
     public abstract double Chance { get; }
+    public virtual bool EventActive => true;
     public abstract void OnEvent(GameEventContext context);
 }

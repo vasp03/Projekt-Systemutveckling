@@ -20,7 +20,7 @@ public partial class SoundController : Node {
     private void UnloadSounds() {
         cachedSounds.Values.ToList().ForEach(e => e.Dispose());
         cachedMusic.Values.ToList().ForEach(e => e.Dispose());
-        
+
         cachedSounds.Clear();
         cachedMusic.Clear();
     }

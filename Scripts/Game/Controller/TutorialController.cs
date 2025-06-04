@@ -6,6 +6,9 @@ using Goodot15.Scripts.Game.View;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class TutorialController : CanvasLayer, IPausable {
+    private readonly static PackedScene TutorialBubbleScene =
+        GD.Load<PackedScene>("D:/MauProjekt/Projekt-Systemutveckling/Scenes/TutorialBubble.tscn");
+
     private TutorialBubble bubbleInstance;
     private bool canAdvance;
 
@@ -13,7 +16,6 @@ public partial class TutorialController : CanvasLayer, IPausable {
     private bool isTyping;
 
     private int stepIndex;
-    [Export] public PackedScene TutorialBubbleScene;
 
     private bool tutorialEnded;
 

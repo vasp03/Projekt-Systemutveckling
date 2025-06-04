@@ -46,7 +46,7 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         DayTicks++;
 
-        if (DayTicks > Utilities.TICKS_PER_DAY) DayTicks = 0;
+        if (DayTicks > Utilities.TICKS_PER_HALF_DAY) DayTicks = 0;
 
         UpdateTemperature(DayTicks);
         SetSceneDarkness(DayTicks);
@@ -101,13 +101,13 @@ public class DayTimeEvent : GameEvent, IPausable {
     }
 
     private void UpdateTemperature(int ticks) {
-        const int midDay = Utilities.TICKS_PER_DAY / 2;
+        int midDay = Utilities.TICKS_PER_HALF_DAY / 2;
 
         if (ticks < midDay) {
             CurrentTemperature = Utilities.MapRange(0, midDay, 10f, 30f, ticks);
         } else {
             if (!temperatureLocked)
-                CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 30f, 10f, ticks);
+                CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_HALF_DAY, 30f, 10f, ticks);
         }
     }
 
@@ -120,14 +120,14 @@ public class DayTimeEvent : GameEvent, IPausable {
         // Turn ticks per day into a float between 0.5 and 1.0 with 1 being when ticks per day is half way
         // through the day and 0.5 being when ticks per day is at the start and end of the day
 
-        const int midDay = Utilities.TICKS_PER_DAY / 2;
+        int midDay = Utilities.TICKS_PER_HALF_DAY / 2;
 
         float timeOfDay;
 
         if (ticks < midDay)
             timeOfDay = Utilities.MapRange(0, midDay, 0.5f, 1f, ticks);
         else
-            timeOfDay = Utilities.MapRange(midDay, Utilities.TICKS_PER_DAY, 1f, 0.5f, ticks);
+            timeOfDay = Utilities.MapRange(midDay, Utilities.TICKS_PER_HALF_DAY, 1f, 0.5f, ticks);
 
         timeOfDay = Mathf.Round(timeOfDay * 1000) / 1000;
 

@@ -122,7 +122,9 @@ public partial class HUD : CanvasLayer {
 
         float temp = GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>().CurrentTemperature;
 
-        ThermometerIcon.Texture = temp <= 0 ? thermometerCold : thermometerNormal;
+        ThermometerIcon.Texture = temp <= 0
+            ? thermometerCold
+            : thermometerNormal;
 
         TemperatureLabel.Text = $"{Mathf.RoundToInt(temp)}°C";
     }

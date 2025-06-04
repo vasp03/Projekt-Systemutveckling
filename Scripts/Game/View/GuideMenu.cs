@@ -11,7 +11,7 @@ namespace Goodot15.Scripts.Game.View;
 public partial class GuideMenu : Control {
     private const string DEFAULT_ERROR_CARD_TEX = "res://Assets/Cards/Ready To Use/Error.png";
     private const string DEFAULT_ERROR_PACK_TEX = "res://Assets/Packs/Error.png";
-    
+
     private readonly Dictionary<Button, VBoxContainer> buttons = new();
     private readonly Dictionary<string, (Texture2D, string)> cardData = new();
     private Button goBackButton;
