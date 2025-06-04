@@ -13,7 +13,6 @@ config_version=5
 config/name="Goodot 15"
 run/main_scene="uid://cv0sftc5g7uci"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
-run/max_fps=60
 config/icon="res://Assets/Icons/icon.svg"
 
 [autoload]
@@ -32,7 +31,7 @@ vulkan/debug_layers=false
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-window/vsync/vsync_mode=0
+window/vsync/vsync_mode=2
 
 [dotnet]
 
