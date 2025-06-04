@@ -247,6 +247,8 @@ public partial class GameController : Node2D {
 
         MenuController = GetNode<MenuController>("/root/MenuController");
         // MenuController.SetGameController(this);
+
+        Global.Singleton.Money = 0;
     }
 
     #endregion Initialization

@@ -15,7 +15,7 @@ public class StarterPack : CardPack {
 
     public override string Name => "Starter Pack";
 
-    public override int Cost => 0;
+    public override int Cost => -150;
 
     public override IReadOnlyCollection<Card> GenerateCards() {
         return [

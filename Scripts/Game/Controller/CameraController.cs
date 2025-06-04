@@ -7,7 +7,7 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Camera controller responsible for camera-related functions
 /// </summary>
 public class CameraController : ITickable {
-    private static readonly int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(3); // 3 seconds
+    private readonly static int END_GAME_ANIMATION_TICKS = Utilities.TimeToTicks(3); // 3 seconds
     private Sprite2D darknessSprite;
     private bool isPlayingEndGameAnimation;
     private int remainingEndGameAnimationTicks;

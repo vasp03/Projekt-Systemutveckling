@@ -9,7 +9,7 @@ namespace Goodot15.Scripts.Game.Model.Parents;
 public class Altar() : Card("Alter_0", true), ICardConsumer, ITickable {
     private const int TOTAL_SACRIFICES_REQUIRED = 10;
 
-    private static readonly Texture2D[] STAGES_TEXTURES =
+    private readonly static Texture2D[] STAGES_TEXTURES =
         Enumerable.Range(0, 5)
             .Select(n => GD.Load<Texture2D>($"res://Assets/Cards/Ready To Use/Alter_{n}.png"))
             .ToArray();

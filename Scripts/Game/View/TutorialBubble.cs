@@ -90,7 +90,9 @@ public partial class TutorialBubble : CanvasLayer {
 
         float screenMiddleY = GetViewport().GetVisibleRect().Size.Y / 2f;
         PointingDirection direction = forcedDirection ?? (
-            controlCenter.Y < screenMiddleY ? PointingDirection.Down : PointingDirection.Up
+            controlCenter.Y < screenMiddleY
+                ? PointingDirection.Down
+                : PointingDirection.Up
         );
 
         Vector2 offset = manualOffset ?? (

@@ -68,12 +68,18 @@ public partial class PackController : HBoxContainer {
     }
 
     private void OnPackClicked(CardPack pack) {
+        // If the pack is registered as free (Cost = 0)
+        // If the player does not have enough coins, cancel the operation
         if (Global.Singleton.Money < pack.Cost) {
-            SoundController tempQualifier = SoundController.Singleton;
-            tempQualifier.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
+            SoundController.Singleton.PlaySound(PACK_INSUFFICIENT_MONEY_SFX);
             return;
         }
 
+        // if (pack.Cost < 0) {
+        //     Global.Singleton.AddMoney(Mathf.Abs(pack.Cost));
+        // }
+
+        // Will automatically reward the player with coins if the cost is negative (because y'know, negative and negative becomes positive)
         Global.Singleton.AddMoney(-pack.Cost);
 
         ShowFloatingMoneyLabel(-pack.Cost);

@@ -8,7 +8,7 @@ using Goodot15.Scripts.Game.View;
 public partial class GameOverMenu : Control, IMenuAnimation {
     private const string LOSE_SFX = "General Sounds/Negative Sounds/sfx_sounds_error9.wav";
 
-    private static readonly float ANIMATION_DURATION = Utilities.TimeToTicks(5);
+    private readonly static float ANIMATION_DURATION = Utilities.TimeToTicks(5);
 
     private int animationTicks;
 

@@ -28,7 +28,8 @@ public abstract class CardPack {
     public abstract string Name { get; }
 
     /// <summary>
-    ///     Cost of card pack in coins
+    ///     Cost of card pack in coins. If the value is <b>negative</b> - it will reward the player instead with the specified
+    ///     amount of coins
     /// </summary>
     public abstract int Cost { get; }
 
