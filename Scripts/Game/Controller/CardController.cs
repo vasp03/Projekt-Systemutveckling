@@ -42,7 +42,7 @@ public class CardController {
     public GameController GameController { get; }
     public MouseController MouseController { get; }
     private MenuController menuController { get; }
-
+    
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
@@ -331,7 +331,7 @@ public class CardController {
 
         craftButtonInstance.ZIndex = cardNode.ZIndex;
 
-        GameController.AddChild(craftButtonInstance);
+        GameController.HUDRoot.AddChild(craftButtonInstance);
     }
 
     #endregion Specific Card
