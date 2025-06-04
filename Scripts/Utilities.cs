@@ -12,7 +12,7 @@ public static class Utilities {
     /// </summary>
     /// <remarks>
     ///     5 minutes = 1 in-game day
-    public const int TICKS_PER_DAY = 18000;
+    public static int TICKS_PER_HALF_DAY { get; } = TimeToTicks(minutes: 5); //18000;
 
     /// <summary>
     ///     Converts the specified time in to ticks, keep in mind the time values are in real life units.
@@ -43,7 +43,7 @@ public static class Utilities {
         int gameTicks = TimeToTicks(seconds, minutes, hours, days);
 
         // How many real ticks per in-game tick (scaling factor)
-        double factorScaledToDays = TICKS_PER_DAY / (double)TimeToTicks(days: 1);
+        double factorScaledToDays = TICKS_PER_HALF_DAY / (double)TimeToTicks(days: 1);
 
         // Scale the game ticks to real time
         return (int)Mathf.Floor(gameTicks * factorScaledToDays);
@@ -75,6 +75,13 @@ public static class Utilities {
         return newValue;
     }
 
+    /// <summary>
+    ///     Recursively gets the children of the specified
+    ///     <param name="node"></param>
+    ///     .
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
     public static IReadOnlyCollection<Node> RecursiveGetChildren(Node node) {
         if (node == null) return [];
 
@@ -92,8 +99,8 @@ public static class Utilities {
     /// </summary>
     /// <param name="ticks">Ticks to convert</param>
     public static string GetTimeOfDay(int ticks) {
-        int hours = ticks / (TICKS_PER_DAY / 24);
-        int minutes = ticks % (TICKS_PER_DAY / 24) * 60 / (TICKS_PER_DAY / 24);
+        int hours = ticks / (TICKS_PER_HALF_DAY / 24);
+        int minutes = ticks % (TICKS_PER_HALF_DAY / 24) * 60 / (TICKS_PER_HALF_DAY / 24);
 
         // Round minutes to the nearest 10 minutes
         minutes = (int)Mathf.Round(minutes / 10.0) * 10;
@@ -119,23 +126,23 @@ public static class Utilities {
     ///     Night: 9/10 - 1 of the day
     /// </remarks>
     public static DayPhaseState GetCurrentDayState(int ticks) {
-        if (ticks >= 0 && ticks < TICKS_PER_DAY / 10)
+        if (ticks >= 0 && ticks < TICKS_PER_HALF_DAY / 10)
             // Night
             return DayPhaseState.NIGHT;
 
-        if (ticks >= TICKS_PER_DAY / 10 && ticks < TICKS_PER_DAY / 10 * 3)
+        if (ticks >= TICKS_PER_HALF_DAY / 10 && ticks < TICKS_PER_HALF_DAY / 10 * 3)
             // Morning
             return DayPhaseState.MORNING;
 
-        if (ticks >= TICKS_PER_DAY / 10 * 3 && ticks < TICKS_PER_DAY / 10 * 7)
+        if (ticks >= TICKS_PER_HALF_DAY / 10 * 3 && ticks < TICKS_PER_HALF_DAY / 10 * 7)
             // Day
             return DayPhaseState.DAY;
 
-        if (ticks >= TICKS_PER_DAY / 10 * 7 && ticks < TICKS_PER_DAY / 10 * 9)
+        if (ticks >= TICKS_PER_HALF_DAY / 10 * 7 && ticks < TICKS_PER_HALF_DAY / 10 * 9)
             // Evening
             return DayPhaseState.EVENING;
 
-        if (ticks >= TICKS_PER_DAY / 10 * 9 && ticks <= TICKS_PER_DAY)
+        if (ticks >= TICKS_PER_HALF_DAY / 10 * 9 && ticks <= TICKS_PER_HALF_DAY)
             // Night
             return DayPhaseState.NIGHT;
 

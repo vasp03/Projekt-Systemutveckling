@@ -1,17 +1,19 @@
 using Godot;
 using Goodot15.Scripts.Game.Controller;
 
+namespace Goodot15.Scripts;
+
 public partial class Global : Node {
     public delegate void MoneyChangedEvent(int newMoney);
 
-    private int money = 150;
+    private int money;
     public static Global Singleton { get; private set; }
 
     public static MouseController MouseController { get; } = new();
 
     public int Money {
         get => money;
-        private set {
+        set {
             money = value;
             MoneyChanged?.Invoke(money);
         }
