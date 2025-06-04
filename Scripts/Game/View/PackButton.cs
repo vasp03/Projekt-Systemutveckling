@@ -8,14 +8,13 @@ public partial class PackButton : TextureButton {
 
     private Tween _tween;
 
-    private Label costLabel;
+    private Label CostLabel => GetNode<Label>("PriceLabel");
     private Vector2 originalPosition;
     private TextureRect textureRect;
     public CardPack Pack { get; private set; }
     public event PackClickedHandler PackClicked;
 
     public override void _Ready() {
-        costLabel = GetNode<Label>("PriceLabel");
         originalPosition = Position;
 
         MouseEntered += OnMouseEntered;
@@ -24,10 +23,8 @@ public partial class PackButton : TextureButton {
 
     public void SetPack(CardPack pack) {
         Pack = pack;
-
-        costLabel ??= GetNode<Label>("PriceLabel");
-
-        costLabel.Text = pack.Cost <= 0
+        
+        CostLabel.Text = pack.Cost <= 0
             ? "Free"
             : $"{pack.Cost}g";
 
@@ -55,6 +52,6 @@ public partial class PackButton : TextureButton {
     }
 
     public void SetPriceColor(Color color) {
-        costLabel.Modulate = color;
+        CostLabel.Modulate = color;
     }
 }

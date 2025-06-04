@@ -521,7 +521,7 @@ public partial class GuideMenu : Control {
         #region Packs
 
         cardData["StarterPackButton"] = (LoadPackTexture("Starter_Pack"),
-            "A pack you can open up once at the start of a new game. \nCONTAINS: \n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
+            "A pack you can open up once at the start of a new game. \nCONTAINS: \n150 Coins\n1x Villager \n1x Tree \n1x Bush \n1x Stone \n2x Stick");
         cardData["WaterPackButton"] = (LoadPackTexture("Water_Pack"),
             "A pack containing one water card, useful when needing to extinguish fires. \nCONTAINS: \n1x Water");
         cardData["MaterialPackButton"] = (LoadPackTexture("Material_Pack"),

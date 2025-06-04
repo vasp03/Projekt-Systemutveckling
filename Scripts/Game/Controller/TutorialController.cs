@@ -83,7 +83,7 @@ public partial class TutorialController : CanvasLayer, IPausable {
                 bubbleInstance.PointToUI("HUD/HUDRoot/PackContainer", TutorialBubble.PointingDirection.Down,
                     new Vector2(8, -48));
                 await bubbleInstance.ShowText(
-                    "Use the packs below to get started. The first pack is free and contains a set of cards to help you get started on your journey.");
+                    "Use the packs below to get started. The first pack is free and contains a small amount of coins and a set of cards to help you get started on your journey.");
                 break;
             case 2:
                 bubbleInstance.PointToUI("HUD/GoldIcon", TutorialBubble.PointingDirection.Up, new Vector2(0, 60));
