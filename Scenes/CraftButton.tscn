@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2n6rlk28fiyf"]
 
-[ext_resource type="Script" uid="uid://b3k33rf6qw3cx" path="res://Scripts/Game/View/CraftButton.cs" id="1_ns71j"]
+[ext_resource type="Script" uid="uid://bblf1b50to6ju" path="res://Scripts/Game/View/CraftButton.cs" id="1_ns71j"]
 [ext_resource type="Texture2D" uid="uid://brdfny50kb1te" path="res://Assets/Icons/64x64/fc39.png" id="2_f4d1d"]
-[ext_resource type="Script" uid="uid://cqowtfaq0vgh5" path="res://Scripts/Game/View/Buttons/CraftButtonSound.cs" id="3_hmo12"]
+[ext_resource type="Script" uid="uid://dlajmhvcyptq4" path="res://Scripts/Game/View/Buttons/CraftButtonSound.cs" id="3_hmo12"]
 
 [node name="Control" type="Node2D"]
 script = ExtResource("1_ns71j")

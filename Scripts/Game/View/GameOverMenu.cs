@@ -42,7 +42,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         background.Modulate = new Color(0, 0, 0, timeDarknessStart);
         TimeDarknessSprite.Modulate = new Color(0, 0, 0, .0f);
 
-        hud = GameController.Singleton.GetNodeOrNull<HUD>("HUD");
+        hud = GameController.Singleton.HUD;
         hudChildren = hud.GetChildren();
 
         exitGameButton.Modulate = new Color(1, 1, 1, 0.0f);
@@ -66,8 +66,7 @@ public partial class GameOverMenu : Control, IMenuAnimation {
         exitGameButton.Pressed += OnExitGameButtonPressed;
         backToMenuButton.Pressed += OnBackToMenuButtonPressed;
 
-        SoundController tempQualifier = SoundController.Singleton;
-        tempQualifier.PlaySound(LOSE_SFX);
+        SoundController.Singleton.PlaySound(LOSE_SFX);
     }
 
     private void OnExitGameButtonPressed() {

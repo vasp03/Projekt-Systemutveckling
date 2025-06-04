@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Controller;
+using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.View;
 using Vector2 = Godot.Vector2;
@@ -200,6 +201,10 @@ public partial class CardNode : Node2D {
             value.CardNode = this;
             currentCardType = value;
             UpdateCardTexture();
+
+            // Drop the card - we shouldn't be dragging it anymore
+            if (Dragged)
+                Dragged = false;
         }
     }
 
@@ -475,6 +480,8 @@ public partial class CardNode : Node2D {
     /// </summary>
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
+
+        Global.MouseController.SetMouseCursor(newDragValue ? MouseCursorIcon.HAND_CLOSE : MouseCursorIcon.POINT_SMALL);
 
         GameController.Singleton.SoundController.PlaySound(newDragValue
             ? ON_PICKUP_SFX

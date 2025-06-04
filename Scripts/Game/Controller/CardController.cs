@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Goodot15.Scripts.Game.Model;
-using Goodot15.Scripts.Game.Model.Enums;
 using Goodot15.Scripts.Game.Model.Interface;
 using Goodot15.Scripts.Game.Model.Living;
 using Goodot15.Scripts.Game.Model.Parents;
@@ -225,7 +224,7 @@ public class CardController {
     ///     Called when the left mouse button is pressed.
     /// </summary>
     public void LeftMouseButtonPressed() {
-        MouseController.SetMouseCursor(MouseCursorIcon.HAND_CLOSE);
+        // MouseController.SetMouseCursor(MouseCursorIcon.HAND_CLOSE);
         selectedCard = GetTopCardAtMousePosition();
         if (selectedCard is null) return;
 
@@ -239,7 +238,7 @@ public class CardController {
     ///     Called when the left mouse button is released.
     /// </summary>
     public void LeftMouseButtonReleased() {
-        MouseController.SetMouseCursor(MouseCursorIcon.POINT_SMALL);
+        // MouseController.SetMouseCursor(MouseCursorIcon.POINT_SMALL);
         if (selectedCard is not null) selectedCard.Dragged = false;
 
         // Checks if a card is supposed to have a craft button above it
@@ -331,7 +330,7 @@ public class CardController {
 
         craftButtonInstance.ZIndex = cardNode.ZIndex;
 
-        GameController.HUDRoot.AddChild(craftButtonInstance);
+        GameController.HUD.AddChild(craftButtonInstance);
     }
 
     #endregion Specific Card

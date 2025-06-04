@@ -1,9 +1,9 @@
 [gd_scene load_steps=28 format=3 uid="uid://vj32u46kx1al"]
 
-[ext_resource type="Script" uid="uid://cbbe4ax2st1dy" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
+[ext_resource type="Script" uid="uid://bjljyscws3kds" path="res://Scripts/Game/View/GameOverMenu.cs" id="1_usvyj"]
 [ext_resource type="Texture2D" uid="uid://ctcqn8c2stiqq" path="res://Assets/Div/Black.png" id="2_83yi0"]
 [ext_resource type="FontFile" uid="uid://bak4idyuv1x4v" path="res://Assets/Fonts/Adventurer.ttf" id="3_ancx5"]
-[ext_resource type="Script" uid="uid://m85n53s8g8xk" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="4_83yi0"]
+[ext_resource type="Script" uid="uid://wx2t5afhopx5" path="res://Scripts/Game/View/Buttons/ButtonWithSound.cs" id="4_83yi0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gvw3c"]
 font = ExtResource("3_ancx5")

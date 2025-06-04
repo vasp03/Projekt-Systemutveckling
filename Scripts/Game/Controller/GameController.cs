@@ -208,7 +208,6 @@ public partial class GameController : Node2D {
     #region HUD visibility
 
     public HUD HUD { get; private set; }
-    public Node HUDRoot => HUD;
 
     public void HideHUD() {
         HUD.Visible = false;
