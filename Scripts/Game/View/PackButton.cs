@@ -7,10 +7,10 @@ public partial class PackButton : TextureButton {
     public delegate void PackClickedHandler(CardPack pack);
 
     private Tween _tween;
-
-    private Label CostLabel => GetNode<Label>("PriceLabel");
     private Vector2 originalPosition;
     private TextureRect textureRect;
+
+    private Label CostLabel => GetNode<Label>("PriceLabel");
     public CardPack Pack { get; private set; }
     public event PackClickedHandler PackClicked;
 
@@ -23,7 +23,7 @@ public partial class PackButton : TextureButton {
 
     public void SetPack(CardPack pack) {
         Pack = pack;
-        
+
         CostLabel.Text = pack.Cost <= 0
             ? "Free"
             : $"{pack.Cost}g";

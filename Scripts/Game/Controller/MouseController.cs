@@ -8,8 +8,8 @@ namespace Goodot15.Scripts.Game.Controller;
 ///     Mouse controller is responsible for managing the cursor icon
 /// </summary>
 public class MouseController {
-    private readonly static Timer LOADING_TIMER = new();
-    private readonly static Vector2 CURSOR_OFFSET = new(12, 12);
+    private static readonly Timer LOADING_TIMER = new();
+    private static readonly Vector2 CURSOR_OFFSET = new(12, 12);
 
     private bool isLoading;
     private int loadingIndex;
@@ -102,10 +102,10 @@ public class MouseController {
     /// </summary>
     private const string PATH = "res://Assets/MouseCursor/";
 
-    private readonly static Resource ICON_HAND_CLOSE = ResourceLoader.Load(IconResource("hand_close.png"));
-    private readonly static Resource ICON_HAND_OPEN = ResourceLoader.Load(IconResource("hand_open.png"));
+    private static readonly Resource ICON_HAND_CLOSE = ResourceLoader.Load(IconResource("hand_close.png"));
+    private static readonly Resource ICON_HAND_OPEN = ResourceLoader.Load(IconResource("hand_open.png"));
 
-    private readonly static Resource[] ICON_LOADING_SPRITES = [
+    private static readonly Resource[] ICON_LOADING_SPRITES = [
         ResourceLoader.Load(IconResource("loading_1.png")),
         ResourceLoader.Load(IconResource("loading_2.png")),
         ResourceLoader.Load(IconResource("loading_3.png")),

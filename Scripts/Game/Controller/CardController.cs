@@ -14,9 +14,9 @@ namespace Goodot15.Scripts.Game.Controller;
 public class CardController {
     public const string CARD_GROUP_NAME = "CARDS";
 
-    public readonly static Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
-    public readonly static Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
-    public readonly static Vector2 CARD_VALUE_OVERLAY_OFFSET = new(-40, -92);
+    public static readonly Vector2 CRAFT_BUTTON_OFFSET = new(0, -110);
+    public static readonly Vector2 CARD_LIVING_OVERLAY_OFFSET = new(-67, 70);
+    public static readonly Vector2 CARD_VALUE_OVERLAY_OFFSET = new(-40, -92);
 
     private CardLivingOverlay currentOverlay;
     private Timer overlayUpdateTimer;
@@ -42,7 +42,7 @@ public class CardController {
     public GameController GameController { get; }
     public MouseController MouseController { get; }
     private MenuController menuController { get; }
-    
+
     public int CardCount => AllCards.Count;
 
     public IReadOnlyCollection<CardNode> AllCards =>
