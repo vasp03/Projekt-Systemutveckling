@@ -26,14 +26,7 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     private int lastDamageTick;
 
-    /// <summary>
-    ///     Initializes the ColdNightEvent instance and registers it with the game controller.
-    /// </summary>
-    /// <param name="gameController">The GameController instance</param>
-    public ColdNightEvent() {
-    }
-
-    private DayTimeEvent dayTimeEvent => GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>();
+    private static DayTimeEvent DayTimeEvent => GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>();
 
     /// <inheritdoc cref="IGameEvent" />
     /// />
@@ -46,14 +39,14 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// <summary>
     ///     Determines if the event should actually be ticking and be executed
     /// </summary>
-    public bool EventActive {
+    public override bool EventActive {
         get {
-            DayPhaseState currentPhaseState = Utilities.GetCurrentDayState(dayTimeEvent.DayTicks);
+            DayPhaseState currentPhaseState = Utilities.GetCurrentDayState(DayTimeEvent.DayTicks);
             if (!hasTriggered && currentPhaseState is DayPhaseState.NIGHT) return true;
 
             if (currentPhaseState is DayPhaseState.NIGHT) return false;
             hasTriggered = false;
-            dayTimeEvent.temperatureLocked = false;
+            DayTimeEvent.temperatureLocked = false;
 
             return false;
         }
@@ -88,10 +81,10 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     /// <param name="context">not used</param>
     public override void OnEvent(GameEventContext context) {
-        dayTimeEvent.temperatureLocked = true;
+        DayTimeEvent.temperatureLocked = true;
         GD.Print("Cold Night Event Triggered");
-        dayTimeEvent.CurrentTemperature = -15f;
-        GD.Print("Current Temperature: " + dayTimeEvent.CurrentTemperature + "C");
+        DayTimeEvent.CurrentTemperature = -15f;
+        GD.Print("Current Temperature: " + DayTimeEvent.CurrentTemperature + "C");
 
         GameController.Singleton.GetNode<HUD>("HUD").UpdateThermometerUI();
         hasTriggered = true;
