@@ -11,6 +11,8 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class PackController : HBoxContainer {
     private const string PACK_OPEN_SFX = "General Sounds/Interactions/sfx_sounds_interaction17.wav";
     private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
+    
+    private readonly static PackedScene LABEL_SCENE = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
 
     private readonly IList<CardPack> registeredPacks = [];
 
@@ -112,9 +114,8 @@ public partial class PackController : HBoxContainer {
         RefreshAvailablePacks();
     }
 
-    private void ShowFloatingMoneyLabel(int amount) {
-        PackedScene labelScene = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
-        FloatingMoneyLabel floatingLabel = labelScene.Instantiate<FloatingMoneyLabel>();
+    private static void ShowFloatingMoneyLabel(int amount) {
+        FloatingMoneyLabel floatingLabel = LABEL_SCENE.Instantiate<FloatingMoneyLabel>();
         floatingLabel.SetAmount(amount);
 
         floatingLabel.Position = GameController.Singleton.GetMousePosition();
