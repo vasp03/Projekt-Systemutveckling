@@ -76,12 +76,10 @@ public static class Utilities {
     }
 
     /// <summary>
-    ///     Recursively gets the children of the specified
-    ///     <param name="node"></param>
-    ///     .
+    ///     Recursively gets the children of the supplied node.
     /// </summary>
-    /// <param name="node"></param>
-    /// <returns></returns>
+    /// <param name="node">Root node to collect children from</param>
+    /// <returns>Collection of <see cref="Node"/> instances from the parent <param name="node"></param></returns>
     public static IReadOnlyCollection<Node> RecursiveGetChildren(Node node) {
         if (node == null) return [];
 
