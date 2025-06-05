@@ -46,7 +46,7 @@ public class ColdNightEvent : GameEvent, ITickable {
 
             if (currentPhaseState is DayPhaseState.NIGHT) return false;
             hasTriggered = false;
-            DayTimeEvent.temperatureLocked = false;
+            DayTimeEvent.TemperatureLocked = false;
 
             return false;
         }
@@ -81,7 +81,7 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     /// <param name="context">not used</param>
     public override void OnEvent(GameEventContext context) {
-        DayTimeEvent.temperatureLocked = true;
+        DayTimeEvent.TemperatureLocked = true;
         GD.Print("Cold Night Event Triggered");
         DayTimeEvent.CurrentTemperature = -15f;
         GD.Print("Current Temperature: " + DayTimeEvent.CurrentTemperature + "C");

@@ -21,7 +21,7 @@ public class DayTimeEvent : GameEvent, IPausable {
     public override double Chance => 1.0d;
 
     public float CurrentTemperature { get; set; }
-    public bool temperatureLocked { get; set; } = false;
+    public bool TemperatureLocked { get; set; }
 
     /// <summary>
     ///     Sets the paused state of the event.
@@ -106,7 +106,7 @@ public class DayTimeEvent : GameEvent, IPausable {
         if (ticks < midDay) {
             CurrentTemperature = Utilities.MapRange(0, midDay, 10f, 30f, ticks);
         } else {
-            if (!temperatureLocked)
+            if (!TemperatureLocked)
                 CurrentTemperature = Utilities.MapRange(midDay, Utilities.TICKS_PER_HALF_DAY, 30f, 10f, ticks);
         }
     }
