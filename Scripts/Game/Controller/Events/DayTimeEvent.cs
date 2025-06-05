@@ -20,9 +20,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     public override int TicksUntilNextEvent => 1;
     public override double Chance => 1.0d;
 
-    public float CurrentTemperature { get; set; }
-    public bool TemperatureLocked { get; set; }
-
     /// <summary>
     ///     Sets the paused state of the event.
     /// </summary>
@@ -151,7 +148,9 @@ public class DayTimeEvent : GameEvent, IPausable {
     #endregion
 
     #region Event state data
-
+    public float CurrentTemperature { get; set; }
+    public bool TemperatureLocked { get; set; }
+    
     public DayPhaseState DayPhaseState { get; private set; }
     private bool isPaused;
     private DayPhaseState oldDayPhaseState;
