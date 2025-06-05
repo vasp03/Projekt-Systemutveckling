@@ -13,6 +13,7 @@ public class CameraController : ITickable {
     private int remainingEndGameAnimationTicks;
     private Camera2D Camera2DInstance => GameController.Singleton?.GetNodeOrNull<Camera2D>("CameraCenter");
 
+    #region Animation handling
     public void PostTick(double delta) {
         // Guard clause - if the camera controller happens to execute at the end of the frame and the camera is deleted
         // Do nothing
@@ -74,6 +75,8 @@ public class CameraController : ITickable {
 
         RemainingScreenShakeTicks = 0; // Reset shake ticks during end game animation
     }
+    
+    #endregion Animation handling
 
     #region Static values
 

@@ -296,9 +296,6 @@ public class CardController {
             CardNode card = CreateCard(cardName, spawnPos);
             card.ZIndex = cardNode.ZIndex + 1;
             spawnPos += new Vector2(0, -15);
-
-            card.NeighbourAbove = null;
-            card.NeighbourBelow = null;
         }
     }
 
