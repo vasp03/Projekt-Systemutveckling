@@ -45,8 +45,8 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         UpdateTemperature(DayTicks);
         SetSceneDarkness(DayTicks);
-        TimeLabel.SetText(Utilities.GetTimeOfDay(DayTicks));
-        DayPhaseState = Utilities.GetCurrentDayState(DayTicks);
+        TimeLabel.SetText(GetTimeOfDay(DayTicks));
+        DayPhaseState = GetCurrentDayState(DayTicks);
 
         if (DayPhaseState == oldDayPhaseState) return;
 
@@ -158,4 +158,59 @@ public class DayTimeEvent : GameEvent, IPausable {
     public int DayTicks { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Converts the specified ticks to a time of day string.
+    /// </summary>
+    /// <param name="ticks">Ticks to convert</param>
+    public static string GetTimeOfDay(int ticks) {
+        int hours = ticks / (Utilities.TICKS_PER_HALF_DAY / 24);
+        int minutes = ticks % (Utilities.TICKS_PER_HALF_DAY / 24) * 60 / (Utilities.TICKS_PER_HALF_DAY / 24);
+
+        // Round minutes to the nearest 10 minutes
+        minutes = (int)Mathf.Round(minutes / 10.0) * 10;
+
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+
+        return $"{hours:D2}:{minutes:D2}";
+    }
+
+    /// <summary>
+    ///     Get the current day state based on the current time of day.
+    /// </summary>
+    /// <param name="ticks">Current time of day in ticks.</param>
+    /// <returns>Current day state.</returns>
+    /// <remarks>
+    ///     Night: 0 - 1/10 of the day
+    ///     Morning: 1/10 - 3/10 of the day
+    ///     Day: 3/10 - 7/10 of the day
+    ///     Evening: 7/10 - 9/10 of the day
+    ///     Night: 9/10 - 1 of the day
+    /// </remarks>
+    public static DayPhaseState GetCurrentDayState(int ticks) {
+        if (ticks >= 0 && ticks < Utilities.TICKS_PER_HALF_DAY / 10)
+            // Night
+            return DayPhaseState.NIGHT;
+
+        if (ticks >= Utilities.TICKS_PER_HALF_DAY / 10 && ticks < Utilities.TICKS_PER_HALF_DAY / 10 * 3)
+            // Morning
+            return DayPhaseState.MORNING;
+
+        if (ticks >= Utilities.TICKS_PER_HALF_DAY / 10 * 3 && ticks < Utilities.TICKS_PER_HALF_DAY / 10 * 7)
+            // Day
+            return DayPhaseState.DAY;
+
+        if (ticks >= Utilities.TICKS_PER_HALF_DAY / 10 * 7 && ticks < Utilities.TICKS_PER_HALF_DAY / 10 * 9)
+            // Evening
+            return DayPhaseState.EVENING;
+
+        if (ticks >= Utilities.TICKS_PER_HALF_DAY / 10 * 9 && ticks <= Utilities.TICKS_PER_HALF_DAY)
+            // Night
+            return DayPhaseState.NIGHT;
+
+        return DayPhaseState.INVALID; // Invalid state
+    }
 }

@@ -41,7 +41,7 @@ public class ColdNightEvent : GameEvent, ITickable {
     /// </summary>
     public override bool EventActive {
         get {
-            DayPhaseState currentPhaseState = Utilities.GetCurrentDayState(DayTimeEvent.DayTicks);
+            DayPhaseState currentPhaseState = DayTimeEvent.GetCurrentDayState(DayTimeEvent.DayTicks);
             if (!hasTriggered && currentPhaseState is DayPhaseState.NIGHT) return true;
 
             if (currentPhaseState is DayPhaseState.NIGHT) return false;
