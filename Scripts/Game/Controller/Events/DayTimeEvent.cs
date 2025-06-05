@@ -42,8 +42,6 @@ public class DayTimeEvent : GameEvent, IPausable {
     public override void OnEvent(GameEventContext context) {
         if (isPaused) return;
 
-        GameController gameController = GameController.Singleton;
-
         DayTicks++;
 
         if (DayTicks > Utilities.TICKS_PER_HALF_DAY) DayTicks = 0;
