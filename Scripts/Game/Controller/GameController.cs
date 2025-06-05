@@ -263,7 +263,7 @@ public partial class GameController : Node2D {
         foreach (IPausable callback in pausedCallbacks) callback.SetPaused(isPaused);
     }
 
-    public void AddPauseCallback(IPausable callback) {
+    public void RegisterPauseCallback(IPausable callback) {
         pausedCallbacks.Add(callback);
     }
 

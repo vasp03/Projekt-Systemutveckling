@@ -13,7 +13,7 @@ public class DayTimeEvent : GameEvent, IPausable {
         InitializeReferences();
 
         oldDayPhaseState = DayPhaseState.INVALID;
-        GameController.Singleton.AddPauseCallback(this);
+        GameController.Singleton.RegisterPauseCallback(this);
     }
 
     public override string EventName => "Day Time Event";

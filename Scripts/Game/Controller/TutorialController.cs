@@ -43,7 +43,7 @@ public partial class TutorialController : CanvasLayer, IPausable {
         AddChild(bubbleInstance);
         bubbleInstance.BubbleClicked += OnBubbleClicked;
 
-        GameController.Singleton.AddPauseCallback(this);
+        GameController.Singleton.RegisterPauseCallback(this);
 
         _ = ShowStep(0);
     }
