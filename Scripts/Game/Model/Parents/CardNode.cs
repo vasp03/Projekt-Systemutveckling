@@ -129,7 +129,7 @@ public partial class CardNode : Node2D {
     private const string SELL_SFX = "General Sounds/Coins/sfx_coin_double2.wav";
 
     private const float HIGHTLIGHT_MODULATE_FACTOR = 1.3f;
-    private static readonly Vector2 CARD_OVERLAP_OFFSET = Vector2.Down * 20;
+    private readonly static Vector2 CARD_OVERLAP_OFFSET = Vector2.Down * 20;
 
     #endregion Constants
 
@@ -481,7 +481,9 @@ public partial class CardNode : Node2D {
     private void OnDragChanged(bool newDragValue) {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
 
-        Global.MouseController.SetMouseCursor(newDragValue ? MouseCursorIcon.HAND_CLOSE : MouseCursorIcon.POINT_SMALL);
+        Global.MouseController.SetMouseCursor(newDragValue
+            ? MouseCursorIcon.HAND_CLOSE
+            : MouseCursorIcon.POINT_SMALL);
 
         GameController.Singleton.SoundController.PlaySound(newDragValue
             ? ON_PICKUP_SFX

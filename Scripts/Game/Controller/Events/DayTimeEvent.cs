@@ -133,32 +133,6 @@ public class DayTimeEvent : GameEvent, IPausable {
         SetSceneDarkness(timeOfDay);
     }
 
-    #region Game object references
-
-    private void InitializeReferences() {
-        DarknessLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
-        Sprite = DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
-        TimeLabel = GameController.Singleton!.GetNode<Label>("HUD/DayTimeLabel");
-    }
-
-    private Sprite2D Sprite { get; set; }
-    public CanvasLayer DarknessLayer { get; set; }
-    private Label TimeLabel { get; set; }
-
-    #endregion
-
-    #region Event state data
-    public float CurrentTemperature { get; set; }
-    public bool TemperatureLocked { get; set; }
-    
-    public DayPhaseState DayPhaseState { get; private set; }
-    private bool isPaused;
-    private DayPhaseState oldDayPhaseState;
-    private float oldSceneDarkness;
-    public int DayTicks { get; set; }
-
-    #endregion
-
     /// <summary>
     ///     Converts the specified ticks to a time of day string.
     /// </summary>
@@ -213,4 +187,31 @@ public class DayTimeEvent : GameEvent, IPausable {
 
         return DayPhaseState.INVALID; // Invalid state
     }
+
+    #region Game object references
+
+    private void InitializeReferences() {
+        DarknessLayer = GameController.Singleton!.GetNode<CanvasLayer>("SceneDarknessCanvas");
+        Sprite = DarknessLayer.GetNode<Sprite2D>("SceneDarkness");
+        TimeLabel = GameController.Singleton!.GetNode<Label>("HUD/DayTimeLabel");
+    }
+
+    private Sprite2D Sprite { get; set; }
+    public CanvasLayer DarknessLayer { get; set; }
+    private Label TimeLabel { get; set; }
+
+    #endregion
+
+    #region Event state data
+
+    public float CurrentTemperature { get; set; }
+    public bool TemperatureLocked { get; set; }
+
+    public DayPhaseState DayPhaseState { get; private set; }
+    private bool isPaused;
+    private DayPhaseState oldDayPhaseState;
+    private float oldSceneDarkness;
+    public int DayTicks { get; set; }
+
+    #endregion
 }

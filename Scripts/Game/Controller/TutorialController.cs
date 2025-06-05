@@ -6,7 +6,7 @@ using Goodot15.Scripts.Game.View;
 namespace Goodot15.Scripts.Game.Controller;
 
 public partial class TutorialController : CanvasLayer, IPausable {
-    private static readonly PackedScene TUTORIAL_BUBBLE_SCENE =
+    private readonly static PackedScene TUTORIAL_BUBBLE_SCENE =
         GD.Load<PackedScene>("res://Scenes/TutorialBubble.tscn");
 
     private TutorialBubble bubbleInstance;

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Godot;
-using Goodot15.Scripts.Game.Model.Enums;
 
 namespace Goodot15.Scripts;
 
@@ -79,7 +78,9 @@ public static class Utilities {
     ///     Recursively gets the children of the supplied node.
     /// </summary>
     /// <param name="node">Root node to collect children from</param>
-    /// <returns>Collection of <see cref="Node"/> instances from the parent <param name="node"></param></returns>
+    /// <returns>Collection of <see cref="Node" /> instances from the parent
+    ///     <param name="node"></param>
+    /// </returns>
     public static IReadOnlyCollection<Node> RecursiveGetChildren(Node node) {
         if (node == null) return [];
 

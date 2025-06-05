@@ -11,8 +11,9 @@ namespace Goodot15.Scripts.Game.Controller;
 public partial class PackController : HBoxContainer {
     private const string PACK_OPEN_SFX = "General Sounds/Interactions/sfx_sounds_interaction17.wav";
     private const string PACK_INSUFFICIENT_MONEY_SFX = "General Sounds/Negative Sounds/sfx_sounds_error3.wav";
-    
-    private readonly static PackedScene LABEL_SCENE = GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
+
+    private readonly static PackedScene LABEL_SCENE =
+        GD.Load<PackedScene>("res://Scenes/ProgressBars/FloatingMoneyLabel.tscn");
 
     private readonly IList<CardPack> registeredPacks = [];
 

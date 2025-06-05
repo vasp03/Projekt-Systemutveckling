@@ -8,7 +8,7 @@ namespace Goodot15.Scripts.Game.View;
 /// </summary>
 public partial class MainOptions : Control {
     private const string SLIDER_SFX = "General Sounds/Menu Sounds/sfx_menu_move1.wav";
-    
+
     private readonly static string[] displayModes = [
         "WINDOWED",
         "FULLSCREEN",
