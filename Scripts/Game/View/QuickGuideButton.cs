@@ -9,7 +9,7 @@ public partial class QuickGuideButton : TextureButton {
         TextureNormal = ResourceLoader.Load<Texture2D>("res://Assets/Icons/64x64/fc289.png");
     }
 
-    public void OnButtonPressed() {
+    private void OnButtonPressed() {
         GameController.Singleton.MenuController.QuickOpenGuideMenu();
 
         if (GameController.Singleton.GameEventManager.EventInstance<DayTimeEvent>() is IPausable pausable)

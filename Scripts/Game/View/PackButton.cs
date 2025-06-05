@@ -11,7 +11,7 @@ public partial class PackButton : TextureButton {
     private TextureRect textureRect;
 
     private Label CostLabel => GetNode<Label>("PriceLabel");
-    public CardPack Pack { get; private set; }
+    private CardPack Pack { get; set; }
     public event PackClickedHandler PackClicked;
 
     public override void _Ready() {

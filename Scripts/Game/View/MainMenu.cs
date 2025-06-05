@@ -7,8 +7,6 @@ namespace Goodot15.Scripts.Game.View;
 ///     Class representing the main menu of the game.
 /// </summary>
 public partial class MainMenu : Control {
-    private const bool canContinue = false;
-
     private Button continueButton;
     private Button exitButton;
     private Button guideButton;
@@ -49,11 +47,6 @@ public partial class MainMenu : Control {
 
         exitButton = Button("ButtonContainer/ExitButton");
         exitButton.Pressed += OnExitButtonPressed;
-
-        if (!canContinue)
-            continueButton.Disabled = true;
-        else
-            continueButton.Disabled = false;
     }
 
     /// <summary>
